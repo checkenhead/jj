@@ -57,7 +57,6 @@ public class MemberController {
 		
 		return result;
 	}
-	
 	@GetMapping("/logout")
 	public HashMap<String, Object> logout(HttpServletRequest request){
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -112,6 +111,5 @@ public class MemberController {
 		}
 		return result;
 	}
-	
-	
+
 }

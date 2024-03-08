@@ -1,0 +1,11 @@
+.wrap_feeds{
+    width: 100%;
+
+    padding: 5px;
+    border: 1px solid black;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

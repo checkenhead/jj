@@ -4,6 +4,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import './style/main.css';
+import './style/header.css';
+import './style/feeds.css';
+import './style/sub.css';
 
 
 import store from './store/index';
