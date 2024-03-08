@@ -1,9 +1,13 @@
-import React, {useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Join() {
+// 다음 주소 검색
+import DaumPostcode from "react-daum-postcode";
+// 모달창
+import Modal from "react-modal";
 
+function Join() {
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [pwdChk, setPwdChk ] = useState('');
@@ -18,6 +22,37 @@ function Join() {
     const [address1, setAddress1] = useState('');
     const [address2, setAddress2] = useState('');
     const [address3, setAddress3] = useState('');
+
+    // 모달창 여닫이 버튼
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggle = () =>{
+        setIsOpen(!isOpen);
+    }
+
+    // 모달창 핸들러
+    const completeHandler = (data:any) =>{
+        setZipnum(data.zonecode);
+        setAddress1(data.roadAddress);
+        setIsOpen(false); //추가
+    }
+
+    // 모달창 스타일
+    const customStyles = {
+        overlay: {
+            backgroundColor: "rgba(0,0,0,0.5)",
+        },
+        content: {
+            left: "0",
+            margin: "auto",
+            width: "600px",
+            height: "700px",
+            padding: "0",
+            overflow: "scroll",
+        },
+    };
+
+
 
     const navigate = useNavigate();
 
@@ -55,7 +90,7 @@ function Join() {
                 console.error(error);
         })
     }
-
+    
     return (
         <div>
             <div className='field'>
@@ -66,13 +101,13 @@ function Join() {
             </div>
             <div className='field'>
                 <label>password</label>
-                <input type="text" value={pwd} onChange={
+                <input type="password" value={pwd} onChange={
                     (e)=>{ setPwd ( e.currentTarget.value) }
                 }/>
             </div>
             <div className='field'>
                 <label>password check</label>
-                <input type="text" value={pwdChk} onChange={
+                <input type="password" value={pwdChk} onChange={
                     (e)=>{ setPwdChk ( e.currentTarget.value) }
                 }/>
             </div>
@@ -90,20 +125,23 @@ function Join() {
             </div>
 
             <div className='field'>
-                <label>zipnum</label>
-                <input type="text" value={zipnum} onChange={
-                    (e)=>{ setZipnum ( e.currentTarget.value) }
-                }/>
-
+                <input value={zipnum} readOnly placeholder="우편번호" />
+                <button onClick={toggle}>우편번호 검색</button>
+                <br />
+                <input value={address1} readOnly placeholder="도로명 주소" />
+                <br />
+                <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
+                    <DaumPostcode onComplete={completeHandler} height="100%" />
+                </Modal>
             </div>
             <div className='field'>
-                <label>address</label>
-                <input type="text" value={address1} onChange={
-                    (e)=>{ setAddress1 ( e.currentTarget.value) }
-                }/>
+                <label>address2</label>
                 <input type="text" value={address2} onChange={
                     (e)=>{ setAddress2 ( e.currentTarget.value) }
                 }/>
+            </div>
+            <div className='field'>
+                <label>address3</label>
                 <input type="text" value={address3} onChange={
                     (e)=>{ setAddress3 ( e.currentTarget.value) }
                 }/>

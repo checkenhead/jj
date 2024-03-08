@@ -22,9 +22,9 @@ public class MemberService {
 		return member.isPresent() ? member.get() : null;
 	}
 
-	public Member getMemberByNick(String nickname) {
+	public Member getMemberByNickname(String nickname) {
 		
-		Optional<Member> member = mr.findById(nickname);
+		Optional<Member> member = mr.findByNickname(nickname);
 		
 		return member.isPresent() ? member.get() : null;
 	}
@@ -33,6 +33,7 @@ public class MemberService {
 		mr.save(member);
 		
 	}
+
 
 	
 	

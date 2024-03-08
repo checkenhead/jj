@@ -43,7 +43,7 @@ public class MemberController {
 			result.put("message", "비밀번호가 틀립니다.");
 		
 		// sns계정이 비정상적으로 로그인하는 경우
-		}else if(!mdto.getProvider().equals("jj")) {
+		}else if(mdto.getProvider() != null) {
 			result.put("message", "SNS로 로그인해주세요.");
 			
 		// 정상 로그인
@@ -57,7 +57,6 @@ public class MemberController {
 		
 		return result;
 	}
-<<<<<<< HEAD
 	
 	@GetMapping("/logout")
 	public HashMap<String, Object> logout(HttpServletRequest request){
@@ -67,29 +66,32 @@ public class MemberController {
 		return result;
 	}
 	
-	
-	@PostMapping("/emailcheck")
-	public HashMap<String, Object> emailcheck(@RequestParam("email") String email, Member member){
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		Member mdto = ms.getMemberByEmail(member.getEmail());
-		if( mdto != null ) result.put("msg", "no");
-		else result.put("msg", "yes");
+	@PostMapping("/join")
+	public HashMap<String, Object> join( @RequestBody Member member ){
 		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		
+		Member CheckEmail = ms.getMemberByEmail(member.getEmail());
+		
+		if( CheckEmail != null) {
+			result.put("message", "nickname");	
+			
+		}else {
+			Member CheckNickname = ms.getMemberByNickname(member.getNickname());
+			
+			if(CheckNickname != null) {
+				result.put("message", "email");
+				
+			}else {
+				ms.insertMember(member);
+				result.put("message", "ok");			
+			}
+		}
+			
 		return result;
 	}
 	
-	@PostMapping("/nickcheck")
-	public HashMap<String, Object> nickcheck(@RequestParam("nickname") String nickname){
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		Member mdto = ms.getMemberByNick(nickname);
-		if( mdto != null ) result.put("msg", "no");
-		else result.put("msg", "yes");
-		
-		return result;
-	}
-
-	
-	/*
 	@Autowired
 	ServletContext context;
 	@PostMapping("/fileupload")
@@ -110,20 +112,6 @@ public class MemberController {
 		}
 		return result;
 	}
-	*/
 	
 	
-	@PostMapping("/join")
-	public HashMap<String, Object> join(@RequestBody Member member){
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		ms.insertMember(member);
-		result.put("msg", "ok");
-		return result;
-	}
-	
-	
-	
-=======
-
->>>>>>> branch 'main' of https://github.com/checkenhead/jj.git
 }
