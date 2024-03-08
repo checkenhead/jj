@@ -1,5 +1,7 @@
 package com.tjoeun.jj.entity;
 
+import java.sql.Timestamp;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Entity;
@@ -24,7 +26,7 @@ public class Member {
 	private String snsid;
 	private String provider;
 	@CreationTimestamp
-	private String createdat;
+	private Timestamp createdat;
 	private String zipnum;
 	private String address1;
 	private String address2;
