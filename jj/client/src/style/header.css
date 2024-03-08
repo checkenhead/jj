@@ -1,20 +1,24 @@
 .wrap_header{
     width: 100%;
-    height: calc(100vh - 30px);
+    height: calc(100vh - 10px);
     box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
 
+    margin-top: 5px;
     padding: 5px;
-    /* border: 1px solid black; */
+    border: 1px solid #DDDDDD;
+    background-color: white;
+    box-shadow: 0 0 20px #DDDDDD;
+    border-radius: 10px;
     box-sizing: border-box;
 }
 .wrap_header .logo{
     width: 100%;
     
     padding: 5px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     box-sizing: border-box;
 }
 .wrap_header .logo img{
@@ -51,6 +55,7 @@
     width: 150px;
     height: 50px;
     border-radius: 25px;
+
     display: flex;
     align-items: center;
 }
@@ -60,7 +65,8 @@
     color: black;
 }
 .wrap_header nav .row button{
-
+    border: 1px solid transparent;
+    background-color: #DDDDDD;
 }
 .wrap_header .icon{
     width: 35px;
@@ -68,14 +74,12 @@
 .wrap_header .btn_logout{
     margin-top: auto;
 }
-/* 모바일 가로모드 */
-@media (max-height: 450px){
-    .wrap_header .logo{
-        display: none;
-    }
-}
+
 /* 모바일 */
-@media (max-width: 671px){
+@media (max-width: 620px){
+    .wrap_header{
+        height: auto;
+    }
     .wrap_header .logo{
         justify-content: flex-start;
     }
@@ -83,8 +87,9 @@
         display: none;
     }
 }
+
 /* 테블릿 */
-@media (min-width: 671px) and (max-width: 1000px){
+@media (min-width: 621px) and (max-width: 700px){
     .wrap_header .name{
         display: none;
     }
@@ -101,10 +106,26 @@
     }
     .wrap_header nav .row button{
         width: 50px;
-        border-radius: 25px;
     }
 }
-@media (min-width: 1001px) and (max-width: 1200px){
+@media (min-width: 701px) and (max-width: 920px){
+    .wrap_header .logo{
+        display: flex;
+        justify-content: flex-start;
+    }
+    .wrap_header nav .row{
+        justify-content: flex-start;
+    }
+    .wrap_header nav .row a{
+        width: 100%;
+        margin-left: 10px;
+        justify-content: flex-start;
+    }
+    .wrap_header nav .row button{
+        width: 150px;
+    }
+}
+@media (min-width: 921px) and (max-width: 1000px){
     .wrap_header .name{
         display: none;
     }
@@ -121,6 +142,19 @@
     }
     .wrap_header nav .row button{
         width: 50px;
-        border-radius: 25px;
+    }
+}
+
+/* 데스크탑 */
+@media (min-width: 1001px){
+    .wrap_header nav .row a{
+        margin-left: 10px;
+    }
+}
+
+/* 모바일 가로모드 */
+@media (max-height: 450px){
+    .wrap_header .logo{
+        display: none;
     }
 }
