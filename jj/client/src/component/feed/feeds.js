@@ -2,7 +2,7 @@ import React from 'react'
 
 function Feeds() {
   return (
-    <div>
+    <div className="wrap_feeds">
       Feeds
     </div>
   )

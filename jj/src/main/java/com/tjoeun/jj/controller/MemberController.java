@@ -43,7 +43,7 @@ public class MemberController {
 			result.put("message", "비밀번호가 틀립니다.");
 		
 		// sns계정이 비정상적으로 로그인하는 경우
-		}else if(!mdto.getProvider().equals("jj")) {
+		}else if(mdto.getProvider() != null) {
 			result.put("message", "SNS로 로그인해주세요.");
 			
 		// 정상 로그인
@@ -57,8 +57,6 @@ public class MemberController {
 		
 		return result;
 	}
-
-	
 	@GetMapping("/logout")
 	public HashMap<String, Object> logout(HttpServletRequest request){
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -67,9 +65,32 @@ public class MemberController {
 		return result;
 	}
 	
-
+	@PostMapping("/join")
+	public HashMap<String, Object> join( @RequestBody Member member ){
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		
+		Member CheckEmail = ms.getMemberByEmail(member.getEmail());
+		
+		if( CheckEmail != null) {
+			result.put("message", "nickname");	
+			
+		}else {
+			Member CheckNickname = ms.getMemberByNickname(member.getNickname());
+			
+			if(CheckNickname != null) {
+				result.put("message", "email");
+				
+			}else {
+				ms.insertMember(member);
+				result.put("message", "ok");			
+			}
+		}
+			
+		return result;
+	}
 	
-	/*
 	@Autowired
 	ServletContext context;
 	@PostMapping("/fileupload")
@@ -90,48 +111,6 @@ public class MemberController {
 		}
 		return result;
 	}
-	*/
-	
-	
-	@PostMapping("/join")
-	   public HashMap<String, Object> join(@RequestBody Member member){
-	      HashMap<String, Object> result = new HashMap<String, Object>();
-	      
-	      
-	      Member checkEmail = ms.getMemberByEmail(member.getEmail());
-	      
-	      if(checkEmail != null) {
-	         result.put("message", "이미 가입된 이메일입니다.");
-	      }else {
-	         Member checkNickname = ms.getMemberByNickname(member.getNickname());
-	         
-	         if(checkNickname != null) {
-	            result.put("message", "이미 존재하는 닉네임입니다.");
-	         }else {
-	            ms.insertMember(member);
-	            result.put("message", "OK");
-	         }
-	      }
-	      
-	      return result;
-	   }
-	
-	@PostMapping("/updateProfile")
-	public HashMap<String, Object> updateProfile(@RequestBody Member member){
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		
-		Member checkNickname = ms.getMemberByNickname(member.getNickname());
-		
-		if(checkNickname != null) {
-			result.put("message", "닉네임이 중복됩니다.");
-		}else {
-			ms.insertMember(member);
-			result.put("message", "OK");
-		}
-		
-		return result;
-	}
-	
-	
-	
+
 }
+

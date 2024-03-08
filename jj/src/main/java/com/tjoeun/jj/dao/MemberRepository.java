@@ -8,6 +8,10 @@ import com.tjoeun.jj.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, String>{
 
+
 	Optional<Member> getMemberByNickname(String nickname);
+
+	Optional<Member> findByNickname(String nickname);
+
 
 }

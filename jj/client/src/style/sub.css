@@ -1,0 +1,24 @@
+.wrap_sub{
+    width: 100%;
+
+    padding: 5px;
+    border: 1px solid black;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.wrap_sub footer{
+    padding: 5px;
+    border: 1px solid black;
+    box-sizing: border-box;
+}
+.wrap_sub footer .wrap_footer{
+    color: gray;
+
+    padding: 5px;
+    border: 1px solid black;
+    box-sizing: border-box;
+}

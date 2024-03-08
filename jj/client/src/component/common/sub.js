@@ -1,9 +1,12 @@
 import React from 'react'
 
+import Footer from './footer';
+
 function Sub() {
   return (
-    <div>
+    <div className="wrap_sub">
       Sub
+      <footer><Footer/></footer>
     </div>
   )
 }
