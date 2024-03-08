@@ -5,6 +5,7 @@ const Loading = <div><h3>Loadging...</h3></div>
 const Index = lazy(() => import('../component/index'));
 const Login = lazy(() => import('../component/members/login'));
 const Join = lazy(() => import('../component/members/join'));
+const UpdateProfile = lazy(() => import('../component/members/updateProfile'));
 const Main = lazy(() => import('../component/main'));
 
 const root = createBrowserRouter([
@@ -19,6 +20,10 @@ const root = createBrowserRouter([
     {
         path: 'join',
         element: <Suspense fallback={Loading}><Join /></Suspense>
+    },
+    {
+        path: 'updateProfile',
+        element: <Suspense fallback={Loading}><UpdateProfile /></Suspense>
     },
     {
         path: 'main',
