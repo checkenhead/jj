@@ -57,6 +57,7 @@ public class MemberController {
 		
 		return result;
 	}
+<<<<<<< HEAD
 	
 	@GetMapping("/logout")
 	public HashMap<String, Object> logout(HttpServletRequest request){
@@ -122,4 +123,7 @@ public class MemberController {
 	
 	
 	
+=======
+
+>>>>>>> branch 'main' of https://github.com/checkenhead/jj.git
 }
