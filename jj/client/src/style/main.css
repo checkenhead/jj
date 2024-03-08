@@ -1,18 +1,86 @@
 body{
-    width: 100vw;
-    margin: 0;
-    border: 1px solid red;
-    box-sizing: border-box;
+    width: calc(100vw - 40px);
+    margin: 0 auto;
 
     display: flex;
     justify-content: center;
+
+    padding: 5px;
+    border: 1px solid red;
+    box-sizing: border-box;
+}
+#root{
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    padding: 5px;
+    border: 1px solid blue;
+    box-sizing: border-box;
 }
 .wrap_main{
+    width: 100%;
+
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 .wrap_main header{
+    width: 100%;
+    min-width: 100px;
+    max-width: 300px;
+
     border: 1px solid black;
+    box-sizing: border-box;
 }
-.wrap_main main{border: 1px solid green;}
-.wrap_main aside{border: 1px solid pink;}
+.wrap_main main{
+    min-width: 500px;
+    max-width: 500px;
+
+    border: 1px solid green;
+    box-sizing: border-box;
+}
+.wrap_main aside{
+    min-width: 300px;
+    max-width: 300px;
+    border: 1px solid pink;
+    box-sizing: border-box;
+}
+
+/* 모바일 */
+@media (max-width: 671px){
+    .wrap_main{
+        flex-direction: column;
+    }
+    .wrap_main header{
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+    .wrap_main main{
+        width: 100%;
+        min-width: 100%;
+    }
+    .wrap_main aside{
+        display: none;
+    }
+}
+/* 테블릿 */
+@media (min-width: 671px) and (max-width: 1000px){
+    .wrap_main header{
+        max-width: 100px;
+    }
+    .wrap_main aside{
+        display: none;
+    }
+}
+@media (min-width: 1001px) and (max-width: 1200px){
+    .wrap_main header{
+        max-width: 100px;
+    }
+}
+/* 데스크탑 */
+@media (min-width: 1201px){
+    
+}
