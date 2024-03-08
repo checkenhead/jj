@@ -1,0 +1,29 @@
+.link{
+    font-weight: bold;
+    transition: all 0.2s;
+    cursor:default;
+}
+.link:hover{
+    transform: scale(0.9);
+}
+.container{
+    width: 100vw;
+    height: 3000px;
+    display: flex;
+}
+.box1{
+    width: 300px;
+    height: 2500px;
+    background-color: blue;
+}
+
+.box2{
+    position: sticky;
+    width: 300px;
+    height: 1000px;
+    
+    overflow: auto;
+    top: 0;
+
+    background-color: red;
+}

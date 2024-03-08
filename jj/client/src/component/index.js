@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+import '../style/index.css';
 
 function Index() {
   return (
-    <div>
-      hi
+    <div className="container">
+      <div className="box1"><p className="link">123123</p></div>
+      <div className="box2"></div>
     </div>
   )
 }
