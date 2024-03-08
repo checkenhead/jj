@@ -1,17 +1,25 @@
 package com.tjoeun.jj.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tjoeun.jj.entity.Member;
 import com.tjoeun.jj.service.MemberService;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/members")
@@ -49,5 +57,69 @@ public class MemberController {
 		
 		return result;
 	}
+	
+	@GetMapping("/logout")
+	public HashMap<String, Object> logout(HttpServletRequest request){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		HttpSession session = request.getSession();
+		session.removeAttribute("loginUser");
+		return result;
+	}
+	
+	
+	@PostMapping("/emailcheck")
+	public HashMap<String, Object> emailcheck(@RequestParam("email") String email, Member member){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		Member mdto = ms.getMemberByEmail(member.getEmail());
+		if( mdto != null ) result.put("msg", "no");
+		else result.put("msg", "yes");
+		
+		return result;
+	}
+	
+	@PostMapping("/nickcheck")
+	public HashMap<String, Object> nickcheck(@RequestParam("nickname") String nickname){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		Member mdto = ms.getMemberByNick(nickname);
+		if( mdto != null ) result.put("msg", "no");
+		else result.put("msg", "yes");
+		
+		return result;
+	}
+
+	
+	/*
+	@Autowired
+	ServletContext context;
+	@PostMapping("/fileupload")
+	public HashMap<String, Object> fileup(@RequestParam("image")  MultipartFile file){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		String path = context.getRealPath("/images");
+		Calendar today = Calendar.getInstance();
+		long dt = today.getTimeInMillis();
+		String filename = file.getOriginalFilename();
+		String fn1 = filename.substring(0, filename.indexOf(".") ); 
+ 		String fn2 = filename.substring(filename.indexOf(".") ); 
+ 		String uploadPath = path + "/" + fn1 + dt + fn2;		
+ 		try {
+			file.transferTo( new File(uploadPath) );
+			result.put("filename", fn1 + dt + fn2);
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	*/
+	
+	
+	@PostMapping("/join")
+	public HashMap<String, Object> join(@RequestBody Member member){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		ms.insertMember(member);
+		result.put("msg", "ok");
+		return result;
+	}
+	
+	
 	
 }
