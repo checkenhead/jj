@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-
+import '../../style/members/login.css';
+import ImgLogo from '../../images/logo.png';
 
 /** 로그인 */
 function Login() {
@@ -34,26 +35,32 @@ function Login() {
   }
 
   return (
-    <div>
-      <div className='field'>
-        <label>E-mail</label>
-        <input type='text' value={email} onChange={
-          (e) => {
-            setEmail ( e.currentTarget.value )
-          }
-        }></input>
+    <div className='loginform'>
+      <div className='wrap_login'>
+
       </div>
-      <div className='field'>
-        <label>Password</label>
-        <input type='password' value={pwd} onChange={
-          (e) => {
-            setPwd ( e.currentTarget.value )
-          }
-        }></input>
-      </div>
-      <div className='btn1'>
-        <button onClick={ () => { onLogin() } }>로그인</button>
-        <button onClick={ () => { navigate('/join') } }>회원가입</button>
+      <div className='wrap_login'>
+        <div className='login_field'>
+          <div className='login_logo'><img src={ImgLogo}/><h2>JackJack</h2></div>
+          <div className='login_input'>
+            <div className='field'>
+              <input type='text' placeholder='E-mail' value={email} onChange={
+                (e) => {
+                  setEmail ( e.currentTarget.value )
+                }
+              }></input>
+            </div>
+              <input type='password' placeholder='Password' value={pwd} onChange={
+                (e) => {
+                  setPwd ( e.currentTarget.value )
+                }
+              }></input>
+              <div className='btn1'>
+                <button onClick={ () => { onLogin() } }>로그인</button>
+                <button onClick={ () => { navigate('/join') } }>회원가입</button>
+              </div>
+          </div>
+        </div>
       </div>
     </div>
   )

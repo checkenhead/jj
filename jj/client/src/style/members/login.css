@@ -1,0 +1,28 @@
+.loginform {
+    display: flex;
+}
+
+.wrap_login {
+    display: flex;
+    height: 76vh;
+    width: 300px;
+    padding: 100px;
+    margin-right: 5vw;
+    border: 2px solid black;
+}
+
+.login_field {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+
+.login_logo {
+    display: flex;
+    width: 100%;
+}
+
+.login_logo img {
+    width: 50%;
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import '../../style/members/join.css';
 // 다음 주소 검색
 import DaumPostcode from "react-daum-postcode";
 // 모달창
@@ -31,7 +31,7 @@ function Join() {
     }
 
     // 모달창 핸들러
-    const completeHandler = (data:any) =>{
+    const completeHandler = (data) =>{
         setZipnum(data.zonecode);
         setAddress1(data.roadAddress);
         setIsOpen(false); //추가
