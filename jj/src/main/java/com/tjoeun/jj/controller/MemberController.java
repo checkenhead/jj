@@ -50,4 +50,27 @@ public class MemberController {
 		return result;
 	}
 	
+	@PostMapping("/join")
+	public HashMap<String, Object> join(@RequestBody Member member){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		
+		Member checkEmail = ms.getMemberByEmail(member.getEmail());
+		
+		if(checkEmail != null) {
+			result.put("message", "이미 가입된 이메일입니다.");
+		}else {
+			Member checkNickname = ms.getMemberByNickname(member.getNickname());
+			
+			if(checkNickname != null) {
+				result.put("message", "이미 가입된 이메일입니다.");
+			}else {
+				ms.insertMember(member);
+				result.put("message", "OK");
+			}
+		}
+		
+		return result;
+	}
+	
 }
