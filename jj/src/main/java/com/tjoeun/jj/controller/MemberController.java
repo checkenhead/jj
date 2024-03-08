@@ -57,7 +57,7 @@ public class MemberController {
 		
 		return result;
 	}
-<<<<<<< HEAD
+
 	
 	@GetMapping("/logout")
 	public HashMap<String, Object> logout(HttpServletRequest request){
@@ -67,26 +67,6 @@ public class MemberController {
 		return result;
 	}
 	
-	
-	@PostMapping("/emailcheck")
-	public HashMap<String, Object> emailcheck(@RequestParam("email") String email, Member member){
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		Member mdto = ms.getMemberByEmail(member.getEmail());
-		if( mdto != null ) result.put("msg", "no");
-		else result.put("msg", "yes");
-		
-		return result;
-	}
-	
-	@PostMapping("/nickcheck")
-	public HashMap<String, Object> nickcheck(@RequestParam("nickname") String nickname){
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		Member mdto = ms.getMemberByNick(nickname);
-		if( mdto != null ) result.put("msg", "no");
-		else result.put("msg", "yes");
-		
-		return result;
-	}
 
 	
 	/*
@@ -114,16 +94,44 @@ public class MemberController {
 	
 	
 	@PostMapping("/join")
-	public HashMap<String, Object> join(@RequestBody Member member){
+	   public HashMap<String, Object> join(@RequestBody Member member){
+	      HashMap<String, Object> result = new HashMap<String, Object>();
+	      
+	      
+	      Member checkEmail = ms.getMemberByEmail(member.getEmail());
+	      
+	      if(checkEmail != null) {
+	         result.put("message", "이미 가입된 이메일입니다.");
+	      }else {
+	         Member checkNickname = ms.getMemberByNickname(member.getNickname());
+	         
+	         if(checkNickname != null) {
+	            result.put("message", "이미 존재하는 닉네임입니다.");
+	         }else {
+	            ms.insertMember(member);
+	            result.put("message", "OK");
+	         }
+	      }
+	      
+	      return result;
+	   }
+	
+	@PostMapping("/updateProfile")
+	public HashMap<String, Object> updateProfile(@RequestBody Member member){
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		ms.insertMember(member);
-		result.put("msg", "ok");
+		
+		Member checkNickname = ms.getMemberByNickname(member.getNickname());
+		
+		if(checkNickname != null) {
+			result.put("message", "닉네임이 중복됩니다.");
+		}else {
+			ms.insertMember(member);
+			result.put("message", "OK");
+		}
+		
 		return result;
 	}
 	
 	
 	
-=======
-
->>>>>>> branch 'main' of https://github.com/checkenhead/jj.git
 }
