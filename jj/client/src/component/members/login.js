@@ -16,7 +16,7 @@ function Login() {
     .then( ( result ) => {
       console.log(result.data)
       // 로그인 실패 했을 경우
-      if( result.data.message != 'OK' ){
+      if( result.data.message !== 'OK' ){
         setPwd("");
         return alert(result.data.message);
       // 로그인에 성공 했을 경우
