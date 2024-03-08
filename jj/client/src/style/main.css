@@ -6,7 +6,7 @@ body{
     justify-content: center;
 
     padding: 5px;
-    border: 1px solid red;
+    /* border: 1px solid red; */
     box-sizing: border-box;
 }
 #root{
@@ -16,7 +16,7 @@ body{
     justify-content: center;
 
     padding: 5px;
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
     box-sizing: border-box;
 }
 .wrap_main{
@@ -29,7 +29,7 @@ body{
 .wrap_main header{
     width: 100%;
     min-width: 100px;
-    max-width: 300px;
+    max-width: 200px;
 
     border: 1px solid black;
     box-sizing: border-box;
@@ -38,13 +38,13 @@ body{
     min-width: 500px;
     max-width: 500px;
 
-    border: 1px solid green;
+    /* border: 1px solid green; */
     box-sizing: border-box;
 }
 .wrap_main aside{
     min-width: 300px;
     max-width: 300px;
-    border: 1px solid pink;
+    /* border: 1px solid pink; */
     box-sizing: border-box;
 }
 
@@ -57,6 +57,7 @@ body{
         width: 100%;
         min-width: 100%;
         max-width: 100%;
+        height: 80px;
     }
     .wrap_main main{
         width: 100%;
