@@ -1,11 +1,17 @@
-import React from 'react';
-import '../style/index.css';
+import React, {useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 
+/** 로그인 페이지로 이동 */
 function Index() {
+  
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/login");
+  }, []);
+
   return (
-    <div className="container">
-      <div className="box1"><p className="link">123123</p></div>
-      <div className="box2"></div>
+    <div>
     </div>
   )
 }
