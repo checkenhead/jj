@@ -22,6 +22,7 @@ public class MemberService {
 		return member.isPresent() ? member.get() : null;
 	}
 
+
 	public Member getMemberByNickname(String nickname) {
 		Optional<Member> member = mr.findByNickname(nickname);
 		
@@ -30,6 +31,13 @@ public class MemberService {
 
 	public void insertMember(Member member) {
 		mr.save(member);
+	}
+
+	public Member getMemberByNick(String nickname) {
+		
+		Optional<Member> member = mr.findById(nickname);
+		
+		return member.isPresent() ? member.get() : null;
 	}
 	
 }

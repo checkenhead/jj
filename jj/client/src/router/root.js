@@ -4,6 +4,7 @@ const { createBrowserRouter } = require('react-router-dom');
 const Loading = <div><h3>Loadging...</h3></div>
 const Index = lazy(() => import('../component/index'));
 const Login = lazy(() => import('../component/members/login'));
+const Join = lazy(() => import('../component/members/join'));
 const Main = lazy(() => import('../component/main'));
 
 const root = createBrowserRouter([
@@ -14,6 +15,10 @@ const root = createBrowserRouter([
     {
         path: 'login',
         element: <Suspense fallback={Loading}><Login /></Suspense>
+    },
+    {
+        path: 'join',
+        element: <Suspense fallback={Loading}><Join /></Suspense>
     },
     {
         path: 'main',
