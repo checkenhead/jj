@@ -23,6 +23,7 @@ function Login() {
       // 로그인에 성공 했을 경우
       }else{
         alert("로그인 되었습니다.")
+        navigate('/main');
         console.log(result.data);
       }
     })

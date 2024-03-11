@@ -1,5 +1,7 @@
 .loginform {
     display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .wrap_login {
@@ -7,14 +9,12 @@
     height: 76vh;
     width: 300px;
     padding: 100px;
-    margin-right: 5vw;
     border: 2px solid black;
 }
 
 .login_field {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
 }
 
 
@@ -25,4 +25,39 @@
 
 .login_logo img {
     width: 50%;
+}
+
+
+
+/* 아래 부터 미디어 쿼리 */
+
+/* 모바일 */
+@media (max-width: 620px){
+    .wrap_login:first-child{
+        display: none;
+    }
+    .wrap_login:nth-child(2){
+        width: 250px !important;
+    }
+}
+
+/* 테블릿 */
+@media (min-width: 621px) and (max-width: 700px){
+
+}
+@media (min-width: 701px) and (max-width: 920px){
+
+}
+@media (min-width: 921px) and (max-width: 1000px){
+
+}
+
+/* 데스크탑 */
+@media (min-width: 1001px){
+
+}
+
+/* 모바일 가로모드 */
+@media (max-height: 450px){
+
 }
