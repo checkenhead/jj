@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import '../../style/members/join.css';
+
 // 다음 주소 검색
 import DaumPostcode from "react-daum-postcode";
 // 모달창
@@ -52,8 +53,6 @@ function Join() {
         },
     };
 
-
-
     const navigate = useNavigate();
 
     const onFileUpload = (e)=>{
@@ -63,7 +62,7 @@ function Join() {
         .then( (result) => {
             setFilename( result.data.filename );
             setImgSrc(`http://localhost:8070/images/${result.data.filename}`);
-            setImgStyle({display:"block", width:"200px"});
+            setImgStyle({display:"block", width:"250px"});
         })
     }
 
@@ -90,82 +89,112 @@ function Join() {
                 console.error(error);
         })
     }
+
     
     return (
-        <div>
-            <div className='field'>
-                <label>E-mail</label>
-                <input type="text" value={email} onChange={
-                    (e)=>{ setEmail( e.currentTarget.value) }
-                }/>
-            </div>
-            <div className='field'>
-                <label>password</label>
-                <input type="password" value={pwd} onChange={
-                    (e)=>{ setPwd ( e.currentTarget.value) }
-                }/>
-            </div>
-            <div className='field'>
-                <label>password check</label>
-                <input type="password" value={pwdChk} onChange={
-                    (e)=>{ setPwdChk ( e.currentTarget.value) }
-                }/>
-            </div>
-            <div className='field'>
-                <label>nickname</label>
-                <input type="text" value={nickname} onChange={
-                    (e)=>{ setNickname ( e.currentTarget.value) }
-                }/>
-            </div>
-            <div className='field'>
-                <label>intro</label>
-                <input type="text" value={intro} onChange={
-                    (e)=>{ setIntro ( e.currentTarget.value) }
-                }/>
-            </div>
+        
+        <div className='joinform'>
+            <div className='wrap_join'>
+            <div className="logo">JOIN US</div>
+                <div className='field'>
+                    <input type="text"  value={email} onChange={
+                        (e)=>{ setEmail( e.currentTarget.value) }
+                    } placeholder='EMAIL'/>
+                </div>
+                
+                <div className='field'>
+                    <input type="password" value={pwd} onChange={
+                        (e)=>{ setPwd ( e.currentTarget.value) }
+                    } placeholder='PASSWORD'/>
+                </div>
 
-            <div className='field'>
-                <input value={zipnum} readOnly placeholder="우편번호" />
-                <button onClick={toggle}>우편번호 검색</button>
-                <br />
+                <div className='field'>
+                    <input type="password" value={pwdChk} onChange={
+                        (e)=>{ setPwdChk ( e.currentTarget.value) }
+                    } placeholder='RETYPE PASSWORD'/>
+                </div>
+
+                <div className='field'>
+                    <input type="text" value={nickname} onChange={
+                        (e)=>{ setNickname ( e.currentTarget.value) }
+                    } placeholder='NICKNAME'/>
+                </div>
+
+                <div className='field'>
+                    <input type="text" value={intro} onChange={
+                        (e)=>{ setIntro ( e.currentTarget.value) }
+                    } placeholder='INTRODUCTION'/>
+                </div>
+
+                <div className='field'>
+                    <div className='zip'>
+                    <input value={zipnum} readOnly placeholder="우편번호" />
+                    <button onClick={toggle}>검색</button></div>
+                    <br />
+                    {/* 
+                        아래 새로운 div 생성
+                    <input value={address1} readOnly placeholder="도로명 주소" />
+                    <br />
+                    <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
+                        <DaumPostcode onComplete={completeHandler} height="100%" />
+                    </Modal> 
+                    */}
+                </div>
+
+                {<div className='field'>
                 <input value={address1} readOnly placeholder="도로명 주소" />
-                <br />
-                <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
-                    <DaumPostcode onComplete={completeHandler} height="100%" />
-                </Modal>
-            </div>
-            <div className='field'>
-                <label>address2</label>
-                <input type="text" value={address2} onChange={
-                    (e)=>{ setAddress2 ( e.currentTarget.value) }
-                }/>
-            </div>
-            <div className='field'>
-                <label>address3</label>
-                <input type="text" value={address3} onChange={
-                    (e)=>{ setAddress3 ( e.currentTarget.value) }
-                }/>
-            </div>
-            <div className='field'>
-                <label>Profile image</label>
-                <input type="file" onChange={
-                    (e)=>{
-                        onFileUpload(e)
-                    }
-                }/>
-            </div>
-            <div className='field'>
-                <label>Profile img preview</label>
+                    <br />
+                    <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
+                        <DaumPostcode onComplete={completeHandler} height="100%" />
+                    </Modal>
+                </div>}
+
+                <div className='field'>
+                    <input type="text" value={address2} onChange={
+                        (e)=>{ setAddress2 ( e.currentTarget.value) }
+                    }/>
+                </div>
+
+                <div className='field'>
+                    <input type="text" value={address3} onChange={
+                        (e)=>{ setAddress3 ( e.currentTarget.value) }
+                    }/>
+                </div>
+
+                <div className='field'>
+                    <button className="uploadbutton" onClick={()=>{
+                        document.getElementById("fileup").click();
+                    }}>UPLOAD IMAGE</button>
+                </div>
+
+                <div style={{display:"none"}} className='field'>
+                    <label>PROFILE IMAGE</label>
+                    <input type="file" id="fileup" onChange={
+                        (e)=>{
+                            onFileUpload(e)
+                        }}/>
+                </div>
+
+                <div className='field'>
+                    {/* 
+                        아래 새로운 div 생성
+                    <div><img src={imgSrc} style={imgStyle} /></div> 
+                    */}
+                </div>
+                <div className='field'>
                 <div><img src={imgSrc} style={imgStyle} /></div>
-            </div>
-            <div className='btn2'>
-                <button onClick={
-                    ()=>{   onSubmit();   
-                    }
-                }>회원가입</button>
-                <button onClick={
-                    ()=>{ navigate('/')}
-                }>돌아가기</button>
+                </div>
+                <div className='btns'>
+                <div className='joinbutton'>
+                    <button onClick={
+                        ()=>{   onSubmit();   
+                        }
+                    }>JOIN</button>
+                    <button onClick={
+                        ()=>{ navigate('/')}
+                    }>BACK</button>
+                    </div>
+                </div>
             </div>
         </div>
     )
