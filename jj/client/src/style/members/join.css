@@ -1,0 +1,156 @@
+body{
+    width: calc(100vw - 20px);
+    margin: 0 auto;
+    box-sizing: border-box;
+    background-color: #EEEEEE;
+    display: flex;
+    justify-content: center;
+}
+
+.joinform {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.wrap_join{
+    display: flex;
+    padding: 100px;
+    background-color: white;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 0 0 20px #AAAAAA;
+    opacity: 0.97;
+    border: 1px solid #DDDDDD;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.updateform {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    height: 99vh;
+    
+}
+
+.wrap_update{
+    display: flex;
+    width: 500px;
+    padding: 80px;
+    background-color: white;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 0 0 20px #AAAAAA;
+    opacity: 0.97;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.editprofile{
+    
+    margin-bottom: 30%;
+} 
+
+.joinform .field, .updateform .field{
+    width:100%; 
+    display: flex;
+    margin:5px 0;
+    font-weight: bold;
+    margin-right:5px;
+    align-items: center;
+    /* border: 1px solid black; */
+}
+
+
+
+.joinform .field input, .updateform .field input{
+    flex:3;
+    height: 20px;
+    margin-right:5px;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.updateform .field input::placeholder{
+    color: rgb(165, 156, 156);
+}
+
+.joinform .field input::placeholder{
+    color: rgb(165, 156, 156);
+}
+
+.joinform .field label, .updateform .field label{
+    flex: 1.5;
+}
+
+.joinform .field button, .updateform .field button{
+    border: 1px solid transparent;
+    background-color: #DDDDDD;
+    cursor: pointer;
+    margin-right:1px;
+    
+}
+
+.joinform button, .updateform button{
+    border: 1px solid transparent;
+    background-color: #DDDDDD;
+    cursor: pointer;
+    margin-right:5px;
+    border-radius: 5px;
+    color: rgb(105, 96, 96);
+    height: 30px;
+}
+
+.joinform .uploadbutton, .updateform .uploadbutton{
+    width: 100%;
+    height: 30px;
+}
+
+.joinform .field .zip, .updateform .field .zip{
+    flex: 3;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    /* justify-content: flex-start; */
+}
+
+/* .joinform .field .zip input{
+    flex: 1;
+    box-sizing: border-box;
+    height: 30px;
+    margin-right:5px;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+    padding: 5px;
+} */
+
+.joinform .field .zip button, .updateform .field .zip button{
+   height: 30px;
+   width: 100%;
+}
+
+
+.joinbutton{
+   margin-left: 65px;
+   margin-top: 30px;
+}
+
+.updatebutton{
+    margin-left: 35%;
+    margin-top: 30px;
+ }
+
+.joinform .logo, .updateform .logo{
+    font-size: 1.5rem;
+    color: rgb(105, 96, 96);
+    font-weight: bold;    
+}
+
+.joinform button:hover, .updateform button:hover{
+    transform: scale(0.95);
+}
+
+

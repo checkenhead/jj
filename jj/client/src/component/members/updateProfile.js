@@ -1,6 +1,9 @@
 import React, {useState} from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import '../../style/members/join.css';
+import Header from '../common/header';
+import Sub from '../common/sub';
 //import { useSelector} from 'react-redux';
 
 // 다음 주소 검색
@@ -76,7 +79,7 @@ function UpdateProfile() {
         .then( (result) => {
             setFilename( result.data.filename );
             setImgSrc(`http://localhost:8070/images/${result.data.filename}`);
-            setImgStyle({display:"block", width:"200px"});
+            setImgStyle({display:"block", width:"330px"});
         })
     }
 
@@ -102,82 +105,122 @@ function UpdateProfile() {
         })
     }
 
-    return (
-        <div className='loginform'>
-            <div className="logo" style={{fontSize:"2.0rem"}}>Member Update</div>
-            <div className='field'>
-                <label>E-mail</label>
-                <input type="text" value={email} onChange={
-                    (e)=>{setEmail(e.currentTarget.value)}
-                } />
-            </div>
-            <div className='field'>
-                <label>Password</label>
-                <input type="password" value={pwd} onChange={
-                    (e)=>{ setPwd( e.currentTarget.value) }
-                }/>
-            </div>
-            <div className='field'>
-                <label>Retype pw</label>
-                <input type="password" value={pwdChk} onChange={
-                    (e)=>{ setPwdChk( e.currentTarget.value) }
-                }/>
-            </div>
-            <div className='field'>
-                <label>Nickname</label>
-                <input type="text" value={nickname} onChange={
-                    (e)=>{ setNickname( e.currentTarget.value) }
-                }/>
-            </div>
-            <div className='field'>
-                <label>Intro</label>
-                <input type="text" value={intro} onChange={
-                    (e)=>{ setIntro( e.currentTarget.value) }
-                }/>
-            </div>
-            <div className='field'>
-                <input value={zipnum} readOnly placeholder="우편번호" />
-                <button onClick={toggle}>우편번호 검색</button>
-                <br />
+    return ( 
+        <div className="wrap_main">
+        <header><Header/></header>
+        <main>
+        <div className='updateform'>
+            <div className='wrap_update'>
+            <div className='editprofile'>
+            <div className="logo">EDIT PROFILE</div>
+                <div className='field'>
+                    {/* EMAIL 부분 페이지 연결 되면 READONLY로 변경 */}
+                <input type="text"  value={email} onChange={
+                        (e)=>{ setEmail( e.currentTarget.value) }
+                    } placeholder='EMAIL'/>
+                </div>
+                
+                <div className='field'>
+                    <input type="password" value={pwd} onChange={
+                        (e)=>{ setPwd ( e.currentTarget.value) }
+                    } placeholder='PASSWORD'/>
+                </div>
+
+                <div className='field'>
+                    <input type="password" value={pwdChk} onChange={
+                        (e)=>{ setPwdChk ( e.currentTarget.value) }
+                    } placeholder='RETYPE PASSWORD'/>
+                </div>
+
+                <div className='field'>
+                    <input type="text" value={nickname} onChange={
+                        (e)=>{ setNickname ( e.currentTarget.value) }
+                    } placeholder='NICKNAME'/>
+                </div>
+
+                <div className='field'>
+                    <input type="text" value={intro} onChange={
+                        (e)=>{ setIntro ( e.currentTarget.value) }
+                    } placeholder='INTRODUCTION'/>
+                </div>
+
+                <div className='field'>
+                    <div className='zip'>
+                    <input value={zipnum} readOnly placeholder="우편번호" />
+                    <button onClick={toggle}>검색</button></div>
+                    <br />
+                    {/* 
+                        아래 새로운 div 생성
+                    <input value={address1} readOnly placeholder="도로명 주소" />
+                    <br />
+                    <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
+                        <DaumPostcode onComplete={completeHandler} height="100%" />
+                    </Modal> 
+                    */}
+                </div>
+
+                {<div className='field'>
                 <input value={address1} readOnly placeholder="도로명 주소" />
-                <br />
-                <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
-                    <DaumPostcode onComplete={completeHandler} height="100%" />
-                </Modal>
-            </div>
-            <div className='field'>
-                <label>address2</label>
-                <input type="text" value={address2} onChange={
-                    (e)=>{ setAddress2 ( e.currentTarget.value) }
-                }/>
-            </div>
-            <div className='field'>
-                <label>address3</label>
-                <input type="text" value={address3} onChange={
-                    (e)=>{ setAddress3 ( e.currentTarget.value) }
-                }/>
-            </div>
-            <div className='field'>
-                <label>Profile image</label>
-                <input type="file" onChange={
-                    (e)=>{
-                        onFileUpload(e)
-                    }
-                }/>
-            </div>
-            <div className='field'>
-                <label>Profile img preview</label>
+                    <br />
+                    <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
+                        <DaumPostcode onComplete={completeHandler} height="100%" />
+                    </Modal>
+                </div>}
+
+                <div className='field'>
+                    <input type="text" value={address2} onChange={
+                        (e)=>{ setAddress2 ( e.currentTarget.value) }
+                    }/>
+                </div>
+
+                <div className='field'>
+                    <input type="text" value={address3} onChange={
+                        (e)=>{ setAddress3 ( e.currentTarget.value) }
+                    }/>
+                </div>
+
+                <div className='field'>
+                    <button className="uploadbutton" onClick={()=>{
+                        document.getElementById("fileup").click();
+                    }}>UPLOAD IMAGE</button>
+                </div>
+
+                <div style={{display:"none"}} className='field'>
+                    <label>PROFILE IMAGE</label>
+                    <input type="file" id="fileup" onChange={
+                        (e)=>{
+                            onFileUpload(e)
+                        }}/>
+                </div>
+
+                <div className='field'>
+                    {/* 
+                        아래 새로운 div 생성
+                    <div><img src={imgSrc} style={imgStyle} /></div> 
+                    */}
+                </div>
+                <div className='field'>
                 <div><img src={imgSrc} style={imgStyle} /></div>
-            </div>
-            <div className='btns'>
-                <button onClick={
-                    ()=>{   onSubmit();   }
-                }>UPDATE</button>
-                <button onClick={
-                    ()=>{ navigate('/')}
-                }>BACK</button>
+                </div>
+                <div className='btns'>
+                <div className='updatebutton'>
+                    <button onClick={
+                        ()=>{   onSubmit();   
+                        }
+                    }>SAVE</button>
+                    <button onClick={
+                        ()=>{ navigate('/myPage')}
+                    }>BACK</button>
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
+        </main>
+        <aside id="aside"><Sub/></aside>
+    </div>
+    
+        
     )
 }
 
