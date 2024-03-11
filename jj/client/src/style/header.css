@@ -1,57 +1,57 @@
 .wrap_header{
+    position: sticky;
+    top: 5px;
     width: 100%;
     height: calc(100vh - 10px);
+    padding: 5px;
+    border: 1px solid #DDDDDD;
+    background-color: white;
+    /* box-shadow: 0 0 20px #DDDDDD; */
+    border-radius: 10px;
     box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
-
-    margin-top: 5px;
-    padding: 5px;
-    border: 1px solid #DDDDDD;
-    background-color: white;
-    box-shadow: 0 0 20px #DDDDDD;
-    border-radius: 10px;
-    box-sizing: border-box;
+}
+.wrap_header .link{
+    transition: all 0.1s;
+}
+.wrap_header .link:hover{
+    transform: scale(0.95);
+    cursor: pointer;
 }
 .wrap_header .logo{
     width: 100%;
-    
     padding: 5px;
-    /* border: 1px solid black; */
     box-sizing: border-box;
 }
 .wrap_header .logo img{
     width: 50px;
 }
-.wrap_header nav{
+.wrap_header .side_menu{
     width: 100%;
     height: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    padding: 5px;
-    /* border: 1px solid black; */
-    box-sizing: border-box;
 }
-.wrap_header nav .row{
+.wrap_header .side_menu .row{
     width: 100%;
+    padding: 5px;
 
     display: flex;
     align-items: center;
-
-    padding: 5px;
-    /* border: 1px solid black; */
-    box-sizing: border-box;
 }
-.wrap_header nav .row a{
+.wrap_header .side_menu .row a{
     text-decoration: none;
 
     display: flex;
     align-items: center;
 }
-.wrap_header nav .row button{
+.wrap_header .side_menu .row button{
     width: 150px;
     height: 50px;
     border-radius: 25px;
@@ -59,14 +59,17 @@
     display: flex;
     align-items: center;
 }
-.wrap_header nav .row .name{
+.wrap_header .side_menu .row .name{
     font-size: 1rem;
     font-weight: bold;
     color: black;
 }
-.wrap_header nav .row button{
+.wrap_header .side_menu .row button{
     border: 1px solid transparent;
     background-color: #DDDDDD;
+}
+.wrap_header .hamburger_menu{
+    display: none;
 }
 .wrap_header .icon{
     width: 35px;
@@ -76,20 +79,25 @@
 }
 
 /* 모바일 */
-@media (max-width: 620px){
+@media (max-width: 640px){
     .wrap_header{
         height: auto;
+        flex-direction: row;
+        align-items: center;
     }
     .wrap_header .logo{
         justify-content: flex-start;
     }
-    .wrap_header nav{
+    .wrap_header .side_menu{
         display: none;
+    }
+    .wrap_header .hamburger_menu{
+        display: block;
     }
 }
 
 /* 테블릿 */
-@media (min-width: 621px) and (max-width: 700px){
+@media (min-width: 641px) and (max-width: 720px){
     .wrap_header .name{
         display: none;
     }
@@ -97,35 +105,35 @@
         display: flex;
         justify-content: center;
     }
-    .wrap_header nav .row{
+    .wrap_header .side_menu .row{
         justify-content: center;
     }
-    .wrap_header nav .row a{
+    .wrap_header .side_menu .row a{
         width: 100%;
         justify-content: center;
     }
-    .wrap_header nav .row button{
+    .wrap_header .side_menu .row button{
         width: 50px;
     }
 }
-@media (min-width: 701px) and (max-width: 920px){
+@media (min-width: 721px) and (max-width: 950px){
     .wrap_header .logo{
         display: flex;
         justify-content: flex-start;
     }
-    .wrap_header nav .row{
+    .wrap_header .side_menu .row{
         justify-content: flex-start;
     }
-    .wrap_header nav .row a{
+    .wrap_header .side_menu .row a{
         width: 100%;
         margin-left: 10px;
         justify-content: flex-start;
     }
-    .wrap_header nav .row button{
+    .wrap_header .side_menu .row button{
         width: 150px;
     }
 }
-@media (min-width: 921px) and (max-width: 1000px){
+@media (min-width: 951px) and (max-width: 1024px){
     .wrap_header .name{
         display: none;
     }
@@ -133,20 +141,20 @@
         display: flex;
         justify-content: center;
     }
-    .wrap_header nav .row{
+    .wrap_header .side_menu .row{
         justify-content: center;
     }
-    .wrap_header nav .row a{
+    .wrap_header .side_menu .row a{
         width: 100%;
         justify-content: center;
     }
-    .wrap_header nav .row button{
+    .wrap_header .side_menu .row button{
         width: 50px;
     }
 }
 
 /* 데스크탑 */
-@media (min-width: 1001px){
+@media (min-width: 1025px){
     .wrap_header nav .row a{
         margin-left: 10px;
     }

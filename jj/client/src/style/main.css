@@ -1,55 +1,59 @@
 body{
-    width: calc(100vw - 40px);
+    width: calc(100vw - 20px);
     margin: 0 auto;
+    box-sizing: border-box;
+    background-color: #EEEEEE;
 
     display: flex;
     justify-content: center;
-
-    /* padding: 5px; */
-    /* border: 1px solid red; */
-    /* box-sizing: border-box; */
 }
 #root{
     width: 100%;
+    box-sizing: border-box;
 
     display: flex;
     justify-content: center;
-
-    /* padding: 5px; */
-    /* border: 1px solid blue; */
-    /* box-sizing: border-box; */
 }
 .wrap_main{
+    position: relative;
     width: 100%;
+    box-sizing: border-box;
 
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 .wrap_main header{
+    position:relative;
     width: 100%;
     min-width: 100px;
     max-width: 200px;
-
-    /* border: 1px solid black; */
-    /* box-sizing: border-box; */
+    padding: 5px;
+    box-sizing: border-box;
+    transition: all 0.1s;
 }
 .wrap_main main{
     min-width: 500px;
     max-width: 500px;
-    
-    /* border: 1px solid green;
-    box-sizing: border-box; */
+    padding: 5px;
+    box-sizing: border-box;
+    transition: all 0.1s;
 }
 .wrap_main aside{
+    position: sticky;
+    top: 0;
     min-width: 300px;
     max-width: 300px;
-    /* border: 1px solid pink; */
-    /* box-sizing: border-box; */
+    height: calc(100vh - 10px);
+    overflow-y: hidden;
+    padding: 5px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    transition: all 0.1s;
 }
 
 /* 모바일 */
-@media (max-width: 620px){
+@media (max-width: 640px){
     .wrap_main{
         flex-direction: column;
     }
@@ -67,15 +71,16 @@ body{
     }
 }
 /* 테블릿 */
-@media (min-width: 621px) and (max-width: 700px){
+@media (min-width: 641px) and (max-width: 720px){
     .wrap_main header{
+        min-width: 60px;
         max-width: 100px;
     }
     .wrap_main aside{
         display: none;
     }
 }
-@media (min-width: 701px) and (max-width: 920px){
+@media (min-width: 721px) and (max-width: 950px){
     .wrap_main header{
         max-width: 200px;
     }
@@ -83,15 +88,13 @@ body{
         display: none;
     }
 }
-@media (min-width: 921px) and (max-width: 1000px){
+@media (min-width: 951px) and (max-width: 1024px){
     .wrap_main header{
+        min-width: 60px;
         max-width: 100px;
     }
-    /* .wrap_main aside{
-        display: none;
-    } */
 }
 /* 데스크탑 */
-@media (min-width: 1001px){
+@media (min-width: 1025px){
     
 }
