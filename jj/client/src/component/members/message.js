@@ -2,6 +2,8 @@ import React from 'react'
 import Header from '../common/header';
 import Sub from '../common/sub';
 import '../../style/members/message.css';
+import { Link, useNavigate } from 'react-router-dom'
+import ImgFriend from '../../images/crayon.jpg';
 
 function message() {
   return (
@@ -9,29 +11,68 @@ function message() {
     <header><Header/></header>
     <main>
 
-        <div className='messagebox'>
+      <div className='wrap_message'>
 
-          <div className='friend'>
-              
+        <div className='allmsg'>
+          <div className='msg'>
+            <div className='msg received'>ABCDEABC</div>
+          </div>
+          <div className='msg'>
+            <div className='msg sent'>ABCDEABCDEABCDEABCDEABCDEABCDE</div>
+          </div>
+          <div className='msg'>
+            <div className='msg sent'>ABCDEABCDEABCDEABCDEABCDEABCDE</div>
           </div>
 
-          <div className='message'>
-              <div className='row received'>
-                  
-              </div>
-              <div className='row sent'>
-                  
-              </div>
-              <div className='inputmessage'>
-              <input type='text' />
-              <button>SEND</button>
-              </div>
-              
+          {/* <div className='msg'>
+            <div className='msg received'>ABCDEABC</div>
+          </div>
+          <div className='msg'>
+            <div className='msg sent'>ABCDEABCDEABCDEABCDEABCDEABCDE</div>
+          </div>
+          <div className='msg'>
+            <div className='msg sent'>ABCDEABCDEABCDEABCDEABCDEABCDE</div>
+          </div><div className='msg'>
+            <div className='msg received'>ABCDEABC</div>
+          </div>
+          <div className='msg'>
+            <div className='msg sent'>ABCDEABCDEABCDEABCDEABCDEABCDE</div>
+          </div>
+          <div className='msg'>
+            <div className='msg sent'>ABCDEABCDEABCDEABCDEABCDEABCDE</div>
+          </div><div className='msg'>
+            <div className='msg received'>ABCDEABC</div>
+          </div>
+          <div className='msg'>
+            <div className='msg sent'>ABCDEABCDEABCDEABCDEABCDEABCDE</div>
+          </div>
+          <div className='msg'>
+            <div className='msg sent'>ABCDEABCDEABCDEABCDEABCDEABCDE</div>
+          </div><div className='msg'>
+            <div className='msg received'>ABCDEABC</div>
+          </div>
+          <div className='msg'>
+            <div className='msg sent'>ABCDEABCDEABCDEABCDEABCDEABCDE</div>
+          </div>
+          <div className='msg'>
+            <div className='msg sent'>ABCDEABCDEABCDEABCDEABCDEABCDE</div>
+          </div> */}
 
+          <div className='msgbtn'>
+          <input type='text' className='inputmsg' />
+          <button>SEND</button>
+        </div>
           </div>
-          </div>
+
+
+
+
+       
+
+      </div>
 
     </main>
+    
     <aside id="aside"><Sub/></aside>
 </div>
   )
