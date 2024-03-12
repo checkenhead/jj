@@ -16,6 +16,10 @@ function Post() {
     const [filters, setFilters] = useState([]);
     const [oldFilter, setOldFilter] = useState([]);
 
+    const onPost = () => {
+        axios.post('/api/feeds/post', )
+    }
+
     const onFileup = (e) => {
         const formData = new FormData();
         formData.append("image", e.target.files[0]);
@@ -46,7 +50,7 @@ function Post() {
     }
 
     return (
-        <div className="instant_post">
+        <div className="post">
             <div className="content">
                 <textarea placeholder="What is happening?!"></textarea>
             </div>
@@ -120,7 +124,11 @@ function Post() {
                     document.getElementById("upload").click();
                 }}><img src={ImgPic} className="icon" /></button>
 
-                <button className="link btn_post"><img src={ImgPost} className="icon" /></button>
+                <button className="link btn_post" onClick={() => {
+                    onPost();
+                }}>
+                    <img src={ImgPost} className="icon" />
+                </button>
             </div>
             <div style={{ display: "none" }}>
                 <input type="file" id="upload" onChange={(e) => {
