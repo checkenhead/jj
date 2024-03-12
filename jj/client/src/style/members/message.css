@@ -16,15 +16,18 @@
 }
 
 .messagebox .friend{
+    display: flex;
     border-radius: 10px;
     width: 30%;
-    border: 1px solid #8d8a8a;
+    /* border: 1px solid #8d8a8a; */
 }
 
 .messagebox .message{
+    display: flex;
     width: 70%;
-    border: 1px solid #8d8a8a;
+    /* border: 1px solid #8d8a8a; */
     border-radius: 10px;
+    flex-direction: column;
 }
 
 .messagebox .message .received{
@@ -44,4 +47,14 @@
     border: 1px solid #8d8a8a;
     border-radius: 5px;
 }
+
+hr{
+    margin-top: 30px;
+    height: 95%;
+    
+}
+
+
+
+
 

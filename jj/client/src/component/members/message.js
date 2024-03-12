@@ -10,11 +10,11 @@ function message() {
     <main>
 
         <div className='messagebox'>
-
+        
           <div className='friend'>
               
           </div>
-
+          <hr />
           <div className='message'>
               <div className='row received'>
                   
@@ -22,9 +22,15 @@ function message() {
               <div className='row sent'>
                   
               </div>
+              <div className='row sent'>
+                  
+              </div>
+              <div className='row received'>
+                  
+              </div>
               <div className='inputmessage'>
               <input type='text' />
-              <button>SEND</button>
+              <button id="sendbtn">SEND</button>
               </div>
               
 
