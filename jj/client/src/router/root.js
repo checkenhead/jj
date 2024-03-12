@@ -8,6 +8,7 @@ const Join = lazy(() => import('../component/members/join'));
 const UpdateProfile = lazy(() => import('../component/members/updateProfile'));
 const Message = lazy(() => import('../component/members/message'));
 const Main = lazy(() => import('../component/main'));
+const Test = lazy(() => import('../component/test'));
 
 const root = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ const root = createBrowserRouter([
     {
         path: 'main',
         element: <Suspense fallback={Loading}><Main /></Suspense>
+    },
+    {
+        path: 'test',
+        element: <Suspense fallback={Loading}><Test /></Suspense>
     },
 ]);
 
