@@ -1,5 +1,7 @@
 .loginform {
     display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .wrap_login {
@@ -7,14 +9,12 @@
     height: 76vh;
     width: 300px;
     padding: 100px;
-    margin-right: 5vw;
     border: 2px solid black;
 }
 
 .login_field {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
 }
 
 
