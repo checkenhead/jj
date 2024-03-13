@@ -24,7 +24,6 @@ function Post() {
     const [onoffCheck, setOnoffCheck] = useState(Boolean);
 
 
-
     const onPost = () => {
         axios.post('/api/feeds/post', { writer: loginUser.nickname, content, filenames: images, styles: filters })
             .then((result) => {
@@ -86,24 +85,27 @@ function Post() {
     return (
         <div className="post">
             <div className="content">
-                <div className='emoji' style={emojiStyle}>
-                    <EmojiPicker
-                        height={'350px'}
-                        width={'100%'}
-                        autoFocusSearch={false}
-                        onEmojiClick={(e) => {
-                            console.log(e)
-                            setContent(content + e.emoji)
-                        }}
-                    />
-                </div>
                 <div contentEditable
                 suppressContentEditableWarning 
                 placeholder="What is happening?!"
                 className="input_content"
+                id="target"
                 textContent={content} onInput={(e) => {
                     setContent(e.currentTarget.textContent);
                 }}></div>
+                <div className='emoji' style={emojiStyle}>
+                    <EmojiPicker
+                        height={'350px'}
+                        width={'100%'}
+                        emojiStyle={'twitter'}
+                        autoFocusSearch={false}
+                        onEmojiClick={(e) => {
+                            document.getElementById("target").textContent += e.emoji;
+                            // console.log(content)
+                            // setContent(e.emoji)
+                        }}
+                    />
+                </div>
 
 
             </div>
