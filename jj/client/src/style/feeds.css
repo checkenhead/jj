@@ -235,21 +235,20 @@
     
     display: flex;
 }
-.feed .feed_img{
+/* .feed .feed_img{
+    position: relative;
     width: 100%;
-    overflow: hidden;
 
     display: grid;
     grid-template-columns: 1fr;
-}
-.feed .feed_img img{
+} */
+.feed .feed_img{
     position: relative;
     width: 100%;
-    height: 100%;
-    /* left: 100px; */
     object-fit:cover;
     aspect-ratio: 1;
-}
+    display: inline-block;
+} 
 .feed .feed_content{
     width: 100%;
     height: 40px;
@@ -271,6 +270,11 @@
     min-height: 30px;
     padding: 5px 0;
     box-sizing: border-box;
+}
+.emoji {
+    display: flex;
+    width: 100%;
+    border: 1px solid black;
 }
 
 /* 모바일 */

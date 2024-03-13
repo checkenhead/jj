@@ -1,63 +1,289 @@
+.login {
+    display: flex;
+    width: 100%;
+    height: 100%
+}
+
 .loginform {
     display: flex;
-    justify-content: space-between;
     width: 100%;
+    margin: 0 50px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.grid_title {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.login_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    overflow: hidden;
+    gap: 30px;
+    padding: 60px;
+    transition: 1s all;
+}
+
+.login_grid img {
+    width: 100%;
+    height: 100%;
+    transition: 1s all;
+}
+
+.login_grid img:hover {
+    transition: 0s all;
+}
+
+.item{
+    transition: transform 0.8s;
+}
+
+.item img{ 
+    box-shadow: 20px 20px 20px #AAAAAA;
 }
 
 .wrap_login {
     display: flex;
-    height: 76vh;
-    width: 300px;
-    padding: 100px;
-    border: 2px solid black;
+    height: 900px;
+    margin: 25px;
+    border: 1px solid #DDDDDD;
+    background-color: white;
+    /* box-shadow: 0 0 20px #DDDDDD; */
+    border-radius: 10px;
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .login_field {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 
 .login_logo {
-    display: flex;
-    width: 100%;
+    text-align: center;
+}
+
+.login_logo label {
+    font-size: 17px;
+    font-weight: bold;
 }
 
 .login_logo img {
     width: 50%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
+.input_container {
+    display: flex;
+    width: 100%;
+    justify-items: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.field {
+    flex: 1;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+    margin: 5px 0;
+    margin-top: 30px;
+    font-weight: bold;
+    margin-right: 5px;
+    align-items: center;
+    /* border: 1px solid black; */
+}
+
+.login_input {
+    display: flex;
+    width: 100%;
+    padding: 70px;
+    background-color: white;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 0 0 10px #AAAAAA;
+    opacity: 0.97;
+    border: 1px solid #DDDDDD;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.login_input .field input {
+    font-size: 15px;
+    color: #222222;
+    width: 100%;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    padding-bottom: 10px;
+    text-align: center;
+    background: none;
+    z-index: 5;
+}
+
+.field input::placeholder {
+    color: #aaaaaa;
+}
+
+.field input:focus {
+    outline: none;
+}
+
+.login_title {
+    text-align: center;
+    margin-left: 0 auto;
+    margin-right: 0 auto;
+    margin-bottom: 50px;
+}
+
+.login_title label {
+    font-size: 30px;
+    font-weight: bold;
+    color: #222222;
+}
+
+.field label {
+    position: relative;
+    color: #aaa;
+    font-size: 17px;
+    transition: all .2s;
+    top: -25px;
+}
+
+input:focus~label,
+input:valid~label {
+    font-size: 16px;
+    transform: translateY(-250%);
+    color: #666;
+    font-weight: bold;
+}
+
+.button {
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid #1A1A1A;
+    border-radius: 15px;
+    box-sizing: border-box;
+    color: #3B3B3B;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    margin-top: 10px;
+    min-height: 60px;
+    min-width: 100px;
+    outline: none;
+    padding: 16px 24px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 100%;
+    will-change: transform;
+}
+
+.button:disabled {
+    pointer-events: none;
+}
+
+.button:hover {
+    color: #fff;
+    background-color: #727272;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+}
+
+.button:active {
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+.loginfooter {
+    display: flex;
+    height: 60px;
+    margin: 25px;
+    border: 1px solid #DDDDDD;
+    background-color: white;
+    /* box-shadow: 0 0 20px #DDDDDD; */
+    border-radius: 10px;
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 /* 아래 부터 미디어 쿼리 */
 
 /* 모바일 */
-@media (max-width: 620px){
-    .wrap_login:first-child{
+@media (max-width: 621px) {
+    .login {
+        width: 100%;
+        margin: 0 auto;
+    }
+    .loginform {
+        width: 100%;
+        margin: 0 auto;
+    }
+    .login_logo {
         display: none;
     }
-    .wrap_login:nth-child(2){
-        width: 250px !important;
+    .login_input {
+        padding: 30px;
+        width: 93vw;
+    }
+    .wrap_login {
+        margin: 0 auto;
+        margin-bottom: 10px;
+    }
+    .login_grid {
+        margin-bottom: 10px;
+        padding: 0;
+        text-align: center;
+    }
+    .login_grid img{
+        width: 80%;
     }
 }
 
 /* 테블릿 */
-@media (min-width: 621px) and (max-width: 700px){
-
+@media (min-width: 621px) and (max-width: 700px) {
+    .login_logo {
+        display: none;
+    }
 }
-@media (min-width: 701px) and (max-width: 920px){
 
-}
-@media (min-width: 921px) and (max-width: 1000px){
+@media (min-width: 701px) and (max-width: 920px) {
+    .login {
+        width: 100%;
+        margin: 0 auto;
+    }
 
+    .login_logo {
+        display: none;
+    }
 }
+
+@media (min-width: 921px) and (max-width: 1000px) {}
 
 /* 데스크탑 */
-@media (min-width: 1001px){
+@media (min-width: 1025px) {
 
 }
 
 /* 모바일 가로모드 */
-@media (max-height: 450px){
-
+@media (max-height: 450px) {
 }

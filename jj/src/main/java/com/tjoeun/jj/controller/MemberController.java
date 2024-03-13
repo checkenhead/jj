@@ -118,12 +118,13 @@ public class MemberController {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
 		Member CheckNickname = ms.getMemberByNickname(member.getNickname());
-		
 		//닉네임이 중복된 경우
 		if(CheckNickname != null) {
 			result.put("message", "no");
 		}else {
 		//정상 회원정보수정완료
+			Member CheckEmail = ms.getMemberByEmail(member.getEmail());
+			member.setPwd(CheckEmail.getPwd());
 			ms.insertMember(member);
 			result.put("message", "ok");
 		}

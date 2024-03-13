@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import '../../style/members/join.css';
 import Header from '../common/header';
 import Sub from '../common/sub';
-//import { useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // 다음 주소 검색
 import DaumPostcode from "react-daum-postcode";
@@ -12,12 +12,9 @@ import DaumPostcode from "react-daum-postcode";
 import Modal from "react-modal";
 
 function UpdateProfile() {
-    const [email, setEmail] = useState('');
-    const [pwd, setPwd] = useState('');
-    const [pwdChk, setPwdChk ] = useState('');
     const [nickname, setNickname] = useState('');
     const [intro, setIntro] = useState('');
-
+    const [email, setEmail] = useState('');
     const [imgSrc, setImgSrc] = useState('');
     const [imgStyle, setImgStyle] = useState({display:"none"});
     const [filename, setFilename] = useState('');
@@ -28,11 +25,11 @@ function UpdateProfile() {
     const [address3, setAddress3] = useState('');
     
     const navigate = useNavigate();
-    //const loginUser = useSelector( state=>state.user );
+    const loginUser = useSelector( state=>state.user );
 
-   /* 
+   
 
-   추후 메인페이지 완성시 추가
+   //추후 메인페이지 완성시 추가
 
     useEffect(()=>{
         if(!loginUser){
@@ -41,7 +38,14 @@ function UpdateProfile() {
         }
     },[])
     
-    */
+    useEffect(()=>{
+        setEmail( loginUser.email );
+        setNickname( loginUser.nickname );
+        setZipnum( loginUser.zipnum );
+        setAddress1( loginUser.address1 );
+        setAddress2( loginUser.address2 );
+        setAddress3( loginUser.address3 );
+    },[]);
 
     // 모달창 여닫이 버튼
     const [isOpen, setIsOpen] = useState(false);
@@ -84,12 +88,9 @@ function UpdateProfile() {
     }
 
     const onSubmit = ( ) => {
-        if(email===''){ return alert('이메일을 입력하세요');}
-        if(pwd===''){ return alert('비밀번호를 입력하세요');}
-        if(pwd!==pwdChk){ return alert('비밀번호 확인이 일치하지 않습니다');}
         if(nickname===''){ return alert('닉네임을 입력하세요');}
 
-        axios.post('api/members/updateProfile', {email, pwd, nickname, intro, profileimg:filename, zipnum, address1, address2 ,address3})
+        axios.post('api/members/updateProfile', {email, nickname, intro, profileimg:filename, zipnum, address1, address2 ,address3})
         .then((result)=>{
             if( result.data.message === 'no' ){
                 return alert('닉네임이 중복됩니다');
@@ -113,25 +114,6 @@ function UpdateProfile() {
             <div className='wrap_update'>
             <div className='editprofile'>
             <div className="logo">EDIT PROFILE</div>
-                <div className='field'>
-                    {/* EMAIL 부분 페이지 연결 되면 READONLY로 변경 */}
-                <input type="text"  value={email} onChange={
-                        (e)=>{ setEmail( e.currentTarget.value) }
-                    } placeholder='EMAIL'/>
-                </div>
-                
-                <div className='field'>
-                    <input type="password" value={pwd} onChange={
-                        (e)=>{ setPwd ( e.currentTarget.value) }
-                    } placeholder='PASSWORD'/>
-                </div>
-
-                <div className='field'>
-                    <input type="password" value={pwdChk} onChange={
-                        (e)=>{ setPwdChk ( e.currentTarget.value) }
-                    } placeholder='RETYPE PASSWORD'/>
-                </div>
-
                 <div className='field'>
                     <input type="text" value={nickname} onChange={
                         (e)=>{ setNickname ( e.currentTarget.value) }
