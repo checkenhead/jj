@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import Modal from "react-modal";
-import { useSelector } from 'react-redux';
 
 import ImgPic from '../../images/pic.png';
 import ImgConfirm from '../../images/confirm.png';
@@ -11,29 +10,15 @@ import ImgCancel from '../../images/cancel.png';
 import ImgRemove from '../../images/remove.png';
 
 function Post() {
-    const loginUser = useSelector(state => state.user);
-    const [content, setContent] = useState('');
     const [images, setImages] = useState([]);
-    const [filters, setFilters] = useState([]);
-    const [oldFilter, setOldFilter] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
+    const [filters, setFilters] = useState([]);
+    const [oldFilter, setOldFilter] = useState([]);
+    const [content, setContent] = useState('');
 
     const onPost = () => {
-        axios.post('/api/feeds/post', {writer: loginUser.nickname, content, filenames: images, styles: filters})
-        .then((result) => {
-            if(result.data.message !== 'OK'){
-                alert('Feed 업로드에 실패했습니다. 관리자에게 문의하세요.');
-            }else{
-                setContent('');
-                setImages([]);
-                setFilters([]);
-                alert('Feed가 업로드 되었습니다.');
-            }
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+        axios.post('/api/feeds/post', )
     }
 
     const onFileup = (e) => {
@@ -68,9 +53,18 @@ function Post() {
     return (
         <div className="post">
             <div className="content">
-                <textarea placeholder="What is happening?!" value={content} onChange={(e) => {
+
+                {/* <textarea placeholder="What is happening?!" value={content} onChange={(e) => {
                     setContent(e.currentTarget.value);
-                }}></textarea>
+                }}></textarea> */}
+                <div contentEditable
+                suppressContentEditableWarning 
+                placeholder="What is happening?!"
+                className="input_content"
+                textContent={content} onInput={(e) => {
+                    setContent(e.currentTarget.textContent);
+                }}></div>
+
             </div>
             <div className="preview">
                 {

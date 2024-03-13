@@ -5,9 +5,12 @@ import Sub from '../common/sub';
 import axios from 'axios';
 
 import '../../style/members/message.css';
+<<<<<<< HEAD
 import { Link, useNavigate } from 'react-router-dom'
 import ImgFriend from '../../images/crayon.jpg';
 import SendMsg from '../../images/send.png';
+=======
+>>>>>>> branch 'main' of https://github.com/checkenhead/jj.git
 
 function Message() {
 
@@ -137,9 +140,37 @@ function Message() {
                             <div className="content">567567567567</div>
                         </div>
 
+<<<<<<< HEAD
                     </div>
                     <div className="input_box">
+=======
+        <div className='messagebox'>
+        
+          <div className='friend'>
+              
+          </div>
+          <hr />
+          <div className='message'>
+              <div className='row received'>
+                  
+              </div>
+              <div className='row sent'>
+                  
+              </div>
+              <div className='row sent'>
+                  
+              </div>
+              <div className='row received'>
+                  
+              </div>
+              <div className='inputmessage'>
+              <input type='text' />
+              <button id="sendbtn">SEND</button>
+              </div>
+              
+>>>>>>> branch 'main' of https://github.com/checkenhead/jj.git
 
+<<<<<<< HEAD
                         <div contentEditable
                             suppressContentEditableWarning
                             placeholder="Type here"
@@ -157,6 +188,14 @@ function Message() {
 
       {/* <aside id="aside"><Sub /></aside> */}
     </div>
+=======
+          </div>
+          </div>
+
+    </main>
+    <aside id="aside"><Sub/></aside>
+</div>
+>>>>>>> branch 'main' of https://github.com/checkenhead/jj.git
   )
 }
 

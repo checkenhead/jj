@@ -11,14 +11,42 @@
 }
 .wrap_message .wrap_friend{
     flex: 2;
+}
+
+/* body{
+    width: calc(100vw - 20px);
+    margin: 0 auto;
+    box-sizing: border-box;
+    background-color: #EEEEEE;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+} */
+
+.messagebox{
+    display: flex;
+
     width: 100%;
     padding-left: 10px;
     box-sizing: border-box;
     overflow-y: auto;
+}
 
+.messagebox .friend{
+    display: flex;
+    border-radius: 10px;
+    width: 30%;
+    /* border: 1px solid #8d8a8a; */
+}
+
+.messagebox .message{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    width: 70%;
+    /* border: 1px solid #8d8a8a; */
+    border-radius: 10px;
+    flex-direction: column;
 }
 .wrap_message .wrap_friend::-webkit-scrollbar{
     width: 10px;
@@ -33,7 +61,6 @@
     border-bottom: 1px solid #DDDDDD;
     box-sizing: border-box;
     cursor: pointer;
-
     display: flex;
     align-items: center;
 }
@@ -104,6 +131,17 @@
     display: flex;
     flex-direction: row;
 }
+
+.messagebox .message .received{
+    margin-top: 20px;
+    margin-left: 10px;
+    width: 70%;
+    height: 10%;
+    border: 1px solid #8d8a8a;
+    border-radius: 5px;
+
+}
+
 .wrap_message .wrap_chat .content_box .row_content .content{
     max-width: 80%;
     padding: 5px;
@@ -134,4 +172,13 @@
 .wrap_message .wrap_chat .input_box .input:empty::before{
     content: attr(placeholder);
     color: #BBBBBB;
+}
+
+.messagebox .message .sent{
+    margin-top: 20px;
+    margin-left: 90px;
+    width: 70%;
+    height: 10%;
+    border: 1px solid #8d8a8a;
+    border-radius: 5px;
 }

@@ -28,8 +28,8 @@ public class MemberService {
 		return member.isPresent() ? member.get() : null;
 	}
 
-	public void insertMember(Member member) {
-		mr.save(member);
+	public Member insertMember(Member member) {
+		return mr.save(member);
 	}
 
 	
