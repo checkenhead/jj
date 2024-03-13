@@ -3,7 +3,23 @@ import React, { useEffect } from 'react'
 import Footer from './footer';
 
 function Sub() {
-  
+  let currScroll = 0;
+
+  const syncScroll = () => {
+    const bodyScroll = document.documentElement.scrollTop;
+    const sub = document.getElementById("aside");
+
+    sub.scrollTop += bodyScroll - currScroll;
+    currScroll = bodyScroll;    
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', syncScroll);
+
+    return () => {
+      window.removeEventListener('scroll', syncScroll);
+    }
+  }, []);
 
   return (
     <div className="wrap_sub" id="wrap_sub">

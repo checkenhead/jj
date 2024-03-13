@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios'
 import ImgLogo from '../../images/logo.png';
 import ImgHome from '../../images/home.png';
@@ -13,6 +13,7 @@ import { logoutAction } from '../../store/userSlice';
 
 
 function Header() {
+  const loginUser = useSelector(state => state.user);
   const navigate = useNavigate();
   const dispatch =useDispatch();
   const onLogout = ()=>{
@@ -40,8 +41,8 @@ function Header() {
           </Link>
         </div>
         <div className="row">
-          <Link to="" className="link">
-            <img src={ImgUser} className="icon" /><span className="name">My page</span>
+          <Link to={`/member/${loginUser.nickname}`} className="link">
+            <img src={loginUser.profileimg ? `http://localhost:8070/images/${loginUser.profileimg}` : ImgUser} className="icon" /><span className="name">My page</span>
           </Link>
         </div>
         <div className="row" >

@@ -18,10 +18,12 @@ function Post() {
     const [images, setImages] = useState([]);
     const [filters, setFilters] = useState([]);
     const [oldFilter, setOldFilter] = useState([]);
+
     const [isOpen, setIsOpen] = useState(false);
     const [emojiStyle, setEmojiStyle] = useState({ display: 'none' });
     const [onoffCheck, setOnoffCheck] = useState(Boolean);
-    const [selectedIndex, setSelectedIndex] = useState(-1);
+
+
 
     const onPost = () => {
         axios.post('/api/feeds/post', { writer: loginUser.nickname, content, filenames: images, styles: filters })
@@ -82,9 +84,6 @@ function Post() {
     return (
         <div className="post">
             <div className="content">
-                <textarea placeholder="What is happening?!" value={content} onChange={(e) => {
-                    setContent(e.currentTarget.value);
-                }}></textarea>
                 <div className='emoji' style={emojiStyle}>
                     <EmojiPicker
                         height={'350px'}
@@ -96,6 +95,15 @@ function Post() {
                         }}
                     />
                 </div>
+                <div contentEditable
+                suppressContentEditableWarning 
+                placeholder="What is happening?!"
+                className="input_content"
+                textContent={content} onInput={(e) => {
+                    setContent(e.currentTarget.textContent);
+                }}></div>
+
+
             </div>
             <div className="preview">
                 {
