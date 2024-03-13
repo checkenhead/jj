@@ -22,7 +22,7 @@ public class FeedController {
 	FeedService fs;
 	
 	@PostMapping("/post")
-	public HashMap<String, Object> post(@RequestBody PostDto post){
+	public HashMap<String, Object> post(@RequestBody PostDto post){ 
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
 		result.put("message", fs.insertFeed(post) ? "OK" : "Error");
