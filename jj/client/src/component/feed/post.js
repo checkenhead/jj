@@ -68,9 +68,16 @@ function Post() {
     return (
         <div className="post">
             <div className="content">
-                <textarea placeholder="What is happening?!" value={content} onChange={(e) => {
+                {/* <textarea placeholder="What is happening?!" value={content} onChange={(e) => {
                     setContent(e.currentTarget.value);
-                }}></textarea>
+                }}></textarea> */}
+                <div contentEditable
+                suppressContentEditableWarning 
+                placeholder="What is happening?!"
+                className="input_content"
+                textContent={content} onInput={(e) => {
+                    setContent(e.currentTarget.textContent);
+                }}></div>
             </div>
             <div className="preview">
                 {
