@@ -18,7 +18,7 @@ function Post() {
     const [images, setImages] = useState([]);
     const [filters, setFilters] = useState([]);
     const [oldFilter, setOldFilter] = useState([]);
-
+    const [selectedIndex, setSelectedIndex] = useState(-1);
     const [isOpen, setIsOpen] = useState(false);
     const [emojiStyle, setEmojiStyle] = useState({ display: 'none' });
     const [onoffCheck, setOnoffCheck] = useState(Boolean);

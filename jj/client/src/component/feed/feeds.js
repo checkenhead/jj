@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-<<<<<<< HEAD
 
-=======
->>>>>>> branch 'main' of https://github.com/checkenhead/jj
 import Post from './post';
-<<<<<<< HEAD
 import Feed from './feed';
 
-import Feed from './feed';
 
 
 
