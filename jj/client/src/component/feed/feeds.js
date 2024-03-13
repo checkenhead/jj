@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Post from './post';
 
-import Img from '../../images/Koala.jpg';
+import Feed from './feed';
 
 
 function Feeds() {
@@ -45,7 +45,7 @@ function Feeds() {
                 ) : <div className="empty_feed_message">Feed가 없습니다.</div>
                 }
 
-                <div className="feed">
+                {/* <div className="feed">
                     <div className="feed_head">
                         <div>profileimg</div>
                         <div>nickname</div>
@@ -127,7 +127,7 @@ function Feeds() {
                     <div className="feed_img"><img src={Img} /></div>
                     <div className="feed_icon"></div>
                     <div className="feed_reply"></div>
-                </div>
+                </div> */}
 
             </div>
         </>

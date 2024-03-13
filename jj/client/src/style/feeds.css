@@ -345,40 +345,12 @@
     color: #BBBBBB;
     font-style: oblique;
 }
-
-/* .feed .feed_img{
-    position: relative;
-=======
-.feed .feed_img{
->>>>>>> branch 'main' of https://github.com/checkenhead/jj
-    width: 100%;
-    overflow: hidden;
-
-    display: grid;
-    grid-template-columns: 1fr;
-<<<<<<< HEAD
-} */
 .feed .feed_img {
-
-}
-.feed .feed_img img{
-
     position: relative;
     width: 100%;
-
     object-fit: cover;
-
-    height: 100%;
-    /* left: 100px; */
-    object-fit:cover;
-
     aspect-ratio: 1;
-
     display: inline-block;
-}
-
-.feed .feed_content {
-
 }
 .feed .feed_content{
 

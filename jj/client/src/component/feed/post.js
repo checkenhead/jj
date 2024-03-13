@@ -15,6 +15,7 @@ function Post() {
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [filters, setFilters] = useState([]);
     const [oldFilter, setOldFilter] = useState([]);
+    const [content, setContent] = useState('');
 
     const onPost = () => {
         axios.post('/api/feeds/post', )
@@ -63,8 +64,6 @@ function Post() {
                 textContent={content} onInput={(e) => {
                     setContent(e.currentTarget.textContent);
                 }}></div>
-
-                <textarea placeholder="What is happening?!"></textarea>
 
             </div>
             <div className="preview">
