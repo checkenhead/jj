@@ -1,201 +1,43 @@
-.login{
-    display: flex;
-    width: 100%;
-    height: 100%
-}
-
-.loginheader{
-    display: flex;
-    position: fixed;
-    align-items: center;
-    text-align: center;
-    top: 0px;
-    left: 0;
-    width: calc(100% - 50px);
-    max-width: inherit;
-    margin: 0 25px;
-    flex-direction: row;
-    padding: 40px;
-    border: 1px solid #DDDDDD;
-    background-color: white;
-    /* box-shadow: 0 0 20px #DDDDDD; */
-    border-radius: 10px;
-    box-sizing: border-box;
-    z-index: 1;
-}
-
 .loginform {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: calc(100% - 50px);
-    margin: 0 25px;
-    margin-top: 9%;
-    height: 100%;
-}
-
-.login_grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    overflow:hidden;
-    gap: 30px;
-    padding: 60px;
-}
-
-.login_grid img{
+    justify-content: space-between;
     width: 100%;
-    height: 100%;
-}
-
-.item {
-    transition: 0.2s all;
 }
 
 .wrap_login {
     display: flex;
-    height: 700px;
-    width: calc(100% - 50px);
-    margin: 25px;
-    border: 1px solid #DDDDDD;
-    background-color: white;
-    /* box-shadow: 0 0 20px #DDDDDD; */
-    border-radius: 10px;
-    box-sizing: border-box;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    height: 76vh;
+    width: 300px;
+    padding: 100px;
+    border: 2px solid black;
 }
 
 .login_field {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: nowrap;
+    flex-direction: column;
 }
 
 
 .login_logo {
     display: flex;
-    flex: 1;
     width: 100%;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-end;
 }
 
 .login_logo img {
     width: 50%;
 }
 
-.input_container {
-    flex: 1;
-    display: flex;
-    width: 100%;
-    justify-items: center;
-    flex-direction: column;
-    align-items: center;
-}
 
-.field {
-    margin: 10px;
-    margin-bottom: 20px;
-}
-
-.login_input {
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.login_input input {
-    font-size: 15px;
-    color: #222222;
-    width: 100%;
-    border: none;
-    border-bottom: solid #aaaaaa 1px;
-    padding-bottom: 10px;
-    text-align: center;
-    background: none;
-}
-
-input::placeholder { color: #aaaaaa; }
-input:focus { outline: none; }
-
-  
-label {
-  color: #aaa;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 20px;
-  bottom: 8px;
-  transition: all 0.2s;
-}
-
-input:focus ~ label, input:valid ~ label {
-    font-size: 16px;
-    bottom: 40px;
-    color: #666;
-    font-weight: bold;
-}
-
-.button-28 {
-  appearance: none;
-  background-color: transparent;
-  border: 2px solid #1A1A1A;
-  border-radius: 15px;
-  box-sizing: border-box;
-  color: #3B3B3B;
-  cursor: pointer;
-  display: inline-block;
-  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-  font-size: 16px;
-  font-weight: 600;
-  line-height: normal;
-  margin-top: 10px;
-  min-height: 60px;
-  min-width: 100px;
-  outline: none;
-  padding: 16px 24px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  width: 100%;
-  will-change: transform;
-}
-
-.button-28:disabled {
-  pointer-events: none;
-}
-
-.button-28:hover {
-  color: #fff;
-  background-color: #727272;
-  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-  transform: translateY(-2px);
-}
-
-.button-28:active {
-  box-shadow: none;
-  transform: translateY(0);
-}
 
 /* 아래 부터 미디어 쿼리 */
 
 /* 모바일 */
-@media (max-width: 621px){
-    .loginform {
-
-        width: 100%;
-        margin: 0 auto;
-
+@media (max-width: 620px){
+    .wrap_login:first-child{
+        display: none;
     }
-    .login_field {
-        display: flex;
-        flex-direction: column;
+    .wrap_login:nth-child(2){
+        width: 250px !important;
     }
 }
 
@@ -211,7 +53,7 @@ input:focus ~ label, input:valid ~ label {
 }
 
 /* 데스크탑 */
-@media (min-width: 1025px){
+@media (min-width: 1001px){
 
 }
 

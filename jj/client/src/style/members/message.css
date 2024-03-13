@@ -1,4 +1,4 @@
-body{
+/* body{
     width: calc(100vw - 20px);
     margin: 0 auto;
     box-sizing: border-box;
@@ -6,67 +6,9 @@ body{
     display: flex;
     justify-content: center;
     border-radius: 10px;
-}
+} */
 
-.wrap_message{
-    display: flex;
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-    background-color: white;
-    justify-content: center;
-    flex-direction: column;
-    box-shadow: 0 0 20px #AAAAAA;
-    opacity: 0.97;
-    border-radius: 10px;
-    box-sizing: border-box;
-}
-
-
-
-.wrap_message .msg{
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    word-break:break-all;
-    border-radius: 10px;
-    padding: 10px;
-}
-
-
-.msg .received{
-    background-color: #DDDDDD;
-    justify-content: flex-start;
-}
-
-.msg .sent{
-    justify-content: flex-end;
-    border: 1px solid #DDDDDD;
-}
-
-.msgbtn{
-    position: sticky;
-    display: flex;
-    top: 500px;
-}
-
-.msgbtn input{
-    flex: 2;
-    height: 20px;
-
-}
-
-.msgbtn button{
-    
-    background-color: #DDDDDD;
-    border-radius: 10px;
-    border: none;
-}
-
-
-
-/* .messagebox{
+.messagebox{
     display: flex;
     width: 100%;
     height: 99%;
@@ -74,91 +16,43 @@ body{
 }
 
 .messagebox .friend{
-    flex: 1;
+    display: flex;
     border-radius: 10px;
-
-    
+    width: 30%;
+    /* border: 1px solid #8d8a8a; */
 }
 
 .messagebox .message{
     display: flex;
-    flex-direction: column;
-    border: 1px solid #8d8a8a;
+    width: 70%;
+    /* border: 1px solid #8d8a8a; */
     border-radius: 10px;
-    margin-top: 50px;
-    width: 100%;
+    flex-direction: column;
 }
 
-.message .box{
-    
-    display: flex;
-    flex-direction: row;
-    width: 90%;
-    border: 1px solid #DDDDDD;
-    
-    
+.messagebox .message .received{
+    margin-top: 20px;
+    margin-left: 10px;
+    width: 70%;
+    height: 10%;
+    border: 1px solid #8d8a8a;
+    border-radius: 5px;
 }
 
- 
-.message .received{
-    justify-content: flex-start;
-
+.messagebox .message .sent{
+    margin-top: 20px;
+    margin-left: 90px;
+    width: 70%;
+    height: 10%;
+    border: 1px solid #8d8a8a;
+    border-radius: 5px;
 }
-   
-
-.sent{
-   justify-content: flex-end;
-
-}  
-
-.message .box .receivedmsg{
-    
-    background-color: #DDDDDD;
-    word-break:break-all;
-}
-
-.message .box .sentmsg{
-    
-    background-color: white;
-    word-break:break-all;
-}
-
-
-
-
 
 hr{
-    height: 100%;
+    margin-top: 30px;
+    height: 95%;
+    
 }
-
-
-
-.wrap_main .friend img{
-    width: 30px;
-    border-radius: 10px;
-    padding: 10px;
-}
-
-.wrap_main .friend .link{
-    color: inherit;
-    text-decoration: none;
-}
-
-.wrap_message .friend span{
-    padding: 20px;
-}
-
-.wrap_message .inputmessage{
-    display: flex;
-    justify-content: center;
-}
-
-.wrap_message .sendbtn{
-    background-color:#DDDDDD;
-    border-radius: 10px;
-    border: none;
-    padding: 5px;
-} */
 
 
 
