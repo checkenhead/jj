@@ -7,7 +7,7 @@
     border: 1px solid #DDDDDD;
     background-color: white;
     /* box-shadow: 0 0 20px #DDDDDD; */
-    border-radius: 10px;
+    /* border-radius: 10px; */
     box-sizing: border-box;
 
     display: flex;
@@ -63,6 +63,7 @@
     font-size: 1rem;
     font-weight: bold;
     color: black;
+    margin-left: 5px;
 }
 .wrap_header .side_menu .row button{
     border: 1px solid transparent;
@@ -73,6 +74,9 @@
 }
 .wrap_header .icon{
     width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit:cover;
 }
 .wrap_header .btn_logout{
     margin-top: auto;

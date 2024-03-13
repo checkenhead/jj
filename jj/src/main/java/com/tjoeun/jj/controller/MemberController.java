@@ -48,6 +48,7 @@ public class MemberController {
 			
 		// 정상 로그인
 		}else {
+			mdto.setPwd(null);
 			result.put("message", "OK");
 			result.put("loginUser", mdto);
 			
@@ -93,6 +94,7 @@ public class MemberController {
 	
 	@Autowired
 	ServletContext context;
+	
 	@PostMapping("/fileupload")
 	public HashMap<String, Object> fileup(@RequestParam("image")  MultipartFile file){
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -113,7 +115,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("/updateProfile")
-	public HashMap<String, Object> updateProfile( @RequestBody Member member ){
+	public HashMap<String, Object> updateProfile( @RequestBody Member member, HttpServletRequest request){
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
@@ -124,10 +126,31 @@ public class MemberController {
 			result.put("message", "no");
 		}else {
 		//정상 회원정보수정완료
-			ms.insertMember(member);
+			Member mdto = ms.insertMember(member);
+			
+			mdto.setPwd(null);
+			request.getSession().setAttribute("loginUser", mdto);
 			result.put("message", "ok");
 		}
 			
+		return result;
+	}
+	
+	@PostMapping("/getmemberbynickname")
+	public HashMap<String, Object> getMemberByNickname(@RequestParam("nickname") String nickname){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		Member mdto = ms.getMemberByNickname(nickname);
+		
+		if(mdto == null) {
+			result.put("message", "user not found");
+		}else {
+			result.put("message", "OK");
+			
+			mdto.setPwd(null);
+			result.put("user", mdto);
+		}
+		
 		return result;
 	}
 

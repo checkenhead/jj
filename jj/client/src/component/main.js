@@ -1,27 +1,27 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 
 import Header from './common/header';
 import Sub from './common/sub';
 import Feeds from './feed/feeds';
 
 function Main() {
-  let currScroll = 0;
+  // let currScroll = 0;
 
-  const syncScroll = () => {
-    const bodyScroll = document.documentElement.scrollTop;
-    const sub = document.getElementById("aside");
+  // const syncScroll = () => {
+  //   const bodyScroll = document.documentElement.scrollTop;
+  //   const sub = document.getElementById("aside");
 
-    sub.scrollTop += bodyScroll - currScroll;
-    currScroll = bodyScroll;    
-  }
+  //   sub.scrollTop += bodyScroll - currScroll;
+  //   currScroll = bodyScroll;    
+  // }
 
-  useEffect(() => {
-    window.addEventListener('scroll', syncScroll);
+  // useEffect(() => {
+  //   window.addEventListener('scroll', syncScroll);
 
-    return () => {
-      window.removeEventListener('scroll', syncScroll);
-    }
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('scroll', syncScroll);
+  //   }
+  // }, []);
 
   return (
     <div className="wrap_main">
