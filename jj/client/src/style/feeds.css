@@ -535,7 +535,9 @@
 .emoji {
     display: flex;
     width: 100%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
+    box-sizing: border-box;
+    margin-top: 5px;
 }
 
 

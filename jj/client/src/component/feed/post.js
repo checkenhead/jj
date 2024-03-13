@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import Modal from "react-modal";
 import { useSelector } from 'react-redux';
@@ -80,6 +80,8 @@ function Post() {
             setEmojiStyle({ display: 'block' });
         }
     }
+
+    useEffect(() => {}, [content]);
 
     return (
         <div className="post">
