@@ -15,7 +15,20 @@ function Member() {
     const param = useParams();
     const loginUser = useSelector(state => state.user);
     const [currUser, setCurrUser] = useState({});
+    const [summarys, setSummarys] = useState([]);
+
     const navigate = useNavigate();
+
+    const getSummarys = () => {
+        axios.post('/api/feeds/getsumarrysbynickname', null, { params: { nickname: param.nickname } })
+        .then(result => {
+            setSummarys(result.data.summarys);
+            console.table(result.data.summarys);
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    }
 
     const getUser = () => {
         axios.post('/api/members/getmemberbynickname', null, { params: { nickname: param.nickname } })
@@ -33,6 +46,7 @@ function Member() {
 
     useEffect(() => {
         getUser();
+        getSummarys();
     }, []);
 
     return (
@@ -68,96 +82,13 @@ function Member() {
                     </div>
                 </div>
                 <div className="summary">
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
-                    <div>피드목록</div>
+                    {
+                        summarys.map((summary, summaryIndex) => {return (
+                            <div key={summaryIndex} className="link">
+                                <img src={`http://localhost:8070/images/${summary.filename}`}/>
+                            </div>
+                        );})
+                    }
                 </div>
 
             </main>
