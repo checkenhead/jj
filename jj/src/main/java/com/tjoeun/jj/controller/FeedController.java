@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tjoeun.jj.dto.PostDto;
+import com.tjoeun.jj.entity.Feed;
 import com.tjoeun.jj.service.FeedService;
 
 @RestController
@@ -23,9 +24,16 @@ public class FeedController {
 	@PostMapping("/post")
 	public HashMap<String, Object> post(@RequestBody PostDto post) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-
-		result.put("message", fs.insertFeed(post) ? "OK" : "Error");
-
+		
+		Feed feed = fs.insertFeed(post);
+		
+		if(feed == null) {
+			result.put("message", "Error");
+		}else {
+			result.put("message", "OK");
+			result.put("feed", feed);
+		}
+		
 		return result;
 	}
 
