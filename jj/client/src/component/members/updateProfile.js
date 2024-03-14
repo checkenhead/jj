@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import '../../style/members/join.css';
+
 import Header from '../common/header';
 import Sub from '../common/sub';
 import { useSelector } from 'react-redux';
@@ -119,6 +119,12 @@ function UpdateProfile() {
                         (e)=>{ setNickname ( e.currentTarget.value) }
                     } placeholder='NICKNAME'/>
                 </div>
+                
+                <div className='field'>
+                    <button className="uploadbutton" onClick={()=>{
+                        navigate('/CurPwdCheck')
+                    }}>Password Change</button>
+                </div>
 
                 <div className='field'>
                     <input type="text" value={intro} onChange={
@@ -191,7 +197,7 @@ function UpdateProfile() {
                         }
                     }>SAVE</button>
                     <button onClick={
-                        ()=>{ navigate('/myPage')}
+                        ()=>{ navigate(`/member/${loginUser.nickname}`)}
                     }>BACK</button>
                     </div>
                 </div>

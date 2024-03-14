@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../../store/userSlice';
 
-import '../../style/members/login.css';
+
 import ImgLogo from '../../images/logo.png';
 import testImg from '../../images/Koala.jpg'
 import woman from '../../images/woman.jpg'
@@ -176,6 +176,9 @@ function Login() {
                   } required />
                   <label>Password</label>
                 </div>
+                <div className='forgotPwd'><label onClick={ () => {
+                  navigate('/EmailCheck')
+                }}>Forgot Password</label></div>
                 <div className='btns'>
                   <button className='button'>SNS Login</button>
                   <button className='button'

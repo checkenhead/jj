@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import '../../style/members/join.css';
 
 // 다음 주소 검색
 import DaumPostcode from "react-daum-postcode";

@@ -6,6 +6,9 @@ const Index = lazy(() => import('../component/index'));
 const Login = lazy(() => import('../component/members/login'));
 const Join = lazy(() => import('../component/members/join'));
 const UpdateProfile = lazy(() => import('../component/members/updateProfile'));
+const EditPassword = lazy(() => import('../component/members/EditPassword'));
+const CurPwdCheck = lazy(() => import('../component/members/CurPwdCheck'));
+const EmailCheck = lazy(() => import('../component/members/EmailCheck'));
 const Message = lazy(() => import('../component/members/message'));
 const Main = lazy(() => import('../component/main'));
 
@@ -29,6 +32,18 @@ const root = createBrowserRouter([
     {
         path: 'updateProfile',
         element: <Suspense fallback={Loading}><UpdateProfile /></Suspense>
+    },
+    {
+        path: 'EditPassword',
+        element: <Suspense fallback={Loading}><EditPassword /></Suspense>
+    },
+    {
+        path: 'CurPwdCheck',
+        element: <Suspense fallback={Loading}><CurPwdCheck /></Suspense>
+    },
+    {
+        path: 'EmailCheck',
+        element: <Suspense fallback={Loading}><EmailCheck /></Suspense>
     },
     {
         path: 'message',
