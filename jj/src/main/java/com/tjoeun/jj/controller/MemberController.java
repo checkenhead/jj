@@ -154,7 +154,6 @@ public class MemberController {
 			mdto.setPwd(null);
 			result.put("user", mdto);
 		}
-
 		return result;
 	}
 
