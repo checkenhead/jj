@@ -59,4 +59,13 @@ public class FeedService {
 		return fir.findByFeedidOrderById(feedid);
 	}
 
+	public List<Feedimg> getSummarysByNickname(String nickname) {
+		List<Feedimg> r = fr.findSurmmarysByNickname(nickname);
+		
+		
+		System.out.println(r.get(0).getFilename());
+		
+		return r;
+	}
+
 }
