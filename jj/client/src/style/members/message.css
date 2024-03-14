@@ -5,58 +5,41 @@
     box-sizing: border-box;
     background-color: white;
     border: 1px solid #DDDDDD;
-
     display: flex;
     flex-direction: row;
+    transition: all 1s;
+}
+.wrap_message .on_mouseover{
+    overflow-y: scroll !important;
+    /* background-color: black; */
 }
 .wrap_message .wrap_friend{
     flex: 2;
-}
-
-/* body{
-    width: calc(100vw - 20px);
-    margin: 0 auto;
+    height: 100%;
+    padding-left: 10px;    
     box-sizing: border-box;
-    background-color: #EEEEEE;
-    display: flex;
-    justify-content: center;
-    border-radius: 10px;
-} */
-
-.messagebox{
-    display: flex;
-
-    width: 100%;
-    padding-left: 10px;
-    box-sizing: border-box;
-    overflow-y: auto;
-}
-
-.messagebox .friend{
-    display: flex;
-    border-radius: 10px;
-    width: 30%;
-    /* border: 1px solid #8d8a8a; */
-}
-
-.messagebox .message{
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    width: 70%;
-    /* border: 1px solid #8d8a8a; */
-    border-radius: 10px;
-    flex-direction: column;
+    transition: color 1s;
 }
+
 .wrap_message .wrap_friend::-webkit-scrollbar{
     width: 10px;
+    /* display: none; */
+}
+.wrap_message .wrap_friend::-webkit-scrollbar-track{
+    background-color: transparent;
 }
 .wrap_message .wrap_friend::-webkit-scrollbar-thumb{
-    background-color: transparent;
+    background-color: #DDDDDD;
     border-radius: 5px;
 }
+/* .wrap_message .wrap_friend:hover{
+    overflow-y: scroll;
+} */
 .wrap_message .wrap_friend .row_friend{
-    width: 100%;
+    width: calc(100% - 10px);
     margin-bottom: 5px;
     border-bottom: 1px solid #DDDDDD;
     box-sizing: border-box;
@@ -68,7 +51,6 @@
     width: 35px;
     height: 35px;
     border-radius: 50px;
-
     display: flex;
 }
 .wrap_message .friend_nickname{
@@ -80,27 +62,20 @@
 .wrap_message .wrap_chat{
     flex: 3;
     box-sizing: border-box;
-    border-left: 1px solid #DDDDDD;
-
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
 }
 .wrap_message .wrap_chat .head_chat{
-    width: 100;
     padding: 5px;
     box-sizing: border-box;
     border-bottom: 1px solid #DDDDDD;
-
     display: flex;
     align-items: center;
 }
 .wrap_message .wrap_chat .content_box{
     width: 100%;
     height: 100%;
-    padding-left: 10px;
-    box-sizing: border-box;
-    overflow-y: scroll;
-
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
@@ -108,8 +83,14 @@
     width: 10px;
 }
 .wrap_message .wrap_chat .content_box::-webkit-scrollbar-thumb{
-    background-color: transparent;
+    background-color: #DDDDDD;
     border-radius: 5px;
+}
+.wrap_message .wrap_chat .content_box:hover{
+    overflow-y: scroll;
+}
+.wrap_message .wrap_chat .content_box:hover .row_content{
+    width: 100%;
 }
 .wrap_message .wrap_chat .content_box .recieved{
     justify-content: flex-start;
@@ -124,14 +105,16 @@
     background-color: #BBBBBB;
 }
 .wrap_message .wrap_chat .content_box .row_content{
-    width: 100%;
+    /* width: 100%; */
     margin-bottom: 5px;
-
+    width: calc(100% - 10px);
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
 }
 
+/* 
+    이전 css    
 .messagebox .message .received{
     margin-top: 20px;
     margin-left: 10px;
@@ -140,7 +123,7 @@
     border: 1px solid #8d8a8a;
     border-radius: 5px;
 
-}
+} */
 
 .wrap_message .wrap_chat .content_box .row_content .content{
     max-width: 80%;
@@ -153,7 +136,6 @@
     width: 100%;
     margin: 5px 0;
     box-sizing: border-box;
-
     display: flex;
     justify-content: flex-start;
 }

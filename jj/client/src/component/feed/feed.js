@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Slider from 'react-slick';
 import axios from 'axios';
 
@@ -13,21 +13,23 @@ import ImgRemove from '../../images/remove.png';
 function Feed(props) {
     const [images, setImages] = useState([]);
     const [profileimg, setProfileimg] = useState(null);
+    const inputReply = useRef();
     const [replyContent, setReplyContent] = useState('');
 
-    const getImages = () => {
-        axios.post('/api/feeds/getfeedimgbyfeedid', null, { params: { feedid: props.feed.id } })
+    const getImages = (feedid) => {
+        if(props.feed.id){
+            axios.post('/api/feeds/getfeedimgbyfeedid', null, { params: { feedid } })
             .then(result => {
                 setImages(result.data.images);
-                console.log(result.data.images);
             })
             .catch(err => {
                 console.error(err);
             });
+        }
     }
 
     useEffect(() => {
-        getImages();
+        getImages(props.feed.id);
     }, []);
 
     const settings = {
@@ -88,11 +90,13 @@ function Feed(props) {
                 </div>
             </div>
             <div className="input_box">
-                    <div contentEditable
+                    <div ref={inputReply}
+                        contentEditable
                         suppressContentEditableWarning
                         placeholder="Reply here"
                         className="input_reply"
-                        textContent={replyContent} onInput={(e) => {
+                        onInput={(e) => {
+                            inputReply.current.textContent = e.currentTarget.textContent;
                             setReplyContent(e.currentTarget.textContent);
                         }}>
                     </div>

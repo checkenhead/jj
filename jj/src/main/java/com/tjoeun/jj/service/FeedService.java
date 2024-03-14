@@ -23,7 +23,7 @@ public class FeedService {
 	@Autowired
 	FeedImgRepository fir;
 
-	public boolean insertFeed(PostDto post) {
+	public Feed insertFeed(PostDto post) {
 		try {
 			// 1. feed table insert
 			Feed fdto = new Feed();
@@ -43,11 +43,11 @@ public class FeedService {
 				
 				fir.save(fidto);
 			}
+			System.out.println(insertedFeed.getId());
+			return insertedFeed;
 		} catch (Exception e) {
-			return false;
+			return null;
 		}
-
-		return true;
 	}
 
 	public List<Feed> getAllFeeds(PageRequest pageRequest) {
@@ -57,6 +57,10 @@ public class FeedService {
 
 	public List<Feedimg> getFeedimgByFeedid(Integer feedid) {
 		return fir.findByFeedidOrderById(feedid);
+	}
+
+	public List<Feedimg> getSummarysByNickname(String nickname) {
+		return fr.findSurmmarysByNickname(nickname);
 	}
 
 }
