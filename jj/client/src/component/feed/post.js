@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import Modal from "react-modal";
 import { useSelector } from 'react-redux';
@@ -6,14 +6,16 @@ import { useSelector } from 'react-redux';
 import EmojiPicker from 'emoji-picker-react';
 
 import ImgPic from '../../images/pic.png';
+import ImgEmoji from '../../images/emoji.png';
 import ImgConfirm from '../../images/confirm.png';
 import ImgPost from '../../images/post.png';
 import ImgFilter from '../../images/filter.png';
 import ImgCancel from '../../images/cancel.png';
 import ImgRemove from '../../images/remove.png';
 
-function Post() {
+function Post(props) {
     const loginUser = useSelector(state => state.user);
+    const inputPost = useRef();
     const [content, setContent] = useState('');
     const [images, setImages] = useState([]);
     const [filters, setFilters] = useState([]);
@@ -21,7 +23,7 @@ function Post() {
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [isOpen, setIsOpen] = useState(false);
     const [emojiStyle, setEmojiStyle] = useState({ display: 'none' });
-    const [onoffCheck, setOnoffCheck] = useState(Boolean);
+    const [onoffCheck, setOnoffCheck] = useState(false);
 
 
     const onPost = () => {
@@ -30,9 +32,13 @@ function Post() {
                 if (result.data.message !== 'OK') {
                     alert('Feed 업로드에 실패했습니다. 관리자에게 문의하세요.');
                 } else {
+                    inputPost.current.textContent = '';
+                    //document.getElementById("target").textcontent = '';
                     setContent('');
                     setImages([]);
                     setFilters([]);
+                    
+                    props.setNewFeed(() => result.data.feed);
                     alert('Feed가 업로드 되었습니다.');
                 }
             })
@@ -79,30 +85,32 @@ function Post() {
             setEmojiStyle({ display: 'block' });
         }
     }
-
-    useEffect(() => {}, [content]);
-
+    
     return (
         <div className="post">
             <div className="content">
-                <div contentEditable
+                <div ref={inputPost}
+                contentEditable
                 suppressContentEditableWarning 
                 placeholder="What is happening?!"
                 className="input_content"
-                id="target"
-                textContent={content} onInput={(e) => {
+                onInput={(e) => {
+                    inputPost.current.textContent = e.currentTarget.textContent;
                     setContent(e.currentTarget.textContent);
                 }}></div>
                 <div className='emoji' style={emojiStyle}>
                     <EmojiPicker
                         height={'350px'}
                         width={'100%'}
-                        emojiStyle={'twitter'}
+                        emojiStyle={'native'}
+                        emojiVersion={'5.0'}
+                        searchDisabled={true}
+                        previewConfig={{  showPreview: false }}
+                        searchPlaceholder='Search Emoji'
                         autoFocusSearch={false}
                         onEmojiClick={(e) => {
-                            document.getElementById("target").textContent += e.emoji;
-                            // console.log(content)
-                            // setContent(e.emoji)
+                            inputPost.current.textContent += e.emoji;
+                            setContent(content => content + e.emoji);
                         }}
                     />
                 </div>
@@ -181,13 +189,11 @@ function Post() {
 
                 <button className="link btn_emoji" onClick={() => {
                     onoffEmoji();
-                }}></button>
+                }}><img src={ImgEmoji} className="icon" /></button>
 
                 <button className="link btn_post" onClick={() => {
                     onPost();
-                }}>
-                    <img src={ImgPost} className="icon" />
-                </button>
+                }}><img src={ImgPost} className="icon" /></button>
             </div>
             <div style={{ display: "none" }}>
                 <input type="file" id="upload" onChange={(e) => {
