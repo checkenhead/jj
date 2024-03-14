@@ -23,7 +23,6 @@ function Member() {
         axios.post('/api/feeds/getsumarrysbynickname', null, { params: { nickname: param.nickname } })
         .then(result => {
             setSummarys(result.data.summarys);
-            console.table(result.data.summarys);
         })
         .catch(err => {
             console.error(err);
