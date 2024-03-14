@@ -79,9 +79,8 @@ function Post() {
             setEmojiStyle({ display: 'block' });
         }
     }
-
     useEffect(() => {}, [content]);
-
+    
     return (
         <div className="post">
             <div className="content">
@@ -97,12 +96,14 @@ function Post() {
                     <EmojiPicker
                         height={'350px'}
                         width={'100%'}
-                        emojiStyle={'twitter'}
+                        emojiStyle={'native'}
+                        emojiVersion={'5.0'}
+                        searchDisabled={true}
+                        previewConfig={{  showPreview: false }}
+                        searchPlaceholder='Search Emoji'
                         autoFocusSearch={false}
                         onEmojiClick={(e) => {
                             document.getElementById("target").textContent += e.emoji;
-                            // console.log(content)
-                            // setContent(e.emoji)
                         }}
                     />
                 </div>
