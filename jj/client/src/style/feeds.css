@@ -59,6 +59,7 @@
     padding: 10px 0;
 
     display: flex;
+    align-items: center;
 }
 
 .post .btn button {
@@ -78,9 +79,36 @@
 .post .btn .btn_post {
     margin-left: auto;
 }
+.post .outer{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    padding: 5px;
+    margin: 0 5px;
+    box-sizing: border-box;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* background: conic-gradient(blue 277deg, white 0deg); */
+}
+.post .outer .inner{
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: white;
+    font-size: 0.5rem;
+    color: #BBBBBB;
+}
 .post .preview {
     width: 100%;
+    margin-top: 5px;
 
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -114,7 +142,6 @@
 .post .preview .thumbnail_box:hover .overlay {
     display: block;
 }
-
 .filter {
     width: 500px;
     /* height: 100%; */

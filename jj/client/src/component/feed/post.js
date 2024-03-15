@@ -14,9 +14,12 @@ import ImgCancel from '../../images/cancel.png';
 import ImgRemove from '../../images/remove.png';
 
 function Post(props) {
+    const MAX_CONTENT_LENGTH = 200;
     const loginUser = useSelector(state => state.user);
     const inputPost = useRef();
+    const inputFile = useRef();
     const [content, setContent] = useState('');
+    const [length, setLength] = useState(0);
     const [images, setImages] = useState([]);
     const [filters, setFilters] = useState([]);
     const [oldFilter, setOldFilter] = useState([]);
@@ -97,23 +100,10 @@ function Post(props) {
                 onInput={(e) => {
                     inputPost.current.textContent = e.currentTarget.textContent;
                     setContent(e.currentTarget.textContent);
+                    setLength(e.currentTarget.textContent.length);
                 }}></div>
-                <div className='emoji' style={emojiStyle}>
-                    <EmojiPicker
-                        height={'350px'}
-                        width={'100%'}
-                        emojiStyle={'native'}
-                        emojiVersion={'5.0'}
-                        searchDisabled={true}
-                        previewConfig={{  showPreview: false }}
-                        searchPlaceholder='Search Emoji'
-                        autoFocusSearch={false}
-                        onEmojiClick={(e) => {
-                            inputPost.current.textContent += e.emoji;
-                            setContent(content => content + e.emoji);
-                        }}
-                    />
-                </div>
+                
+                
 
 
             </div>
@@ -184,19 +174,46 @@ function Post(props) {
             </div>
             <div className="btn">
                 <button className="link" onClick={() => {
-                    document.getElementById("upload").click();
+                    // document.getElementById("upload").click();
+                    inputFile.current.click();
                 }}><img src={ImgPic} className="icon" /></button>
 
                 <button className="link btn_emoji" onClick={() => {
                     onoffEmoji();
                 }}><img src={ImgEmoji} className="icon" /></button>
-
+                
+                {
+                    length > 0 ? (
+                        <div className="outer" style={{background: `conic-gradient(${length>MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length/MAX_CONTENT_LENGTH*360}deg, white 0deg)`}}>
+                    <div className="inner">{length}</div>
+                </div>
+                    ) : null
+                    
+                }
+                
                 <button className="link btn_post" onClick={() => {
                     onPost();
                 }}><img src={ImgPost} className="icon" /></button>
             </div>
+            <div className='emoji' style={emojiStyle}>
+                    <EmojiPicker
+                        height={'350px'}
+                        width={'100%'}
+                        emojiStyle={'native'}
+                        emojiVersion={'5.0'}
+                        searchDisabled={true}
+                        previewConfig={{  showPreview: false }}
+                        searchPlaceholder='Search Emoji'
+                        autoFocusSearch={false}
+                        onEmojiClick={(e) => {
+                            inputPost.current.textContent += e.emoji;
+                            setContent(content => content + e.emoji);
+                            setLength(inputPost.current.textContent.length);
+                        }}
+                    />
+                </div>
             <div style={{ display: "none" }}>
-                <input type="file" id="upload" onChange={(e) => {
+                <input type="file" ref={inputFile} onChange={(e) => {
                     onFileup(e);
                 }} />
             </div>
