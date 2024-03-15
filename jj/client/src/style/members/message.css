@@ -104,6 +104,7 @@
     background-color: white;
     padding-left: 10px;
     box-sizing: border-box;
+    flex: 1;
 }
 /* .wrap_message .wrap_chat .content_box::-webkit-scrollbar{
     width: 10px;
