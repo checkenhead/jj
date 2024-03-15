@@ -2,8 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import axios from 'axios';
-
+import Modal from "react-modal";
 import Dropdown from './Dropdown';
+//import Editpost from './Editpost';
+import Post from './post';
+
 
 import Feedimg from './feedimg';
 import ImgUser from '../../images/user.png';
@@ -16,13 +19,15 @@ import ImgMore from '../../images/more.png';
 import ImgCancel from '../../images/cancel.png';
 
 function Feed(props) {
+    const [feed, setFeed] = useState(props.feed);
     const [images, setImages] = useState([]);
     const [profileimg, setProfileimg] = useState(null);
     const inputReply = useRef();
     const [replyContent, setReplyContent] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
     const loginUser = useSelector(state => state.user);
     const getImages = (feedid) => {
-        if (props.feed.id) {
+        if (feed.id) {
             axios.post('/api/feeds/getfeedimgbyfeedid', null, { params: { feedid } })
                 .then(result => {
                     setImages(result.data.images);
@@ -34,7 +39,7 @@ function Feed(props) {
     }
 
     useEffect(() => {
-        getImages(props.feed.id);
+        getImages(feed.id);
     }, []);
 
     const settings = {
@@ -48,6 +53,14 @@ function Feed(props) {
 
     const [dropdownDisplay, setDropdownDisplay] = useState(false);
 
+    const toggleModal = () => {
+        document.body.style.overflow = isOpen ? "auto" : "hidden";
+        setIsOpen(!isOpen);
+    }
+
+
+
+
     return (
         <div className="feed">
             <div className="feed_head">
@@ -56,8 +69,15 @@ function Feed(props) {
                 </div>
                 <div className="nickname">nickname</div>
                 <div className="timestamp">2시간 전</div>
+                <Modal className="modal" overlayClassName="orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
+                    <img src={ImgCancel} className="icon close link" onClick={() => {
+                        toggleModal();
+                    }} />
+                    {/* <Editpost feed={feed}/> */}
+                    <Post feed={feed} images={images} setIsOpen={setIsOpen} feeds={props.feeds} setFeeds={props.setFeeds} />
+                </Modal>
                 {
-                    props.feed.writer === loginUser.nickname
+                    feed.writer === loginUser.nickname
                         ? (
                             <>
                                 <div className='morebtn'>
@@ -67,7 +87,7 @@ function Feed(props) {
                                                 ? ({ opacity: '1', height: '200px' })
                                                 : ({ opacity: '0', height: '0px' })
                                         }>
-                                        <Dropdown pagename={'feed'} feedid={props.feed.id}/>
+                                        <Dropdown pagename={'feed'} feedid={feed.id} toggleModal={toggleModal} />
                                     </div>
                                     <img src={ImgMore} className='icon' onClick={() => {
                                         setDropdownDisplay(!dropdownDisplay)
@@ -89,7 +109,7 @@ function Feed(props) {
                 }
             </Slider>
             <div className="feed_content">
-                {props.feed.content}<br />
+                {feed.content}<br />
                 <div className="btn"><input type="checkbox" className="toggle_content" /></div>
             </div>
 

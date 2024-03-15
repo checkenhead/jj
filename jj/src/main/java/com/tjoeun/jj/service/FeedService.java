@@ -27,7 +27,8 @@ public class FeedService {
 		try {
 			// 1. feed table insert
 			Feed fdto = new Feed();
-
+			
+			fdto.setId(post.getFeedid());
 			fdto.setWriter(post.getWriter());
 			fdto.setContent(post.getContent());
 
@@ -36,8 +37,9 @@ public class FeedService {
 			// 2. feedimg table insert
 			for (int i = 0; i < post.getFilenames().size(); i++) {
 				Feedimg fidto = new Feedimg();
-
+				
 				fidto.setFeedid(insertedFeed.getId());
+				fidto.setId(post.getFeedimgid().get(i));
 				fidto.setFilename(post.getFilenames().get(i));
 				fidto.setStyle(post.getStyles().get(i));
 				

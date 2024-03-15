@@ -28,9 +28,11 @@ function Post(props) {
     const [isOpen, setIsOpen] = useState(false);
     const [emojiStyle, setEmojiStyle] = useState({ display: 'none' });
     const [onoffCheck, setOnoffCheck] = useState(false);
+    const [feedid, setFeedid] = useState(null);
+    const [feedimgid, setFeedimgid] = useState([]);
 
     const onPost = () => {
-        axios.post('/api/feeds/post', { writer: loginUser.nickname, content, filenames: images, styles: filters })
+        axios.post('/api/feeds/post', { feedid, writer: loginUser.nickname, content, feedimgid, filenames: images, styles: filters })
             .then((result) => {
                 if (result.data.message !== 'OK') {
                     alert('Feed 업로드에 실패했습니다. 관리자에게 문의하세요.');
@@ -40,9 +42,19 @@ function Post(props) {
                     setContent('');
                     setImages([]);
                     setFilters([]);
-                    
-                    props.setNewFeed(() => result.data.feed);
-                    alert('Feed가 업로드 되었습니다.');
+                    if (props.setNewFeed) {
+                        props.setNewFeed(() => result.data.feed);
+                    } else {
+                        const tmp = [...props.feeds]
+                        for(let i=0; i<props.feeds.length;i++){
+                            if(tmp[i].id===result.data.feed.id){
+                                tmp[i] = result.data.feed;
+                            }
+                        }
+                        props.setFeeds(tmp);
+                    }
+                    // alert('Feed가 업로드 되었습니다.');
+                    props.setIsOpen(false);
                 }
             })
             .catch((err) => {
@@ -51,20 +63,21 @@ function Post(props) {
     }
 
     const onFileup = (e) => {
-        if(e.target.files[0].size > MAX_CONTENT_SIZE){
-            alert (`업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`)
-        }else{
+        if (e?.target?.files[0]?.size > MAX_CONTENT_SIZE) {
+            alert(`업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`)
+        } else {
 
             const formData = new FormData();
             formData.append("image", e.target.files[0]);
             axios.post('/api/members/fileupload', formData)
-            .then((result) => {
-                setImages([...images, result.data.filename]);
-                setFilters([...filters, null]);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
+                .then((result) => {
+                    setImages([...images, result.data.filename]);
+                    setFilters([...filters, null]);
+                    setFeedimgid([...feedimgid, null]);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         }
     }
 
@@ -87,28 +100,46 @@ function Post(props) {
 
     const onoffEmoji = () => {
         setOnoffCheck(!onoffCheck)
-        if(onoffCheck == true){
-        setEmojiStyle({ display: 'none' });
-    }else {
+        if (onoffCheck == true) {
+            setEmojiStyle({ display: 'none' });
+        } else {
             setEmojiStyle({ display: 'block' });
         }
     }
-    
+
+    useEffect(() => {
+        if (props?.feed?.id) {
+            inputPost.current.textContent = props.feed.content;
+            setContent(props.feed.content);
+            console.log(props.images);
+            setFilters(props.images.map((image) => {
+                return image.style;
+            }))
+            setImages(props.images.map((image) => {
+                return image.filename;
+            }));
+            setFeedimgid(props.images.map((image) => {
+                return image.id;
+            }));
+            setFeedid(props.feed.id);
+        }
+    }, []);
+
     return (
         <div className="post">
             <div className="content">
                 <div ref={inputPost}
-                contentEditable
-                suppressContentEditableWarning 
-                placeholder="What is happening?!"
-                className="input_content"
-                onInput={(e) => {
-                    inputPost.current.textContent = e.currentTarget.textContent;
-                    setContent(e.currentTarget.textContent);
-                    setLength(e.currentTarget.textContent.length);
-                }}></div>
-                
-                
+                    contentEditable
+                    suppressContentEditableWarning
+                    placeholder="What is happening?!"
+                    className="input_content"
+                    onInput={(e) => {
+                        inputPost.current.textContent = e.currentTarget.textContent;
+                        setContent(e.currentTarget.textContent);
+                        setLength(e.currentTarget.textContent.length);
+                    }}></div>
+
+
 
 
             </div>
@@ -186,40 +217,42 @@ function Post(props) {
                 <button className="link btn_emoji" onClick={() => {
                     onoffEmoji();
                 }}><img src={ImgEmoji} className="icon" /></button>
-                
+
                 {
                     length > 0 ? (
-                        <div className="outer" style={{background: `conic-gradient(${length>MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length/MAX_CONTENT_LENGTH*360}deg, white 0deg)`}}>
-                    <div className="inner">{length}</div>
-                </div>
+                        <div className="outer" style={{ background: `conic-gradient(${length > MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length / MAX_CONTENT_LENGTH * 360}deg, white 0deg)` }}>
+                            <div className="inner">{length}</div>
+                        </div>
                     ) : null
-                    
+
                 }
-                
+
                 <button className="link btn_post" onClick={() => {
                     onPost();
                 }}><img src={ImgPost} className="icon" /></button>
             </div>
             <div className='emoji' style={emojiStyle}>
-                    <EmojiPicker
-                        height={'350px'}
-                        width={'100%'}
-                        emojiStyle={'native'}
-                        emojiVersion={'5.0'}
-                        searchDisabled={true}
-                        previewConfig={{  showPreview: false }}
-                        searchPlaceholder='Search Emoji'
-                        autoFocusSearch={false}
-                        onEmojiClick={(e) => {
-                            inputPost.current.textContent += e.emoji;
-                            setContent(content => content + e.emoji);
-                            setLength(inputPost.current.textContent.length);
-                        }}
-                    />
-                </div>
+                <EmojiPicker
+                    height={'350px'}
+                    width={'100%'}
+                    emojiStyle={'native'}
+                    emojiVersion={'5.0'}
+                    searchDisabled={true}
+                    previewConfig={{ showPreview: false }}
+                    searchPlaceholder='Search Emoji'
+                    autoFocusSearch={false}
+                    onEmojiClick={(e) => {
+                        inputPost.current.textContent += e.emoji;
+                        setContent(content => content + e.emoji);
+                        setLength(inputPost.current.textContent.length);
+                    }}
+                />
+            </div>
             <div style={{ display: "none" }}>
                 <input type="file" ref={inputFile} onChange={(e) => {
-                    onFileup(e);
+                    if(e.target.value !== ''){
+                        onFileup(e);
+                    }
                 }} />
             </div>
         </div>
