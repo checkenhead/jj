@@ -11,4 +11,5 @@ public interface FeedImgRepository extends JpaRepository<Feedimg, Integer>{
 
 	List<Feedimg> findByFeedidOrderById(@Param("feedid") Integer feedid);
 
+
 }

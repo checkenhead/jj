@@ -24,16 +24,16 @@ public class FeedController {
 	@PostMapping("/post")
 	public HashMap<String, Object> post(@RequestBody PostDto post) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		
+
 		Feed feed = fs.insertFeed(post);
-		
-		if(feed == null) {
+
+		if (feed == null) {
 			result.put("message", "Error");
-		}else {
+		} else {
 			result.put("message", "OK");
 			result.put("feed", feed);
 		}
-		
+
 		return result;
 	}
 
@@ -61,8 +61,16 @@ public class FeedController {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
 		result.put("summarys", fs.getSummarysByNickname(nickname));
-		
+
 		return result;
 	}
 
+	@PostMapping("/deletebyid")
+	public HashMap<String, Object> deleteById(@RequestBody Feed feed) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		fs.deleteFeed(feed);
+		
+		return result;
+	}
 }

@@ -63,4 +63,9 @@ public class FeedService {
 		return fr.findSurmmarysByNickname(nickname);
 	}
 
+	public void deleteFeed(Feed feed) {
+		fr.delete(feed);
+		
+	}
+
 }
