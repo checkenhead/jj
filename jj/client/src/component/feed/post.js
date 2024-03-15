@@ -17,6 +17,7 @@ function Post(props) {
     const MAX_CONTENT_LENGTH = 200;
     const loginUser = useSelector(state => state.user);
     const inputPost = useRef();
+    const inputFile = useRef();
     const [content, setContent] = useState('');
     const [length, setLength] = useState(0);
     const [images, setImages] = useState([]);
@@ -173,7 +174,8 @@ function Post(props) {
             </div>
             <div className="btn">
                 <button className="link" onClick={() => {
-                    document.getElementById("upload").click();
+                    // document.getElementById("upload").click();
+                    inputFile.current.click();
                 }}><img src={ImgPic} className="icon" /></button>
 
                 <button className="link btn_emoji" onClick={() => {
@@ -211,7 +213,7 @@ function Post(props) {
                     />
                 </div>
             <div style={{ display: "none" }}>
-                <input type="file" id="upload" onChange={(e) => {
+                <input type="file" ref={inputFile} onChange={(e) => {
                     onFileup(e);
                 }} />
             </div>
