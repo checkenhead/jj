@@ -15,6 +15,7 @@ import ImgRemove from '../../images/remove.png';
 
 function Post(props) {
     const MAX_CONTENT_LENGTH = 200;
+    const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
     const loginUser = useSelector(state => state.user);
     const inputPost = useRef();
     const inputFile = useRef();
@@ -27,7 +28,6 @@ function Post(props) {
     const [isOpen, setIsOpen] = useState(false);
     const [emojiStyle, setEmojiStyle] = useState({ display: 'none' });
     const [onoffCheck, setOnoffCheck] = useState(false);
-
 
     const onPost = () => {
         axios.post('/api/feeds/post', { writer: loginUser.nickname, content, filenames: images, styles: filters })
@@ -51,9 +51,13 @@ function Post(props) {
     }
 
     const onFileup = (e) => {
-        const formData = new FormData();
-        formData.append("image", e.target.files[0]);
-        axios.post('/api/members/fileupload', formData)
+        if(e.target.files[0].size > MAX_CONTENT_SIZE){
+            alert (`업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`)
+        }else{
+
+            const formData = new FormData();
+            formData.append("image", e.target.files[0]);
+            axios.post('/api/members/fileupload', formData)
             .then((result) => {
                 setImages([...images, result.data.filename]);
                 setFilters([...filters, null]);
@@ -61,6 +65,7 @@ function Post(props) {
             .catch((err) => {
                 console.error(err);
             });
+        }
     }
 
     const toggleModal = () => {
