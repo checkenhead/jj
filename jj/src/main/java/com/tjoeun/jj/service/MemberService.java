@@ -1,5 +1,6 @@
 package com.tjoeun.jj.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class MemberService {
 		return mr.save(member);
 	}
 
-	
+	public List<Member> getAllMembers() {
+		return mr.findAll();
+	}
+
 }
 
