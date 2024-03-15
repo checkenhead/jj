@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ImgRemove from '../../images/remove.png';
 import ImgEdit from '../../images/confirm.png';
@@ -8,7 +8,7 @@ function Dropdown(props) {
     console.log(props);
     const curpage = props.pagename;
     const navigate = useNavigate();
-
+    const [isOpen, setIsOpen] = useState(false);
 
     function onDelete() {
         let ans = window.confirm('정말로 삭제 하시겠습니까?');
@@ -28,6 +28,11 @@ function Dropdown(props) {
         }
     }
 
+    const toggleModal = () => {
+        document.body.style.overflow = isOpen ? "auto" : "hidden";
+        setIsOpen(!isOpen);
+    }
+
     return (
         <div>
             {
@@ -38,7 +43,7 @@ function Dropdown(props) {
                                 <img src={ImgRemove} />삭제
                             </div>
                             <div className='dropdown_button'>
-                                <img src={ImgEdit} />수정
+                                <img src={ImgEdit} onClick={ () => { props.toggleModal() }}/>수정
                             </div>
                         </div>
 

@@ -94,7 +94,7 @@ function Header() {
                 <img src={ImgCancel} className="icon close link" onClick={() => {
                    toggleModal();
                 }} />
-                <Post />
+                <Post setIsOpen={setIsOpen}/>
             </Modal>
         </>
     )
