@@ -14,6 +14,7 @@ import ImgSearch from '../../images/search.png';
 import ImgMessage from '../../images/message.png';
 import ImgPost from '../../images/post.png';
 import ImgLogout from '../../images/logout.png';
+import ImgCancel from '../../images/cancel.png';
 
 
 
@@ -22,6 +23,7 @@ function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     const onLogout = () => {
         axios.get('/api/members/logout')
             .then(() => {
@@ -31,6 +33,11 @@ function Header() {
             .catch(err => {
                 console.error(err);
             })
+    }
+
+    const toggleModal = () => {
+        document.body.style.overflow = isOpen ? "auto" : "hidden";
+        setIsOpen(!isOpen);
     }
 
     return (
@@ -64,7 +71,7 @@ function Header() {
                     </div>
                     <div className="row">
                         <button className="link" onClick={() => {
-                            setIsOpen(!isOpen);
+                            toggleModal();
                         }}>
                             <img src={ImgPost} className="icon" /><span className="name">Post</span>
                         </button>
@@ -84,6 +91,9 @@ function Header() {
                 </nav>
             </div >
             <Modal className="modal" overlayClassName="orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
+                <img src={ImgCancel} className="icon close link" onClick={() => {
+                   toggleModal();
+                }} />
                 <Post />
             </Modal>
         </>
