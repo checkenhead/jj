@@ -34,21 +34,26 @@ function Sub() {
           <option value="abcd"/>
         </datalist>
       </div>
-      <div style={{ margin: "30px 0" }}>Sub Content #1</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #2</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #3</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #4</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #5</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #6</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #7</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #8</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #9</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #10</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #11</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #12</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #13</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #14</div>
-      <div style={{ margin: "30px 0" }}>Sub Content #15</div>
+      <div className="relevant_people">
+        {/* 현재 게시물과 관련된 유저 표시 */}
+        <div className="title">Relevant people</div>
+        <div className="sub_content user">Sub Content #1</div>
+      </div>
+      <div className="recommend_people">
+        {/* 태그 연관성에 따른 유저 표시 */}
+        <div className="title">You might like</div>
+        <div className="sub_content user">Sub Content #1</div>
+      </div>
+      <div className="trend">
+        {/* 태그 연관성에 따른 피드 표시 */}
+        <div className="title">Trends for you</div>
+        <div className="sub_content feed">Sub Content #1</div>
+      </div>
+      <div className="recommend_follow">
+        {/* 나를/내가 팔로우하는 사람들이/사람들을 팔로우하는 유저 표시 */}
+        <div className="title">Trends for you</div>
+        <div className="sub_content user">Sub Content #1</div>
+      </div>
       <footer><Footer /></footer>
     </div>
   )
