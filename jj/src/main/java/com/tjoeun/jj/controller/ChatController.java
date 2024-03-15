@@ -52,10 +52,8 @@ public class ChatController {
 	@PostMapping("/getNewChat")
 	public HashMap<String, Object> getNewChat (@RequestBody Chat chat) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-			
-		List<Chat> chats = cs.getNewChat(chat);
-		
-		result.put("chats",chats);
+
+		result.put("chats", cs.getNewChat(chat));
 		
 		return result;
 	}

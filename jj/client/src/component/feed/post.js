@@ -49,12 +49,14 @@ function Post(props) {
                         for(let i=0; i<props.feeds.length;i++){
                             if(tmp[i].id===result.data.feed.id){
                                 tmp[i] = result.data.feed;
+                                break;
                             }
                         }
                         props.setFeeds(tmp);
                     }
                     // alert('Feed가 업로드 되었습니다.');
                     props.setIsOpen(false);
+                    document.body.style.overflow = "auto";
                 }
             })
             .catch((err) => {

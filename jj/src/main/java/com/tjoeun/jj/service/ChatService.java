@@ -26,8 +26,16 @@ public class ChatService {
 	}
 
 	public List<Chat> getNewChat(Chat chat) {
-	
-		return cr.getNewChat(chat.getId(),chat.getSender(),chat.getReceiver());
+//		return cr.getNewChat(chat.getId(),chat.getSender(),chat.getReceiver());
+		List<Chat> list = cr.getNewChat(chat.getId(),chat.getSender(),chat.getReceiver());
+		
+		for(Chat c : list) {
+//			System.out.println("id : " + c.getId());
+			
+			System.out.println("id : " + chat.getId());
+		}
+		
+		return list;
 	}
 
 

@@ -3,6 +3,7 @@ package com.tjoeun.jj.entity;
 import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,4 +27,6 @@ public class Feed {
 	private String content;
 	@CreationTimestamp
 	private Timestamp createdat;
+	@UpdateTimestamp
+	private Timestamp updatedat;
 }

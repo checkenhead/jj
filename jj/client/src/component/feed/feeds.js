@@ -46,7 +46,7 @@ function Feeds() {
                 {feeds.length ? (
                     feeds.map((feed) => {
                         return (
-                            <Feed feed={feed} key={feed.id} feeds={feeds} setFeeds={setFeeds} />
+                            <Feed feed={feed} key={feed.updatedat} feeds={feeds} setFeeds={setFeeds} />
                         );
                     })
                 ) : <div className="empty_feed_message">Feed가 없습니다.</div>

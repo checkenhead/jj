@@ -12,7 +12,7 @@ function Dropdown(props) {
 
     function onDelete() {
         let ans = window.confirm('정말로 삭제 하시겠습니까?');
-        console.log(props.feedid);
+        // console.log(props.feedid);
         if (ans) {
             axios.post('/api/feeds/deletebyid', { id: props.feedid })
                 .then(result => {
