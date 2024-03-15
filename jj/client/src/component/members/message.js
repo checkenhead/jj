@@ -17,12 +17,12 @@ function Message() {
     // const [lastchatId, setLastChatId] = useState(-1);
     const [currChats, setCurrChats] = useState([]);
     const [members, setMembers] = useState([]);
-    
+
 
 
     const send = () => {
         if (content !== '') {
-            axios.post('/api/chat/send', { sender: loginUser.nickname, receiver:receiver.nickname, content })
+            axios.post('/api/chat/send', { sender: loginUser.nickname, receiver: receiver.nickname, content })
                 .then((result) => {
                     if (result.data.message === 'Error') {
                         alert("Error");
@@ -42,58 +42,33 @@ function Message() {
     };
 
     const getNewChat = () => {
-        if(receiver?.nickname !== ''){
-        // const id = allChats[receiver.nickname]?.length ? allChats[receiver.nickname][allChats[receiver.nickname].length-1].id:0 ;
+        if (receiver?.nickname !== '') {
+            // const id = allChats[receiver.nickname]?.length ? allChats[receiver.nickname][allChats[receiver.nickname].length-1].id:0 ;
             const oldChat = allChats[receiver.nickname];
             let id = 0;
-            if(oldChat && oldChat.length > 0){
-                id = oldChat[oldChat.length-1].id;
+            if (oldChat && oldChat.length > 0) {
+                id = oldChat[oldChat.length - 1].id;
             }
-        axios.post('/api/chat/getNewChat', { id, sender: loginUser.nickname, receiver:receiver.nickname})
-            .then((result) => {
-                if (result.data.chats !== null) {
-                    // setChats([...chats, ...result.data.chats]);
-                    const tmp = {...allChats};
-                    tmp[receiver.nickname] = oldChat?[...oldChat, ...result.data.chats]:[...result.data.chats];
-                    setAllChats(tmp);
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            })
+            axios.post('/api/chat/getNewChat', { id, sender: loginUser.nickname, receiver: receiver.nickname })
+                .then((result) => {
+                    if (result.data.chats !== null) {
+                        // setChats([...chats, ...result.data.chats]);
+                        const tmp = { ...allChats };
+                        tmp[receiver.nickname] = oldChat ? [...oldChat, ...result.data.chats] : [...result.data.chats];
+                        setAllChats(tmp);
+                        console.log(oldChat);
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
         }
     };
-
-    // const getAllChat = () => {
-    //     if(receiver?.nickname !== '') {
-    //     axios.post('/api/chat/getAllChatBySenderAndReceiver', { sender: loginUser.nickname, receiver:receiver.nickname })
-    //         .then((result) => {
-    //             if (result.data.message === 'Error') {
-    //                 alert("Error");
-    //             } else {
-    //                 // for(let i=0; i<result.data.chats.length; i++){
-    //                 //     addMessage(result.data.chats[i]);
-    //                 // }
-    //                 // setChats(result.data.chats);
-    //                 // setAllChats();
-    //                 if (result.data.chats.length === 0) {
-    //                     setLastChatId(result.data.chats[result.data.chats.length - 1].id);
-    //                 }
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         })
-    //     }
-    // }
-
-
 
     const getAllMembers = () => {
         axios.get('/api/chat/getAllMembers')
             .then((result) => {
                 setMembers(result.data.members);
-                console.table(result.data.members);
             })
             .catch((error) => {
                 console.error(error);
@@ -107,29 +82,11 @@ function Message() {
             getNewChat();
         }, 1000);
 
-        return (()=>{
+        return (() => {
             clearInterval(interval);
         })
     }, []);
 
-    useEffect(()=>{
-
-    },[receiver]);
-
-    //스크롤바
-    //    const scrollFriend = useRef(null);
-    //    useEffect(()=>{
-    //     scrollFriend.current.addEventListener('mouseover',(e)=>{
-    //         // scrollFriend.current.style.setProperty('overflow-y','scoll');
-    //         // e.currentTarget.style.overflowY = "scroll";
-    //         // scrollFriend.classList.add('on_mouseover');
-    //         e.currentTarget.classList.add('on_mouseover');
-    //     });
-    //     scrollFriend.current.addEventListener('mouseout',(e)=>{
-    //         // e.currentTarget.style.overflowY = "hidden";
-    //         e.currentTarget.classList.remove('on_mouseover');
-    //     });
-    //    },[]);
     return (
 
         <div className="wrap_main">
@@ -138,39 +95,42 @@ function Message() {
                 <div className="wrap_message">
 
                     <div className="wrap_friend" >
-                        {/* <div className="row_friend">
-                            <div><img src="http://localhost:8070/images/Koala1710125014038.jpg" className="friend_icon" /></div>
-                            <div className="friend_nickname">닉네임</div>
-                        </div> */}
-                        {
-                            members.map((member) => {
-                                return (
-                                    <div key={member.nickname} className="row_friend">
-                                        <div><img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" /></div>
-                                        <div className="friend_nickname" onClick={()=>{
-                                            setReceiver(member);
-                                            setCurrChats(allChats[member.nickname] || []);
-                                        }} >{member.nickname}</div>
-                                    </div>
-                                )
-                            })
-                        }
-
+                        <div className="background">
+                            {
+                                members.map((member) => {
+                                    return (
+                                        <div key={member.nickname} className="row_friend">
+                                            <div><img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" /></div>
+                                            <div className="friend_nickname" onClick={() => {
+                                                setReceiver(member);
+                                                setCurrChats(allChats[member.nickname] || []);
+                                            }} >{member.nickname}</div>
+                                        </div>
+                                    )
+                                })
+                            }
+                            
+                        </div>
 
                     </div>
                     {
-                            receiver?.nickname !== '' ? (
-                    <div className="wrap_chat">
-                        <div className="head_chat">
-                            <div>
-                                <img src={`http://localhost:8070/images/${receiver.profileimg}`} className="friend_icon" />
-                            </div>
-                            <div className="friend_nickname">{receiver.nickname}</div>
-                        </div>
-                        
-                                <div className='wrap_content'>
-                                    <div className="content_box" ref={contentBox}>
+                        receiver?.nickname ? (
+                            <div className="wrap_chat">
+                                <div className="head_chat">
+                                    <div>
+                                        {
+                                            receiver?.nickname ? (
+                                                <img src={`http://localhost:8070/images/${receiver.profileimg}`} className="friend_icon" />
+                                            ) : null
+                                        }
+                                    </div>
+                                    <div className="friend_nickname">{receiver.nickname}</div>
+                                </div>
 
+                                <div className='wrap_content'>
+                                <div className="background">
+                                    <div className="content_box" ref={contentBox}>
+                                    
                                         {
                                             currChats.map((chat) => {
                                                 return (
@@ -179,10 +139,11 @@ function Message() {
                                                     </div>)
                                             })
                                         }
+                                        </div>
                                     </div>
                                 </div>
-                          
-                            {/* receiver !== '' ? ( */}
+
+                                
                                 <div className="input_box">
                                     <div contentEditable
                                         ref={inputMessage}
@@ -202,9 +163,9 @@ function Message() {
                                         send();
                                     }}>확인</button>
                                 </div>
-                           
-                    </div>
-                     ) : <div>메시지가 없습니다.</div>
+
+                            </div>
+                        ) : <div className="wrap_chat">메시지가 없습니다.</div>
                     }
 
 
