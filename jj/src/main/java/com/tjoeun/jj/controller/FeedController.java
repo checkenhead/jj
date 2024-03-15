@@ -32,6 +32,7 @@ public class FeedController {
 		} else {
 			result.put("message", "OK");
 			result.put("feed", feed);
+			
 		}
 
 		return result;

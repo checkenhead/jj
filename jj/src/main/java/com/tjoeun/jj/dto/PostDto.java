@@ -12,8 +12,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostDto {
+	
+	private Integer feedid;
 	private String writer;
 	private String content;
+	private List<Integer> feedimgid;
 	private List<String> filenames;
 	private List<String> styles;
 }
