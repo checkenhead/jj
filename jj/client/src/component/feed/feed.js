@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import axios from 'axios';
 
-import Dropdown from './dropdown';
+import Dropdown from './Dropdown';
 
 import Feedimg from './feedimg';
 import ImgUser from '../../images/user.png';
@@ -34,9 +34,6 @@ function Feed(props) {
     }
 
     useEffect(() => {
-        // if (loginUser.email !== '') {
-        //     navigate('/main');
-        // } else {
         getImages(props.feed.id);
     }, []);
 
@@ -49,20 +46,8 @@ function Feed(props) {
         slidesToScroll: 1
     };
 
-    function displayChange(morebtn) {
-        const drop = document.getElementsByClassName('dropdown_wrap')
-        drop[0].setAttribute(
-            "style",
-            "display: flex !important; width: 200px; height: 200px");
-        morebtn[0].addEventListener('click', () => {
-            drop[0].setAttribute("style", "display: none !important")
-        })
-    }
+    const [dropdownDisplay, setDropdownDisplay] = useState(false);
 
-    const changeDisplay = () => {
-        const morebtn = document.getElementsByClassName('morebtn')
-        morebtn[0].addEventListener('click', displayChange(morebtn))
-    }
     return (
         <div className="feed">
             <div className="feed_head">
@@ -76,10 +61,17 @@ function Feed(props) {
                         ? (
                             <>
                                 <div className='morebtn'>
-                                    <div className='dropdown_wrap'>
-                                        <Dropdown pagename={'a'} />
+                                    <div className='dropdown_wrap' style=
+                                        {
+                                            dropdownDisplay
+                                                ? ({ opacity: '1', height: '200px' })
+                                                : ({ opacity: '0', height: '0px' })
+                                        }>
+                                        <Dropdown pagename={'feed'} feedid={props.feed.id}/>
                                     </div>
-                                    <img src={ImgMore} onClick={changeDisplay} />
+                                    <img src={ImgMore} className='icon' onClick={() => {
+                                        setDropdownDisplay(!dropdownDisplay)
+                                    }} />
                                 </div>
                             </>
                         )

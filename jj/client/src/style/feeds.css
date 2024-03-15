@@ -381,24 +381,28 @@
 }
 
 .feed .feed_head .morebtn {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     box-sizing: border-box;
     transition: all 0.1s;
-    margin-left: 10px;
     position: relative;
-    border: 1px solid red;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.feed .feed_head .morebtn:hover img{
-    transform: scale(0.95);
+.feed .feed_head .morebtn .icon {
+    width: 35px;
+    height: 35px;
+    /* margin-right: 10px; */
+    transition: all 0.1s;
 }
 
-.feed .feed_head .morebtn img{
-    
-        width: 100%;
-        object-fit: cover;
-        height: 100%;
+.feed .feed_head .morebtn .icon:hover {
+    transform: scale(0.85);
+    background-color: #dddddd;
+    border-radius: 50px;
 }
 
 
