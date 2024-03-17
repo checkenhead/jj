@@ -18,28 +18,26 @@ function Message() {
     const [members, setMembers] = useState([]);
     const [lastChatId, setLastChatId] = useState(0);
 
-    let allChats = {};
+    // let allChats = {};
+    const allChats = useRef({});
+    const currMember = useRef({});
 
     const send = () => {
         inputMessage.current.textContent = '';
 
         if (content !== '') {
-            axios.post('/api/chat/send', { sender: loginUser.nickname, receiver: receiver.nickname, content })
+            axios.post('/api/chat/send', { sender: loginUser.nickname, receiver: currMember.current.nickname, content })
                 .then((result) => {
                     if (result.data.message === 'Error') {
                         alert("Error");
                     } else {
                         setContent('');
 
-                        const tmp = { ...allChats }
-                        // tmp[receiver.nickname] = tmp[receiver.nickname] ?
-                        //     [...tmp[receiver.nickname], result.data.chat] : [result.data.chat];
-
-                        tmp[receiver.nickname] = [...tmp[receiver.nickname], result.data.chat];
-
-                        // setAllChats(tmp);
-                        allChats = tmp;
-                        setCurrChats(tmp[receiver.nickname]);
+                        // const tmp = { ...allChats.current }
+                        // console.log("tmp:", tmp[receiver.nickname]);
+                        // tmp[receiver.nickname] = [...tmp[receiver.nickname], result.data.chat];
+                        // allChats.current = tmp;
+                        // setCurrChats(tmp[receiver.nickname]);
                     }
                 })
                 .catch((error) => {
@@ -49,38 +47,30 @@ function Message() {
     };
 
     const getNewChat = async () => {
-        // if (receiver) {
-        //     const oldChat = allChats[receiver.nickname];
-        //     const id = (oldChat && oldChat.length > 0) ? oldChat[oldChat.length - 1].id : 0;
-        //     console.log(id);
-        //     axios.post('/api/chat/getNewChat', { id, sender: loginUser.nickname, receiver: receiver.nickname })
-        //         .then((result) => {
-        //             
-        //         })
-        //         .catch((error) => {
-        //             console.error(error);
-        //         })
-        // }
-        if (receiver) {
-            const oldChat = allChats[receiver.nickname];
+        if (currMember.current.nickname) {
+            const oldChat = allChats.current[currMember.current.nickname];
             const id = (oldChat && oldChat.length > 0) ? oldChat[oldChat.length - 1].id : 0;
 
             try {
                 console.log(id);
-                const result = await axios.post('/api/chat/getNewChat', { id: id, sender: loginUser.nickname, receiver: receiver.nickname });
+                const result = await axios.post('/api/chat/getNewChat', { id: id, sender: loginUser.nickname, receiver: currMember.current.nickname });
                 if (result.data.chats !== null && result.data.chats.length > 0) {
-                    console.log(result.data.chats);
-                    const tmp = { ...allChats };
-                    tmp[receiver.nickname] = tmp[receiver.nickname] ?
-                        [...tmp[receiver.nickname], ...result.data.chats] : [...result.data.chats];
-                    console.log(allChats);
-                    allChats = tmp;
-                    setCurrChats(currChats => tmp[receiver.nickname]);
+                    // console.log(result.data.chats);
+                    const tmp = { ...allChats.current };
+                    tmp[currMember.current.nickname] = tmp[currMember.current.nickname] ?
+                        [...tmp[currMember.current.nickname], ...result.data.chats] : [...result.data.chats];
+                    // console.log(allChats);
+                    allChats.current = tmp;
+                    setCurrChats(currChats => tmp[currMember.current.nickname]);
                 }
             } catch (err) {
                 console.error(err);
-            }
+            }     
         }
+
+        // setTimeout(() => {
+        //     getNewChat();
+        // }, 100);
     };
 
     const getAllMembers = () => {
@@ -96,18 +86,15 @@ function Message() {
     useEffect(() => {
         getAllMembers();
         getNewChat();
-        setCurrChats(currChats => allChats[receiver.nickname] || []);
-
+        setCurrChats(currChats => allChats.current[currMember.current.nickname] || []);
 
         const interval = setInterval(() => {
             getNewChat();
-            // console.log('interval started');
         }, 500);
 
         return (() => {
             clearInterval(interval);
             setCurrChats(currChats => []);
-            // console.log('interval stopped');
         })
     }, [receiver]);
 
@@ -130,6 +117,7 @@ function Message() {
                                         <div key={member.nickname} className="row_friend">
                                             <div><img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" /></div>
                                             <div className="friend_nickname" onClick={() => {
+                                                currMember.current = member;
                                                 setReceiver(receiver => member);
                                             }} >{member.nickname}</div>
                                         </div>

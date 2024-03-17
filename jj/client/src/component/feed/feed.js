@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import axios from 'axios';
@@ -14,6 +15,7 @@ import ImgUnlike from '../../images/unlike.png';
 import ImgLike from '../../images/like.png';
 import ImgReply from '../../images/reply.png';
 import ImgBookmark from '../../images/bookmark.png';
+import ImgBookmarked from '../../images/bookmarked.png';
 import ImgRemove from '../../images/remove.png';
 import ImgMore from '../../images/more.png';
 import ImgCancel from '../../images/cancel.png';
@@ -21,25 +23,118 @@ import ImgCancel from '../../images/cancel.png';
 function Feed(props) {
     const [feed, setFeed] = useState(props.feed);
     const [images, setImages] = useState([]);
+    const [writerInfo, setWriterInfo] = useState({});
     const [profileimg, setProfileimg] = useState(null);
+    const [likes, setLikes] = useState([]);
+    const [iconLike, setIconLike] = useState(ImgUnlike);
+    const [replys, setReplys] = useState([]);
+    const [bookmarks, setBookmarks] = useState([]);
+    const [iconBookmark, setIconBookmark] = useState(ImgBookmark);
     const inputReply = useRef();
     const [replyContent, setReplyContent] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const loginUser = useSelector(state => state.user);
+    const navigate = useNavigate();
+
+    const getWriterInfo = (nickname) => {
+        axios.post('/api/members/getmemberbynickname', null, { params: { nickname } })
+            .then(result => {
+                setWriterInfo(result.data.user);
+                setProfileimg(`http://localhost:8070/images/${result.data.user.profileimg}`);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
+    const getLikes = (feedid) => {
+        axios.post('/api/feeds/getlikesbyfeedid', { feedid })
+            .then(result => {
+                setIconLike(ImgUnlike);
+                setLikes(result.data.likes.map((like) => {
+                    if (like.nickname === loginUser.nickname) {
+                        setIconLike(ImgLike);
+                    }
+                    return like.nickname;
+                }));
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
+    const toggleLikes = (feedid, nickname) => {
+        axios.post('/api/feeds/togglelike', { feedid, nickname })
+            .then(result => {
+                getLikes(feedid);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
     const getImages = (feedid) => {
-        if (feed.id) {
-            axios.post('/api/feeds/getfeedimgbyfeedid', null, { params: { feedid } })
-                .then(result => {
-                    setImages(result.data.images);
-                })
-                .catch(err => {
-                    console.error(err);
-                });
-        }
+        axios.post('/api/feeds/getfeedimgbyfeedid', null, { params: { feedid } })
+            .then(result => {
+                setImages(result.data.images);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+
+    }
+
+    const getReplys = (feedid) => {
+        axios.post('/api/feeds/getreplysbyfeedid', { feedid })
+            .then(result => {
+                setReplys(reply => result.data.replys);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
+    const addReply = (feedid, writer, content) => {
+        axios.post('/api/feeds/addreply', { feedid, writer, content })
+            .then(result => {
+                getReplys(feedid);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
+    const getBookmarks = (feedid) => {
+        axios.post('/api/feeds/getbookmarksbyfeedid', { feedid })
+            .then(result => {
+                setIconBookmark(ImgBookmark);
+                setBookmarks(result.data.bookmarks.map((bookmark) => {
+                    if (bookmark.nickname === loginUser.nickname) {
+                        setIconBookmark(ImgBookmarked);
+                    }
+                    return bookmark.nickname;
+                }));
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
+    const toggleBookmarks = (feedid, nickname) => {
+        axios.post('/api/feeds/togglebookmark', { feedid, nickname })
+            .then(result => {
+                getBookmarks(feedid);
+            })
+            .catch(err => {
+                console.error(err);
+            });
     }
 
     useEffect(() => {
+        getWriterInfo(feed.writer);
+        getLikes(feed.id);
         getImages(feed.id);
+        getReplys(feed.id);
     }, []);
 
     const settings = {
@@ -64,11 +159,17 @@ function Feed(props) {
     return (
         <div className="feed">
             <div className="feed_head">
-                <div className="profileimg">
-                    <img src={ImgUser} />
+                <div className="profileimg link">
+                    <img src={profileimg || ImgUser} onClick={() => {
+                        navigate(`/member/${writerInfo.nickname}`);
+                    }} />
                 </div>
-                <div className="nickname">nickname</div>
-                <div className="timestamp">2시간 전</div>
+                <div className="nickname link" onClick={() => {
+                    navigate(`/member/${writerInfo.nickname}`);
+                }}>{writerInfo.nickname}</div>
+                <div className="timestamp">
+                    {feed.createdat}
+                </div>
                 <Modal className="modal" overlayClassName="orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
                     <img src={ImgCancel} className="icon close link" onClick={() => {
                         toggleModal();
@@ -114,29 +215,30 @@ function Feed(props) {
             </div>
 
             <div className="feed_icon">
-                <div className="like"><img src={ImgUnlike} className="icon" />123</div>
-                <div className="reply"><img src={ImgReply} className="icon" />4567</div>
-                <div className="bookmark"><img src={ImgBookmark} className="icon" />789</div>
+                <div className="like"><img src={iconLike} className="icon" onClick={() => {
+                    toggleLikes(feed.id, loginUser.nickname);
+                }} />{likes.length}</div>
+                <div className="reply"><img src={ImgReply} className="icon" />{replys.length}</div>
+                <div className="bookmark"><img src={iconBookmark} className="icon" onClick={() => {
+                    toggleBookmarks(feed.id, loginUser.nickname);
+                }}/>{bookmarks.length}</div>
             </div>
             <div className="feed_reply">
-                <div className="reply">
-                    <div className="row_reply"><img src={ImgUser} className="writer_img" /></div>
-                    <div className="row_reply content">reply contentreply</div>
-                    <div className="row_reply timestamp">1시간 전</div>
-                    <div className="row_reply remove"><img src={ImgRemove} className="icon" /></div>
-                </div>
-                <div className="reply">
-                    <div className="row_reply"><img src={ImgUser} className="writer_img" /></div>
-                    <div className="row_reply content">reply contentreply contentreply contentreply contentreply content</div>
-                    <div className="row_reply timestamp">1시간 전</div>
-                    <div className="row_reply remove"><img src={ImgRemove} className="icon" /></div>
-                </div>
-                <div className="reply">
-                    <div className="row_reply"><img src={ImgUser} className="writer_img" /></div>
-                    <div className="row_reply content">reply contentreply contentreply contentreply contentreply contentreply contentreply contentreply contentreply contentreply contentreply contentreply contentreply content</div>
-                    <div className="row_reply timestamp">1시간 전</div>
-                    <div className="row_reply remove"><img src={ImgRemove} className="icon" /></div>
-                </div>
+                {
+                    replys.map((reply) => {
+                        return (
+                            <div className="reply" key={reply.id}>
+                                <div className="row_reply">
+                                <img src={ImgUser} className="writer_img" />{reply.writer}
+                                </div>
+                                <div className="row_reply content">{reply.content}</div>
+                                <div className="row_reply timestamp">{reply.createdat}</div>
+                                <div className="row_reply remove"><img src={ImgRemove} className="icon" /></div>
+                            </div>
+                        );
+                    })
+                }
+
             </div>
             <div className="input_box">
                 <div ref={inputReply}
@@ -149,7 +251,11 @@ function Feed(props) {
                         setReplyContent(e.currentTarget.textContent);
                     }}>
                 </div>
-                <button>확인</button>
+                <button onClick={() => {
+                    addReply(feed.id, loginUser.nickname, replyContent);
+                    inputReply.current.textContent = '';
+                    setReplyContent('');
+                }}>확인</button>
             </div>
         </div>
     )

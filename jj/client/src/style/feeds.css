@@ -332,7 +332,14 @@
     border: 1px solid #DDDDDD;
     border-radius: 3px;
 }
+.feed .link{
+    transition: all 0.1s;
+}
 
+.feed .link:hover {
+    transform: scale(0.95);
+    cursor: pointer;
+}
 .feed .feed_head {
     width: 100%;
     /* padding: 5px 0; */

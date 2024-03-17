@@ -4,10 +4,10 @@ import axios from 'axios';
 import Post from './post';
 import Feed from './feed';
 
-function Feeds() {
+function Feeds({newFeed, setNewFeed}) {
     const [feeds, setFeeds] = useState([]);
     const [page, setPage] = useState(0);
-    const [newFeed, setNewFeed] = useState({});
+    
 
     const getFeeds = () => {
         axios.post('/api/feeds/getallfeeds', null, { params: { page } })

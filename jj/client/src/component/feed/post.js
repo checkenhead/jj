@@ -45,18 +45,23 @@ function Post(props) {
                     if (props.setNewFeed) {
                         props.setNewFeed(() => result.data.feed);
                     } else {
-                        const tmp = [...props.feeds]
-                        for(let i=0; i<props.feeds.length;i++){
-                            if(tmp[i].id===result.data.feed.id){
-                                tmp[i] = result.data.feed;
-                                break;
+                        if (props.feed) {
+                            const tmp = [...props.feeds]
+                            for (let i = 0; i < props.feeds.length; i++) {
+                                if (tmp[i].id === result.data.feed.id) {
+                                    tmp[i] = result.data.feed;
+                                    break;
+                                }
                             }
+                            props.setFeeds(tmp);
                         }
-                        props.setFeeds(tmp);
                     }
                     // alert('Feed가 업로드 되었습니다.');
-                    props.setIsOpen(false);
-                    document.body.style.overflow = "auto";
+                    if (props.setIsOpen) {
+                        props.setIsOpen(false);
+                        document.body.style.overflow = "auto";
+                    }
+
                 }
             })
             .catch((err) => {
@@ -127,6 +132,10 @@ function Post(props) {
         }
     }, []);
 
+    useEffect(() => {
+        setLength(inputPost.current.textContent.length);
+    }, [content]);
+
     return (
         <div className="post">
             <div className="content">
@@ -140,10 +149,6 @@ function Post(props) {
                         setContent(e.currentTarget.textContent);
                         setLength(e.currentTarget.textContent.length);
                     }}></div>
-
-
-
-
             </div>
             <div className="preview">
                 {
@@ -246,13 +251,12 @@ function Post(props) {
                     onEmojiClick={(e) => {
                         inputPost.current.textContent += e.emoji;
                         setContent(content => content + e.emoji);
-                        setLength(inputPost.current.textContent.length);
                     }}
                 />
             </div>
             <div style={{ display: "none" }}>
                 <input type="file" ref={inputFile} onChange={(e) => {
-                    if(e.target.value !== ''){
+                    if (e.target.value !== '') {
                         onFileup(e);
                     }
                 }} />

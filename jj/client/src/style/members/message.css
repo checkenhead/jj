@@ -18,6 +18,7 @@
     flex: 2;
     height: 100%;
     box-sizing: border-box;
+    border-right: 1px solid #DDDDDD;
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
@@ -72,6 +73,7 @@
 }
 .wrap_message .wrap_chat .head_chat{
     padding: 5px;
+    margin: 0 10px;
     box-sizing: border-box;
     border-bottom: 1px solid #DDDDDD;
     display: flex;
@@ -165,6 +167,7 @@
 .wrap_message .wrap_chat .input_box{
     width: 100%;
     margin: 5px 0;
+    padding: 0 10px;
     box-sizing: border-box;
     display: flex;
     justify-content: flex-start;

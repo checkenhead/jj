@@ -5,7 +5,6 @@ import ImgEdit from '../../images/confirm.png';
 import axios from 'axios';
 
 function Dropdown(props) {
-    console.log(props);
     const curpage = props.pagename;
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);

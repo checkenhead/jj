@@ -46,7 +46,7 @@ function Member() {
     useEffect(() => {
         getUser();
         getSummarys();
-    }, []);
+    }, [param]);
 
     return (
         <div className="wrap_main">
@@ -62,7 +62,7 @@ function Member() {
                             <img src={ImgSetting} className="icon" />
                         </div>
                         <div className="status">
-                            <div>0 게시물</div>
+                            <div>{summarys.length} 게시물</div>
                             <div>0 팔로잉</div>
                             <div>0 팔로워</div>
                         </div>
