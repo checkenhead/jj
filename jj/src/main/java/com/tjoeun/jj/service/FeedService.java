@@ -1,17 +1,24 @@
 package com.tjoeun.jj.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tjoeun.jj.dao.BookmarksRepository;
 import com.tjoeun.jj.dao.FeedImgRepository;
 import com.tjoeun.jj.dao.FeedRepository;
+import com.tjoeun.jj.dao.LikesRepository;
+import com.tjoeun.jj.dao.ReplyRepository;
 import com.tjoeun.jj.dto.PostDto;
+import com.tjoeun.jj.entity.Bookmarks;
 import com.tjoeun.jj.entity.Feed;
 import com.tjoeun.jj.entity.Feedimg;
+import com.tjoeun.jj.entity.Likes;
+import com.tjoeun.jj.entity.Reply;
 
 @Service
 @Transactional
@@ -22,7 +29,16 @@ public class FeedService {
 
 	@Autowired
 	FeedImgRepository fir;
-
+	
+	@Autowired
+	LikesRepository lr;
+	
+	@Autowired
+	ReplyRepository rr;
+	
+	@Autowired
+	BookmarksRepository br;
+	
 	public Feed postFeed(PostDto post) {
 		Feed fdto = null;
 		
@@ -74,6 +90,42 @@ public class FeedService {
 	public void deleteFeed(Feed feed) {
 		fr.delete(feed);
 		
+	}
+	
+	public List<Likes> getLikesByFeedid(Likes likes) {
+		return lr.findAllByFeedid(likes.getFeedid());
+	}
+	
+	public void toggleLike(Likes likes) {
+		Optional<Likes> ldto = lr.findByFeedidAndNickname(likes.getFeedid(), likes.getNickname());
+		
+		if(ldto.isPresent()) {
+			lr.delete(ldto.get());
+		}else {
+			lr.save(likes);
+		}
+	}
+	
+	public List<Reply> getReplysByFeedid(Reply reply) {
+		return rr.findAllByFeedid(reply.getFeedid());
+	}
+	
+	public void insertReply(Reply reply) {
+		rr.save(reply);
+	}
+	
+	public List<Bookmarks> getBookmarksByFeedid(Bookmarks bookmarks) {
+		return br.findAllByFeedid(bookmarks.getFeedid());
+	}
+	
+	public void toggleBookmark(Bookmarks bookmarks) {
+		Optional<Bookmarks> bdto = br.findByFeedidAndNickname(bookmarks.getFeedid(), bookmarks.getNickname());
+		
+		if(bdto.isPresent()) {
+			br.delete(bdto.get());
+		}else {
+			br.save(bookmarks);
+		}
 	}
 
 }

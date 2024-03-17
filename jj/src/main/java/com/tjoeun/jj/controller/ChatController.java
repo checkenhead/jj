@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tjoeun.jj.entity.Chat;
-import com.tjoeun.jj.entity.Member;
 import com.tjoeun.jj.service.ChatService;
 import com.tjoeun.jj.service.MemberService;
 

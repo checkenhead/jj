@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tjoeun.jj.dto.PostDto;
+import com.tjoeun.jj.entity.Bookmarks;
 import com.tjoeun.jj.entity.Feed;
+import com.tjoeun.jj.entity.Likes;
+import com.tjoeun.jj.entity.Reply;
 import com.tjoeun.jj.service.FeedService;
 
 @RestController
@@ -24,16 +27,15 @@ public class FeedController {
 	@PostMapping("/post")
 	public HashMap<String, Object> postFeed(@RequestBody PostDto post) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		
+
 		Feed feed = fs.postFeed(post);
-				
 
 		if (feed == null) {
 			result.put("message", "Error");
 		} else {
 			result.put("message", "OK");
 			result.put("feed", feed);
-			
+
 		}
 
 		return result;
@@ -70,9 +72,52 @@ public class FeedController {
 	@PostMapping("/deletebyid")
 	public HashMap<String, Object> deleteById(@RequestBody Feed feed) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		
+
 		fs.deleteFeed(feed);
-		
+
 		return result;
 	}
+
+	@PostMapping("getlikesbyfeedid")
+	public HashMap<String, Object> getLikeByFeedid(@RequestBody Likes likes) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+
+		result.put("likes", fs.getLikesByFeedid(likes));
+
+		return result;
+	}
+
+	@PostMapping("togglelike")
+	public void toggleLike(@RequestBody Likes likes) {
+		fs.toggleLike(likes);
+	}
+
+	@PostMapping("getreplysbyfeedid")
+	public HashMap<String, Object> getReplysByFeedid(@RequestBody Reply reply) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+
+		result.put("replys", fs.getReplysByFeedid(reply));
+
+		return result;
+	}
+	
+	@PostMapping("addreply")
+	public void addReply(@RequestBody Reply reply) {
+		fs.insertReply(reply);
+	}
+	
+	@PostMapping("getbookmarksbyfeedid")
+	public HashMap<String, Object> getBookmarksByFeedid(@RequestBody Bookmarks bookmark) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+
+		result.put("bookmarks", fs.getBookmarksByFeedid(bookmark));
+
+		return result;
+	}
+
+	@PostMapping("togglebookmark")
+	public void toggleBookmark(@RequestBody Bookmarks bookmark) {
+		fs.toggleBookmark(bookmark);
+	}
+
 }
