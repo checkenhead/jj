@@ -1,0 +1,28 @@
+.wrap_search{
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: white;
+
+    border: 1px solid #DDDDDD;
+}
+.wrap_search .input_search {
+    flex: 1;
+    min-height: 20px;
+    font-size: 1rem;
+    padding: 5px;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+
+    /* display: flex;
+    align-items: center; */
+}
+
+.wrap_search .input_search:hover {
+    cursor: text;
+}
+
+.wrap_search .input_search:empty::before {
+    content: attr(placeholder);
+    color: #BBBBBB;
+}

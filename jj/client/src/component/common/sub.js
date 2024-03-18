@@ -44,14 +44,14 @@ function Sub() {
         <div className="title">You might like</div>
         <div className="sub_content user">Sub Content #1</div>
       </div>
-      <div className="trend">
+      <div className="recommend_feed">
         {/* 태그 연관성에 따른 피드 표시 */}
         <div className="title">Trends for you</div>
-        <div className="sub_content feed">Sub Content #1</div>
+        <div className="sub_content feeds">Sub Content #1</div>
       </div>
       <div className="recommend_follow">
         {/* 나를/내가 팔로우하는 사람들이/사람들을 팔로우하는 유저 표시 */}
-        <div className="title">Trends for you</div>
+        <div className="title">Who to follow</div>
         <div className="sub_content user">Sub Content #1</div>
       </div>
       <footer><Footer /></footer>

@@ -7,6 +7,7 @@ import './style/main.css';
 import './style/header.css';
 import './style/feeds.css';
 import './style/dropdown.css';
+import './style/feed/search.css';
 import './style/members/member.css';
 import './style/sub.css';
 import './style/members/join.css';
