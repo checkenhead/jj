@@ -46,7 +46,7 @@ function Feed(props) {
                 console.error(err);
             });
     }
-
+    
     const getLikes = (feedid) => {
         axios.post('/api/feeds/getlikesbyfeedid', { feedid })
             .then(result => {

@@ -5,11 +5,11 @@ import axios from 'axios';
 
 import Header from '../common/header';
 import Sub from '../common/sub';
-
-import ImgUser from '../../images/user.png';
 import ImgSetting from '../../images/setting.png';
 import ImgFeeds from '../../images/feeds.png';
 import ImgAt from '../../images/at.png';
+import UserInfo from './UserInfo';
+import Summary from '../feed/Summary';
 
 function Member() {
     const param = useParams();
@@ -19,78 +19,66 @@ function Member() {
 
     const navigate = useNavigate();
 
-    const getSummarys = () => {
-        axios.post('/api/feeds/getsumarrysbynickname', null, { params: { nickname: param.nickname } })
-        .then(result => {
+    const getUserInfo = () => {
+        axios.post('/api/members/getmemberinfo', null, { params: { nickname: param.nickname } })
+        .then(result =>{
             setSummarys(result.data.summarys);
+            setCurrUser(result.data.user);
+            console.log(result.data);
         })
         .catch(err => {
             console.error(err);
-        });
+        })
     }
 
-    const getUser = () => {
-        axios.post('/api/members/getmemberbynickname', null, { params: { nickname: param.nickname } })
-            .then(result => {
-                if (result.data.message !== 'OK') {
-                    navigate('/main');
-                } else {
-                    setCurrUser(result.data.user);
-                }
-            })
-            .catch(err => {
-                console.error(err);
-            });
-    }
+    // const getSummarys = () => {
+    //     axios.post('/api/feeds/getsumarrysbynickname', null, { params: { nickname: param.nickname } })
+    //         .then(result => {
+    //             setSummarys(result.data.summarys);
+    //         })
+    //         .catch(err => {
+    //             console.error(err);
+    //         });
+    // }
+
+    // const getUser = () => {
+    //     axios.post('/api/members/getmemberbynickname', null, { params: { nickname: param.nickname } })
+    //         .then(result => {
+    //             if (result.data.message !== 'OK') {
+    //                 navigate('/main');
+    //             } else {
+    //                 setCurrUser(result.data.user);
+    //             }
+    //         })
+    //         .catch(err => {
+    //             console.error(err);
+    //         });
+    // }
 
     useEffect(() => {
-        getUser();
-        getSummarys();
+        // getUser();
+        // getSummarys();
+        getUserInfo();
     }, [param]);
 
     return (
         <div className="wrap_main">
             <header><Header /></header>
             <main>
-                <div className="wrap_member">
-                    <div className="nickname">{currUser.nickname}</div>
-                    <div className="info">
-                        <div className="profileimg" onClick={() => {
-                            navigate('/updateprofile');
-                        }}>
-                            <img src={`http://localhost:8070/images/${currUser.profileimg}`} className="img" />
-                            <img src={ImgSetting} className="icon" />
-                        </div>
-                        <div className="status">
-                            <div>{summarys.length} 게시물</div>
-                            <div>0 팔로잉</div>
-                            <div>0 팔로워</div>
-                        </div>
-                    </div>
-                </div>
+                <UserInfo nickname={param.nickname}/>
                 <div className="tab">
                     <div className="tab_col">
-                    <button className="link">
-                        <img src={ImgFeeds} className="icon" />
-                    </button>
+                        <button className="link">
+                            <img src={ImgFeeds} className="icon" />
+                        </button>
                     </div>
                     <div className="tab_col">
-                    <button className="link">
-                        <img src={ImgAt} className="icon" />
-                    </button>
+                        <button className="link">
+                            <img src={ImgAt} className="icon" />
+                        </button>
                     </div>
                 </div>
-                <div className="summary">
-                    {
-                        summarys.map((summary, summaryIndex) => {return (
-                            <div key={summaryIndex} className="link" onClick={()=>{
-                                navigate(`/view/${currUser.nickname}/${summary.feedid}`);
-                            }}>
-                                <img src={`http://localhost:8070/images/${summary.filename}`}/>
-                            </div>
-                        );})
-                    }
-                </div>
+                <Summary summarys={summarys}/>
 
             </main>
             <aside id="aside"><Sub /></aside>

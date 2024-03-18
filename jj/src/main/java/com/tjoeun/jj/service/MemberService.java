@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tjoeun.jj.dao.FollowRepository;
 import com.tjoeun.jj.dao.MemberRepository;
+import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Member;
 
 @Service
@@ -16,6 +18,9 @@ public class MemberService {
 
 	@Autowired
 	MemberRepository mr;
+	
+	@Autowired
+	FollowRepository fr;
 	
 	public Member getMemberByEmail(String email) {
 		Optional<Member> member = mr.findById(email);
@@ -35,6 +40,17 @@ public class MemberService {
 
 	public List<Member> getAllMembers() {
 		return mr.findAll();
+	}
+
+	public void toggleFollow(Follow follow) {
+		Optional<Follow> mdto = fr.findByFollowerAndFollowing(follow.getFollower(), follow.getFollowing());
+		
+		if(mdto.isPresent()) {
+			fr.delete(mdto.get());
+		}else {
+			fr.save(follow);
+		}
+		
 	}
 
 }

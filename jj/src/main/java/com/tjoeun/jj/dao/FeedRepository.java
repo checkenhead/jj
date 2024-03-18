@@ -8,17 +8,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.tjoeun.jj.entity.Feed;
-import com.tjoeun.jj.entity.Feedimg;
+import com.tjoeun.jj.entity.SummaryView;
 
-public interface FeedRepository extends JpaRepository<Feed, Integer>{
+public interface FeedRepository extends JpaRepository<Feed, Integer> {
 
 	List<Feed> findAllByOrderByIdDesc(PageRequest pageRequest);
-	
-	@Query("select fi from Feedimg fi where fi.id in"
-			+ " (select min(fi.id) from Feedimg fi where fi.feedid in"
-				+ " (select f.id from Feed f where f.writer = :nickname)"
-			+ " group by fi.feedid)"
-		+ " order by fi.feedid desc")
-	List<Feedimg> findSurmmarysByNickname(@Param("nickname") String nickname);
+
+	@Query("select sv from SummaryView sv where sv.id in "
+			+ "(select min(sv.id) from SummaryView sv where sv.feedid in"
+			+ "(select distinct sv.feedid from SummaryView sv where sv.writer = :nickname)"
+			+ " group by sv.feedid)"
+			+ " order by sv.id desc")
+	List<SummaryView> findSurmmarysByNickname(@Param("nickname") String nickname);
 
 }

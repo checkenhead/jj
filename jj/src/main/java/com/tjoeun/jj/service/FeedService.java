@@ -11,14 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tjoeun.jj.dao.BookmarksRepository;
 import com.tjoeun.jj.dao.FeedImgRepository;
 import com.tjoeun.jj.dao.FeedRepository;
+import com.tjoeun.jj.dao.FollowRepository;
 import com.tjoeun.jj.dao.LikesRepository;
 import com.tjoeun.jj.dao.ReplyRepository;
 import com.tjoeun.jj.dto.PostDto;
 import com.tjoeun.jj.entity.Bookmarks;
 import com.tjoeun.jj.entity.Feed;
 import com.tjoeun.jj.entity.Feedimg;
+import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Likes;
 import com.tjoeun.jj.entity.Reply;
+import com.tjoeun.jj.entity.SummaryView;
 
 @Service
 @Transactional
@@ -83,7 +86,7 @@ public class FeedService {
 		return fir.findByFeedidOrderById(feedid);
 	}
 
-	public List<Feedimg> getSummarysByNickname(String nickname) {
+	public List<SummaryView> getSummarysByNickname(String nickname) {
 		return fr.findSurmmarysByNickname(nickname);
 	}
 
@@ -132,5 +135,4 @@ public class FeedService {
 		Optional<Feed> fdto = fr.findById(feed.getId());
 		return fdto.isPresent()?fdto.get():null;
 	}
-
 }
