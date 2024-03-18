@@ -331,6 +331,7 @@
     box-sizing: border-box;
     border: 1px solid #DDDDDD;
     border-radius: 3px;
+    background-color: white;
 }
 .feed .link{
     transition: all 0.1s;

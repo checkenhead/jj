@@ -19,6 +19,7 @@ import com.tjoeun.jj.entity.Feed;
 import com.tjoeun.jj.entity.Feedimg;
 import com.tjoeun.jj.entity.Likes;
 import com.tjoeun.jj.entity.Reply;
+import com.tjoeun.jj.entity.SummaryView;
 
 @Service
 @Transactional
@@ -83,7 +84,7 @@ public class FeedService {
 		return fir.findByFeedidOrderById(feedid);
 	}
 
-	public List<Feedimg> getSummarysByNickname(String nickname) {
+	public List<SummaryView> getSummarysByNickname(String nickname) {
 		return fr.findSurmmarysByNickname(nickname);
 	}
 

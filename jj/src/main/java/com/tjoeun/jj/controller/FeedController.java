@@ -60,14 +60,16 @@ public class FeedController {
 		return result;
 	}
 
-	@PostMapping("/getsumarrysbynickname")
-	public HashMap<String, Object> getsumarrysbynickname(@RequestParam("nickname") String nickname) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
-
-		result.put("summarys", fs.getSummarysByNickname(nickname));
-
-		return result;
-	}
+//	@PostMapping("/getsumarrysbynickname")
+//	public HashMap<String, Object> getsumarrysbynickname(@RequestParam("nickname") String nickname) {
+//		HashMap<String, Object> result = new HashMap<String, Object>();
+//
+//		result.put("summarys", fs.getSummarysByNickname(nickname));
+//
+//		return result;
+//	}
+	
+	
 
 	@PostMapping("/deletebyid")
 	public HashMap<String, Object> deleteById(@RequestBody Feed feed) {

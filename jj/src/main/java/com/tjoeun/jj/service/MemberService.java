@@ -37,5 +37,6 @@ public class MemberService {
 		return mr.findAll();
 	}
 
+
 }
 
