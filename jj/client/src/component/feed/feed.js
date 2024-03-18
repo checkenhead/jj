@@ -167,34 +167,38 @@ function Feed(props) {
 
     // }
     const setProfileDropdown = () => {
-        // if (dropdownDisplay1 === true) {
-        setStyle({
-            opacity: '1',
-            left: '-2px',
-            height: 'auto'
-        })
-        // } else {
-        //     setStyle({
-        //         opacity: '1',
-        //         left: '-2px',
-        //         height: '0px'
-        //     })
-        // }
+        setDropdownDisplay1(!dropdownDisplay1);
+        console.log(dropdownDisplay1, 1);
+        if (dropdownDisplay1 === false) {
+            setStyle({
+                opacity: '1',
+                left: '-2px',
+                height: '0px'
+            })
+        } else {
+            setStyle({
+                opacity: '1',
+                left: '-2px',
+                height: 'auto'
+            })
+        }
     }
     const setMoreDropdown = () => {
-        // if (dropdownDisplay2 === true) {
-        setStyle({
-            opacity: '1',
-            right: '-2px',
-            height: 'auto',
-        })
-        // } else {
-        //     setStyle({
-        //         opacity: '0',
-        //         right: '-2px',
-        //         height: '0px',
-        //     })
-        // }
+        setDropdownDisplay2(!dropdownDisplay2)
+        console.log(dropdownDisplay2, 2);
+        if (dropdownDisplay2 === false) {
+            setStyle({
+                opacity: '0',
+                right: '-2px',
+                height: '0px',
+            })
+        } else {
+            setStyle({
+                opacity: '1',
+                right: '-2px',
+                height: 'auto',
+            })
+        }
     }
 
 
@@ -207,7 +211,7 @@ function Feed(props) {
                             <>
                                 <div className='headlink_wrap'>
                                     <div className="profileimg link" onClick={() => {
-                                        setProfileDropdown()
+                                        setProfileDropdown();
                                         // setChangeDrop();
                                     }}>
                                         <img src={profileimg || ImgUser} />
