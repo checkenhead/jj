@@ -2,6 +2,8 @@ package com.tjoeun.jj.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -9,16 +11,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tjoeun.jj.dao.BookmarksRepository;
+import com.tjoeun.jj.dao.FeedHashtagRepository;
 import com.tjoeun.jj.dao.FeedImgRepository;
 import com.tjoeun.jj.dao.FeedRepository;
-import com.tjoeun.jj.dao.FollowRepository;
+import com.tjoeun.jj.dao.HashtagRepository;
 import com.tjoeun.jj.dao.LikesRepository;
 import com.tjoeun.jj.dao.ReplyRepository;
 import com.tjoeun.jj.dto.PostDto;
 import com.tjoeun.jj.entity.Bookmarks;
 import com.tjoeun.jj.entity.Feed;
+import com.tjoeun.jj.entity.FeedHashtag;
 import com.tjoeun.jj.entity.Feedimg;
-import com.tjoeun.jj.entity.Follow;
+import com.tjoeun.jj.entity.Hashtag;
 import com.tjoeun.jj.entity.Likes;
 import com.tjoeun.jj.entity.Reply;
 import com.tjoeun.jj.entity.SummaryView;
@@ -41,6 +45,12 @@ public class FeedService {
 	
 	@Autowired
 	BookmarksRepository br;
+	
+	@Autowired
+	HashtagRepository hr;
+	
+	@Autowired
+	FeedHashtagRepository fhr;
 	
 	public Feed postFeed(PostDto post) {
 		Feed fdto = null;
@@ -134,5 +144,39 @@ public class FeedService {
 	public Feed getFeedById(Feed feed) {
 		Optional<Feed> fdto = fr.findById(feed.getId());
 		return fdto.isPresent()?fdto.get():null;
+	}
+
+	public Integer getFeedCountByNickname(String nickname) {
+		return fr.findByNickname(nickname);
+	}
+
+	public void insertHashTag(int feedid, String content) {
+		
+		Matcher m = Pattern.compile("#([0-9a-zA-Z가-힣]*)").matcher(content);
+		//List<String> tags = new ArrayList<String>();
+		
+		while(m.find()) {
+			//tags.add(m.group(1));
+			// hashtag 테이블 조회하여 id 저장
+			Optional<Hashtag> hashtag = hr.findByWord(m.group(1));
+			int hashtagid = 0;
+			
+			if(hashtag.isPresent()) {
+				hashtagid = hashtag.get().getId();
+			}else {
+				// hashtag 테이블에 없는 경우 삽입하고 id 저장
+				Hashtag hdto = new Hashtag();
+				hdto.setWord(m.group(1));
+				hashtagid = hr.save(hdto).getId();
+			}
+			
+			//feedhashtag insert
+			FeedHashtag fhdto = new FeedHashtag();
+			
+			fhdto.setFeedid(feedid);
+			fhdto.setHashtagid(hashtagid);
+			
+			fhr.save(fhdto);
+		}
 	}
 }

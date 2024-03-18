@@ -14,16 +14,14 @@ import Summary from '../feed/Summary';
 function Member() {
     const param = useParams();
     const loginUser = useSelector(state => state.user);
-    const [currUser, setCurrUser] = useState({});
     const [summarys, setSummarys] = useState([]);
 
     const navigate = useNavigate();
 
-    const getUserInfo = () => {
-        axios.post('/api/members/getmemberinfo', null, { params: { nickname: param.nickname } })
+    const getSummaryView = () => {
+        axios.post('/api/feeds/getsummaryview', null, { params: { nickname: param.nickname } })
         .then(result =>{
             setSummarys(result.data.summarys);
-            setCurrUser(result.data.user);
             console.log(result.data);
         })
         .catch(err => {
@@ -58,7 +56,7 @@ function Member() {
     useEffect(() => {
         // getUser();
         // getSummarys();
-        getUserInfo();
+        getSummaryView();
     }, [param]);
 
     return (
@@ -79,7 +77,6 @@ function Member() {
                     </div>
                 </div>
                 <Summary summarys={summarys}/>
-
             </main>
             <aside id="aside"><Sub /></aside>
         </div>

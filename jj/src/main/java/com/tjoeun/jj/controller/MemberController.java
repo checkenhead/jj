@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.tjoeun.jj.entity.Feedimg;
+import com.tjoeun.jj.entity.Feed;
 import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Member;
-import com.tjoeun.jj.entity.SummaryView;
 import com.tjoeun.jj.service.FeedService;
 import com.tjoeun.jj.service.MemberService;
 
@@ -35,7 +34,7 @@ public class MemberController {
 
 	@Autowired
 	FeedService fs;
-	
+
 	@PostMapping("/loginlocal")
 	public HashMap<String, Object> loginLocal(@RequestBody Member member, HttpServletRequest request) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -164,22 +163,20 @@ public class MemberController {
 		}
 		return result;
 	}
-	
+
 	@PostMapping("/getUserInfo")
 	public HashMap<String, Object> getUserInfo(@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		
+
+		HashMap<String, Object> fwdto = ms.getFollowAndFollowing(nickname);
 		Member mdto = ms.getMemberByNickname(nickname);
-		
-		
-		if (mdto == null) {
-			result.put("message", "data not found");
-		} else {
-			result.put("message", "OK");
-			
-			mdto.setPwd(null);
-			result.put("user", mdto);
-		}
+		Integer count = fs.getFeedCountByNickname(nickname);
+
+		result.put("message", "OK");
+		mdto.setPwd(null);
+		result.put("user", mdto);
+		result.put("follow", fwdto);
+		result.put("count", count);
 		return result;
 	}
 
@@ -202,7 +199,8 @@ public class MemberController {
 	}
 
 	@PostMapping("/passwordUpdate")
-	public HashMap<String, Object> updateProfile(@RequestParam("newpwd") String newpwd, @RequestParam("nickname") String nickname) {
+	public HashMap<String, Object> updateProfile(@RequestParam("newpwd") String newpwd,
+			@RequestParam("nickname") String nickname) {
 
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		Member mdto = ms.getMemberByNickname(nickname);
@@ -213,8 +211,8 @@ public class MemberController {
 		result.put("message", "ok");
 		return result;
 	}
-	
-	@PostMapping("togglefollow")
+
+	@PostMapping("/togglefollow")
 	public void togglefollow(@RequestBody Follow follow) {
 		ms.toggleFollow(follow);
 	}

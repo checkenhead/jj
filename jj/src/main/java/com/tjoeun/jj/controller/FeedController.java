@@ -34,9 +34,9 @@ public class FeedController {
 		if (feed == null) {
 			result.put("message", "Error");
 		} else {
+			fs.insertHashTag(feed.getId(), post.getContent());
 			result.put("message", "OK");
 			result.put("feed", feed);
-
 		}
 
 		return result;
@@ -61,14 +61,14 @@ public class FeedController {
 		return result;
 	}
 
-//	@PostMapping("/getsumarrysbynickname")
-//	public HashMap<String, Object> getsumarrysbynickname(@RequestParam("nickname") String nickname) {
-//		HashMap<String, Object> result = new HashMap<String, Object>();
-//
-//		result.put("summarys", fs.getSummarysByNickname(nickname));
-//
-//		return result;
-//	}
+	@PostMapping("/getsummaryview")
+	public HashMap<String, Object> getSummaryView(@RequestParam("nickname") String nickname) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+
+		result.put("summarys", fs.getSummarysByNickname(nickname));
+
+		return result;
+	}
 	
 	
 
@@ -81,7 +81,7 @@ public class FeedController {
 		return result;
 	}
 
-	@PostMapping("getlikesbyfeedid")
+	@PostMapping("/getlikesbyfeedid")
 	public HashMap<String, Object> getLikeByFeedid(@RequestBody Likes likes) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
@@ -90,12 +90,12 @@ public class FeedController {
 		return result;
 	}
 
-	@PostMapping("togglelike")
+	@PostMapping("/togglelike")
 	public void toggleLike(@RequestBody Likes likes) {
 		fs.toggleLike(likes);
 	}
 
-	@PostMapping("getreplysbyfeedid")
+	@PostMapping("/getreplysbyfeedid")
 	public HashMap<String, Object> getReplysByFeedid(@RequestBody Reply reply) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
@@ -104,12 +104,12 @@ public class FeedController {
 		return result;
 	}
 	
-	@PostMapping("addreply")
+	@PostMapping("/addreply")
 	public void addReply(@RequestBody Reply reply) {
 		fs.insertReply(reply);
 	}
 	
-	@PostMapping("getbookmarksbyfeedid")
+	@PostMapping("/getbookmarksbyfeedid")
 	public HashMap<String, Object> getBookmarksByFeedid(@RequestBody Bookmarks bookmark) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
@@ -118,12 +118,12 @@ public class FeedController {
 		return result;
 	}
 
-	@PostMapping("togglebookmark")
+	@PostMapping("/togglebookmark")
 	public void toggleBookmark(@RequestBody Bookmarks bookmark) {
 		fs.toggleBookmark(bookmark);
 	}
 	
-	@PostMapping("getfeedbyid")
+	@PostMapping("/getfeedbyid")
 	public HashMap<String, Object> getFeedById(@RequestBody Feed feed){
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		

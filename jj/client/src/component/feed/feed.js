@@ -33,6 +33,7 @@ function Feed(props) {
     const inputReply = useRef();
     const [replyContent, setReplyContent] = useState('');
     const [isOpen, setIsOpen] = useState(false);
+    const [style, setStyle] = useState({});
     const loginUser = useSelector(state => state.user);
     const navigate = useNavigate();
 
@@ -46,7 +47,7 @@ function Feed(props) {
                 console.error(err);
             });
     }
-    
+
     const getLikes = (feedid) => {
         axios.post('/api/feeds/getlikesbyfeedid', { feedid })
             .then(result => {
@@ -146,27 +147,79 @@ function Feed(props) {
         slidesToScroll: 1
     };
 
-    const [dropdownDisplay, setDropdownDisplay] = useState(false);
+    const [dropdownDisplay1, setDropdownDisplay1] = useState(false);
+    const [dropdownDisplay2, setDropdownDisplay2] = useState(false);
 
     const toggleModal = () => {
         document.body.style.overflow = isOpen ? "auto" : "hidden";
         setIsOpen(!isOpen);
     }
 
+    // const setChangeDrop = () => {
+    //     setDropdownDisplay2(!dropdownDisplay2)
+    //     if (!dropdownDisplay2) {
+    //         setMoreDropdown();
+    //     }
+    //     setDropdownDisplay1(!dropdownDisplay1)
+    //     if(!dropdownDisplay1){
+    //         setProfileDropdown();
+    //     } 
 
+    // }
+    const setProfileDropdown = () => {
+        // if (dropdownDisplay1 === true) {
+        setStyle({
+            opacity: '1',
+            left: '-2px',
+            height: 'auto'
+        })
+        // } else {
+        //     setStyle({
+        //         opacity: '1',
+        //         left: '-2px',
+        //         height: '0px'
+        //     })
+        // }
+    }
+    const setMoreDropdown = () => {
+        // if (dropdownDisplay2 === true) {
+        setStyle({
+            opacity: '1',
+            right: '-2px',
+            height: 'auto',
+        })
+        // } else {
+        //     setStyle({
+        //         opacity: '0',
+        //         right: '-2px',
+        //         height: '0px',
+        //     })
+        // }
+    }
 
 
     return (
         <div className="feed">
             <div className="feed_head">
-                <div className="profileimg link">
-                    <img src={profileimg || ImgUser} onClick={() => {
-                        navigate(`/member/${writerInfo.nickname}`);
-                    }} />
-                </div>
-                <div className="nickname link" onClick={() => {
-                    navigate(`/member/${writerInfo.nickname}`);
-                }}>{writerInfo.nickname}</div>
+                {
+                    feed.writer === loginUser.nickname
+                        ? (
+                            <>
+                                <div className='headlink_wrap'>
+                                    <div className="profileimg link" onClick={() => {
+                                        setProfileDropdown()
+                                        // setChangeDrop();
+                                    }}>
+                                        <img src={profileimg || ImgUser} />
+                                    </div>
+                                    <div className="nickname link">{writerInfo.nickname}</div>
+                                    <Dropdown pagename={'profile'} feedid={feed.id} toggleModal={toggleModal} style={style} />
+                                </div>
+                            </>
+                        )
+
+                        : null
+                }
                 <div className="timestamp">
                     {feed.createdat}
                 </div>
@@ -182,16 +235,10 @@ function Feed(props) {
                         ? (
                             <>
                                 <div className='morebtn'>
-                                    <div className='dropdown_wrap' style=
-                                        {
-                                            dropdownDisplay
-                                                ? ({ opacity: '1', height: '200px' })
-                                                : ({ opacity: '0', height: '0px' })
-                                        }>
-                                        <Dropdown pagename={'feed'} feedid={feed.id} toggleModal={toggleModal} />
-                                    </div>
+                                    <Dropdown pagename={'feed'} feedid={feed.id} toggleModal={toggleModal} style={style} />
                                     <img src={ImgMore} className='icon' onClick={() => {
-                                        setDropdownDisplay(!dropdownDisplay)
+                                        setMoreDropdown()
+                                        // setChangeDrop();
                                     }} />
                                 </div>
                             </>
@@ -221,7 +268,7 @@ function Feed(props) {
                 <div className="reply"><img src={ImgReply} className="icon" />{replys.length}</div>
                 <div className="bookmark"><img src={iconBookmark} className="icon" onClick={() => {
                     toggleBookmarks(feed.id, loginUser.nickname);
-                }}/>{bookmarks.length}</div>
+                }} />{bookmarks.length}</div>
             </div>
             <div className="feed_reply">
                 {
@@ -229,7 +276,7 @@ function Feed(props) {
                         return (
                             <div className="reply" key={reply.id}>
                                 <div className="row_reply">
-                                <img src={ImgUser} className="writer_img" />{reply.writer}
+                                    <img src={ImgUser} className="writer_img" />{reply.writer}
                                 </div>
                                 <div className="row_reply content">{reply.content}</div>
                                 <div className="row_reply timestamp">{reply.createdat}</div>

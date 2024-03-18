@@ -6,6 +6,7 @@ import axios from 'axios';
 
 function Dropdown(props) {
     const curpage = props.pagename;
+    const style = props.style;
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -34,20 +35,36 @@ function Dropdown(props) {
 
     return (
         <div>
-            {
+            <div className='dropdown_wrap' style={{ style }}>
                 {
-                    feed:
-                        <div className='dropdown_table'>
-                            <div className='dropdown_button' onClick={() => { onDelete() }}>
-                                <img src={ImgRemove} />삭제
+                    {
+                        feed:
+                            <div className='dropdown_table'>
+                                <div className='dropdown_button' onClick={() => { onDelete() }}>
+                                    <img src={ImgRemove} />
+                                    <div className='dropdown_label'>삭제</div>
+                                </div>
+                                <div className='dropdown_button'>
+                                    <img src={ImgEdit} onClick={() => { props.toggleModal() }} />
+                                    <div className='dropdown_label'>수정</div>
+                                </div>
                             </div>
-                            <div className='dropdown_button'>
-                                <img src={ImgEdit} onClick={ () => { props.toggleModal() }}/>수정
+                        ,
+                        profile:
+                            <div className='dropdown_table'>
+                                <div className='dropdown_button' onClick={() => { }}>
+                                    <img src={ImgRemove} />
+                                    <div className='dropdown_label'>팔로우</div>
+                                </div>
+                                <div className='dropdown_button'>
+                                    <img src={ImgEdit} onClick={() => { }} />
+                                    <div className='dropdown_label'>프로필</div>
+                                </div>
                             </div>
-                        </div>
-
-                }[curpage]
-            }
+                        ,
+                    }[curpage]
+                }
+            </div>
         </div>
     )
 }

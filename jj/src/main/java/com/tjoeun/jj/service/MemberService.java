@@ -1,5 +1,6 @@
 package com.tjoeun.jj.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +52,18 @@ public class MemberService {
 			fr.save(follow);
 		}
 		
+	}
+
+
+	public HashMap<String, Object> getFollowAndFollowing(String nickname) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		Optional<List<Follow>> frdto = fr.findByFollowing(nickname);
+		Optional<List<Follow>> fidto = fr.findByFollower(nickname);
+		
+		result.put("following", frdto);
+		result.put("follower", fidto);
+		
+		return result;
 	}
 
 }
