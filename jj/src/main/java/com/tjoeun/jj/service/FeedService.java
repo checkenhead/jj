@@ -128,4 +128,9 @@ public class FeedService {
 		}
 	}
 
+	public Feed getFeedById(Feed feed) {
+		Optional<Feed> fdto = fr.findById(feed.getId());
+		return fdto.isPresent()?fdto.get():null;
+	}
+
 }
