@@ -6,14 +6,19 @@ import ImgSetting from '../../images/setting.png';
 
 function UserInfo({nickname}) {
     const [currUser,setCurrUser] = useState({});
-    const [summarys, setSummarys] = useState([]);
+    const [feedCount, setFeedCount] = useState(0);
+    const [follow, setFollow] = useState([]);
+    const [follower, setFollower] = useState([]);
+    const [following, setFollowing] = useState([]);
     const navigate = useNavigate();
 
     const getUserInfo = () => {
         axios.post('/api/members/getUserInfo', null, { params: { nickname } })
         .then(result =>{
-
             setCurrUser(result.data.user);
+            setFeedCount(result.data.count);
+            setFollower(result.data.follow.follower);
+            setFollowing(result.data.follow.following);
             console.log(result.data);
         })
         .catch(err => {
@@ -23,7 +28,6 @@ function UserInfo({nickname}) {
 
     useEffect(() => {
         getUserInfo();
-
     }, []);
 
     return (
@@ -37,9 +41,9 @@ function UserInfo({nickname}) {
                     <img src={ImgSetting} className="icon" />
                 </div>
                 <div className="status">
-                    <div>{summarys.length} 게시물</div>
-                    <div>0 팔로잉</div>
-                    <div>0 팔로워</div>
+                    <div>{feedCount} 게시물</div>
+                    <div>{following.length} 팔로잉</div>
+                    <div>{follower.length} 팔로워</div>
                 </div>
             </div>
         </div>
