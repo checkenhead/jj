@@ -331,7 +331,6 @@
     box-sizing: border-box;
     border: 1px solid #DDDDDD;
     border-radius: 3px;
-    background-color: white;
 }
 .feed .link{
     transition: all 0.1s;
@@ -369,7 +368,13 @@
     display: flex;
     align-items: center;
 }
+.feed .feed_head .headlink_wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+}
 
 .feed .feed_head .profileimg {
     width: 35px;

@@ -2,8 +2,8 @@
     position: absolute;
     top: 38px;
     right: -2px;
-    width: auto;
-    height: auto;
+    width: 100px;
+    height: 100px;
     background-color: white;
     border: 1px solid #dddddd;
     border-radius: 5px;
@@ -29,8 +29,9 @@
 
 .dropdown_wrap .dropdown_button {
     display: flex;
-    width: 30px;
-    height: 30px;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
     background-color: inherit;
     justify-content: center;
     align-items: center;
@@ -43,4 +44,8 @@
 .dropdown_wrap .dropdown_button img{
     width: 30px !important;
     height: 30px !important;
+}
+
+.dropdown_wrap .dropdown_button .dropdown_label{
+    
 }
