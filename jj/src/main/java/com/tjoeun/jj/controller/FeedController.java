@@ -34,9 +34,9 @@ public class FeedController {
 		if (feed == null) {
 			result.put("message", "Error");
 		} else {
+			fs.insertHashTag(feed.getId(), post.getContent());
 			result.put("message", "OK");
 			result.put("feed", feed);
-
 		}
 
 		return result;
