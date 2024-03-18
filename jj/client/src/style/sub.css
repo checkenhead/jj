@@ -1,6 +1,7 @@
 .wrap_sub{
     position: sticky;
     width: 100%;
+    min-height: calc(100vh - 10px);
     top: -5px;
     padding: 5px;
     border: 1px solid #DDDDDD;
@@ -27,6 +28,7 @@
 }
 .wrap_sub .search{
     position: sticky;
+    z-index: 2;
     top: -5px;
     width: 100%;
     padding: 5px;
@@ -53,4 +55,90 @@
     border: 1px solid #DDDDDD;
     border-left: 0;
     border-radius: 0 20px 20px 0;
+}
+.wrap_sub .wrap_relevant_people,
+.wrap_sub .wrap_recommend_people,
+.wrap_sub .wrap_recommend_feed,
+.wrap_sub .wrap_recommend_follow{
+    width: 100%;
+    margin: 20px 0;
+}
+.wrap_sub .title{
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+    font-weight: bold;
+
+    display: flex;
+    justify-content: center;
+
+    border-bottom: 1px solid #DDDDDD;
+    /* border: 1px solid black; */
+}
+.wrap_sub .relevant_people,
+.wrap_sub .recommend_people,
+.wrap_sub .recommend_feed,
+.wrap_sub .recommend_follow{
+    width: 100%;
+    /* border: 1px solid #DDDDDD; */
+}
+.wrap_sub .user_summary{
+    /* position: relative; */
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    border-radius: 3px;
+
+    display: flex;
+    align-items: center;
+
+    border: 1px solid #DDDDDD;
+}
+.wrap_sub .user_summary .profileimg{
+    width: 50px;
+    height: 50px;
+}
+.wrap_sub .user_summary .profileimg img{
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.wrap_sub .user_summary .nickname{
+    position: relative;
+    flex: 1;
+    font-size: 1rem;
+    font-weight: bold;
+
+    display: flex;
+    justify-content: center;
+
+    /* border: 1px solid black; */
+}
+.wrap_sub .user_summary .btn_follow{
+    flex: 1;
+
+    display: flex;
+    justify-content: center;
+
+    /* border: 1px solid black; */
+}
+.wrap_sub .user_summary .btn_follow button{
+    padding: 5px 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: black;
+    border: 3px solid black;
+    border-radius: 5px;
+    background-color: transparent;
+
+    transition: all 0.1s;
+}
+.wrap_sub .user_summary .btn_follow button:hover{
+    color: #BBBBBB;
+    border: 3px solid #BBBBBB;
+    transform: scale(0.98);
+    cursor: pointer;
 }

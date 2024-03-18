@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 
 import Header from './common/header';
 import Sub from './common/sub';
@@ -6,6 +6,7 @@ import Feeds from './feed/feeds';
 
 function Main() {
   const [newFeed, setNewFeed] = useState({});
+  const scrollAside = useRef();
   // let currScroll = 0;
 
   // const syncScroll = () => {
@@ -28,7 +29,7 @@ function Main() {
     <div className="wrap_main">
         <header><Header setNewFeed={setNewFeed}/></header>
         <main><Feeds newFeed={newFeed} setNewFeed={setNewFeed}/></main>
-        <aside id="aside"><Sub/></aside>
+        <aside id="aside" ref={scrollAside}><Sub scrollAside={scrollAside}/></aside>
     </div>
   )
 }

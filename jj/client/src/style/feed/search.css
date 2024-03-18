@@ -1,0 +1,182 @@
+.wrap_search{
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 10px);
+    /* padding: 5px; */
+    box-sizing: border-box;
+    background-color: white;
+
+    border: 1px solid #DDDDDD;
+}
+.wrap_search .input_search {
+    flex: 1;
+    margin: 5px;
+    min-height: 20px;
+    /* margin-bottom: 5px; */
+    font-size: 1.2rem;
+    padding: 10px;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+
+    /* display: flex;
+    align-items: center; */
+}
+
+.wrap_search .input_search:hover {
+    cursor: text;
+}
+.wrap_search .input_search:empty::before {
+    content: attr(placeholder);
+    color: #BBBBBB;
+    font-weight: bold;
+}
+.wrap_search .wrap_recommend_keyword{
+    width: 100%;
+    height: auto;
+    /* padding: 5px; */
+    overflow: hidden;
+    box-sizing: border-box;
+    transition: all 0.3s;
+    /* border: 1px solid black; */
+}
+.wrap_search .wrap_recommend_keyword .box{
+    padding: 5px;
+}
+.wrap_search .recommend_keyword{
+    width: 100%;
+    padding: 5px;
+    /* margin: 5px; */
+    
+    box-sizing: border-box;
+    border: 1px solid #DDDDDD;
+
+    display: flex;
+    flex-direction: column;
+}
+.wrap_search .recommend_keyword .keyword{
+    padding: 5px;
+    font-size: 1.2rem;
+    /* border: 1px solid black; */
+    transition: all 0.1s;
+}
+.wrap_search .recommend_keyword .keyword:hover{
+    background-color: #DDDDDD;
+    cursor: pointer;
+}
+.wrap_search .title{
+    position: sticky;
+    top: 0;
+    padding: 5px;
+    z-index: 1;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #DDDDDD;
+    background-color: white;
+}
+.wrap_search .recommend_people, .wrap_search .recommend_feed{
+    width: 100%;
+    padding: 5px;
+    margin: 20px 0;
+    box-sizing: border-box;
+    /* border: 1px solid #DDDDDD; */
+}
+#user{
+    width: 100%;
+    margin-bottom: 5px;
+    border: 1px solid #DDDDDD;
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: white;
+
+    display: flex;
+    flex-direction: column;
+    
+    /* border: 1px solid black; */
+}
+#user .row{
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #DDDDDD;
+    /* border: 1px solid black; */
+
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+}
+#user .row:last-child{
+    border-bottom: 0;
+}
+#user .row .profileimg{
+    /* flex: 1; */
+    width: 100px;
+    height: 100px;
+}
+#user .row .profileimg img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 1;
+    border-radius: 50%;
+}
+#user .row .nickname{
+    flex: 1;
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    display: flex;
+    justify-content: center;
+    /* border: 1px solid black; */
+}
+#user .row .btn_follow{
+    flex: 1;
+
+    display: flex;
+    justify-content: center;
+
+    /* border: 1px solid black; */
+}
+#user .row .btn_follow button{
+    padding: 5px 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: black;
+    border: 3px solid black;
+    border-radius: 5px;
+    background-color: transparent;
+
+    transition: all 0.1s;
+}
+#user .row .btn_follow button:hover{
+    color: #BBBBBB;
+    border: 3px solid #BBBBBB;
+    transform: scale(0.98);
+    cursor: pointer;
+}
+#user .row .intro{
+    flex: 1;
+    font-size: 1rem;
+    
+    /* border: 1px solid black; */
+}
+#user .row .followings{
+    flex: 1;
+    font-size: 1rem;
+    font-weight: bold;
+
+    display: flex;
+    justify-content: center;
+
+    /* border: 1px solid black; */
+}
+#user .row .followers{
+    flex: 1;
+    font-size: 1rem;
+    font-weight: bold;
+
+    display: flex;
+    justify-content: center;
+
+    /* border: 1px solid black; */
+}
