@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tjoeun.jj.dto.PostDto;
 import com.tjoeun.jj.entity.Bookmarks;
 import com.tjoeun.jj.entity.Feed;
+import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Likes;
 import com.tjoeun.jj.entity.Reply;
 import com.tjoeun.jj.service.FeedService;

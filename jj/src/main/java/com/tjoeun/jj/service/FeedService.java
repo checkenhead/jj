@@ -11,12 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tjoeun.jj.dao.BookmarksRepository;
 import com.tjoeun.jj.dao.FeedImgRepository;
 import com.tjoeun.jj.dao.FeedRepository;
+import com.tjoeun.jj.dao.FollowRepository;
 import com.tjoeun.jj.dao.LikesRepository;
 import com.tjoeun.jj.dao.ReplyRepository;
 import com.tjoeun.jj.dto.PostDto;
 import com.tjoeun.jj.entity.Bookmarks;
 import com.tjoeun.jj.entity.Feed;
 import com.tjoeun.jj.entity.Feedimg;
+import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Likes;
 import com.tjoeun.jj.entity.Reply;
 import com.tjoeun.jj.entity.SummaryView;
@@ -133,5 +135,4 @@ public class FeedService {
 		Optional<Feed> fdto = fr.findById(feed.getId());
 		return fdto.isPresent()?fdto.get():null;
 	}
-
 }

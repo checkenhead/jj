@@ -19,6 +19,23 @@ function Feeds({newFeed, setNewFeed}) {
             });
     }
 
+    const scrollHandler = () => {
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight;
+
+        if(clientHeight + scrollTop >= scrollHeight){
+            setPage(page => page + 1);
+        } 
+    };
+
+    useEffect(()=>{
+        window.addEventListener("scroll",scrollHandler);
+        return () => {
+            window.removeEventListener("scroll", scrollHandler);
+        }
+    },[]);
+
     useEffect(() => {
         getFeeds();
     }, [page]);
