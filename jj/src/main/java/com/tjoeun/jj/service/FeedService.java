@@ -135,4 +135,8 @@ public class FeedService {
 		Optional<Feed> fdto = fr.findById(feed.getId());
 		return fdto.isPresent()?fdto.get():null;
 	}
+
+	public Integer getFeedCountByNickname(String nickname) {
+		return fr.findByNickname(nickname);
+	}
 }

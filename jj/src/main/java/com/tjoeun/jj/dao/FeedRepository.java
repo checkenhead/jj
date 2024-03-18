@@ -20,5 +20,8 @@ public interface FeedRepository extends JpaRepository<Feed, Integer> {
 			+ " group by sv.feedid)"
 			+ " order by sv.id desc")
 	List<SummaryView> findSurmmarysByNickname(@Param("nickname") String nickname);
-
+	
+	@Query("select count(fd.writer) from Feed fd where fd.writer = :nickname"
+			+ " order by fd.id desc")
+	Integer findByNickname(@Param("nickname") String nickname);
 }
