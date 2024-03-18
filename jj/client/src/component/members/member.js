@@ -83,7 +83,9 @@ function Member() {
                 <div className="summary">
                     {
                         summarys.map((summary, summaryIndex) => {return (
-                            <div key={summaryIndex} className="link">
+                            <div key={summaryIndex} className="link" onClick={()=>{
+                                navigate(`/view/${currUser.nickname}/${summary.feedid}`);
+                            }}>
                                 <img src={`http://localhost:8070/images/${summary.filename}`}/>
                             </div>
                         );})

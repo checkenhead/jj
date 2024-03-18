@@ -119,5 +119,14 @@ public class FeedController {
 	public void toggleBookmark(@RequestBody Bookmarks bookmark) {
 		fs.toggleBookmark(bookmark);
 	}
+	
+	@PostMapping("getfeedbyid")
+	public HashMap<String, Object> getFeedById(@RequestBody Feed feed){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		result.put("feed", fs.getFeedById(feed));
+		
+		return result;
+	}
 
 }

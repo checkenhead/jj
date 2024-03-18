@@ -3,17 +3,20 @@ const { createBrowserRouter } = require('react-router-dom');
 
 const Loading = <div><h3>Loadging...</h3></div>
 const Index = lazy(() => import('../component/index'));
+// member
 const Login = lazy(() => import('../component/members/login'));
 const Join = lazy(() => import('../component/members/join'));
+const Member = lazy(() => import('../component/members/member'));
 const UpdateProfile = lazy(() => import('../component/members/updateProfile'));
 const EditPassword = lazy(() => import('../component/members/EditPassword'));
 const CurPwdCheck = lazy(() => import('../component/members/CurPwdCheck'));
 const EmailCheck = lazy(() => import('../component/members/EmailCheck'));
 const Message = lazy(() => import('../component/members/message'));
 const Main = lazy(() => import('../component/main'));
+//feed
+const View = lazy(()=> import('../component/feed/View'))
 
 const Test = lazy(() => import('../component/test'));
-const Member = lazy(() => import('../component/members/member'));
 
 
 const root = createBrowserRouter([
@@ -61,6 +64,10 @@ const root = createBrowserRouter([
     {
         path: 'member/:nickname',
         element: <Suspense fallback={Loading}><Member /></Suspense>
+    },
+    {
+        path: 'view/:nickname/:feedid',
+        element: <Suspense fallback={Loading}><View /></Suspense>
     },
 
 ]);
