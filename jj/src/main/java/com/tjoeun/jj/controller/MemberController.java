@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Member;
 import com.tjoeun.jj.service.MemberService;
 
@@ -186,5 +187,10 @@ public class MemberController {
 		// 2. result에 메세지 담아서 return
 		result.put("message", "ok");
 		return result;
+	}
+	
+	@PostMapping("togglefollow")
+	public void togglefollow(@RequestBody Follow follow) {
+		ms.toggleFollow(follow);
 	}
 }
