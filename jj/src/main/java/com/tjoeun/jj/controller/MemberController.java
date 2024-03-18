@@ -15,11 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-<<<<<<< HEAD
 import com.tjoeun.jj.entity.Feedimg;
-=======
 import com.tjoeun.jj.entity.Follow;
->>>>>>> branch 'main' of https://github.com/checkenhead/jj
 import com.tjoeun.jj.entity.Member;
 import com.tjoeun.jj.entity.SummaryView;
 import com.tjoeun.jj.service.FeedService;

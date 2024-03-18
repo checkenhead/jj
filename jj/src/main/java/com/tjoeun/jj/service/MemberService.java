@@ -42,8 +42,6 @@ public class MemberService {
 		return mr.findAll();
 	}
 
-<<<<<<< HEAD
-=======
 	public void toggleFollow(Follow follow) {
 		Optional<Follow> mdto = fr.findByFollowerAndFollowing(follow.getFollower(), follow.getFollowing());
 		
@@ -54,7 +52,6 @@ public class MemberService {
 		}
 		
 	}
->>>>>>> branch 'main' of https://github.com/checkenhead/jj
 
 }
 
