@@ -1,9 +1,7 @@
 .dropdown_wrap {
     position: absolute;
     top: 38px;
-    right: -2px;
     width: 100px;
-    height: 100px;
     background-color: white;
     border: 1px solid #dddddd;
     border-radius: 5px;

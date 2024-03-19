@@ -33,7 +33,8 @@ function Feed(props) {
     const inputReply = useRef();
     const [replyContent, setReplyContent] = useState('');
     const [isOpen, setIsOpen] = useState(false);
-    const [style, setStyle] = useState({});
+    const [style1, setStyle1] = useState({ opacity: '0', left: '-2px', height: '0px' });
+    const [style2, setStyle2] = useState({ opacity: '0', right: '-2px', height: '0px' });
     const loginUser = useSelector(state => state.user);
     const navigate = useNavigate();
 
@@ -147,8 +148,11 @@ function Feed(props) {
         slidesToScroll: 1
     };
 
-    const [dropdownDisplay1, setDropdownDisplay1] = useState(false);
-    const [dropdownDisplay2, setDropdownDisplay2] = useState(false);
+    // const [dropdownDisplay1, setDropdownDisplay1] = useState(false);
+    // const [dropdownDisplay2, setDropdownDisplay2] = useState(false);
+
+    const dropdownDisplay1 = useRef(false);
+    const dropdownDisplay2 = useRef(false);
 
     const toggleModal = () => {
         document.body.style.overflow = isOpen ? "auto" : "hidden";
@@ -167,63 +171,59 @@ function Feed(props) {
 
     // }
     const setProfileDropdown = () => {
-        setDropdownDisplay1(!dropdownDisplay1);
-        console.log(dropdownDisplay1, 1);
-        if (dropdownDisplay1 === false) {
-            setStyle({
-                opacity: '1',
+        dropdownDisplay1.current = !dropdownDisplay1.current;
+        console.log(dropdownDisplay1.current, 1);
+        if (dropdownDisplay1.current === false) {
+            setStyle1({
+                opacity: '0',
                 left: '-2px',
                 height: '0px'
             })
         } else {
-            setStyle({
+            setStyle1({
                 opacity: '1',
                 left: '-2px',
                 height: 'auto'
             })
         }
+        console.log(style1);
     }
     const setMoreDropdown = () => {
-        setDropdownDisplay2(!dropdownDisplay2)
-        console.log(dropdownDisplay2, 2);
-        if (dropdownDisplay2 === false) {
-            setStyle({
+        dropdownDisplay2.current = !dropdownDisplay2.current;
+        console.log(dropdownDisplay2.current, 1);
+        if (dropdownDisplay2.current === false) {
+            setStyle2({
                 opacity: '0',
                 right: '-2px',
-                height: '0px',
+                height: '0px'
             })
         } else {
-            setStyle({
+            setStyle2({
                 opacity: '1',
                 right: '-2px',
-                height: 'auto',
+                height: 'auto'
             })
         }
+        console.log(style1);
     }
 
 
     return (
         <div className="feed">
             <div className="feed_head">
-                {
-                    feed.writer === loginUser.nickname
-                        ? (
-                            <>
-                                <div className='headlink_wrap'>
-                                    <div className="profileimg link" onClick={() => {
-                                        setProfileDropdown();
-                                        // setChangeDrop();
-                                    }}>
-                                        <img src={profileimg || ImgUser} />
-                                    </div>
-                                    <div className="nickname link">{writerInfo.nickname}</div>
-                                    <Dropdown pagename={'profile'} feedid={feed.id} toggleModal={toggleModal} style={style} />
-                                </div>
-                            </>
-                        )
-
-                        : null
-                }
+                <div className='headlink_wrap' onClick={() => {
+                    if (feed.writer !== loginUser.nickname) {
+                        setProfileDropdown();
+                    } else {
+                        navigate(`/member/${feed.writer}`)
+                    }
+                }}>
+                    <div className="profileimg link" >
+                        <img src={profileimg || ImgUser} />
+                    </div>
+                    <div className="nickname link">{writerInfo.nickname}</div>
+                    <Dropdown pagename={'profile'} feedid={feed.id} toggleModal={toggleModal} style={style1} writerInfo={writerInfo} />
+                </div>
                 <div className="timestamp">
                     {feed.createdat}
                 </div>
@@ -239,7 +239,7 @@ function Feed(props) {
                         ? (
                             <>
                                 <div className='morebtn'>
-                                    <Dropdown pagename={'feed'} feedid={feed.id} toggleModal={toggleModal} style={style} />
+                                    <Dropdown pagename={'feed'} feedid={feed.id} toggleModal={toggleModal} style={style2} />
                                     <img src={ImgMore} className='icon' onClick={() => {
                                         setMoreDropdown()
                                         // setChangeDrop();
