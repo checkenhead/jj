@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tjoeun.jj.dto.PostDto;
 import com.tjoeun.jj.entity.Bookmarks;
 import com.tjoeun.jj.entity.Feed;
-import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Likes;
+import com.tjoeun.jj.entity.Member;
 import com.tjoeun.jj.entity.Reply;
 import com.tjoeun.jj.service.FeedService;
+import com.tjoeun.jj.service.MemberService;
 
 @RestController
 @RequestMapping("/api/feeds")
@@ -24,6 +25,9 @@ public class FeedController {
 
 	@Autowired
 	FeedService fs;
+
+	@Autowired
+	MemberService ms;
 
 	@PostMapping("/post")
 	public HashMap<String, Object> postFeed(@RequestBody PostDto post) {
@@ -34,9 +38,13 @@ public class FeedController {
 		if (feed == null) {
 			result.put("message", "Error");
 		} else {
+
+			fs.insertMention(feed.getId(), post.getContent());
 			fs.insertHashTag(feed.getId(), post.getContent());
+
 			result.put("message", "OK");
 			result.put("feed", feed);
+
 		}
 
 		return result;
@@ -69,8 +77,6 @@ public class FeedController {
 
 		return result;
 	}
-	
-	
 
 	@PostMapping("/deletebyid")
 	public HashMap<String, Object> deleteById(@RequestBody Feed feed) {
@@ -103,12 +109,12 @@ public class FeedController {
 
 		return result;
 	}
-	
+
 	@PostMapping("/addreply")
 	public void addReply(@RequestBody Reply reply) {
 		fs.insertReply(reply);
 	}
-	
+
 	@PostMapping("/getbookmarksbyfeedid")
 	public HashMap<String, Object> getBookmarksByFeedid(@RequestBody Bookmarks bookmark) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -122,13 +128,22 @@ public class FeedController {
 	public void toggleBookmark(@RequestBody Bookmarks bookmark) {
 		fs.toggleBookmark(bookmark);
 	}
-	
+
 	@PostMapping("/getfeedbyid")
-	public HashMap<String, Object> getFeedById(@RequestBody Feed feed){
+	public HashMap<String, Object> getFeedById(@RequestBody Feed feed) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+
+		result.put("feed", fs.getFeedById(feed));
+
+		return result;
+	}
+	
+	@PostMapping("getFeedByKeyword")
+	public HashMap<String, Object> getFeedByKeyword(@RequestParam("keyword") String keyword) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
-		result.put("feed", fs.getFeedById(feed));
-		
+		result.put("feeds", fs.getFeedByKeyword(keyword));
+
 		return result;
 	}
 
