@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -26,6 +26,7 @@ function UpdateProfile() {
     
     const navigate = useNavigate();
     const loginUser = useSelector( state=>state.user );
+    const scrollAside = useRef(0);
 
    
 
@@ -205,7 +206,7 @@ function UpdateProfile() {
             </div>
         </div>
         </main>
-        <aside id="aside"><Sub/></aside>
+        <aside id="aside" ref={scrollAside}><Sub scrollAside={scrollAside}/></aside>
     </div>
     
         

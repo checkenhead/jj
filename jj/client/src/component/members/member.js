@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -15,6 +15,7 @@ function Member() {
     const param = useParams();
     const loginUser = useSelector(state => state.user);
     const [summarys, setSummarys] = useState([]);
+    const scrollAside = useRef(0);
 
     const navigate = useNavigate();
 
@@ -78,7 +79,7 @@ function Member() {
                 </div>
                 <Summary summarys={summarys}/>
             </main>
-            <aside id="aside"><Sub /></aside>
+            <aside id="aside" ref={scrollAside}><Sub scrollAside={scrollAside}/></aside>
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 
@@ -14,7 +14,8 @@ function View() {
     const [feed, setFeed] = useState({});
     const navigate = useNavigate();
     const param = useParams();
-
+    const scrollAside = useRef(0);
+    
     const getFeed = () => {
         axios.post('/api/feeds/getfeedbyid', { id: param.feedid })
             .then(result => {
@@ -44,7 +45,7 @@ function View() {
                     }
                 </div>
             </main>
-            <aside id="aside"><Sub /></aside>
+            <aside id="aside" ref={scrollAside}><Sub scrollAside={scrollAside}/></aside>
         </div>
     )
 }
