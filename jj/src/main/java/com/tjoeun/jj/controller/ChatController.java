@@ -21,6 +21,8 @@ public class ChatController {
 	@Autowired
 	ChatService cs;
 	
+
+	
 	@PostMapping("/send")
 	public HashMap<String, Object> send (@RequestBody Chat chat) {
 		HashMap<String, Object> result = new HashMap<String, Object>();

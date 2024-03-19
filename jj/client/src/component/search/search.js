@@ -35,10 +35,7 @@ function Search() {
             <main>
                 <div className="wrap_search">
 
-                    <div className="wrap_search_keyword" onMouseLeave={() => {
-                        setKeywordBoxStyle({ height: '0', padding: '0' });
-                        inputSearch.current.blur();
-                    }} >
+                    <div className="wrap_search_keyword"  >
                         <div ref={inputSearch}
                             contentEditable
                             suppressContentEditableWarning
@@ -46,6 +43,9 @@ function Search() {
                             className="input_search"
                             onFocus={() => {
                                 setKeywordBoxStyle({ height: '380px'});
+                            }}
+                            onBlur={() => {
+                                setKeywordBoxStyle({ height: '0', padding: '0' });
                             }}
                             onInput={(e) => {
                                 inputSearch.current.textContent = e.currentTarget.textContent;

@@ -8,11 +8,13 @@ function Sub({ scrollAside }) {
     // let currScroll = 0;
 
     const syncScroll = () => {
-        const bodyScroll = document.documentElement.scrollTop;
+        if(scrollAside){
+            const bodyScroll = document.documentElement.scrollTop;
         // const sub = document.getElementById("aside");
 
         scrollAside.current.scrollTop += bodyScroll - currScroll.current;
         currScroll.current = bodyScroll;
+        }
     }
 
     useEffect(() => {

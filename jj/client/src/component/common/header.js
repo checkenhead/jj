@@ -61,7 +61,7 @@ function Header({setNewFeed}) {
                         </Link>
                     </div>
                     <div className="row" >
-                        <Link to="" className="link">
+                        <Link to="/search" className="link">
                             <img src={ImgSearch} className="icon" /><span className="name">Search</span>
                         </Link>
                     </div>
