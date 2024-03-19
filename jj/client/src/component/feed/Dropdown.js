@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ImgRemove from '../../images/remove.png';
 import ImgEdit from '../../images/confirm.png';
-import ImgFollow from '../../images/user_follow.png';
-import ImgUnFollow from '../../images/user_unfollow.png';
+import ImgFollow from '../../images/follow.png';
+import ImgUnFollow from '../../images/unfollow.png';
 import ImgProfile from '../../images/profile.png';
 import ImgMessage from '../../images/message.png';
 import { setFollowAction } from '../../store/followSlice';
@@ -62,7 +62,7 @@ function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
             return following === writer
         });
         setFollowState(result);
-        console.log('123123', loginUserFollow, '11',writer);
+        console.log('123123', loginUserFollow, '11', writer);
     }, [loginUserFollow])
 
     return (
@@ -72,34 +72,44 @@ function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
                     {
                         feed:
                             <div className='dropdown_table'>
-                                <div className='dropdown_button' onClick={() => { onDelete() }}>
-                                    <img src={ImgRemove} />
+                                <div className='dropdown_button_wrap' onClick={() => { onDelete() }}>
+                                    <div className='dropdown_button'>
+                                        <img src={ImgRemove} />
+                                    </div>
                                     <div className='dropdown_label'>삭제</div>
                                 </div>
-                                <div className='dropdown_button'>
-                                    <img src={ImgEdit} onClick={() => { toggleModal() }} />
+                                <div className='dropdown_button_wrap' onClick={() => { toggleModal() }} >
+                                    <div className='dropdown_button'>
+                                        <img src={ImgEdit}/>
+                                    </div>
                                     <div className='dropdown_label'>수정</div>
                                 </div>
                             </div>
                         ,
                         profile:
                             <div className='dropdown_table'>
-                                <div className='dropdown_button follow' onClick={() => {
+                                <div className='dropdown_button_wrap' onClick={() => {
                                     toggleFollow();
                                 }}>
-                                    <img src={followState ? ImgUnFollow : ImgFollow} />
+                                    <div className='dropdown_button follow' >
+                                        <img src={followState ? ImgUnFollow : ImgFollow} />
+                                    </div>
                                     <div className='dropdown_label'>{followState ? '언팔로우' : '팔로우'}</div>
                                 </div>
-                                <div className='dropdown_button profile' onClick={() => {
+                                <div className='dropdown_button_wrap' onClick={() => {
                                     navigate(`/member/${writer}`);
                                 }}>
-                                    <img src={ImgProfile} />
+                                    <div className='dropdown_button profile'>
+                                        <img src={ImgProfile} />
+                                    </div>
                                     <div className='dropdown_label'>프로필</div>
                                 </div>
-                                <div className='dropdown_button DM' onClick={() => {
-
+                                <div className='dropdown_button_wrap' onClick={() => {
+                                    navigate('/messsage')
                                 }}>
-                                    <img src={ImgMessage} />
+                                    <div className='dropdown_button DM'>
+                                        <img src={ImgMessage} />
+                                    </div>
                                     <div className='dropdown_label'>메세지</div>
                                 </div>
                             </div>

@@ -21,6 +21,8 @@ import ImgMore from '../../images/more.png';
 import ImgCancel from '../../images/cancel.png';
 
 function Feed(props) {
+    const dropdownDisplay1 = useRef(false);
+    const dropdownDisplay2 = useRef(false);
     const [feed, setFeed] = useState(props.feed);
     const [images, setImages] = useState([]);
     const [writerInfo, setWriterInfo] = useState({});
@@ -96,6 +98,29 @@ function Feed(props) {
             });
     }
 
+    const transDateString = (dateString) => {
+        const today = new Date();
+        const createdat = new Date(dateString);
+
+        console.log('저장된 시간:', createdat, '현재시간:', today);
+
+        let diff = Math.abs(today.getTime() - createdat.getTime());
+        diff = Math.ceil(diff / (1000));
+        console.log(diff);
+        let result = '';
+        if (diff < 60) {
+            result = '방금 전'
+        } else if (diff < 60 * 60) {
+            result = Math.ceil(diff / 60) + '분 전';
+        } else if (diff < 60 * 60 * 24) {
+            result = Math.ceil(diff / 60 / 60) + '시간 전';
+        } else if (diff < 60 * 60 * 24 * 365) {
+            result = Math.ceil(diff / 60 / 60 / 24) + '일 전';
+        }
+
+        return result;
+    }
+
     const addReply = (feedid, writer, content) => {
         axios.post('/api/feeds/addreply', { feedid, writer, content })
             .then(result => {
@@ -151,8 +176,6 @@ function Feed(props) {
     // const [dropdownDisplay1, setDropdownDisplay1] = useState(false);
     // const [dropdownDisplay2, setDropdownDisplay2] = useState(false);
 
-    const dropdownDisplay1 = useRef(false);
-    const dropdownDisplay2 = useRef(false);
 
     const toggleModal = () => {
         document.body.style.overflow = isOpen ? "auto" : "hidden";
@@ -211,17 +234,23 @@ function Feed(props) {
     return (
         <div className="feed">
             <div className="feed_head">
-                <div className='headlink_wrap' onClick={() => {
-                    if (feed.writer !== loginUser.nickname) {
-                        setProfileDropdown();
-                    } else {
-                        navigate(`/member/${feed.writer}`)
-                    }
-                }}>
-                    <div className="profileimg link" >
+                <div className='headlink_wrap' >
+                    <div className="profileimg link" onClick={() => {
+                        if (feed.writer !== loginUser.nickname) {
+                            setProfileDropdown();
+                        } else {
+                            navigate(`/member/${feed.writer}`)
+                        }
+                    }}>
                         <img src={profileimg || ImgUser} />
                     </div>
-                    <div className="nickname link">{writerInfo.nickname}</div>
+                    <div className="nickname link" onClick={() => {
+                        if (feed.writer !== loginUser.nickname) {
+                            setProfileDropdown();
+                        } else {
+                            navigate(`/member/${feed.writer}`)
+                        }
+                    }}>{writerInfo.nickname}</div>
                     <Dropdown pagename={'profile'} feedid={feed.id} toggleModal={toggleModal} style={style1} writer={feed.writer} />
                 </div>
                 <div className="timestamp">
@@ -283,7 +312,7 @@ function Feed(props) {
                                     <img src={ImgUser} className="writer_img" />{reply.writer}
                                 </div>
                                 <div className="row_reply content">{reply.content}</div>
-                                <div className="row_reply timestamp">{reply.createdat}</div>
+                                <div className="row_reply timestamp">{transDateString(reply.createdat)}</div>
                                 <div className="row_reply remove"><img src={ImgRemove} className="icon" /></div>
                             </div>
                         );
