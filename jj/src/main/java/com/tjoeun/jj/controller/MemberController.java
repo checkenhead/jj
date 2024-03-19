@@ -2,8 +2,10 @@ package com.tjoeun.jj.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tjoeun.jj.dto.UserInfoDto;
 import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Member;
 import com.tjoeun.jj.service.FeedService;
@@ -224,4 +227,35 @@ public class MemberController {
 
 		return result;
 	}
+	
+//	@PostMapping("/getMembersByKeyword")
+//	public HashMap<String, Object> getMembersByKeyword(@RequestParam("keyword") String keyword) {
+//		HashMap<String, Object> result = new HashMap<String, Object>();
+//
+//		result.put("users", ms.getMembersByKeyword(keyword));
+//		
+//		return result;
+//	}
+	
+	@PostMapping("/getUserInfoByKeyword")
+	public HashMap<String, Object> getUserInfoByKeyword(@RequestParam("keyword") String keyword) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		List<UserInfoDto> users = new ArrayList<UserInfoDto>();
+
+		List<Member> list = ms.getMembersByKeyword(keyword);
+		for(Member mdto : list) {
+			UserInfoDto udto = new UserInfoDto();
+			udto.setEmail(mdto.getEmail());
+			udto.setNickname(mdto.getNickname());
+			udto.setProfileimg(mdto.getProfileimg());
+			udto.setIntro(mdto.getIntro());
+			udto.setFollowers(ms.getFollowersByNickname(mdto.getNickname()));
+			udto.setFollowings(ms.getFollowingsByNickname(mdto.getNickname()));
+			udto.setCount(fs.getFeedCountByNickname(mdto.getNickname()));
+			users.add(udto);
+		}
+		result.put("users", users);
+		return result;
+	}
+
 }

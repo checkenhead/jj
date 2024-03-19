@@ -24,4 +24,7 @@ public interface FeedRepository extends JpaRepository<Feed, Integer> {
 	@Query("select count(fd.writer) from Feed fd where fd.writer = :nickname"
 			+ " order by fd.id desc")
 	Integer findByNickname(@Param("nickname") String nickname);
+
+	@Query("select f from Feed f where f.id in (select fh.feedid from FeedHashtag fh where fh.hashtagid in (select h.id from Hashtag h where h.word=:keyword))")
+	List<Feed> findByKeyword (@Param("keyword") String keyword);
 }

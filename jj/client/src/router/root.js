@@ -15,11 +15,13 @@ const CurPwdCheck = lazy(() => import('../component/members/CurPwdCheck'));
 const EmailCheck = lazy(() => import('../component/members/EmailCheck'));
 const Message = lazy(() => import('../component/members/message'));
 
+
 //feed
 const View = lazy(()=> import('../component/feed/View'));
 
 //search
 const Search = lazy(() => import('../component/search/search'));
+const Result = lazy(() => import('../component/search/result'));
 
 const Test = lazy(() => import('../component/test'));
 
@@ -76,6 +78,10 @@ const root = createBrowserRouter([
     {
         path: 'search',
         element: <Suspense fallback={Loading}><Search /></Suspense>
+    },
+    {
+        path: 'result/:target/:keyword',
+        element: <Suspense fallback={Loading}><Result /></Suspense>
     },
 
 ]);
