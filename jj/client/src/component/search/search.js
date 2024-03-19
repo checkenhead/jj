@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 import Header from '../common/header';
 import Sub from '../common/sub';
@@ -7,6 +8,7 @@ import User from './user';
 import Feed from '../feed/feed';
 
 function Search() {
+    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [feeds, setFeeds] = useState([]);
     const scrollAside = useRef();
@@ -14,6 +16,10 @@ function Search() {
     const [keyword, setKeyword] = useState('');
     const [keywordBoxStyle, setKeywordBoxStyle] = useState({ height: '0', padding: '0' });
     const keywordBox = useRef();
+
+    const onSearch = () => {
+        navigate(`/result/feed/${keyword}`);
+    }
 
     const getFeeds = () => {
         axios.post('/api/feeds/getallfeeds', null, { params: { page: 0 } })
@@ -52,6 +58,10 @@ function Search() {
                                 setKeyword(e.currentTarget.textContent);
                             }}>
                         </div>
+                        <button onClick={()=>{
+                            onSearch();
+                        }}>검색</button>
+
                         <div className="wrap_recommend_keyword" style={keywordBoxStyle}>
                         <div className="box">
                             <div className="recommend_keyword" >
@@ -79,11 +89,7 @@ function Search() {
                                 <User/>
                             );})
                         } */}
-                            <User />
-                            <User />
-                            <User />
-                            <User />
-                            <User />
+                           
                         </div>
                     </div>
                     <div className="wrap_recommend_people">
