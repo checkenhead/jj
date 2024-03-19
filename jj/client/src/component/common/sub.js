@@ -8,12 +8,12 @@ function Sub({ scrollAside }) {
     // let currScroll = 0;
 
     const syncScroll = () => {
-        if(scrollAside){
+        if (scrollAside.current) {
             const bodyScroll = document.documentElement.scrollTop;
-        // const sub = document.getElementById("aside");
+            // const sub = document.getElementById("aside");
 
-        scrollAside.current.scrollTop += bodyScroll - currScroll.current;
-        currScroll.current = bodyScroll;
+            scrollAside.current.scrollTop += bodyScroll - currScroll.current;
+            currScroll.current = bodyScroll;
         }
     }
 
@@ -63,7 +63,7 @@ function Sub({ scrollAside }) {
                     <UserSummary />
                     <UserSummary />
                     <UserSummary />
-                    
+
                 </div>
             </div>
             <div className="wrap_recommend_feed">
@@ -74,16 +74,16 @@ function Sub({ scrollAside }) {
                 </div>
             </div>
             <div className="wrap_recommend_follow">
-            <div className="title">Who to follow</div>
+                <div className="title">Who to follow</div>
                 <div className="recommend_follow">
                     {/* 나를/내가 팔로우하는 사람들이/사람들을 팔로우하는 유저 표시 */}
-                    
+
                     <UserSummary />
                     <UserSummary />
                     <UserSummary />
                     <UserSummary />
                     <UserSummary />
-                    
+
                 </div>
             </div>
             <footer><Footer /></footer>
