@@ -81,6 +81,13 @@
     box-sizing: border-box;
     /* border: 1px solid #DDDDDD; */
 }
+.wrap_search .result_people{
+    width: 100%;
+    padding: 5px;
+    /* margin: 20px 0; */
+    box-sizing: border-box;
+    /* border: 1px solid #DDDDDD; */
+}
 #user{
     width: 100%;
     margin-bottom: 5px;

@@ -69,4 +69,9 @@ public class MemberService {
 		return fr.findFollowersByNickname(nickname);
 	}
 
+	public List<Member> getMembersByKeyword(String keyword) {
+		
+		return mr.findByKeyword("%" + keyword + "%");
+	}
+
 }
