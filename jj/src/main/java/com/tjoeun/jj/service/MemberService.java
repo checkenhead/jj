@@ -50,7 +50,7 @@ public class MemberService {
 	public void toggleFollow(Follow follow) {
 		Optional<Follow> fdto = fr.findByFollowerAndFollowing(follow.getFollower(), follow.getFollowing());
 
-		if (fdto.isPresent()) {
+		if (fdto.isPresent()) {	
 			fr.delete(fdto.get());
 		} else {
 			fr.save(follow);

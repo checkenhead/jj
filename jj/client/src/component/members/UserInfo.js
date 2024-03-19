@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from 'react-redux';
+
 import axios from 'axios';
 
 import ImgSetting from '../../images/setting.png';
+import ImgUser from '../../images/user.png';
 
 function UserInfo({nickname}) {
     const [currUser,setCurrUser] = useState({});
@@ -10,6 +13,7 @@ function UserInfo({nickname}) {
     const [follow, setFollow] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [followings, setFollowings] = useState([]);
+    const loginUser = useSelector(state=>state.user);
     const navigate = useNavigate();
 
     const getUserInfo = () => {
@@ -28,7 +32,7 @@ function UserInfo({nickname}) {
 
     useEffect(() => {
         getUserInfo();
-    }, []);
+    }, [loginUser]);
 
     return (
         <div className="wrap_member">
@@ -37,7 +41,11 @@ function UserInfo({nickname}) {
                 <div className="profileimg" onClick={() => {
                     navigate('/updateprofile');
                 }}>
-                    <img src={`http://localhost:8070/images/${currUser.profileimg}`} className="img" />
+                    <img src={
+                        currUser.profileimg
+                        ?`http://localhost:8070/images/${currUser.profileimg}`
+                        : ImgUser
+                        } className="img" />
                     <img src={ImgSetting} className="icon" />
                 </div>
                 <div className="status">

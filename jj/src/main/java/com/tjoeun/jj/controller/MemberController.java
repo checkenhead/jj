@@ -124,12 +124,12 @@ public class MemberController {
 
 	@PostMapping("/updateProfile")
 	public HashMap<String, Object> updateProfile(@RequestBody Member member, HttpServletRequest request) {
-
+		Member loginUser = ((Member) request.getSession().getAttribute("loginUser"));
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
 		Member CheckNickname = ms.getMemberByNickname(member.getNickname());
 		// 닉네임이 중복된 경우
-		if (CheckNickname != null) {
+		if (CheckNickname != null && !member.getNickname().equals(loginUser.getNickname())) {
 			result.put("message", "no");
 		} else {
 			// 정상 회원정보수정완료
@@ -143,6 +143,7 @@ public class MemberController {
 			request.getSession().setAttribute("loginUser", mdto);
 
 			result.put("message", "ok");
+			result.put("loginUser", mdto);
 		}
 
 		return result;
