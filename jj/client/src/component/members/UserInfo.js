@@ -8,8 +8,8 @@ function UserInfo({nickname}) {
     const [currUser,setCurrUser] = useState({});
     const [feedCount, setFeedCount] = useState(0);
     const [follow, setFollow] = useState([]);
-    const [follower, setFollower] = useState([]);
-    const [following, setFollowing] = useState([]);
+    const [followers, setFollowers] = useState([]);
+    const [followings, setFollowings] = useState([]);
     const navigate = useNavigate();
 
     const getUserInfo = () => {
@@ -17,8 +17,8 @@ function UserInfo({nickname}) {
         .then(result =>{
             setCurrUser(result.data.user);
             setFeedCount(result.data.count);
-            setFollower(result.data.follow.follower);
-            setFollowing(result.data.follow.following);
+            setFollowers(result.data.followers || []);
+            setFollowings(result.data.followings || []);
             console.log(result.data);
         })
         .catch(err => {
@@ -42,8 +42,8 @@ function UserInfo({nickname}) {
                 </div>
                 <div className="status">
                     <div>{feedCount} 게시물</div>
-                    <div>{following.length} 팔로잉</div>
-                    <div>{follower.length} 팔로워</div>
+                    <div>{followings.length} 팔로잉</div>
+                    <div>{followers.length} 팔로워</div>
                 </div>
             </div>
         </div>

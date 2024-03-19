@@ -222,7 +222,7 @@ function Feed(props) {
                         <img src={profileimg || ImgUser} />
                     </div>
                     <div className="nickname link">{writerInfo.nickname}</div>
-                    <Dropdown pagename={'profile'} feedid={feed.id} toggleModal={toggleModal} style={style1} writerInfo={writerInfo} />
+                    <Dropdown pagename={'profile'} feedid={feed.id} toggleModal={toggleModal} style={style1} writer={feed.writer} />
                 </div>
                 <div className="timestamp">
                     {feed.createdat}

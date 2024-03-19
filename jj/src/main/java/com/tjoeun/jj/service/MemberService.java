@@ -1,6 +1,5 @@
 package com.tjoeun.jj.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,25 +12,30 @@ import com.tjoeun.jj.dao.MemberRepository;
 import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Member;
 
+import jakarta.persistence.EntityManager;
+
 @Service
 @Transactional
 public class MemberService {
-
+	
+	@Autowired
+	EntityManager em;
+	
 	@Autowired
 	MemberRepository mr;
-	
+
 	@Autowired
 	FollowRepository fr;
-	
+
 	public Member getMemberByEmail(String email) {
 		Optional<Member> member = mr.findById(email);
-		
+		em.clear();
 		return member.isPresent() ? member.get() : null;
 	}
 
 	public Member getMemberByNickname(String nickname) {
 		Optional<Member> member = mr.findByNickname(nickname);
-		
+		em.clear();
 		return member.isPresent() ? member.get() : null;
 	}
 
@@ -44,27 +48,25 @@ public class MemberService {
 	}
 
 	public void toggleFollow(Follow follow) {
-		Optional<Follow> mdto = fr.findByFollowerAndFollowing(follow.getFollower(), follow.getFollowing());
-		
-		if(mdto.isPresent()) {
-			fr.delete(mdto.get());
-		}else {
+		Optional<Follow> fdto = fr.findByFollowerAndFollowing(follow.getFollower(), follow.getFollowing());
+
+		if (fdto.isPresent()) {
+			fr.delete(fdto.get());
+		} else {
 			fr.save(follow);
 		}
-		
+
 	}
 
+	public List<String> getFollowingsByNickname(String nickname) {
 
-	public HashMap<String, Object> getFollowAndFollowing(String nickname) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		Optional<List<Follow>> frdto = fr.findByFollowing(nickname);
-		Optional<List<Follow>> fidto = fr.findByFollower(nickname);
-		
-		result.put("following", frdto);
-		result.put("follower", fidto);
-		
-		return result;
+		return fr.findFollowingsByNickname(nickname);
+
+	}
+
+	public List<String> getFollowersByNickname(String nickname) {
+
+		return fr.findFollowersByNickname(nickname);
 	}
 
 }
-

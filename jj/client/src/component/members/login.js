@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../../store/userSlice';
+import { setFollowAction } from '../../store/followSlice';
 
 
 import ImgLogo from '../../images/logo.png';
@@ -31,6 +32,7 @@ function Login() {
                 } else {
                     alert("로그인 되었습니다.");
                     dispatch(loginAction(result.data.loginUser));
+                    getFollow(result.data.loginUser.nickname);
                     navigate('/main');
                     console.log(result.data);
                 }
@@ -40,6 +42,16 @@ function Login() {
                 navigate('/');
             })
     }
+
+    const getFollow = (nickname) => {
+      axios.post('/api/members/getfollow', null, { params: { nickname } })
+          .then(result => {
+              dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }))
+          })
+          .catch(err => {
+              console.error(err);
+          });
+  }
 
     function mousemove(e) {
         var x = e.offsetX;

@@ -168,14 +168,14 @@ public class MemberController {
 	public HashMap<String, Object> getUserInfo(@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
-		HashMap<String, Object> fwdto = ms.getFollowAndFollowing(nickname);
 		Member mdto = ms.getMemberByNickname(nickname);
 		Integer count = fs.getFeedCountByNickname(nickname);
 
 		result.put("message", "OK");
 		mdto.setPwd(null);
 		result.put("user", mdto);
-		result.put("follow", fwdto);
+		result.put("followers", ms.getFollowersByNickname(nickname));
+		result.put("followings", ms.getFollowingsByNickname(nickname)); 
 		result.put("count", count);
 		return result;
 	}
@@ -215,5 +215,15 @@ public class MemberController {
 	@PostMapping("/togglefollow")
 	public void togglefollow(@RequestBody Follow follow) {
 		ms.toggleFollow(follow);
+	}
+
+	@PostMapping("/getfollow")
+	public HashMap<String, Object> getFollow(@RequestParam("nickname") String nickname) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+
+		result.put("followers", ms.getFollowersByNickname(nickname));
+		result.put("followings", ms.getFollowingsByNickname(nickname)); 
+
+		return result;
 	}
 }
