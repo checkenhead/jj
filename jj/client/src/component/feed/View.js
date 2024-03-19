@@ -14,7 +14,7 @@ function View() {
     const [feed, setFeed] = useState({});
     const navigate = useNavigate();
     const param = useParams();
-    const scrollAside = useRef(0);
+    const scrollAside = useRef();
     
     const getFeed = () => {
         axios.post('/api/feeds/getfeedbyid', { id: param.feedid })

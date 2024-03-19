@@ -15,7 +15,7 @@ function Member() {
     const param = useParams();
     const loginUser = useSelector(state => state.user);
     const [summarys, setSummarys] = useState([]);
-    const scrollAside = useRef(0);
+    const scrollAside = useRef();
 
     const navigate = useNavigate();
 
