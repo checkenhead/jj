@@ -1,6 +1,10 @@
 import React from 'react'
-
+import FollowButton from '../utility/FollowButton'
+import { useSelector } from 'react-redux'
 function User({user}) {
+    const loginUserFollow = useSelector(state=>state.follow);
+    const loginUser = useSelector(state=>state.user);
+
     return (
         <div className="user" id="user">
             <div className="row">
@@ -9,7 +13,7 @@ function User({user}) {
                 </div>
                 <div className="nickname">{user.nickname}</div>
                 <div className="btn_follow">
-                    <button>Follow</button>
+                    <FollowButton followState={loginUserFollow.followings.some((following) => following === user.nickname)} follow={{following: user.nickname, follower: loginUser.nickname}}/>
                 </div>
             </div>
             <div className="row">

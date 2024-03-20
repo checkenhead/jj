@@ -119,13 +119,14 @@
 }
 .wrap_sub .user_summary .btn_follow{
     flex: 1;
-
+    width: 100%;
     display: flex;
     justify-content: center;
 
     /* border: 1px solid black; */
 }
 .wrap_sub .user_summary .btn_follow button{
+    flex: 1;
     padding: 5px 15px;
     font-size: 0.8rem;
     font-weight: bold;
@@ -139,6 +140,6 @@
 .wrap_sub .user_summary .btn_follow button:hover{
     color: #BBBBBB;
     border: 3px solid #BBBBBB;
-    transform: scale(0.98);
+    /* transform: scale(0.98); */
     cursor: pointer;
 }

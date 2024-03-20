@@ -5,6 +5,8 @@ import Feed from '../feed/feed';
 import User from './user';
 import Header from '../common/header';
 import Sub from '../common/sub';
+import { useSelector } from 'react-redux';
+
 
 function Result() {
     const navigate = useNavigate();
@@ -16,7 +18,7 @@ function Result() {
 
     const { target, keyword } = useParams();
     const [currentTarget, setCurrentTarget] = useState(target);
-
+    const loginUserFollow = useSelector(state=>state.follow);
     const getResult = () => {
 
         if (currentTarget === "feed") {
@@ -58,7 +60,7 @@ function Result() {
 
     useEffect(() => {
         getResult();
-    }, [currentTarget]);
+    }, [currentTarget,loginUserFollow]);
 
     return (
 
@@ -100,9 +102,9 @@ function Result() {
                                 <div className="result_people">
 
                                     {
-                                        users.map((user) => {
+                                        users.map((user, userIndex) => {
                                             return (
-                                                <User user = {user} />
+                                                <User user = {user} key={userIndex}/>
                                             );
                                         })
                                     }
