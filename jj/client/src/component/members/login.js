@@ -17,6 +17,8 @@ function Login() {
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const dispatch = useDispatch();
+    const MAX_CONTENT_LENGTH = 200;
+    const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
 
     const onLogin = () => {
         if (!email) { return alert('아이디를 입력하세요') }
@@ -57,7 +59,7 @@ function Login() {
         var x = e.offsetX;
         var y = e.offsetY;
         var rotateY = -1 / 5 * x + 20;
-        var rotateX = 4 / 30 * y - 20;
+        var rotateX = 4 / 30 * y - 20; 
         e.target.style.transform = `perspective(350px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     }
 

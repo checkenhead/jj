@@ -27,6 +27,8 @@ function UpdateProfile() {
     const [address1, setAddress1] = useState('');
     const [address2, setAddress2] = useState('');
     const [address3, setAddress3] = useState('');
+    const MAX_CONTENT_LENGTH = 200;
+    const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
 
     const navigate = useNavigate();
     const loginUser = useSelector(state => state.user);
@@ -83,14 +85,18 @@ function UpdateProfile() {
     };
 
     const onFileUpload = (e) => {
-        const formData = new FormData();
-        formData.append('image', e.target.files[0]);
-        axios.post('/api/members/fileupload', formData)
-            .then((result) => {
-                setFilename(result.data.filename);
-                setImgSrc(`http://localhost:8070/images/${result.data.filename}`);
-                // setImgStyle({ display: "block", width: "330px" });
-            })
+        if (e?.target?.files[0]?.size > MAX_CONTENT_SIZE) {
+            alert(`업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`)
+        } else {
+            const formData = new FormData();
+            formData.append('image', e.target.files[0]);
+            axios.post('/api/members/fileupload', formData)
+                .then((result) => {
+                    setFilename(result.data.filename);
+                    setImgSrc(`http://localhost:8070/images/${result.data.filename}`);
+                    // setImgStyle({ display: "block", width: "330px" });
+                })
+        }
     }
 
     const onSubmit = () => {
