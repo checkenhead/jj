@@ -14,8 +14,8 @@ import com.tjoeun.jj.dto.PostDto;
 import com.tjoeun.jj.entity.Bookmarks;
 import com.tjoeun.jj.entity.Feed;
 import com.tjoeun.jj.entity.Likes;
-import com.tjoeun.jj.entity.Member;
 import com.tjoeun.jj.entity.Reply;
+import com.tjoeun.jj.entity.ReplyView;
 import com.tjoeun.jj.service.FeedService;
 import com.tjoeun.jj.service.MemberService;
 
@@ -102,10 +102,10 @@ public class FeedController {
 	}
 
 	@PostMapping("/getreplysbyfeedid")
-	public HashMap<String, Object> getReplysByFeedid(@RequestBody Reply reply) {
+	public HashMap<String, Object> getReplysByFeedid(@RequestBody ReplyView replyview) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
-		result.put("replys", fs.getReplysByFeedid(reply));
+		result.put("replys", fs.getReplysByFeedid(replyview));
 
 		return result;
 	}

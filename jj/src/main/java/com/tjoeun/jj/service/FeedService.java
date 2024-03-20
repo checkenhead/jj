@@ -19,6 +19,7 @@ import com.tjoeun.jj.dao.HashtagRepository;
 import com.tjoeun.jj.dao.LikesRepository;
 import com.tjoeun.jj.dao.MemberRepository;
 import com.tjoeun.jj.dao.ReplyRepository;
+import com.tjoeun.jj.dao.ReplyViewRepository;
 import com.tjoeun.jj.dto.PostDto;
 import com.tjoeun.jj.entity.Bookmarks;
 import com.tjoeun.jj.entity.Feed;
@@ -29,6 +30,7 @@ import com.tjoeun.jj.entity.Hashtag;
 import com.tjoeun.jj.entity.Likes;
 import com.tjoeun.jj.entity.Member;
 import com.tjoeun.jj.entity.Reply;
+import com.tjoeun.jj.entity.ReplyView;
 import com.tjoeun.jj.entity.SummaryView;
 
 @Service
@@ -46,6 +48,9 @@ public class FeedService {
 
 	@Autowired
 	ReplyRepository rr;
+	
+	@Autowired
+	ReplyViewRepository rvr;
 
 	@Autowired
 	BookmarksRepository br;
@@ -130,8 +135,8 @@ public class FeedService {
 		}
 	}
 
-	public List<Reply> getReplysByFeedid(Reply reply) {
-		return rr.findAllByFeedid(reply.getFeedid());
+	public List<ReplyView> getReplysByFeedid(ReplyView replyview) {
+		return rvr.findAllByFeedidOrderByIdAsc(replyview.getFeedid());
 	}
 
 	public void insertReply(Reply reply) {

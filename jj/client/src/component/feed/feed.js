@@ -23,6 +23,9 @@ import ImgCancel from '../../images/cancel.png';
 function Feed(props) {
     const dropdownDisplay1 = useRef(false);
     const dropdownDisplay2 = useRef(false);
+    const setReplyStyle = useRef(false);
+    const elementReply = useRef();
+    const heightReply = useRef();
     const [feed, setFeed] = useState(props.feed);
     const [images, setImages] = useState([]);
     const [writerInfo, setWriterInfo] = useState({});
@@ -37,6 +40,7 @@ function Feed(props) {
     const [isOpen, setIsOpen] = useState(false);
     const [style1, setStyle1] = useState({ opacity: '0', left: '-2px', height: '0px' });
     const [style2, setStyle2] = useState({ opacity: '0', right: '-2px', height: '0px' });
+    const [style3, setStyle3] = useState({ display: 'none' });
     const loginUser = useSelector(state => state.user);
     const navigate = useNavigate();
 
@@ -162,6 +166,7 @@ function Feed(props) {
         getLikes(feed.id);
         getImages(feed.id);
         getReplys(feed.id);
+        heightReply.current = elementReply.current.clientHeight;
     }, []);
 
     const settings = {
@@ -230,6 +235,32 @@ function Feed(props) {
         // console.log(style1);
     }
 
+    const toggleReply = () => {
+        setReplyStyle.current = !setReplyStyle.current;
+
+        if (setReplyStyle.current === false) {
+            setStyle3({
+                opacity: '0',
+                height: '0px',
+                visibility: 'hidden',
+                overflow: 'hidden'
+            })
+            window.document.documentElement.scrollTop -= elementReply.current.clientHeight;
+        } else {
+            setStyle3({
+                opacity: '1',
+                height: 'auto',
+                visibility: 'visible',
+            })
+
+        }
+    }
+
+    useEffect(() => {
+
+        window.document.documentElement.scrollTop += elementReply.current.clientHeight;
+
+    }, [style3])
 
     return (
         <div className="feed">
@@ -298,18 +329,20 @@ function Feed(props) {
                 <div className="like"><img src={iconLike} className="icon" onClick={() => {
                     toggleLikes(feed.id, loginUser.nickname);
                 }} />{likes.length}</div>
-                <div className="reply"><img src={ImgReply} className="icon" />{replys.length}</div>
+                <div className="reply" onClick={() => { toggleReply() }}><img src={ImgReply} className="icon" />{replys.length}</div>
                 <div className="bookmark"><img src={iconBookmark} className="icon" onClick={() => {
                     toggleBookmarks(feed.id, loginUser.nickname);
                 }} />{bookmarks.length}</div>
             </div>
-            <div className="feed_reply">
+            <div className="feed_reply" style={style3} ref={elementReply}>
                 {
                     replys.map((reply) => {
                         return (
                             <div className="reply" key={reply.id}>
-                                <div className="row_reply">
-                                    <img src={ImgUser} className="writer_img" />{reply.writer}
+                                <div className="row_reply profile" onClick={() => {
+                                    navigate(`/member/${reply.writer}`);
+                                }}>
+                                    <img src={`http://localhost:8070/images/${reply.profileimg}`} className="writer_img" />{reply.writer}
                                 </div>
                                 <div className="row_reply content">{reply.content}</div>
                                 <div className="row_reply timestamp">{transDateString(reply.createdat)}</div>
@@ -319,23 +352,23 @@ function Feed(props) {
                     })
                 }
 
-            </div>
-            <div className="input_box">
-                <div ref={inputReply}
-                    contentEditable
-                    suppressContentEditableWarning
-                    placeholder="Reply here"
-                    className="input_reply"
-                    onInput={(e) => {
-                        inputReply.current.textContent = e.currentTarget.textContent;
-                        setReplyContent(e.currentTarget.textContent);
-                    }}>
+                <div className="input_box">
+                    <div ref={inputReply}
+                        contentEditable
+                        suppressContentEditableWarning
+                        placeholder="Reply here"
+                        className="input_reply"
+                        onInput={(e) => {
+                            inputReply.current.textContent = e.currentTarget.textContent;
+                            setReplyContent(e.currentTarget.textContent);
+                        }}>
+                    </div>
+                    <button onClick={() => {
+                        addReply(feed.id, loginUser.nickname, replyContent);
+                        inputReply.current.textContent = '';
+                        setReplyContent('');
+                    }}>확인</button>
                 </div>
-                <button onClick={() => {
-                    addReply(feed.id, loginUser.nickname, replyContent);
-                    inputReply.current.textContent = '';
-                    setReplyContent('');
-                }}>확인</button>
             </div>
         </div>
     )
