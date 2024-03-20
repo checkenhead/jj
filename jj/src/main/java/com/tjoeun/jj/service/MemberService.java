@@ -1,5 +1,6 @@
 package com.tjoeun.jj.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,14 +48,18 @@ public class MemberService {
 		return mr.findAll();
 	}
 
-	public void toggleFollow(Follow follow) {
+	public HashMap<String, Object> toggleFollow(Follow follow) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
 		Optional<Follow> fdto = fr.findByFollowerAndFollowing(follow.getFollower(), follow.getFollowing());
-
+		
+		
 		if (fdto.isPresent()) {	
 			fr.delete(fdto.get());
 		} else {
 			fr.save(follow);
 		}
+		result.put("follower", getFollowersByNickname(follow.getFollowing()));
+		return result;
 
 	}
 

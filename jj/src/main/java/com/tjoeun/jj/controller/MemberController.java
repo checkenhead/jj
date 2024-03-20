@@ -215,8 +215,9 @@ public class MemberController {
 	}
 
 	@PostMapping("/togglefollow")
-	public void togglefollow(@RequestBody Follow follow) {
-		ms.toggleFollow(follow);
+	public HashMap<String, Object> togglefollow(@RequestBody Follow follow) {
+				
+		return ms.toggleFollow(follow);
 	}
 
 	@PostMapping("/getfollow")
