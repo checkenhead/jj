@@ -111,6 +111,16 @@
     box-sizing: border-box;
     flex: 1;
 }
+.wrap_message .wrap_chat .content_box .row_content{
+    width: 100%;
+    margin-bottom: 5px;
+    /* width: calc(100% - 10px); */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    /* border: 1px solid black; */
+}
 /* .wrap_message .wrap_chat .content_box::-webkit-scrollbar{
     width: 10px;
 }
@@ -124,25 +134,38 @@
 /* .wrap_message .wrap_chat .content_box:hover .row_content{
     width: 100%;
 } */
-.wrap_message .wrap_chat .content_box .recieved{
+
+.wrap_message .wrap_chat .content_box .row_content .sender{
+    font-size: 0.8rem;
+    padding: 5px 0;
+    /* border: 1px solid blue; */
+}
+.wrap_message .wrap_chat .content_box .row_content .friend_icon{
+    margin-right: 5px;
+}
+.wrap_message .wrap_chat .content_box .row_content .friend_icon img{
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+    
+}
+.wrap_message .wrap_chat .content_box .row_content .row_content_box{
+    display: flex;
+
+}
+.wrap_message .wrap_chat .content_box .row_content .recieved{
     justify-content: flex-start;
 }
-.wrap_message .wrap_chat .content_box .recieved .content{
+.wrap_message .wrap_chat .content_box .row_content .recieved .content{
     background-color: #EEEEEE;
 }
-.wrap_message .wrap_chat .content_box .sent{
+.wrap_message .wrap_chat .content_box .row_content .sent{
     justify-content: flex-end;
 }
-.wrap_message .wrap_chat .content_box .sent .content{
+.wrap_message .wrap_chat .content_box .row_content .sent .content{
     background-color: #BBBBBB;
-}
-.wrap_message .wrap_chat .content_box .row_content{
-    width: 100%;
-    margin-bottom: 5px;
-    /* width: calc(100% - 10px); */
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
 }
 
 /* 
@@ -158,7 +181,7 @@
 } */
 
 .wrap_message .wrap_chat .content_box .row_content .content{
-    max-width: 80%;
+    max-width: 70%;
     padding: 5px;
     border-radius: 5px;
     word-break: break-all;

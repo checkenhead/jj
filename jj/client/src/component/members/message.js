@@ -104,6 +104,16 @@ function Message() {
             });
     }
 
+    /** currGroup에서 sender의 profileimg를 찾아 return */
+    const getSrcByNickname = (sender) => {
+        for (let i = 0; i < currChatGroup.current.members.length; i++) {
+            if (currChatGroup.current.members[i].nickname === sender) {
+                return 'http://localhost:8070/images/' + currChatGroup.current.members[i].profileimg;
+            }
+        }
+        return null;
+    }
+
     useEffect(() => {
         // getAllMembers();
         getChatGroups(loginUser.nickname);
@@ -146,14 +156,14 @@ function Message() {
                                 //     )
                                 // })
                                 chatGroups.map((chatGroup) => {
-                                    // console.log(chatGroups);
+
                                     return (
                                         <div key={chatGroup.id} className="row_friend">
                                             {
                                                 chatGroup.members.map((member) => {
                                                     return (
                                                         member.nickname !== loginUser.nickname ?
-                                                            <div key={`friend_icon_${member.nickname}`} style={{display: 'flex'}}>
+                                                            <div key={`friend_icon_${member.nickname}`} style={{ display: 'flex' }}>
                                                                 <div >
                                                                     <img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" />
                                                                 </div>
@@ -184,17 +194,17 @@ function Message() {
                                     selectedChatGroup?.members?.map((member, memberIndex) => {
                                         return (
                                             member.nickname !== loginUser.nickname ?
-                                            <>
-                                                <div key={`icon_${memberIndex}`}><img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" /></div>
-                                                <div key={`name_${memberIndex}`} className="friend_nickname">{member.nickname}</div>
-                                            </> : null
+                                                <div key={`icon_${memberIndex}`} style={{ display: 'flex' }}>
+                                                    <div ><img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" /></div>
+                                                    <div className="friend_nickname">{member.nickname}</div>
+                                                </div> : null
                                         );
                                     })
                                 ) : <>
-                                <div><img src={ImgUser} className="friend_icon" /></div>
-                                <div className="friend_nickname"></div>
-                            </>
-                                
+                                    <div><img src={ImgUser} className="friend_icon" /></div>
+                                    <div className="friend_nickname"></div>
+                                </>
+
                             }
                         </div>
 
@@ -202,11 +212,50 @@ function Message() {
                             <div className="background">
                                 <div className="content_box" ref={contentBox}>
 
+                                    {/* <div className="row_content">
+                                        <div className="sender">김스캇</div>
+                                        <div className="row_content_box sent">
+                                            <div className="friend_icon">
+                                                <img src={`http://localhost:8070/images/${getSrcByNickname('김스캇')}`} />
+                                            </div>
+                                            <div className="content">안녕하세요</div>
+                                        </div>
+                                    </div>
+
+                                    <div className="row_content">
+                                        <div className="sender">김스캇</div>
+                                        <div className="row_content_box recieved">
+                                            <div className="friend_icon">
+                                                <img src={`http://localhost:8070/images/${getSrcByNickname('김스캇')}`} />
+                                            </div>
+                                            <div className="content">안녕하세요</div>
+                                        </div>
+                                    </div> */}
                                     {
-                                        currChats.map((chat) => {
+                                        currChats.map((chat, chatIndex) => {
+                                            console.log(currChatGroup);
                                             return (
                                                 <div key={chat.id} className={`row_content ${chat.sender === loginUser.nickname ? 'sent' : 'recieved'}`}>
-                                                    <div className="content">{chat.content}</div>
+                                                    {
+                                                        chat.sender !== loginUser.nickname && chat.sender !== currChats[chatIndex === 0 ? 0 : chatIndex - 1].sender ?
+                                                            <div className="sender">{chat.sender}</div> : null
+                                                    }
+                                                    {
+                                                        <div className={`row_content_box ${chat.sender === loginUser.nickname ? 'sent' : 'recieved'}`}>
+                                                            {
+                                                                chat.sender !== loginUser.nickname ?
+                                                                    <div className="friend_icon">
+                                                                        {
+                                                                            chat.sender !== currChats[chatIndex === 0 ? 0 : chatIndex - 1].sender ?
+                                                                                <img src={getSrcByNickname(chat.sender)} /> : null
+                                                                        }
+
+                                                                    </div> : null
+                                                            }
+                                                            <div className="content">{chat.content}</div>
+                                                        </div>
+
+                                                    }
                                                 </div>)
                                         })
                                     }
