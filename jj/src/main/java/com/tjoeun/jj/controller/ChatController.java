@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tjoeun.jj.dto.ChatGroupDto;
 import com.tjoeun.jj.entity.Chat;
 import com.tjoeun.jj.service.ChatService;
-import com.tjoeun.jj.service.MemberService;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -21,7 +21,6 @@ public class ChatController {
 	@Autowired
 	ChatService cs;
 	
-
 	
 	@PostMapping("/send")
 	public HashMap<String, Object> send (@RequestBody Chat chat) {
@@ -39,16 +38,16 @@ public class ChatController {
 		return result;
 	}
 	
-	@PostMapping("/getAllChatBySenderAndReceiver")
-	public HashMap<String, Object> getAllChatBySenderAndReceiver (@RequestBody Chat chat) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		
-		List<Chat> chats = cs.getAllChatBySenderAndReceiver(chat);
-		
-		result.put("chats", chats);
-		
-		return result;
-	}
+//	@PostMapping("/getAllChatBySenderAndReceiver")
+//	public HashMap<String, Object> getAllChatBySenderAndReceiver (@RequestBody Chat chat) {
+//		HashMap<String, Object> result = new HashMap<String, Object>();
+//		
+//		List<Chat> chats = cs.getAllChatBySenderAndReceiver(chat);
+//		
+//		result.put("chats", chats);
+//		
+//		return result;
+//	}
 	
 	@PostMapping("/getNewChat")
 	public HashMap<String, Object> getNewChat (@RequestBody Chat chat) {
@@ -59,14 +58,19 @@ public class ChatController {
 		return result;
 	}
 	
-	@Autowired
-	MemberService ms;
-	
-	@GetMapping("/getAllMembers")
-	public HashMap<String, Object> getAllMembers () {
+	@PostMapping("/getchatgroupsbynickanme")
+	public HashMap<String, Object> getChatGroupsByNickname (@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
-		result.put("members", ms.getAllMembers());
+		//nickname이 참가하고 있는 chatgroup 리스트
+		List<ChatGroupDto> groups= cs.getChatGroupsByNickname(nickname);
+		
+		//각 chatgroup에 참가하고 있는 멤버 정보 추가
+		for(ChatGroupDto group : groups) {
+			group.setMembers(cs.getMemberByChatgroupid(group.getId()));
+		}
+		
+		result.put("groups", groups);
 		
 		return result;
 	}

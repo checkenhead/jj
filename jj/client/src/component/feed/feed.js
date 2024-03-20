@@ -102,11 +102,11 @@ function Feed(props) {
         const today = new Date();
         const createdat = new Date(dateString);
 
-        console.log('저장된 시간:', createdat, '현재시간:', today);
+        // console.log('저장된 시간:', createdat, '현재시간:', today);
 
         let diff = Math.abs(today.getTime() - createdat.getTime());
         diff = Math.ceil(diff / (1000));
-        console.log(diff);
+        // console.log(diff);
         let result = '';
         if (diff < 60) {
             result = '방금 전'
@@ -195,7 +195,7 @@ function Feed(props) {
     // }
     const setProfileDropdown = () => {
         dropdownDisplay1.current = !dropdownDisplay1.current;
-        console.log(dropdownDisplay1.current, 1);
+        // console.log(dropdownDisplay1.current, 1);
         if (dropdownDisplay1.current === false) {
             setStyle1({
                 opacity: '0',
@@ -209,11 +209,11 @@ function Feed(props) {
                 height: 'auto'
             })
         }
-        console.log(style1);
+        // console.log(style1);
     }
     const setMoreDropdown = () => {
         dropdownDisplay2.current = !dropdownDisplay2.current;
-        console.log(dropdownDisplay2.current, 1);
+        // console.log(dropdownDisplay2.current, 1);
         if (dropdownDisplay2.current === false) {
             setStyle2({
                 opacity: '0',
@@ -227,7 +227,7 @@ function Feed(props) {
                 height: 'auto'
             })
         }
-        console.log(style1);
+        // console.log(style1);
     }
 
 

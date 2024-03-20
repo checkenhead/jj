@@ -46,7 +46,7 @@ public class FeedController {
 			result.put("feed", feed);
 
 		}
-
+	
 		return result;
 	}
 

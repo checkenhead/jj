@@ -62,7 +62,7 @@ function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
             return following === writer
         });
         setFollowState(result);
-        console.log('123123', loginUserFollow, '11', writer);
+        // console.log('123123', loginUserFollow, '11', writer);
     }, [loginUserFollow])
 
     return (
@@ -105,7 +105,7 @@ function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
                                     <div className='dropdown_label'>프로필</div>
                                 </div>
                                 <div className='dropdown_button_wrap' onClick={() => {
-                                    navigate('/messsage')
+                                    navigate('/message', {state:{writer}});
                                 }}>
                                     <div className='dropdown_button DM'>
                                         <img src={ImgMessage} />

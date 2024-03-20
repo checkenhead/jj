@@ -1,9 +1,5 @@
 package com.tjoeun.jj.entity;
 
-import java.sql.Timestamp;
-
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,14 +14,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Chat {
+public class ChatGroup {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private Integer chatgroupid;
-	private String sender;
-//	private String receiver;
-	private String content;
-	@CreationTimestamp
-	private Timestamp createdat;
+	private String createdby;
 }

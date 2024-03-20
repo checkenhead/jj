@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.tjoeun.jj.dao.BookmarksRepository;
 import com.tjoeun.jj.dao.FeedHashtagRepository;
@@ -63,6 +62,7 @@ public class FeedService {
 	@Autowired
 	MemberRepository mr;
 
+	
 	public Feed postFeed(PostDto post) {
 		Feed fdto = null;
 
@@ -213,11 +213,12 @@ public class FeedService {
 		}
 
 	}
-
+	
 	public List<Feed> getFeedByKeyword(String keyword) {
 		
 		
 		return fr.findByKeyword(keyword);
 	}
 
+	
 }

@@ -17,6 +17,9 @@ public interface MemberRepository extends JpaRepository<Member, String>{
 	@Query("select m from Member m where nickname like :keyword")
 	List<Member> findByKeyword(@Param("keyword") String keyword);
 
+	@Query("select m from Member m where nickname in (select cgm.nickname from ChatGroupMember cgm where cgm.chatgroupid = :chatgroupid)")
+	List<Member> findAllByChatgroupidInChatGroupMember(@Param("chatgroupid") Integer chatgroupid);
+
 
 
 	
