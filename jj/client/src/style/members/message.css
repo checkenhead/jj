@@ -12,11 +12,15 @@
 .wrap_message .background{
     width: 100%;
     height: 100%;
+    padding-left: 10px;
+    box-sizing: border-box;
     background-color: white;
 }
 .wrap_message .wrap_friend{
     flex: 2;
+    /* max-width: 300px; */
     height: 100%;
+    
     box-sizing: border-box;
     border-right: 1px solid #DDDDDD;
     overflow-y: scroll;
@@ -72,7 +76,7 @@
     
 }
 .wrap_message .wrap_chat .head_chat{
-    padding: 5px;
+    padding: 10px;
     margin: 0 10px;
     box-sizing: border-box;
     border-bottom: 1px solid #DDDDDD;
@@ -86,6 +90,13 @@
     /* padding-left: 10px; */
     box-sizing: border-box;
     transition: all 1s;
+}
+.wrap_message .wrap_chat .wrap_content .background{
+    width: 100%;
+    height: 100%;
+    /* padding-left: 10px; */
+    box-sizing: border-box;
+    background-color: white;
 }
 .wrap_message .wrap_chat .wrap_content:hover{
     background-color: #DDDDDD;

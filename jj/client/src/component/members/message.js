@@ -33,6 +33,11 @@ function Message() {
     // let allChats = {};
     const allChats = useRef({});
     // const currMember = useRef({});
+    const styleHidden = {display:'none'};
+    const styleShow = {display:''};
+
+    const [chatGroupBoxStyle, setChatGroupBoxStyle] = useState(styleShow);
+    const [chatBoxStyle, setChatBoxStyle] = useState(styleHidden);
 
     const send = () => {
         inputMessage.current.textContent = '';
@@ -141,7 +146,7 @@ function Message() {
             <main>
                 <div className="wrap_message">
 
-                    <div className="wrap_friend" >
+                    <div className="wrap_friend" style={chatGroupBoxStyle}>
                         <div className="background">
                             {
                                 // members.map((member) => {
@@ -170,6 +175,8 @@ function Message() {
                                                                 <div className="friend_nickname" onClick={() => {
                                                                     currChatGroup.current = chatGroup;
                                                                     setSelectedChatGroup(chatGroup);
+                                                                    setChatBoxStyle(styleShow);
+                                                                    setChatGroupBoxStyle(styleHidden);
                                                                 }} >
                                                                     {member.nickname}
                                                                 </div>
@@ -187,7 +194,7 @@ function Message() {
                     </div>
 
 
-                    <div className="wrap_chat">
+                    <div className="wrap_chat" style={chatBoxStyle}>
                         <div className="head_chat">
                             {
                                 selectedChatGroup?.members ? (
@@ -206,12 +213,16 @@ function Message() {
                                 </>
 
                             }
+                            <button onClick={() => {
+                                setChatBoxStyle(styleHidden);
+                                setChatGroupBoxStyle(styleShow);
+                            }}>닫기</button>
                         </div>
 
                         <div className='wrap_content' ref={scrollBox}>
-                            <div className="background">
+                            
                                 <div className="content_box" ref={contentBox}>
-
+                                <div className="background">
                                     {/* <div className="row_content">
                                         <div className="sender">김스캇</div>
                                         <div className="row_content_box sent">
