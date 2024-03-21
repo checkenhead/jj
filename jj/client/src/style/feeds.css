@@ -526,6 +526,7 @@
 .feed .feed_content:has(.toggle_content:checked) {
     /* height: auto; */
     white-space: wrap;
+    word-break: break-all;
 }
 
 .feed .toggle_content::before {

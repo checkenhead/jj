@@ -95,9 +95,16 @@
 
     border: 1px solid #DDDDDD;
 }
+
+.wrap_sub .user_summary .profileimg:hover ,
+.wrap_sub .user_summary .nickname:hover {
+ transform: scale(0.95);
+}
+
 .wrap_sub .user_summary .profileimg{
     width: 50px;
     height: 50px;
+    cursor: pointer;
 }
 .wrap_sub .user_summary .profileimg img{
     width: 100%;
@@ -116,6 +123,7 @@
     justify-content: center;
 
     /* border: 1px solid black; */
+    cursor: pointer;
 }
 .wrap_sub .user_summary .btn_follow{
     flex: 1;

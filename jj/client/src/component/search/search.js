@@ -18,13 +18,17 @@ function Search() {
     const keywordBox = useRef();
 
     const onSearch = () => {
-        axios.post('/api/search/stats', null, { params: { keyword } })
+        if( keyword === ''){
+            alert('검색어를 입력해주세요')
+        }else{
+            axios.post('/api/search/stats', null, { params: { keyword } })
             .then(result => {
                 navigate(`/result/feed/${keyword}`);
             })
             .catch(err => {
                 console.error(err);
             });
+        }
     }
 
     const getFeeds = () => {

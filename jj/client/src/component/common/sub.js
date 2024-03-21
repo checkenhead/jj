@@ -1,11 +1,17 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import Footer from './footer';
 import UserSummary from './usersummary';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 function Sub({ scrollAside }) {
     const currScroll = useRef(0);
     // let currScroll = 0;
+
+    const loginUser = useSelector(state=>state.user);
+
+    const [members, setMembers] = useState([]);
 
     const syncScroll = () => {
         if (scrollAside.current) {
@@ -17,7 +23,18 @@ function Sub({ scrollAside }) {
         }
     }
 
+    const getAllMembersNickname = () => {
+        axios.post('/api/members/getallmembersnickname')
+            .then(result => {
+                setMembers(result.data.members);
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    }
+
     useEffect(() => {
+        getAllMembersNickname();
         window.addEventListener('scroll', syncScroll);
         // scrollAside.current.addEventListener('scroll', syncScroll);
 
@@ -44,13 +61,15 @@ function Sub({ scrollAside }) {
                 <div className="title">Relevant people</div>
                 <div className="relevant_people">
                     {/* 현재 게시물과 관련된 유저 표시 */}
-
-                    <UserSummary />
-                    <UserSummary />
-                    <UserSummary />
-                    <UserSummary />
-                    <UserSummary />
-
+                    {
+                        members.map((member, memberIndex) => {
+                            return (
+                                member.nickname !== loginUser.nickname 
+                                ?<UserSummary member={member} key={memberIndex}/>
+                                : null
+                            );
+                        })
+                    }
                 </div>
             </div>
             <div className="wrap_recommend_people">
@@ -58,11 +77,15 @@ function Sub({ scrollAside }) {
                 <div className="recommend_people">
                     {/* 태그 연관성에 따른 유저 표시 */}
 
-                    <UserSummary />
-                    <UserSummary />
-                    <UserSummary />
-                    <UserSummary />
-                    <UserSummary />
+                    {
+                        members.map((member, memberIndex) => {
+                            return (
+                                member.nickname !== loginUser.nickname 
+                                ?<UserSummary member={member} key={memberIndex}/>
+                                : null
+                            );
+                        })
+                    }
 
                 </div>
             </div>
@@ -78,11 +101,15 @@ function Sub({ scrollAside }) {
                 <div className="recommend_follow">
                     {/* 나를/내가 팔로우하는 사람들이/사람들을 팔로우하는 유저 표시 */}
 
-                    <UserSummary />
-                    <UserSummary />
-                    <UserSummary />
-                    <UserSummary />
-                    <UserSummary />
+                    {
+                        members.map((member, memberIndex) => {
+                            return (
+                                member.nickname !== loginUser.nickname 
+                                ?<UserSummary member={member} key={memberIndex}/>
+                                : null
+                            );
+                        })
+                    }
 
                 </div>
             </div>

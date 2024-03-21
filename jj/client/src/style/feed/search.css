@@ -125,6 +125,11 @@
     /* flex: 1; */
     width: 100px;
     height: 100px;
+
+}
+
+#user .row .profileimg, #user .row .nickname {
+    cursor: pointer;
 }
 #user .row .profileimg img{
     width: 100%;

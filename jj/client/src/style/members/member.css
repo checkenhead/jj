@@ -103,3 +103,62 @@
 .summary .link:hover{
     transform: scale(0.95);
 }
+
+.action_wrap {
+    display: flex;
+    align-items: center;
+}
+
+.action_wrap .DirectMessage, .action_wrap .btn_follow {
+    flex: 1 1;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.1s all;
+}
+
+.action_wrap .btn_follow {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    /* border: 1px solid black; */
+}
+
+.action_wrap .DirectMessage {
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.action_wrap .DirectMessage img{
+    width: 50px;
+    height: 50px;
+}
+
+.action_wrap .DirectMessage:hover {
+    transform: scale(0.95);
+    cursor: pointer;
+}
+
+.action_wrap .btn_follow button{
+    flex: 1;
+    padding: 5px 15px;
+    margin: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: black;
+    border: 3px solid black;
+    border-radius: 5px;
+    background-color: transparent;
+
+    transition: all 0.1s;
+}
+
+.action_wrap .btn_follow button:hover{
+    color: #BBBBBB;
+    border: 3px solid #BBBBBB;
+    /* transform: scale(0.98); */
+    cursor: pointer;
+}

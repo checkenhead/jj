@@ -165,6 +165,13 @@ public class MemberController {
 		}
 		return result;
 	}
+	@PostMapping("/getallmembersnickname")
+	public HashMap<String, Object> getAllMembersNickname(Member member){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		result.put("members", ms.getAllMembers());
+		return result;
+	}
 
 	@PostMapping("/getUserInfo")
 	public HashMap<String, Object> getUserInfo(@RequestParam("nickname") String nickname) {

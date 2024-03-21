@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import FollowButton from '../utility/FollowButton'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 function User({ nickname }) {
     const [currUser, setCurrUser] = useState({});
@@ -11,6 +12,7 @@ function User({ nickname }) {
     const loginUserFollow = useSelector(state => state.follow);
     const loginUser = useSelector(state => state.user);
     const [followState, setFollowState] = useState(loginUserFollow.followings.some((following) => following === nickname));
+    const navigate = useNavigate();
 
     const getUserInfo = () => {
         axios.post('/api/members/getUserInfo', null, { params: { nickname } })
@@ -34,12 +36,22 @@ function User({ nickname }) {
     return (
         <div className="user" id="user">
             <div className="row">
-                <div className="profileimg">
+                <div className="profileimg" onClick={() => {
+                    navigate(`/member/${currUser.nickname}`);
+                }}>
                     <img src={`http://localhost:8070/images/${currUser.profileimg}`} />
                 </div>
-                <div className="nickname">{currUser.nickname}</div>
+                <div className="nickname" onClick={() => {
+                    navigate(`/member/${currUser.nickname}`);
+                }}>
+                    {currUser.nickname}
+                </div>
                 <div className="btn_follow">
-                    <FollowButton followState={followState} follow={{ following: nickname, follower: loginUser.nickname }} />
+                    {
+                        currUser.nickname !== loginUser.nickname
+                            ? <FollowButton followState={followState} follow={{ following: nickname, follower: loginUser.nickname }} />
+                            : null
+                    }
                 </div>
             </div>
             <div className="row">
