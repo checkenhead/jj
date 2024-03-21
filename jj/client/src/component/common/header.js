@@ -66,7 +66,7 @@ function Header({setNewFeed}) {
                         </Link>
                     </div>
                     <div className="row" >
-                        <Link to="" className="link">
+                        <Link to="/bookmarks" className="link">
                             <img src={ImgBookmark} className="icon" /><span className="name">Bookmarks</span>
                         </Link>
                     </div>

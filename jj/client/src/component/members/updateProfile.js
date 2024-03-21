@@ -19,7 +19,7 @@ function UpdateProfile() {
     const [nickname, setNickname] = useState('');
     const [intro, setIntro] = useState('');
     const [email, setEmail] = useState('');
-    const [imgSrc, setImgSrc] = useState('');
+    const [imgSrc, setImgSrc] = useState(ImgUser);
     const [imgStyle, setImgStyle] = useState({ display: "none" });
     const [filename, setFilename] = useState('');
 
@@ -47,7 +47,9 @@ function UpdateProfile() {
 
             setEmail(loginUser.email);
             setNickname(loginUser.nickname);
-            setImgSrc(`http://localhost:8070/images/${loginUser.profileimg}`);
+            if(loginUser.profileimg){
+                setImgSrc(`http://localhost:8070/images/${loginUser.profileimg}`);
+            }
             setZipnum(loginUser.zipnum);
             setAddress1(loginUser.address1);
             setAddress2(loginUser.address2);
@@ -118,6 +120,10 @@ function UpdateProfile() {
                 console.error(error);
             })
     }
+
+    useEffect(() => {
+        
+    }, [onFileUpload])
 
     return (
         <div className="wrap_main">
@@ -202,11 +208,7 @@ function UpdateProfile() {
                     */}
                             </div>
                             <div className='field'>
-                                <div><img src={
-                                    loginUser.profileimg
-                                        ? imgSrc
-                                        : ImgUser
-                                }
+                                <div><img src={imgSrc}
                                     style={{ display: "block", width: "100%", objectFit: 'cover', aspectRatio: '1' }} /></div>
                             </div>
                             <div className='btns'>

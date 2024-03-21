@@ -225,5 +225,16 @@ public class FeedService {
 		return fr.findByKeyword(keyword);
 	}
 
+
+	public List<Feed> getBookmarkfeedsBynickname(PageRequest pageRequest, String nickname) {
+		
+		return  fr.findByBookmark(pageRequest, nickname);
+	}
+
+	public List<SummaryView> getMentionsByNickname(String nickname) {
+		
+		return fr.findMentionsByNickname(nickname);
+	}
+
 	
 }
