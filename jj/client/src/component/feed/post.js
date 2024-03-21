@@ -32,41 +32,47 @@ function Post(props) {
     const [feedimgid, setFeedimgid] = useState([]);
 
     const onPost = () => {
-        axios.post('/api/feeds/post', { feedid, writer: loginUser.nickname, content, feedimgid, filenames: images, styles: filters })
-            .then((result) => {
-                if (result.data.message !== 'OK') {
-                    alert('Feed 업로드에 실패했습니다. 관리자에게 문의하세요.');
-                } else {
-                    inputPost.current.textContent = '';
-                    //document.getElementById("target").textcontent = '';
-                    setContent('');
-                    setImages([]);
-                    setFilters([]);
-                    if (props.setNewFeed) {
-                        props.setNewFeed(() => result.data.feed);
+        if (images.length === 0) {
+            alert('사진 업로드는 필수입니다')
+        } else if (content === '') {
+            alert('내용을 입력해주세요')
+        } else {
+            axios.post('/api/feeds/post', { feedid, writer: loginUser.nickname, content, feedimgid, filenames: images, styles: filters })
+                .then((result) => {
+                    if (result.data.message !== 'OK') {
+                        alert('Feed 업로드에 실패했습니다. 관리자에게 문의하세요.');
                     } else {
-                        if (props.feed) {
-                            const tmp = [...props.feeds]
-                            for (let i = 0; i < props.feeds.length; i++) {
-                                if (tmp[i].id === result.data.feed.id) {
-                                    tmp[i] = result.data.feed;
-                                    break;
+                        inputPost.current.textContent = '';
+                        //document.getElementById("target").textcontent = '';
+                        setContent('');
+                        setImages([]);
+                        setFilters([]);
+                        if (props.setNewFeed) {
+                            props.setNewFeed(() => result.data.feed);
+                        } else {
+                            if (props.feed) {
+                                const tmp = [...props.feeds]
+                                for (let i = 0; i < props.feeds.length; i++) {
+                                    if (tmp[i].id === result.data.feed.id) {
+                                        tmp[i] = result.data.feed;
+                                        break;
+                                    }
                                 }
+                                props.setFeeds(tmp);
                             }
-                            props.setFeeds(tmp);
                         }
-                    }
-                    // alert('Feed가 업로드 되었습니다.');
-                    if (props.setIsOpen) {
-                        props.setIsOpen(false);
-                        document.body.style.overflow = "auto";
-                    }
+                        // alert('Feed가 업로드 되었습니다.');
+                        if (props.setIsOpen) {
+                            props.setIsOpen(false);
+                            document.body.style.overflow = "auto";
+                        }
 
-                }
-            })
-            .catch((err) => {
-                console.error(err);
-            });
+                    }
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        }
     }
 
     const onFileup = (e) => {

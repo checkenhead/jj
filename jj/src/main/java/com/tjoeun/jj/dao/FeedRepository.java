@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.tjoeun.jj.entity.Feed;
+import com.tjoeun.jj.entity.FeedMention;
 import com.tjoeun.jj.entity.SummaryView;
 
 public interface FeedRepository extends JpaRepository<Feed, Integer> {
@@ -27,4 +28,14 @@ public interface FeedRepository extends JpaRepository<Feed, Integer> {
 
 	@Query("select f from Feed f where f.id in (select fh.feedid from FeedHashtag fh where fh.hashtagid in (select h.id from Hashtag h where h.word=:keyword))")
 	List<Feed> findByKeyword (@Param("keyword") String keyword);
+
+	@Query("select f from Feed f where f.id in (select b.feedid from Bookmarks b where b.nickname = :nickname) order by f.id desc")
+	List<Feed> findByBookmark(PageRequest pageRequest, @Param("nickname") String nickname);
+
+	@Query("select sv from SummaryView sv where sv.id in "
+			+ "(select min(sv.id) from SummaryView sv where sv.feedid in"
+			+ "(select fm.feedid from FeedMention fm where fm.nickname = :nickname)"
+			+ " group by sv.feedid)"
+			+ " order by sv.id desc")
+	List<SummaryView> findMentionsByNickname(@Param("nickname") String nickname);
 }

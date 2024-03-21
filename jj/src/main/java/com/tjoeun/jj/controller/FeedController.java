@@ -59,6 +59,16 @@ public class FeedController {
 
 		return result;
 	}
+	
+	@PostMapping("/getbookmarkfeedsbynickname")
+	public HashMap<String, Object> getBookmarkfeedsBynickname(@RequestParam("page") int page, @RequestParam("nickname") String nickname) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		PageRequest pageRequest = PageRequest.of(page, 3);
+		
+		result.put("feeds", fs.getBookmarkfeedsBynickname(pageRequest, nickname));
+		
+		return result;
+	}
 
 	@PostMapping("/getfeedimgbyfeedid")
 	public HashMap<String, Object> getFeedimgByFeedid(@RequestParam("feedid") Integer feedid) {
@@ -77,6 +87,15 @@ public class FeedController {
 
 		return result;
 	}
+	@PostMapping("/getsummarymentions")
+	public HashMap<String, Object> getSummaryMentions(@RequestParam("nickname") String nickname) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		result.put("summarys", fs.getMentionsByNickname(nickname));
+		
+		return result;
+	}
+	
 
 	@PostMapping("/deletebyid")
 	public HashMap<String, Object> deleteById(@RequestBody Feed feed) {

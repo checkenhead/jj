@@ -83,13 +83,13 @@ public class MemberController {
 		Member CheckEmail = ms.getMemberByEmail(member.getEmail());
 
 		if (CheckEmail != null) {
-			result.put("message", "nickname");
+			result.put("message", "email");
 
 		} else {
 			Member CheckNickname = ms.getMemberByNickname(member.getNickname());
 
 			if (CheckNickname != null) {
-				result.put("message", "email");
+				result.put("message", "nickname");
 
 			} else {
 				ms.insertMember(member);

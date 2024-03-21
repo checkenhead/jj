@@ -14,6 +14,7 @@ const EditPassword = lazy(() => import('../component/members/EditPassword'));
 const CurPwdCheck = lazy(() => import('../component/members/CurPwdCheck'));
 const EmailCheck = lazy(() => import('../component/members/EmailCheck'));
 const Message = lazy(() => import('../component/members/message'));
+const Bookmarks = lazy(() => import('../component/feed/bookmarks'));
 
 
 //feed
@@ -83,7 +84,11 @@ const root = createBrowserRouter([
         path: 'result/:target/:keyword',
         element: <Suspense fallback={Loading}><Result /></Suspense>
     },
-
+    {
+        path: 'bookmarks',
+        element: <Suspense fallback={Loading}><Bookmarks /></Suspense>
+    },
+    
 ]);
 
 export default root;

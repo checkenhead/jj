@@ -31,7 +31,8 @@ function Feed(props) {
     const [writerInfo, setWriterInfo] = useState({});
     const [profileimg, setProfileimg] = useState(null);
     const [likes, setLikes] = useState([]);
-    const [iconLike, setIconLike] = useState(ImgUnlike);
+    // const [iconLike, setIconLike] = useState(ImgUnlike);
+    const [stateLike, setStateLike] = useState(false);
     const [replys, setReplys] = useState([]);
     const [bookmarks, setBookmarks] = useState([]);
     const [iconBookmark, setIconBookmark] = useState(ImgBookmark);
@@ -58,10 +59,12 @@ function Feed(props) {
     const getLikes = (feedid) => {
         axios.post('/api/feeds/getlikesbyfeedid', { feedid })
             .then(result => {
-                setIconLike(ImgUnlike);
+                // setIconLike(ImgUnlike);
+                setStateLike(false);
                 setLikes(result.data.likes.map((like) => {
                     if (like.nickname === loginUser.nickname) {
-                        setIconLike(ImgLike);
+                        // setIconLike(ImgLike);
+                        setStateLike(true);
                     }
                     return like.nickname;
                 }));
@@ -126,13 +129,17 @@ function Feed(props) {
     }
 
     const addReply = (feedid, writer, content) => {
-        axios.post('/api/feeds/addreply', { feedid, writer, content })
-            .then(result => {
-                getReplys(feedid);
-            })
-            .catch(err => {
-                console.error(err);
-            });
+        if (replyContent === '') {
+            alert('댓글 내용을 입력해주세요');
+        } else {
+            axios.post('/api/feeds/addreply', { feedid, writer, content })
+                .then(result => {
+                    getReplys(feedid);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        }
     }
 
     const getBookmarks = (feedid) => {
@@ -166,6 +173,7 @@ function Feed(props) {
         getLikes(feed.id);
         getImages(feed.id);
         getReplys(feed.id);
+        getBookmarks(feed.id);
         heightReply.current = elementReply.current.clientHeight;
     }, []);
 
@@ -326,7 +334,8 @@ function Feed(props) {
             </div>
 
             <div className="feed_icon">
-                <div className="like"><img src={iconLike} className="icon" onClick={() => {
+                <div className="like"><img src={stateLike ? ImgLike : ImgUnlike} className="icon" onClick={() => {
+                    setStateLike(!stateLike);
                     toggleLikes(feed.id, loginUser.nickname);
                 }} />{likes.length}</div>
                 <div className="reply" onClick={() => { toggleReply() }}><img src={ImgReply} className="icon" />{replys.length}</div>

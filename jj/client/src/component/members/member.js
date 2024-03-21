@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
@@ -12,6 +12,8 @@ import UserInfo from './UserInfo';
 import Summary from '../feed/Summary';
 
 function Member() {
+    const location = useLocation();
+    // console.log("state", location.state);
     const param = useParams();
     const loginUser = useSelector(state => state.user);
     const [summarys, setSummarys] = useState([]);
@@ -20,14 +22,26 @@ function Member() {
     const navigate = useNavigate();
 
     const getSummaryView = () => {
-        axios.post('/api/feeds/getsummaryview', null, { params: { nickname: param.nickname } })
-        .then(result =>{
-            setSummarys(result.data.summarys);
-            console.log(result.data);
-        })
-        .catch(err => {
-            console.error(err);
-        })
+        if (!location?.state?.action || location?.state?.action === 'feeds') {
+
+            axios.post('/api/feeds/getsummaryview', null, { params: { nickname: param.nickname } })
+                .then(result => {
+                    setSummarys(result.data.summarys);
+                    console.log(result.data);
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        } else {
+            axios.post('/api/feeds/getsummarymentions', null, { params: { nickname: param.nickname } })
+            .then(result => {
+                setSummarys(result.data.summarys);
+                console.log(result.data);
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        }
     }
 
     // const getSummarys = () => {
@@ -64,22 +78,26 @@ function Member() {
         <div className="wrap_main">
             <header><Header /></header>
             <main>
-                <UserInfo nickname={param.nickname}/>
+                <UserInfo nickname={param.nickname} />
                 <div className="tab">
                     <div className="tab_col">
-                        <button className="link">
+                        <button className="link" onClick={() => {
+                            navigate(`/member/${param.nickname}`, { state: { action: 'feeds' } })
+                        }}>
                             <img src={ImgFeeds} className="icon" />
                         </button>
                     </div>
                     <div className="tab_col">
-                        <button className="link">
+                        <button className="link" onClick={() => {
+                            navigate(`/member/${param.nickname}`, { state: { action: 'mentions' } })
+                        }}>
                             <img src={ImgAt} className="icon" />
                         </button>
                     </div>
                 </div>
-                <Summary summarys={summarys}/>
+                <Summary summarys={summarys} />
             </main>
-            <aside id="aside" ref={scrollAside}><Sub scrollAside={scrollAside}/></aside>
+            <aside id="aside" ref={scrollAside}><Sub scrollAside={scrollAside} /></aside>
         </div>
     )
 }
