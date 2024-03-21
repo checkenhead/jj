@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tjoeun.jj.dto.ChatGroupDto;
+import com.tjoeun.jj.dto.ChatGroupMemberDto;
 import com.tjoeun.jj.entity.Chat;
 import com.tjoeun.jj.service.ChatService;
 
@@ -71,6 +72,19 @@ public class ChatController {
 		}
 		
 		result.put("groups", groups);
+		
+		return result;
+	}
+	
+	@PostMapping("creategroup")
+	public HashMap<String, Object> createGroup(@RequestBody ChatGroupMemberDto cgmdto){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		ChatGroupDto group = cs.createGroup(cgmdto.getMembers());
+		group.setMembers(cs.getMemberByChatgroupid(group.getId()));
+		
+		result.put("group", group);
+//		System.out.println(cgmdto.getMembers().size());
 		
 		return result;
 	}

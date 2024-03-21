@@ -20,4 +20,9 @@ public class ChatGroupMember {
 	private Integer id;
 	private Integer chatgroupid;
 	private String nickname;
+	
+	public ChatGroupMember(Integer chatgroupid, String nickname) {
+		this.chatgroupid = chatgroupid;
+		this.nickname = nickname;
+	}
 }

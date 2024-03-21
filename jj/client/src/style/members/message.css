@@ -112,15 +112,13 @@
     border-radius: 5px;
 }
 .wrap_message .wrap_chat .content_box{
-    width: 100%;
-    /* height: 100%; */
     overflow: hidden;
-    display: flex;
+    min-height: 100%;
     flex-direction: column;
     background-color: white;
     padding-left: 10px;
+    padding-top: 10px;
     box-sizing: border-box;
-    flex: 1;
 }
 .wrap_message .wrap_chat .content_box .row_content{
     width: 100%;

@@ -2,8 +2,6 @@ package com.tjoeun.jj.dto;
 
 import java.util.List;
 
-import com.tjoeun.jj.entity.Member;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,10 +11,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatGroupDto{
-	private Integer id;
-	private String createdby;
-	private Integer membercount;
-	private List<Member> members;
-	
+public class ChatGroupMemberDto {
+	private List<String> members;
 }
