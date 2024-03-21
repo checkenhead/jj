@@ -177,7 +177,7 @@ public class MemberController {
 		mdto.setPwd(null);
 		result.put("user", mdto);
 		result.put("followers", ms.getFollowersByNickname(nickname));
-		result.put("followings", ms.getFollowingsByNickname(nickname)); 
+		result.put("followings", ms.getFollowingsByNickname(nickname));
 		result.put("count", count);
 		return result;
 	}
@@ -216,8 +216,14 @@ public class MemberController {
 
 	@PostMapping("/togglefollow")
 	public HashMap<String, Object> togglefollow(@RequestBody Follow follow) {
-				
-		return ms.toggleFollow(follow);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+
+		ms.toggleFollow(follow);
+
+		result.put("followers", ms.getFollowersByNickname(follow.getFollower()));
+		result.put("followings", ms.getFollowingsByNickname(follow.getFollower()));
+
+		return result;
 	}
 
 	@PostMapping("/getfollow")
@@ -225,11 +231,11 @@ public class MemberController {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
 		result.put("followers", ms.getFollowersByNickname(nickname));
-		result.put("followings", ms.getFollowingsByNickname(nickname)); 
+		result.put("followings", ms.getFollowingsByNickname(nickname));
 
 		return result;
 	}
-	
+
 //	@PostMapping("/getMembersByKeyword")
 //	public HashMap<String, Object> getMembersByKeyword(@RequestParam("keyword") String keyword) {
 //		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -238,14 +244,14 @@ public class MemberController {
 //		
 //		return result;
 //	}
-	
+
 	@PostMapping("/getUserInfoByKeyword")
 	public HashMap<String, Object> getUserInfoByKeyword(@RequestParam("keyword") String keyword) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		List<UserInfoDto> users = new ArrayList<UserInfoDto>();
 
 		List<Member> list = ms.getMembersByKeyword(keyword);
-		for(Member mdto : list) {
+		for (Member mdto : list) {
 			UserInfoDto udto = new UserInfoDto();
 			udto.setEmail(mdto.getEmail());
 			udto.setNickname(mdto.getNickname());
