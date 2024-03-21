@@ -41,7 +41,7 @@ public class ChatService {
 		return cr.getNewChat(chat.getChatgroupid(), chat.getId());
 	}
 
-	public List<ChatGroupDto> getChatGroupsByNickname(String nickname) {
+	public List<ChatGroupDto> getAllChatGroupsByNickname(String nickname) {
 		List<ChatGroupDto> groups= new ArrayList<ChatGroupDto>();
 		List<ChatGroup> result = cgr.findAllByNickname(nickname);
 		

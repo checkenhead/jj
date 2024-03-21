@@ -8,6 +8,12 @@
 
     border: 1px solid #DDDDDD;
 }
+.wrap_search .wrap_input{
+    border: 1px solid #DDDDDD;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+}
 .wrap_search .input_search {
     flex: 1;
     margin: 5px;
@@ -15,7 +21,7 @@
     /* margin-bottom: 5px; */
     font-size: 1.2rem;
     padding: 10px;
-    border: 1px solid #DDDDDD;
+    /* border: 1px solid #DDDDDD; */
     border-radius: 5px;
 
     /* display: flex;

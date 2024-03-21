@@ -18,13 +18,13 @@ function Search() {
     const keywordBox = useRef();
 
     const onSearch = () => {
-        axios.post('/api/search/stats', null, {params:{keyword}})
-        .then(result => {
-            navigate(`/result/feed/${keyword}`);
-        })
-        .catch(err => {
-            console.error(err);
-        });
+        axios.post('/api/search/stats', null, { params: { keyword } })
+            .then(result => {
+                navigate(`/result/feed/${keyword}`);
+            })
+            .catch(err => {
+                console.error(err);
+            });
     }
 
     const getFeeds = () => {
@@ -47,42 +47,45 @@ function Search() {
             <main>
                 <div className="wrap_search">
 
-                    <div className="wrap_search_keyword"  >
-                        <div ref={inputSearch}
-                            contentEditable
-                            suppressContentEditableWarning
-                            placeholder="Search here"
-                            className="input_search"
-                            onFocus={() => {
-                                setKeywordBoxStyle({ height: '380px'});
-                            }}
-                            onBlur={() => {
-                                setKeywordBoxStyle({ height: '0', padding: '0' });
-                            }}
-                            onInput={(e) => {
-                                inputSearch.current.textContent = e.currentTarget.textContent;
-                                setKeyword(e.currentTarget.textContent);
-                            }}>
+                    <div className="wrap_search_keyword" >
+                        <div className="wrap_input">
+                            <div ref={inputSearch}
+                                contentEditable
+                                suppressContentEditableWarning
+                                placeholder="Search here"
+                                className="input_search"
+                                onFocus={() => {
+                                    setKeywordBoxStyle({ height: '380px' });
+                                }}
+                                onBlur={() => {
+                                    setKeywordBoxStyle({ height: '0', padding: '0' });
+                                }}
+                                onInput={(e) => {
+                                    inputSearch.current.textContent = e.currentTarget.textContent;
+                                    setKeyword(e.currentTarget.textContent);
+                                }}>
+
+                            </div>
+                            <button onClick={() => {
+                                onSearch();
+                            }}>검색</button>
                         </div>
-                        <button onClick={()=>{
-                            onSearch();
-                        }}>검색</button>
 
                         <div className="wrap_recommend_keyword" style={keywordBoxStyle}>
-                        <div className="box">
-                            <div className="recommend_keyword" >
-                                <div className="keyword">키워드 #1</div>
-                                <div className="keyword">키워드 #2</div>
-                                <div className="keyword">키워드 #3</div>
-                                <div className="keyword">키워드 #4</div>
-                                <div className="keyword">키워드 #5</div>
-                                <div className="keyword">키워드 #6</div>
-                                <div className="keyword">키워드 #7</div>
-                                <div className="keyword">키워드 #8</div>
-                                <div className="keyword">키워드 #9</div>
-                                <div className="keyword">키워드 #10</div>
+                            <div className="box">
+                                <div className="recommend_keyword" >
+                                    <div className="keyword">키워드 #1</div>
+                                    <div className="keyword">키워드 #2</div>
+                                    <div className="keyword">키워드 #3</div>
+                                    <div className="keyword">키워드 #4</div>
+                                    <div className="keyword">키워드 #5</div>
+                                    <div className="keyword">키워드 #6</div>
+                                    <div className="keyword">키워드 #7</div>
+                                    <div className="keyword">키워드 #8</div>
+                                    <div className="keyword">키워드 #9</div>
+                                    <div className="keyword">키워드 #10</div>
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </div>
 
@@ -95,7 +98,7 @@ function Search() {
                                 <User/>
                             );})
                         } */}
-                           
+
                         </div>
                     </div>
                     <div className="wrap_recommend_people">

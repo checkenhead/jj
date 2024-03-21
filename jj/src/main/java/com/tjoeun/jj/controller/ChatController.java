@@ -58,12 +58,12 @@ public class ChatController {
 		return result;
 	}
 	
-	@PostMapping("/getchatgroupsbynickanme")
-	public HashMap<String, Object> getChatGroupsByNickname (@RequestParam("nickname") String nickname) {
+	@PostMapping("/getallchatgroupsbynickanme")
+	public HashMap<String, Object> getAllChatGroupsByNickname (@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
 		//nickname이 참가하고 있는 chatgroup 리스트
-		List<ChatGroupDto> groups= cs.getChatGroupsByNickname(nickname);
+		List<ChatGroupDto> groups= cs.getAllChatGroupsByNickname(nickname);
 		
 		//각 chatgroup에 참가하고 있는 멤버 정보 추가
 		for(ChatGroupDto group : groups) {

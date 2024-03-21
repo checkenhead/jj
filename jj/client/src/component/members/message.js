@@ -9,9 +9,9 @@ import axios from 'axios';
 
 function Message() {
     const location = useLocation();
-    console.log("state", location.state);
-    location.state = {};
-    console.log("state", location.state);
+    // console.log("state", location.state);
+    // location.state = {};
+    // console.log("state", location.state);
 
     const loginUser = useSelector(state => state.user);
     // const [receiver, setReceiver] = useState({});
@@ -99,8 +99,8 @@ function Message() {
     //             console.error(error);
     //         })
     // };
-    const getChatGroups = (nickname) => {
-        axios.post('/api/chat/getchatgroupsbynickanme', null, { params: { nickname } })
+    const getAllChatGroups = (nickname) => {
+        axios.post('/api/chat/getallchatgroupsbynickanme', null, { params: { nickname } })
             .then(result => {
                 setChatGroups(result.data.groups);
             })
@@ -118,10 +118,14 @@ function Message() {
         }
         return null;
     }
+    const createGroup = (...members) => {
+        
+    }
 
     useEffect(() => {
+        createGroup('123', '456', '789');
         // getAllMembers();
-        getChatGroups(loginUser.nickname);
+        getAllChatGroups(loginUser.nickname);
         getNewChat();
         setCurrChats(currChats => allChats.current[currChatGroup.current.id] || []);
 
