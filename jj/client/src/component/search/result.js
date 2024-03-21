@@ -23,7 +23,6 @@ function Result() {
 
         if (currentTarget === "feed") {
             axios.post('/api/feeds/getFeedByKeyword', null, { params: { keyword } })
-
                 .then((result) => {
                     setFeeds(result.data.feeds);
                 })

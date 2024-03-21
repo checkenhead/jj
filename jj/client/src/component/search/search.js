@@ -18,7 +18,13 @@ function Search() {
     const keywordBox = useRef();
 
     const onSearch = () => {
-        navigate(`/result/feed/${keyword}`);
+        axios.post('/api/search/stats', null, {params:{keyword}})
+        .then(result => {
+            navigate(`/result/feed/${keyword}`);
+        })
+        .catch(err => {
+            console.error(err);
+        });
     }
 
     const getFeeds = () => {
