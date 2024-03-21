@@ -48,18 +48,14 @@ public class MemberService {
 		return mr.findAll();
 	}
 
-	public HashMap<String, Object> toggleFollow(Follow follow) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
+	public void toggleFollow(Follow follow) {
 		Optional<Follow> fdto = fr.findByFollowerAndFollowing(follow.getFollower(), follow.getFollowing());
-		
 		
 		if (fdto.isPresent()) {	
 			fr.delete(fdto.get());
 		} else {
 			fr.save(follow);
 		}
-		result.put("follower", getFollowersByNickname(follow.getFollowing()));
-		return result;
 
 	}
 

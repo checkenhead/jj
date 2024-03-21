@@ -15,10 +15,10 @@ function Result() {
     const [newFeed, setNewFeed] = useState({});
     const [users, setUsers] = useState([]);
     const scrollAside = useRef();
-
+    const loginUserFollow = useSelector(state => state.follow);
     const { target, keyword } = useParams();
     const [currentTarget, setCurrentTarget] = useState(target);
-    const loginUserFollow = useSelector(state=>state.follow);
+
     const getResult = () => {
 
         if (currentTarget === "feed") {
@@ -32,7 +32,7 @@ function Result() {
         } else if (currentTarget === "people") {
             axios.post('/api/members/getUserInfoByKeyword', null, { params: { keyword } })
                 .then((result) => {
-                    setUsers(result.data.users);
+                    setUsers(result.data.users.map(user=>{return user.nickname}));
                 })
                 .catch((error) => {
                     console.error(error);
@@ -59,7 +59,7 @@ function Result() {
 
     useEffect(() => {
         getResult();
-    }, [currentTarget,loginUserFollow]);
+    }, [currentTarget]);
 
     return (
 
@@ -103,7 +103,7 @@ function Result() {
                                     {
                                         users.map((user, userIndex) => {
                                             return (
-                                                <User user = {user} key={userIndex}/>
+                                                <User nickname = {user} key={userIndex} />
                                             );
                                         })
                                     }
