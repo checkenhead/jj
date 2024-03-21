@@ -9,9 +9,6 @@ import axios from 'axios';
 
 function Message() {
     const location = useLocation();
-    // console.log("state", location.state);
-    // location.state = {};
-    // console.log("state", location.state);
 
     const loginUser = useSelector(state => state.user);
     // const [receiver, setReceiver] = useState({});
@@ -33,8 +30,8 @@ function Message() {
     // let allChats = {};
     const allChats = useRef({});
     // const currMember = useRef({});
-    const styleHidden = {display:'none'};
-    const styleShow = {display:''};
+    const styleHidden = { display: 'none' };
+    const styleShow = { display: '' };
 
     const [chatGroupBoxStyle, setChatGroupBoxStyle] = useState(styleShow);
     const [chatBoxStyle, setChatBoxStyle] = useState(styleHidden);
@@ -103,6 +100,8 @@ function Message() {
         axios.post('/api/chat/getallchatgroupsbynickanme', null, { params: { nickname } })
             .then(result => {
                 setChatGroups(result.data.groups);
+
+
             })
             .catch(err => {
                 console.error(err);
@@ -118,14 +117,29 @@ function Message() {
         }
         return null;
     }
-    const createGroup = (...members) => {
-        
+
+    const createGroup = (members) => {
+        axios.post('/api/chat/creategroup', { members })
+            .then(result => {
+                currChatGroup.current = result.data.group;
+                setSelectedChatGroup(result.data.group);
+                setChatBoxStyle(styleShow);
+                setChatGroupBoxStyle(styleHidden);
+            })
+            .catch(err => {
+                console.error(err);
+            });
     }
 
     useEffect(() => {
-        createGroup('123', '456', '789');
-        // getAllMembers();
+        if (location.state) {
+            createGroup([loginUser.nickname, location.state.writer]);
+            console.log("location.state.writer : ", location.state.writer);
+            location.state = null;
+        }
+
         getAllChatGroups(loginUser.nickname);
+
         getNewChat();
         setCurrChats(currChats => allChats.current[currChatGroup.current.id] || []);
 
@@ -181,6 +195,7 @@ function Message() {
                                                                     setSelectedChatGroup(chatGroup);
                                                                     setChatBoxStyle(styleShow);
                                                                     setChatGroupBoxStyle(styleHidden);
+                                                                    console.log(chatGroups);
                                                                 }} >
                                                                     {member.nickname}
                                                                 </div>
@@ -224,8 +239,8 @@ function Message() {
                         </div>
 
                         <div className='wrap_content' ref={scrollBox}>
-                            
-                                <div className="content_box" ref={contentBox}>
+
+                            <div className="content_box" ref={contentBox}>
                                 <div className="background">
                                     {/* <div className="row_content">
                                         <div className="sender">김스캇</div>
@@ -248,7 +263,7 @@ function Message() {
                                     </div> */}
                                     {
                                         currChats.map((chat, chatIndex) => {
-                                            console.log(currChatGroup);
+                                            // console.log(currChatGroup);
                                             return (
                                                 <div key={chat.id} className={`row_content ${chat.sender === loginUser.nickname ? 'sent' : 'recieved'}`}>
                                                     {

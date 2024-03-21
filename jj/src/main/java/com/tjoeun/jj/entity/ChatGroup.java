@@ -19,4 +19,10 @@ public class ChatGroup {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String createdby;
+	private Integer membercount;
+	
+	public ChatGroup(String createdby, Integer membercount) {
+		this.createdby = createdby;
+		this.membercount = membercount;
+	}
 }
