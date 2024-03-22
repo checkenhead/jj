@@ -75,4 +75,9 @@ public class MemberService {
 		return mr.findByKeyword("%" + keyword + "%");
 	}
 
+	public List<String> getRecommendPeopleByNickname(String nickname) {
+		
+		return mr.findRecommendPeopleByNickname(nickname);
+	}
+
 }

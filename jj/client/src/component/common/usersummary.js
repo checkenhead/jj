@@ -10,23 +10,24 @@ function UserSummary({ member }) {
     const navigate = useNavigate();
     const loginUserFollow = useSelector(state => state.follow);
     const loginUser = useSelector(state => state.user);
-    const [followState, setFollowState] = useState(loginUserFollow.followings.some((following) => following === member.nickname));
+    const [followState, setFollowState] = useState(loginUserFollow.followings.some((following) => following === member));
 
     const getMemberInfo = () => {
-        axios.post('/api/members/getmemberbynickname', null, { params: { nickname: member.nickname } })
+        axios.post('/api/members/getmemberbynickname', null, { params: { nickname: member } })
             .then(result => {
                 setCurrUser(result.data.user);
-                console.log(result.data.user);
+                // console.log(result.data.user);
             })
             .catch(err => {
                 console.error(err);
             });
     }
 
+
     useEffect(() => {
         getMemberInfo();
         setFollowState(loginUserFollow.followings.some((following) => following === currUser.nickname));
-    }, [loginUserFollow])
+    }, [member])
 
     return (
         <div className="user_summary">

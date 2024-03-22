@@ -8,9 +8,9 @@ import { useSelector } from 'react-redux';
 function Sub({ scrollAside }) {
     const currScroll = useRef(0);
     // let currScroll = 0;
-
-    const loginUser = useSelector(state=>state.user);
-
+    const loginUserFollow = useSelector(state => state.follow);
+    const loginUser = useSelector(state => state.user);
+    const [recommendMember, setRecommendMember] = useState([]);
     const [members, setMembers] = useState([]);
 
     const syncScroll = () => {
@@ -33,7 +33,18 @@ function Sub({ scrollAside }) {
             })
     }
 
+    const getRecommendPeopleBynickname = () => {
+        axios.post('/api/members/getrecommendpeoplebynickname', null, { params: { nickname: loginUser.nickname } })
+            .then(result => {
+                setRecommendMember(result.data.recommendmembers);
+                console.log(result.data.recommendmembers, '추천 유저');
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    }
     useEffect(() => {
+        getRecommendPeopleBynickname();
         getAllMembersNickname();
         window.addEventListener('scroll', syncScroll);
         // scrollAside.current.addEventListener('scroll', syncScroll);
@@ -42,7 +53,11 @@ function Sub({ scrollAside }) {
             window.removeEventListener('scroll', syncScroll);
             // scrollAside.current.addEventListener('scroll', syncScroll);
         }
-    }, []);
+    }, [loginUserFollow]);
+
+    // useEffect(() => {
+    //     getRecommendPeopleBynickname();
+    // },[loginUserFollow])
 
     return (
         <div className="wrap_sub" id="wrap_sub">
@@ -61,15 +76,15 @@ function Sub({ scrollAside }) {
                 <div className="title">Relevant people</div>
                 <div className="relevant_people">
                     {/* 현재 게시물과 관련된 유저 표시 */}
-                    {
+                    {/* {
                         members.map((member, memberIndex) => {
                             return (
-                                member.nickname !== loginUser.nickname 
-                                ?<UserSummary member={member} key={memberIndex}/>
-                                : null
+                                member.nickname !== loginUser.nickname
+                                    ? <UserSummary member={member} key={memberIndex} />
+                                    : null
                             );
                         })
-                    }
+                    } */}
                 </div>
             </div>
             <div className="wrap_recommend_people">
@@ -77,15 +92,15 @@ function Sub({ scrollAside }) {
                 <div className="recommend_people">
                     {/* 태그 연관성에 따른 유저 표시 */}
 
-                    {
+                    {/* {
                         members.map((member, memberIndex) => {
                             return (
-                                member.nickname !== loginUser.nickname 
-                                ?<UserSummary member={member} key={memberIndex}/>
-                                : null
+                                member.nickname !== loginUser.nickname
+                                    ? <UserSummary member={member} key={memberIndex} />
+                                    : null
                             );
                         })
-                    }
+                    } */}
 
                 </div>
             </div>
@@ -102,11 +117,11 @@ function Sub({ scrollAside }) {
                     {/* 나를/내가 팔로우하는 사람들이/사람들을 팔로우하는 유저 표시 */}
 
                     {
-                        members.map((member, memberIndex) => {
+                        recommendMember.map((member, memberIndex) => {
                             return (
-                                member.nickname !== loginUser.nickname 
-                                ?<UserSummary member={member} key={memberIndex}/>
-                                : null
+                                loginUserFollow.followings.some((following) => following === member)
+                                ? null
+                                :<UserSummary member={member} key={memberIndex} />
                             );
                         })
                     }
