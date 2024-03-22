@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 
 import Header from '../common/header';
+import Main from '../common/main';
+import Aside from '../common/aside';
 import Sub from '../common/sub';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -41,36 +43,36 @@ function CurPwdCheck() {
     return (
         <div className="wrap_main">
             <header><Header /></header>
-            <main>
+            <Main component={
                 <div className='updateform'>
-                    <div className='wrap_update'>
-                        <div className='editprofile'>
-                            <div className="logo">EDIT PROFILE</div>
-                            <div className='field'>
-                                <input type="password" value={curpwd} onChange={
-                                    (e) => { setCurPwd(e.currentTarget.value) }
-                                } placeholder='Current Password' />
-                            </div>
-                            <div className='forgotPwd'><label onClick={() => {
-                                navigate('/EmailCheck')
-                            }}>Forgot Password?</label></div>
-                            <div className='btns'>
-                                <div className='updatebutton'>
-                                    <button onClick={
-                                        () => {
-                                            onSubmit();
-                                        }
-                                    }>Submit</button>
-                                    <button onClick={
-                                        () => { navigate(`/member/${loginUser.nickname}`) }
-                                    }>BACK</button>
-                                </div>
+                <div className='wrap_update'>
+                    <div className='editprofile'>
+                        <div className="logo">EDIT PROFILE</div>
+                        <div className='field'>
+                            <input type="password" value={curpwd} onChange={
+                                (e) => { setCurPwd(e.currentTarget.value) }
+                            } placeholder='Current Password' />
+                        </div>
+                        <div className='forgotPwd'><label onClick={() => {
+                            navigate('/EmailCheck')
+                        }}>Forgot Password?</label></div>
+                        <div className='btns'>
+                            <div className='updatebutton'>
+                                <button onClick={
+                                    () => {
+                                        onSubmit();
+                                    }
+                                }>Submit</button>
+                                <button onClick={
+                                    () => { navigate(`/member/${loginUser.nickname}`) }
+                                }>BACK</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </main>
-            <aside id="aside"><Sub /></aside>
+            </div>
+            }/>
+            <Aside component={<Sub />}/>
         </div>
     )
 }

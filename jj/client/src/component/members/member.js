@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 import Header from '../common/header';
+import Main from '../common/main';
+import Aside from '../common/aside';
 import Sub from '../common/sub';
 import ImgSetting from '../../images/setting.png';
 import ImgFeeds from '../../images/feeds.png';
@@ -77,7 +79,8 @@ function Member() {
     return (
         <div className="wrap_main">
             <header><Header /></header>
-            <main>
+            <Main component={
+                <>
                 <UserInfo nickname={param.nickname} />
                 <div className="tab">
                     <div className="tab_col">
@@ -96,8 +99,11 @@ function Member() {
                     </div>
                 </div>
                 <Summary summarys={summarys} />
-            </main>
-            <aside id="aside" ref={scrollAside}><Sub scrollAside={scrollAside} /></aside>
+                </>
+            }/>
+                
+
+            <Aside component={<Sub />}/>
         </div>
     )
 }

@@ -5,7 +5,7 @@ import UserSummary from './usersummary';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-function Sub({ scrollAside }) {
+function Sub() {
     // const currScroll = useRef(0);
     // let currScroll = 0;
     const loginUserFollow = useSelector(state => state.follow);

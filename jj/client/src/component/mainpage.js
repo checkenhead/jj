@@ -31,7 +31,7 @@ function Mainpage() {
     <div className="wrap_main">
       <header><Header setNewFeed={setNewFeed} /></header>
       <Main component={<Feeds newFeed={newFeed} setNewFeed={setNewFeed} />} />
-      <Aside component={<Sub scrollAside={scrollAside} />}/>
+      <Aside component={<Sub />}/>
     </div>
   )
 }

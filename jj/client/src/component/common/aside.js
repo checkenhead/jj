@@ -14,16 +14,19 @@ function Aside({ component }) {
 
     useEffect(() => {
         const inteval = setInterval(() => {
-            const rootHeight = Number(root.style.height.toString().replace('px', ''));
+            if(currComponent.current){
+                const rootHeight = Number(root.style.height.toString().replace('px', ''));
 
-            if (rootHeight < currComponent.current.scrollHeight) {
-                root.style.height = currComponent.current.scrollHeight.toString() + 'px';
+                if (rootHeight < currComponent.current.scrollHeight) {
+                    root.style.height = currComponent.current.scrollHeight.toString() + 'px';
+                }
+    
+                const bodyScroll = document.documentElement.scrollTop;
+    
+                currComponent.current.scrollTop += bodyScroll - currScroll.current;
+                currScroll.current = bodyScroll;
             }
-
-            const bodyScroll = document.documentElement.scrollTop;
-
-            currComponent.current.scrollTop += bodyScroll - currScroll.current;
-            currScroll.current = bodyScroll;
+           
         }, 100);
 
         window.addEventListener('scroll', syncScroll);

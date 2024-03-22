@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 
 import Header from '../common/header';
+import Main from '../common/main';
+import Aside from '../common/aside';
 import Sub from '../common/sub';
 import UserInfo from '../members/UserInfo';
 import Feed from '../feed/feed';
@@ -35,7 +37,8 @@ function View() {
     return (
         <div className="wrap_main">
             <header><Header /></header>
-            <main>
+            <Main component={
+                <>
                 <UserInfo nickname={param.nickname} />
                 <div className='wrap_feeds'>
                     {
@@ -44,8 +47,9 @@ function View() {
                         ) : null
                     }
                 </div>
-            </main>
-            <aside id="aside" ref={scrollAside}><Sub scrollAside={scrollAside}/></aside>
+                </>
+            }/>
+            <Aside component={<Sub/>}/>
         </div>
     )
 }

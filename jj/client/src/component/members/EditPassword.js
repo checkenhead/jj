@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Header from '../common/header';
+import Main from '../common/main';
+import Aside from '../common/aside';
 import Sub from '../common/sub';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutAction } from '../../store/userSlice';
@@ -47,8 +49,7 @@ function EditPassword() {
     return (
         <div className="wrap_main">
             <header><Header /></header>
-            <main>
-                <div className='updateform'>
+            <Main component={<div className='updateform'>
                     <div className='wrap_update'>
                         <div className='editprofile'>
                             <div className="logo">EDIT PROFILE</div>
@@ -76,9 +77,10 @@ function EditPassword() {
                             </div>
                         </div>
                     </div>
-                </div>
-            </main>
-            <aside id="aside"><Sub /></aside>
+                </div>}/>
+                
+
+            <Aside component={<Sub />}/>
         </div>
     )
 }

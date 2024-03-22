@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 import Header from '../common/header';
+import Main from '../common/main';
+import Aside from '../common/aside';
 import Sub from '../common/sub';
 import User from './user';
 import Feed from '../feed/feed';
@@ -48,80 +50,82 @@ function Search() {
     return (
         <div className="wrap_main">
             <header><Header /></header>
-            <main>
+            <Main component={
                 <div className="wrap_search">
 
-                    <div className="wrap_search_keyword" >
-                        <div className="wrap_input">
-                            <div ref={inputSearch}
-                                contentEditable
-                                suppressContentEditableWarning
-                                placeholder="Search here"
-                                className="input_search"
-                                onFocus={() => {
-                                    setKeywordBoxStyle({ height: '380px' });
-                                }}
-                                onBlur={() => {
-                                    setKeywordBoxStyle({ height: '0', padding: '0' });
-                                }}
-                                onInput={(e) => {
-                                    inputSearch.current.textContent = e.currentTarget.textContent;
-                                    setKeyword(e.currentTarget.textContent);
-                                }}>
+                <div className="wrap_search_keyword" >
+                    <div className="wrap_input">
+                        <div ref={inputSearch}
+                            contentEditable
+                            suppressContentEditableWarning
+                            placeholder="Search here"
+                            className="input_search"
+                            onFocus={() => {
+                                setKeywordBoxStyle({ height: '380px' });
+                            }}
+                            onBlur={() => {
+                                setKeywordBoxStyle({ height: '0', padding: '0' });
+                            }}
+                            onInput={(e) => {
+                                inputSearch.current.textContent = e.currentTarget.textContent;
+                                setKeyword(e.currentTarget.textContent);
+                            }}>
 
-                            </div>
-                            <button onClick={() => {
-                                onSearch();
-                            }}>검색</button>
                         </div>
-
-                        <div className="wrap_recommend_keyword" style={keywordBoxStyle}>
-                            <div className="box">
-                                <div className="recommend_keyword" >
-                                    <div className="keyword">키워드 #1</div>
-                                    <div className="keyword">키워드 #2</div>
-                                    <div className="keyword">키워드 #3</div>
-                                    <div className="keyword">키워드 #4</div>
-                                    <div className="keyword">키워드 #5</div>
-                                    <div className="keyword">키워드 #6</div>
-                                    <div className="keyword">키워드 #7</div>
-                                    <div className="keyword">키워드 #8</div>
-                                    <div className="keyword">키워드 #9</div>
-                                    <div className="keyword">키워드 #10</div>
-                                </div>
-                            </div>
-                        </div>
+                        <button onClick={() => {
+                            onSearch();
+                        }}>검색</button>
                     </div>
 
-                    <div className="wrap_recommend_people">
-                        <div className="title">You might like</div>
-                        <div className="recommend_people">
-                            {/* 태그 연관성에 따른 유저 표시 */}
-                            {/* {
-                            users.map((feed) => {return(
-                                <User/>
-                            );})
-                        } */}
-
-                        </div>
-                    </div>
-                    <div className="wrap_recommend_people">
-                        <div className="title">Trends for you</div>
-                        <div className="recommend_feed">
-                            {/* 태그 연관성에 따른 피드 표시 */}
-
-                            {
-                                feeds.map((feed) => {
-                                    return (
-                                        <Feed feed={feed} key={feed.updatedat} feeds={feeds} setFeeds={setFeeds} />
-                                    );
-                                })
-                            }
+                    <div className="wrap_recommend_keyword" style={keywordBoxStyle}>
+                        <div className="box">
+                            <div className="recommend_keyword" >
+                                <div className="keyword">키워드 #1</div>
+                                <div className="keyword">키워드 #2</div>
+                                <div className="keyword">키워드 #3</div>
+                                <div className="keyword">키워드 #4</div>
+                                <div className="keyword">키워드 #5</div>
+                                <div className="keyword">키워드 #6</div>
+                                <div className="keyword">키워드 #7</div>
+                                <div className="keyword">키워드 #8</div>
+                                <div className="keyword">키워드 #9</div>
+                                <div className="keyword">키워드 #10</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </main>
-            <aside id="aside" ref={scrollAside}><Sub scrollAside={scrollAside} /></aside>
+
+                <div className="wrap_recommend_people">
+                    <div className="title">You might like</div>
+                    <div className="recommend_people">
+                        {/* 태그 연관성에 따른 유저 표시 */}
+                        {/* {
+                        users.map((feed) => {return(
+                            <User/>
+                        );})
+                    } */}
+
+                    </div>
+                </div>
+                <div className="wrap_recommend_people">
+                    <div className="title">Trends for you</div>
+                    <div className="recommend_feed">
+                        {/* 태그 연관성에 따른 피드 표시 */}
+
+                        {
+                            feeds.map((feed) => {
+                                return (
+                                    <Feed feed={feed} key={feed.updatedat} feeds={feeds} setFeeds={setFeeds} />
+                                );
+                            })
+                        }
+                    </div>
+                </div>
+            </div>
+            }/>
+                
+            
+            <Aside component={<Sub />}/>
         </div>
     )
 }

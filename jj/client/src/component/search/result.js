@@ -3,7 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import Feed from '../feed/feed';
 import User from './user';
+
 import Header from '../common/header';
+import Main from '../common/main';
+import Aside from '../common/aside';
 import Sub from '../common/sub';
 import { useSelector } from 'react-redux';
 
@@ -32,7 +35,7 @@ function Result() {
         } else if (currentTarget === "people") {
             axios.post('/api/members/getUserInfoByKeyword', null, { params: { keyword } })
                 .then((result) => {
-                    setUsers(result.data.users.map(user=>{return user.nickname}));
+                    setUsers(result.data.users.map(user => { return user.nickname }));
                 })
                 .catch((error) => {
                     console.error(error);
@@ -66,55 +69,59 @@ function Result() {
         <div className="wrap_main">
 
             <header><Header setNewFeed={setNewFeed} /></header>
-            <main>
-                <div className="tab">
-                    <div className="tab_col">
-                        <button className="link" onClick={() => {
-                            // getResult();
-                            setCurrentTarget("feed");
-                            navigate(`/result/feed/${keyword}`);
-                        }}>Feed</button>
+            <Main component={
+                <>
+                    <div className="tab">
+                        <div className="tab_col">
+                            <button className="link" onClick={() => {
+                                // getResult();
+                                setCurrentTarget("feed");
+                                navigate(`/result/feed/${keyword}`);
+                            }}>Feed</button>
+                        </div>
+                        <div className="tab_col">
+                            <button className="link" onClick={() => {
+                                // getResult();
+                                setCurrentTarget("people");
+                                navigate(`/result/people/${keyword}`);
+                            }}>People</button>
+                        </div>
                     </div>
-                    <div className="tab_col">
-                        <button className="link" onClick={() => {
-                            // getResult();
-                            setCurrentTarget("people");
-                            navigate(`/result/people/${keyword}`);
-                        }}>People</button>
-                    </div>
-                </div>
-                <div className="wrap_search">
-                    {
-                        currentTarget === "feed" ? (
-                            <div className="wrap_feeds">
-                                {feeds.length ? (
-                                    feeds.map((feed) => {
-                                        return (
-                                            <Feed feed={feed} key={feed.updatedat} feeds={feeds} setFeeds={setFeeds} />
-                                        );
-                                    })
-                                ) : <div className="empty_feed_message">Feed가 없습니다.</div>
-                                }
-                            </div>
-                        ) : (
-                            <div className="wrap_recommend_people">
-                                <div className="result_people">
-
-                                    {
-                                        users.map((user, userIndex) => {
+                    <div className="wrap_search">
+                        {
+                            currentTarget === "feed" ? (
+                                <div className="wrap_feeds">
+                                    {feeds.length ? (
+                                        feeds.map((feed) => {
                                             return (
-                                                <User nickname = {user} key={userIndex} />
+                                                <Feed feed={feed} key={feed.updatedat} feeds={feeds} setFeeds={setFeeds} />
                                             );
                                         })
+                                    ) : <div className="empty_feed_message">Feed가 없습니다.</div>
                                     }
-
                                 </div>
-                            </div>
-                        )
-                    }
-                </div>
-            </main>
-            <aside id="aside" ref={scrollAside}><Sub scrollAside={scrollAside} /></aside>
+                            ) : (
+                                <div className="wrap_recommend_people">
+                                    <div className="result_people">
+
+                                        {
+                                            users.map((user, userIndex) => {
+                                                return (
+                                                    <User nickname={user} key={userIndex} />
+                                                );
+                                            })
+                                        }
+
+                                    </div>
+                                </div>
+                            )
+                        }
+                    </div>
+                </>
+            } />
+
+            <Aside component={<Sub />}/>
+            
         </div>
 
 

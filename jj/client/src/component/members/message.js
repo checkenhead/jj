@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../common/header';
+import Main from '../common/main';
+
 import ImgUser from '../../images/user.png';
 import '../../style/members/message.css';
 import axios from 'axios';
@@ -161,7 +163,7 @@ function Message() {
 
         <div className="wrap_main">
             <header><Header /></header>
-            <main>
+            <Main component={
                 <div className="wrap_message">
 
                     <div className="wrap_friend" style={chatGroupBoxStyle}>
@@ -243,24 +245,24 @@ function Message() {
                             <div className="content_box" ref={contentBox}>
                                 <div className="background">
                                     {/* <div className="row_content">
-                                        <div className="sender">김스캇</div>
-                                        <div className="row_content_box sent">
-                                            <div className="friend_icon">
-                                                <img src={`http://localhost:8070/images/${getSrcByNickname('김스캇')}`} />
-                                            </div>
-                                            <div className="content">안녕하세요</div>
+                                    <div className="sender">김스캇</div>
+                                    <div className="row_content_box sent">
+                                        <div className="friend_icon">
+                                            <img src={`http://localhost:8070/images/${getSrcByNickname('김스캇')}`} />
                                         </div>
+                                        <div className="content">안녕하세요</div>
                                     </div>
+                                </div>
 
-                                    <div className="row_content">
-                                        <div className="sender">김스캇</div>
-                                        <div className="row_content_box recieved">
-                                            <div className="friend_icon">
-                                                <img src={`http://localhost:8070/images/${getSrcByNickname('김스캇')}`} />
-                                            </div>
-                                            <div className="content">안녕하세요</div>
+                                <div className="row_content">
+                                    <div className="sender">김스캇</div>
+                                    <div className="row_content_box recieved">
+                                        <div className="friend_icon">
+                                            <img src={`http://localhost:8070/images/${getSrcByNickname('김스캇')}`} />
                                         </div>
-                                    </div> */}
+                                        <div className="content">안녕하세요</div>
+                                    </div>
+                                </div> */}
                                     {
                                         currChats.map((chat, chatIndex) => {
                                             // console.log(currChatGroup);
@@ -320,7 +322,9 @@ function Message() {
 
 
                 </div>
-            </main>
+            } />
+
+
 
             {/* <aside id="aside"><Sub /></aside> */}
         </div>
