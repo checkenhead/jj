@@ -133,7 +133,12 @@ public class FeedController {
 	public void addReply(@RequestBody Reply reply) {
 		fs.insertReply(reply);
 	}
-
+	
+	@PostMapping("/deletereply")
+	public void deleteReply(@RequestParam("id") Integer id) {
+		fs.deleteReply(id); 
+	}
+	
 	@PostMapping("/getbookmarksbyfeedid")
 	public HashMap<String, Object> getBookmarksByFeedid(@RequestBody Bookmarks bookmark) {
 		HashMap<String, Object> result = new HashMap<String, Object>();

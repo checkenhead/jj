@@ -682,6 +682,35 @@
     color: #BBBBBB;
 }
 
+.activeBtn .outer{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    padding: 5px;
+    margin: 0 5px;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* background: conic-gradient(blue 277deg, white 0deg); */
+}
+.activeBtn .outer .inner{
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: white;
+    font-size: 0.5rem;
+    color: #BBBBBB;
+}
+
+
 /*jb */
 
 .emoji {
