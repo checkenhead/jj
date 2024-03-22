@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../common/header';
 import Main from '../common/main';
 
+import EmojiPicker from 'emoji-picker-react';
+import ImgEmoji from '../../images/emoji.png';
 import ImgUser from '../../images/user.png';
 import '../../style/members/message.css';
 import axios from 'axios';
@@ -20,6 +22,12 @@ function Message() {
     const inputMessage = useRef();
     const contentBox = useRef();
     const scrollBox = useRef();
+
+    // 이모지, 글자 수 인디케이터
+    const MAX_CONTENT_LENGTH = 200;
+    const [length, setLength] = useState(0);
+    const [emojiStyle, setEmojiStyle] = useState({ display: 'none' });
+    const [onoffCheck, setOnoffCheck] = useState(false);
 
     const [chatGroups, setChatGroups] = useState([]);
     const [selectedChatGroup, setSelectedChatGroup] = useState({});
@@ -131,6 +139,16 @@ function Message() {
             .catch(err => {
                 console.error(err);
             });
+    }
+
+    // 이모지 온오프
+    const onoffEmoji = () => {
+        setOnoffCheck(!onoffCheck)
+        if (onoffCheck == true) {
+            setEmojiStyle({ display: 'none' });
+        } else {
+            setEmojiStyle({ display: 'block' });
+        }
     }
 
     useEffect(() => {
@@ -309,11 +327,37 @@ function Message() {
                                 }} onInput={(e) => {
                                     inputMessage.current.textContent = e.currentTarget.textContent;
                                     setContent(e.currentTarget.textContent);
+                                    setLength(e.currentTarget.textContent.length);
                                 }}>
                             </div>
                             <button ref={inputEnter} onClick={() => {
                                 send();
                             }}>확인</button>
+                        </div>
+                        <div className='activeBtn'>
+                            {
+                                length > 0 ? (
+                                    <button className="btn_emoji" onClick={() => {
+                                        onoffEmoji();
+                                    }}><img src={ImgEmoji} className="icon" /></button>
+                                ) : null
+                            }
+                        </div>
+                        <div className='emoji' style={emojiStyle}>
+                            <EmojiPicker
+                                height={'350px'}
+                                width={'100%'}
+                                emojiStyle={'native'}
+                                emojiVersion={'5.0'}
+                                searchDisabled={true}
+                                previewConfig={{ showPreview: false }}
+                                searchPlaceholder='Search Emoji'
+                                autoFocusSearch={false}
+                                onEmojiClick={(e) => {
+                                    inputMessage.current.textContent += e.emoji;
+                                    setContent(content => content + e.emoji);
+                                }}
+                            />
                         </div>
 
                     </div>

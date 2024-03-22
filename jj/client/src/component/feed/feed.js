@@ -7,7 +7,8 @@ import Modal from "react-modal";
 import Dropdown from './Dropdown';
 //import Editpost from './Editpost';
 import Post from './post';
-
+import EmojiPicker from 'emoji-picker-react';
+import ImgEmoji from '../../images/emoji.png';
 
 import Feedimg from './feedimg';
 import ImgUser from '../../images/user.png';
@@ -44,6 +45,8 @@ function Feed(props) {
     const [style2, setStyle2] = useState({ opacity: '0', right: '-2px', height: '0px' });
     const [style3, setStyle3] = useState({ display: 'none' });
     const [length, setLength] = useState(0);
+    const [emojiStyle, setEmojiStyle] = useState({ display: 'none' });
+    const [onoffCheck, setOnoffCheck] = useState(false);
     const loginUser = useSelector(state => state.user);
     const navigate = useNavigate();
 
@@ -283,6 +286,15 @@ function Feed(props) {
         }
     }
 
+    const onoffEmoji = () => {
+        setOnoffCheck(!onoffCheck)
+        if (onoffCheck == true) {
+            setEmojiStyle({ display: 'none' });
+        } else {
+            setEmojiStyle({ display: 'block' });
+        }
+    }
+
     useEffect(() => {
 
         window.document.documentElement.scrollTop += elementReply.current.clientHeight;
@@ -415,6 +427,29 @@ function Feed(props) {
                         ) : null
 
                     }
+                    {
+                        length > 0 ? (
+                            <button className="btn_emoji" onClick={() => {
+                                onoffEmoji();
+                            }}><img src={ImgEmoji} className="icon" /></button>
+                        ) : null
+                    }
+                </div>
+                <div className='emoji' style={emojiStyle}>
+                    <EmojiPicker
+                        height={'350px'}
+                        width={'100%'}
+                        emojiStyle={'native'}
+                        emojiVersion={'5.0'}
+                        searchDisabled={true}
+                        previewConfig={{ showPreview: false }}
+                        searchPlaceholder='Search Emoji'
+                        autoFocusSearch={false}
+                        onEmojiClick={(e) => {
+                            inputReply.current.textContent += e.emoji;
+                            setReplyContent(content => content + e.emoji);
+                        }}
+                    />
                 </div>
             </div>
         </div>
