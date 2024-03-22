@@ -21,6 +21,7 @@ import ImgMore from '../../images/more.png';
 import ImgCancel from '../../images/cancel.png';
 
 function Feed(props) {
+    const MAX_CONTENT_LENGTH = 200;
     const dropdownDisplay1 = useRef(false);
     const dropdownDisplay2 = useRef(false);
     const setReplyStyle = useRef(false);
@@ -42,6 +43,7 @@ function Feed(props) {
     const [style1, setStyle1] = useState({ opacity: '0', left: '-2px', height: '0px' });
     const [style2, setStyle2] = useState({ opacity: '0', right: '-2px', height: '0px' });
     const [style3, setStyle3] = useState({ display: 'none' });
+    const [length, setLength] = useState(0);
     const loginUser = useSelector(state => state.user);
     const navigate = useNavigate();
 
@@ -131,14 +133,31 @@ function Feed(props) {
     const addReply = (feedid, writer, content) => {
         if (replyContent === '') {
             alert('댓글 내용을 입력해주세요');
+        } else if (replyContent.length > MAX_CONTENT_LENGTH) {
+            alert('입력 가능한 최대 글자수는 200자 입니다');
         } else {
             axios.post('/api/feeds/addreply', { feedid, writer, content })
                 .then(result => {
                     getReplys(feedid);
+                    inputReply.current.textContent = '';
+                    setReplyContent('');
                 })
                 .catch(err => {
                     console.error(err);
                 });
+        }
+    }
+
+    const deleteReply = (id, feedid) => {
+        if (window.confirm('삭제하시겠습니까?')) {
+            axios.post('/api/feeds/deletereply', null, { params: { id } })
+                .then(result => {
+                    alert('삭제 완료');
+                    getReplys(feedid);
+                })
+                .catch(err => {
+                    console.error(err);
+                })
         }
     }
 
@@ -270,6 +289,10 @@ function Feed(props) {
 
     }, [style3])
 
+    useEffect(() => {
+        setLength(inputReply.current.textContent.length);
+    }, [replyContent]);
+
     return (
         <div className="feed" ref={props.scrollRef}>
             <div className="feed_head">
@@ -355,7 +378,13 @@ function Feed(props) {
                                 </div>
                                 <div className="row_reply content">{reply.content}</div>
                                 <div className="row_reply timestamp">{transDateString(reply.createdat)}</div>
-                                <div className="row_reply remove"><img src={ImgRemove} className="icon" /></div>
+                                {
+                                    reply.writer === loginUser.nickname
+                                        ? <div className="row_reply remove" onClick={() => {
+                                            deleteReply(reply.id, reply.feedid);
+                                        }}><img src={ImgRemove} className="icon" /></div>
+                                        : null
+                                }
                             </div>
                         );
                     })
@@ -370,13 +399,22 @@ function Feed(props) {
                         onInput={(e) => {
                             inputReply.current.textContent = e.currentTarget.textContent;
                             setReplyContent(e.currentTarget.textContent);
+                            setLength(e.currentTarget.textContent.length);
                         }}>
                     </div>
                     <button onClick={() => {
                         addReply(feed.id, loginUser.nickname, replyContent);
-                        inputReply.current.textContent = '';
-                        setReplyContent('');
                     }}>확인</button>
+                </div>
+                <div className='activeBtn'>
+                    {
+                        length > 0 ? (
+                            <div className="outer" style={{ background: `conic-gradient(${length > MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length / MAX_CONTENT_LENGTH * 360}deg, white 0deg)` }}>
+                                <div className="inner">{length}</div>
+                            </div>
+                        ) : null
+
+                    }
                 </div>
             </div>
         </div>

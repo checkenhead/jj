@@ -236,5 +236,11 @@ public class FeedService {
 		return fr.findMentionsByNickname(nickname);
 	}
 
+	public void deleteReply(Integer id) {
+		rr.deleteById(id);
+		
+	}
+
+
 	
 }
