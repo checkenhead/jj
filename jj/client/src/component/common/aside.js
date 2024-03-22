@@ -34,6 +34,8 @@ function Aside({ component }) {
         return (() => {
             clearInterval(inteval);
             window.removeEventListener('scroll', syncScroll);
+            document.documentElement.scrollTop = 0;
+            root.style.height = 0;
         });
     }, []);
     

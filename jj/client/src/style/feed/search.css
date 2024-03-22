@@ -28,6 +28,10 @@
     align-items: center; */
 }
 
+.wrap_search :focus > .wrap_recommend_keyword{
+    /* height: 500px; */
+    background-color: red;
+}
 .wrap_search .input_search:hover {
     cursor: text;
 }
@@ -43,7 +47,7 @@
     overflow: hidden;
     box-sizing: border-box;
     transition: all 0.3s;
-    /* border: 1px solid black; */
+    border: 1px solid black;
 }
 .wrap_search .wrap_recommend_keyword .box{
     padding: 5px;

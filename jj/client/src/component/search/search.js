@@ -16,7 +16,7 @@ function Search() {
     const scrollAside = useRef();
     const inputSearch = useRef();
     const [keyword, setKeyword] = useState('');
-    const [keywordBoxStyle, setKeywordBoxStyle] = useState({ height: '0', padding: '0' });
+    const [recentKeywords, setRecentKeywords] = useState([]);
     const keywordBox = useRef();
 
     const onSearch = () => {
@@ -33,6 +33,16 @@ function Search() {
         }
     }
 
+    const getRecentKeyword = () => {
+        axios.get('/api/search/getrecentkeyword')
+        .then(result => {
+            setRecentKeywords(result.data.recent);
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    }
+
     const getFeeds = () => {
         axios.post('/api/feeds/getallfeeds', null, { params: { page: 0 } })
             .then(result => {
@@ -44,6 +54,7 @@ function Search() {
     }
 
     useEffect(() => {
+        getRecentKeyword();
         getFeeds();
     }, []);
 
@@ -60,12 +71,6 @@ function Search() {
                             suppressContentEditableWarning
                             placeholder="Search here"
                             className="input_search"
-                            onFocus={() => {
-                                setKeywordBoxStyle({ height: '380px' });
-                            }}
-                            onBlur={() => {
-                                setKeywordBoxStyle({ height: '0', padding: '0' });
-                            }}
                             onInput={(e) => {
                                 inputSearch.current.textContent = e.currentTarget.textContent;
                                 setKeyword(e.currentTarget.textContent);
@@ -77,19 +82,14 @@ function Search() {
                         }}>검색</button>
                     </div>
 
-                    <div className="wrap_recommend_keyword" style={keywordBoxStyle}>
+                    <div className="wrap_recommend_keyword">
                         <div className="box">
                             <div className="recommend_keyword" >
-                                <div className="keyword">키워드 #1</div>
-                                <div className="keyword">키워드 #2</div>
-                                <div className="keyword">키워드 #3</div>
-                                <div className="keyword">키워드 #4</div>
-                                <div className="keyword">키워드 #5</div>
-                                <div className="keyword">키워드 #6</div>
-                                <div className="keyword">키워드 #7</div>
-                                <div className="keyword">키워드 #8</div>
-                                <div className="keyword">키워드 #9</div>
-                                <div className="keyword">키워드 #10</div>
+                                {
+                                    recentKeywords.map((recentKeyword, recentKeywordIndex) => {return (
+                                        <div key={recentKeywordIndex} className="keyword">{recentKeyword}</div>
+                                    );})
+                                }
                             </div>
                         </div>
                     </div>

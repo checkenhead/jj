@@ -1,5 +1,6 @@
 package com.tjoeun.jj.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ public class SearchService {
 		}
 		
 		kr.save(kdto);
+	}
+
+	public List<String> getRecentKeyword() {
+		return kr.findRecentKeyword();
 	}
 
 }
