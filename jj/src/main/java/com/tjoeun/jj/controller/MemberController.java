@@ -165,10 +165,11 @@ public class MemberController {
 		}
 		return result;
 	}
+
 	@PostMapping("/getallmembersnickname")
-	public HashMap<String, Object> getAllMembersNickname(Member member){
+	public HashMap<String, Object> getAllMembersNickname(Member member) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		
+
 		result.put("members", ms.getAllMembers());
 		return result;
 	}
@@ -273,4 +274,14 @@ public class MemberController {
 		return result;
 	}
 
+	@PostMapping("/getrecommendpeoplebynickname")
+	public HashMap<String, Object> getRecommnedPeopleByNickname(@RequestParam("nickname") String nickname) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+			
+		List<String> list = ms.getRecommendPeopleByNickname(nickname);
+		
+		result.put("recommendmembers", list);
+		
+		return result;
+	}
 }
