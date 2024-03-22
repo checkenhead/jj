@@ -6,22 +6,23 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 function Sub({ scrollAside }) {
-    const currScroll = useRef(0);
+    // const currScroll = useRef(0);
     // let currScroll = 0;
 
     const loginUser = useSelector(state=>state.user);
 
     const [members, setMembers] = useState([]);
 
-    const syncScroll = () => {
-        if (scrollAside.current) {
-            const bodyScroll = document.documentElement.scrollTop;
-            // const sub = document.getElementById("aside");
+    // const syncScroll = () => {
+    //     if (scrollAside.current) {
+    //         const bodyScroll = document.documentElement.scrollTop;
+    //         // const sub = document.getElementById("aside");
 
-            scrollAside.current.scrollTop += bodyScroll - currScroll.current;
-            currScroll.current = bodyScroll;
-        }
-    }
+    //         scrollAside.current.scrollTop += bodyScroll - currScroll.current;
+    //         currScroll.current = bodyScroll;
+    //     }
+    //     // console.log("window.scrollY : ", window.scrollY);
+    // }
 
     const getAllMembersNickname = () => {
         axios.post('/api/members/getallmembersnickname')
@@ -35,13 +36,18 @@ function Sub({ scrollAside }) {
 
     useEffect(() => {
         getAllMembersNickname();
-        window.addEventListener('scroll', syncScroll);
-        // scrollAside.current.addEventListener('scroll', syncScroll);
 
-        return () => {
-            window.removeEventListener('scroll', syncScroll);
-            // scrollAside.current.addEventListener('scroll', syncScroll);
-        }
+        // main의 height가 짧아 스크롤이 없을때(main의 height가 sub의 height보다 작을때) sub가 스크롤 되지 않는데 이때는 root의 height를 조정하여 강제로 스크롤 생성
+        // const root = document.getElementById("root");
+        // root.style.height = '2000px';
+
+        // window.addEventListener('scroll', syncScroll);
+        // // scrollAside.current.addEventListener('scroll', syncScroll);
+
+        // return () => {
+        //     window.removeEventListener('scroll', syncScroll);
+        //     // scrollAside.current.addEventListener('scroll', syncScroll);
+        // }
     }, []);
 
     return (

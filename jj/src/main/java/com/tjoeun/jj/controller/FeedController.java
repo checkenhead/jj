@@ -53,7 +53,7 @@ public class FeedController {
 	@PostMapping("/getallfeeds")
 	public HashMap<String, Object> getAllFeeds(@RequestParam("page") int page) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		PageRequest pageRequest = PageRequest.of(page, 3);
+		PageRequest pageRequest = PageRequest.of(page, 1);
 
 		result.put("feeds", fs.getAllFeeds(pageRequest));
 

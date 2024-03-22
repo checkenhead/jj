@@ -1,50 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useInView } from 'react-intersection-observer';
 import axios from 'axios';
 
 import Post from './post';
 import Feed from './feed';
 
-function Feeds({newFeed, setNewFeed}) {
+function Feeds({ newFeed, setNewFeed }) {
     const [feeds, setFeeds] = useState([]);
-    const [page, setPage] = useState(0);
-    
+    const currPage = useRef(0);
+    const dummyRef = useRef();
+    const [lastFeedRef, inView] = useInView({
+        triggerOnce: true
+    });
 
-    const getFeeds = () => {
-        axios.post('/api/feeds/getallfeeds', null, { params: { page } })
-            .then(result => {
-                setFeeds([...feeds, ...result.data.feeds]);
-            })
-            .catch(err => {
-                console.error(err);
-            });
+    const getFeeds = async () => {
+        try{
+            const result = await axios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } });
+            setFeeds(feeds => [...feeds, ...result.data.feeds]);
+        }catch(err){
+            console.error(err);
+        }
     }
 
-    const scrollHandler = () => {
-        const clientHeight = document.documentElement.clientHeight;
-        const scrollTop = document.documentElement.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight;
-
-        if(clientHeight + scrollTop >= scrollHeight){
-            setPage(page => page + 1);
-        } 
-    };
-
-    useEffect(()=>{
-        window.addEventListener("scroll",scrollHandler);
-        return () => {
-            window.removeEventListener("scroll", scrollHandler);
-        }
-    },[]);
-
     useEffect(() => {
-        getFeeds();
-    }, [page]);
+        getFeeds();        
+    }, [inView]);
 
     useEffect(() => {
         if (newFeed?.id) {
             setFeeds((feeds) => [newFeed, ...feeds]);
             setNewFeed({});
-            console.log(feeds);
         }
     }, [newFeed]);
 
@@ -60,13 +45,14 @@ function Feeds({newFeed, setNewFeed}) {
                 </div>
             </div>
             <div className="wrap_feeds">
-                {feeds.length ? (
-                    feeds.map((feed) => {
-                        return (
-                            <Feed feed={feed} key={feed.updatedat} feeds={feeds} setFeeds={setFeeds} />
-                        );
-                    })
-                ) : <div className="empty_feed_message">Feed가 없습니다.</div>
+                {
+                    feeds.length ? (
+                        feeds.map((feed, feedIndex) => {
+                            return (
+                                <Feed scrollRef={feeds.length-1 === feedIndex ? lastFeedRef : dummyRef} feed={feed} key={feed.updatedat} feeds={feeds} setFeeds={setFeeds} />
+                            );
+                        })
+                    ) : <div className="empty_feed_message">Feed가 없습니다.</div>
                 }
             </div>
         </>

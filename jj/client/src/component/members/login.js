@@ -25,7 +25,7 @@ function Login() {
         if (!pwd) { return alert('패스워드를 입력하세요') }
         axios.post('/api/members/loginlocal', { email, pwd })
             .then((result) => {
-                console.log(result.data)
+                // console.log(result.data)
                 // 로그인 실패 했을 경우
                 if (result.data.message !== 'OK') {
                     setPwd("");
@@ -36,7 +36,7 @@ function Login() {
                     dispatch(loginAction(result.data.loginUser));
                     getFollow(result.data.loginUser.nickname);
                     navigate('/main');
-                    console.log(result.data);
+                    // console.log(result.data);
                 }
             })
             .catch((error) => {
@@ -72,7 +72,7 @@ function Login() {
 
         const scrollY = window.scrollY;
         const rotationAngle = scrollY; // 스크롤 위치에 따라 회전 각도 조절
-        console.log(rotationAngle, rotationAngle * 0.005)
+        // console.log(rotationAngle, rotationAngle * 0.005)
         const items = document.querySelectorAll('.item');
 
         items.forEach(item => {
@@ -92,7 +92,7 @@ function Login() {
             navigate('/main');
         } else {
             var item = document.getElementsByClassName('item')
-            console.log(item.length);
+            // console.log(item.length);
             for (let i = 0; i < item.length; i++) {
                 item[i].addEventListener('mousemove', mousemove);
                 item[i].addEventListener('mouseout', mouseout);

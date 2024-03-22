@@ -1,10 +1,12 @@
-import React, {useState, useRef} from 'react'
+import React, { useState, useRef } from 'react'
 
 import Header from './common/header';
+import Main from './common/main';
+import Aside from './common/aside';
 import Sub from './common/sub';
 import Feeds from './feed/feeds';
 
-function Main() {
+function Mainpage() {
   const [newFeed, setNewFeed] = useState({});
   const scrollAside = useRef();
   // let currScroll = 0;
@@ -27,11 +29,11 @@ function Main() {
 
   return (
     <div className="wrap_main">
-        <header><Header setNewFeed={setNewFeed}/></header>
-        <main><Feeds newFeed={newFeed} setNewFeed={setNewFeed}/></main>
-        <aside id="aside" ref={scrollAside}><Sub scrollAside={scrollAside}/></aside>
+      <header><Header setNewFeed={setNewFeed} /></header>
+      <Main component={<Feeds newFeed={newFeed} setNewFeed={setNewFeed} />} />
+      <Aside component={<Sub scrollAside={scrollAside} />}/>
     </div>
   )
 }
 
-export default Main
+export default Mainpage

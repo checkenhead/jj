@@ -3,7 +3,7 @@ const { createBrowserRouter } = require('react-router-dom');
 
 const Loading = <div><h3>Loadging...</h3></div>
 const Index = lazy(() => import('../component/index'));
-const Main = lazy(() => import('../component/main'));
+const Mainpage = lazy(() => import('../component/mainpage'));
 
 // member
 const Login = lazy(() => import('../component/members/login'));
@@ -62,7 +62,7 @@ const root = createBrowserRouter([
     },
     {
         path: 'main',
-        element: <Suspense fallback={Loading}><Main /></Suspense>
+        element: <Suspense fallback={Loading}><Mainpage /></Suspense>
     },
     {
         path: 'test',

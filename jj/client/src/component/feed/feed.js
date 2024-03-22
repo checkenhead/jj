@@ -271,7 +271,7 @@ function Feed(props) {
     }, [style3])
 
     return (
-        <div className="feed">
+        <div className="feed" ref={props.scrollRef}>
             <div className="feed_head">
                 <div className='headlink_wrap' >
                     <div className="profileimg link" onClick={() => {

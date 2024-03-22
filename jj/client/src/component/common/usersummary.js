@@ -16,7 +16,7 @@ function UserSummary({ member }) {
         axios.post('/api/members/getmemberbynickname', null, { params: { nickname: member.nickname } })
             .then(result => {
                 setCurrUser(result.data.user);
-                console.log(result.data.user);
+                // console.log(result.data.user);
             })
             .catch(err => {
                 console.error(err);
