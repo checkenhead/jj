@@ -23,6 +23,7 @@ body{
     display: flex;
     flex-direction: row;
     justify-content: center;
+    /* align-items: flex-start; */
 }
 .wrap_main header{
     position:relative;
@@ -66,6 +67,8 @@ body{
 @media (max-width: 640px){
     .wrap_main{
         flex-direction: column;
+        justify-content: flex-start;
+        
     }
     .wrap_main header{
         width: 100%;
@@ -75,6 +78,7 @@ body{
     .wrap_main main{
         width: 100%;
         min-width: 100%;
+        /* height: auto !important; */
     }
     .wrap_main aside{
         display: none;

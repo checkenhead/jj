@@ -18,9 +18,14 @@ function Result() {
     const [newFeed, setNewFeed] = useState({});
     const [users, setUsers] = useState([]);
     const scrollAside = useRef();
+    const inputSearch = useRef();
     const loginUserFollow = useSelector(state => state.follow);
     const { target, keyword } = useParams();
     const [currentTarget, setCurrentTarget] = useState(target);
+
+    const [inputKeyword, setInputKeyword] = useState('');
+    const [recentKeywords, setRecentKeywords] = useState([]);
+    const [toggleKeywords, setToggleKeywords] = useState(false);
 
     const getResult = () => {
 
@@ -43,6 +48,30 @@ function Result() {
         }
     }
 
+    const onSearch = (word) => {
+        if (word === '') {
+            alert('검색어를 입력해주세요')
+        } else {
+            axios.post('/api/search/stats', null, { params: { keyword: word } })
+                .then(result => {
+                    navigate(`/result/${target}/${word}`);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        }
+    }
+
+    const getRecentKeyword = () => {
+        axios.get('/api/search/getrecentkeyword')
+            .then(result => {
+                setRecentKeywords(result.data.recent);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
     const scrollHandler = () => {
         const clientHeight = document.documentElement.clientHeight;
         const scrollTop = document.documentElement.scrollTop;
@@ -62,7 +91,8 @@ function Result() {
 
     useEffect(() => {
         getResult();
-    }, [currentTarget]);
+        getRecentKeyword();
+    }, [currentTarget, keyword]);
 
     return (
 
@@ -71,6 +101,62 @@ function Result() {
             <header><Header setNewFeed={setNewFeed} /></header>
             <Main component={
                 <>
+                    <div className="search_container">
+                        <div className="wrap_search_keyword" >
+                            <div>
+                                <div className="wrap_input">
+                                    <div ref={inputSearch}
+                                        contentEditable
+                                        suppressContentEditableWarning
+                                        placeholder="Search here"
+                                        className="input_search"
+                                        onFocus={() => {
+                                            setToggleKeywords(true);
+                                        }}
+                                        onBlur={() => {
+                                            setToggleKeywords(false);
+                                        }}
+                                        onInput={(e) => {
+                                            inputSearch.current.textContent = e.currentTarget.textContent;
+                                            setInputKeyword(e.currentTarget.textContent);
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (e.nativeEvent.key === "Enter") {
+                                                setToggleKeywords(false);
+                                                onSearch(inputKeyword);
+                                            }
+                                        }}>
+
+                                    </div>
+                                    <button onClick={() => {
+                                        setToggleKeywords(false);
+                                        onSearch(inputKeyword);
+                                    }}>Search</button>
+                                </div>
+                            </div>
+                            {
+                                toggleKeywords ? (
+                                    <div className="recommend_keyword" >
+                                        {
+                                            recentKeywords.map((recentKeyword, recentKeywordIndex) => {
+                                                return (
+                                                    <div key={recentKeywordIndex} className="keyword" onMouseEnter={() => {
+                                                        inputSearch.current.textContent = recentKeyword;
+                                                        setInputKeyword(recentKeyword);
+                                                    }}
+                                                        onMouseLeave={() => {
+                                                            inputSearch.current.textContent = '';
+                                                            setInputKeyword('');
+                                                        }}>{recentKeyword}</div>
+                                                );
+                                            })
+                                        }
+                                    </div>
+                                ) : null
+                            }
+                        </div>
+                    </div>
+
                     <div className="tab">
                         <div className="tab_col">
                             <button className="link" onClick={() => {
@@ -120,8 +206,8 @@ function Result() {
                 </>
             } />
 
-            <Aside component={<Sub />}/>
-            
+            <Aside component={<Sub />} />
+
         </div>
 
 

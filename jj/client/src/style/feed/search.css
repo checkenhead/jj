@@ -2,86 +2,117 @@
     position: relative;
     width: 100%;
     min-height: calc(100vh - 10px);
-    /* padding: 5px; */
+    padding: 5px;
     box-sizing: border-box;
     background-color: white;
 
     border: 1px solid #DDDDDD;
 }
-.wrap_search .wrap_input{
+.search_container{
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: white;
     border: 1px solid #DDDDDD;
-    margin: 10px;
-    padding: 10px;
-    display: flex;
+    box-sizing: border-box;
 }
-.wrap_search .input_search {
+.wrap_search_keyword{
+    width: 100%;
+    padding: 5px;
+    /* margin-bottom: 20px; */
+    border-radius: 30px;
+    /* margin: 10px; */
+
+    border: 1px solid #DDDDDD;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    
+    
+}
+.wrap_search_keyword .wrap_input{
+    /* height: 50px; */
+    /* padding: 5px; */
+    
+    box-sizing: border-box;
+    
+    /* padding: 10px; */
+    display: flex;
+    /* align-items: center; */
+
+    
+}
+.wrap_search_keyword .wrap_input .input_search {
     flex: 1;
-    margin: 5px;
-    min-height: 20px;
+    /* margin: 5px; */
+    /* height: 40px; */
     /* margin-bottom: 5px; */
     font-size: 1.2rem;
-    padding: 10px;
+    padding: 10px 20px;
+    box-sizing: border-box;
     /* border: 1px solid #DDDDDD; */
-    border-radius: 5px;
+    border-radius: 25px 0 0 25px;
+    /* word-break: break-all; */
+    outline: none;
+    overflow-x: hidden;
+    display: flex;
+    align-items: center;
 
-    /* display: flex;
-    align-items: center; */
+    
+}
+.wrap_search_keyword .wrap_input button{
+    width: 80px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 1px solid #DDDDDD;
+    border-radius: 25px
 }
 
-.wrap_search :focus > .wrap_recommend_keyword{
-    /* height: 500px; */
-    background-color: red;
-}
-.wrap_search .input_search:hover {
+.input_search:hover {
     cursor: text;
 }
-.wrap_search .input_search:empty::before {
+.input_search:empty::before {
     content: attr(placeholder);
     color: #BBBBBB;
     font-weight: bold;
 }
-.wrap_search .wrap_recommend_keyword{
+
+
+.recommend_keyword{
     width: 100%;
-    height: auto;
-    /* padding: 5px; */
-    overflow: hidden;
-    box-sizing: border-box;
-    transition: all 0.3s;
-    border: 1px solid black;
-}
-.wrap_search .wrap_recommend_keyword .box{
-    padding: 5px;
-}
-.wrap_search .recommend_keyword{
-    width: 100%;
-    padding: 5px;
+    padding-top: 10px;
+    padding-bottom: 5px;
     /* margin: 5px; */
     
     box-sizing: border-box;
-    border: 1px solid #DDDDDD;
+    /* border: 1px solid #DDDDDD; */
 
     display: flex;
     flex-direction: column;
+    
 }
-.wrap_search .recommend_keyword .keyword{
-    padding: 5px;
+.recommend_keyword .keyword{
+    padding: 5px 20px;
     font-size: 1.2rem;
+    color: #BBBBBB;
     /* border: 1px solid black; */
     transition: all 0.1s;
 }
-.wrap_search .recommend_keyword .keyword:hover{
-    background-color: #DDDDDD;
+.recommend_keyword .keyword:hover{
+    /* background-color: #DDDDDD; */
+    color: black;
     cursor: pointer;
 }
 .wrap_search .title{
     position: sticky;
-    top: 0;
+    top: -5px;
     padding: 5px;
+    box-sizing: border-box;
     z-index: 1;
     font-size: 1.8rem;
     font-weight: bold;
     margin-bottom: 5px;
-    border-bottom: 1px solid #DDDDDD;
+    /* border-bottom: 1px solid #DDDDDD; */
     background-color: white;
 }
 .wrap_search .recommend_people, .wrap_search .recommend_feed{

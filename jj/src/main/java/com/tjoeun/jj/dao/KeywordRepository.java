@@ -12,7 +12,7 @@ public interface KeywordRepository extends JpaRepository<Keyword, Integer>{
 
 	Optional<Keyword> findByWord(String keyword);
 
-	@Query("select k.word from Keyword k order by count limit 5")
+	@Query("select k.word from Keyword k order by count desc limit 5")
 	List<String> findRecentKeyword();
 
 }
