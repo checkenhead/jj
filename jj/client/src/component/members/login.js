@@ -8,7 +8,20 @@ import { setFollowAction } from '../../store/followSlice';
 
 import ImgLogo from '../../images/logo.png';
 import testImg from '../../images/Koala.jpg'
-import woman from '../../images/woman.jpg'
+
+import woman from '../../images/loginImg/woman.jpg'
+import books from '../../images/loginImg/books.jpg';
+import camera1 from '../../images/loginImg/camera-1.jpg';
+import camera from '../../images/loginImg/camera.jpg';
+import car from '../../images/loginImg/car.jpg';
+import concert from '../../images/loginImg/concert.jpg';
+import girl from '../../images/loginImg/girl.jpg';
+import journey from '../../images/loginImg/journey-.jpg';
+import people from '../../images/loginImg/people.jpg';
+import santorini from '../../images/loginImg/santorini.jpg';
+import selfie from '../../images/loginImg/selfie.jpg';
+import smartphone from '../../images/loginImg/smartphone.jpg';
+
 
 /** 로그인 */
 function Login() {
@@ -122,37 +135,37 @@ function Login() {
           <div className='grid_title'><label>Our Story</label></div>
           <div className='login_grid'>
             <div className='item'>
-              <img src={testImg} className='testImg' />
+              <img src={books} className='testImg' />
             </div>
             <div className='item'>
-              <img src={woman} className='testImg' />
+              <img src={smartphone} className='testImg' />
             </div>
             <div className='item'>
-              <img src={testImg} className='testImg' />
+              <img src={camera1} className='testImg' />
             </div>
             <div className='item'>
-              <img src={woman} className='testImg' />
+              <img src={camera} className='testImg' />
             </div>
             <div className='item'>
-              <img src={testImg} className='testImg' />
+              <img src={car} className='testImg' />
             </div>
             <div className='item'>
-              <img src={woman} className='testImg' />
+              <img src={concert} className='testImg' />
             </div>
             <div className='item'>
-              <img src={testImg} className='testImg' />
+              <img src={girl} className='testImg' />
             </div>
             <div className='item'>
-              <img src={woman} className='testImg' />
+              <img src={journey} className='testImg' />
             </div>
             <div className='item'>
-              <img src={testImg} className='testImg' />
+              <img src={people} className='testImg' />
             </div>
             <div className='item'>
-              <img src={woman} className='testImg' />
+              <img src={santorini} className='testImg' />
             </div>
             <div className='item'>
-              <img src={testImg} className='testImg' />
+              <img src={selfie} className='testImg' />
             </div>
             <div className='item'>
               <img src={woman} className='testImg' />
