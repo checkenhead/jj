@@ -7,7 +7,12 @@ import Main from '../common/main';
 import EmojiPicker from 'emoji-picker-react';
 import ImgEmoji from '../../images/emoji.png';
 import ImgUser from '../../images/user.png';
-import '../../style/members/message.css';
+import ImgBack from '../../images/backward.png';
+import ImgMore from '../../images/more.png';
+import ImgCancel from '../../images/cancel.png';
+import ImgCreate from '../../images/create.png';
+import ImgQuit from '../../images/quit.png';
+
 import axios from 'axios';
 
 
@@ -15,7 +20,6 @@ function Message() {
     const location = useLocation();
 
     const loginUser = useSelector(state => state.user);
-    // const [receiver, setReceiver] = useState({});
     const [content, setContent] = useState('');
 
     const inputEnter = useRef();
@@ -24,7 +28,6 @@ function Message() {
     const scrollBox = useRef();
 
     // 이모지, 글자 수 인디케이터
-    const MAX_CONTENT_LENGTH = 200;
     const [length, setLength] = useState(0);
     const [emojiStyle, setEmojiStyle] = useState({ display: 'none' });
     const [onoffCheck, setOnoffCheck] = useState(false);
@@ -34,17 +37,15 @@ function Message() {
     const currChatGroup = useRef({});
 
     const [currChats, setCurrChats] = useState([]);
-    const [members, setMembers] = useState([]);
-    const [lastChatId, setLastChatId] = useState(0);
 
-    // let allChats = {};
     const allChats = useRef({});
-    // const currMember = useRef({});
     const styleHidden = { display: 'none' };
     const styleShow = { display: '' };
 
     const [chatGroupBoxStyle, setChatGroupBoxStyle] = useState(styleShow);
     const [chatBoxStyle, setChatBoxStyle] = useState(styleHidden);
+
+    const [btnMenuState, setBtnMenuState] = useState(false);
 
     const send = () => {
         inputMessage.current.textContent = '';
@@ -56,12 +57,6 @@ function Message() {
                         alert("Error");
                     } else {
                         setContent('');
-
-                        // const tmp = { ...allChats.current }
-                        // console.log("tmp:", tmp[receiver.nickname]);
-                        // tmp[receiver.nickname] = [...tmp[receiver.nickname], result.data.chat];
-                        // allChats.current = tmp;
-                        // setCurrChats(tmp[receiver.nickname]);
                     }
                 })
                 .catch((error) => {
@@ -76,14 +71,11 @@ function Message() {
             const id = (oldChat && oldChat.length > 0) ? oldChat[oldChat.length - 1].id : 0;
 
             try {
-                // console.log(id);
                 const result = await axios.post('/api/chat/getNewChat', { chatgroupid: currChatGroup.current.id, id: id });
                 if (result.data.chats !== null && result.data.chats.length > 0) {
-                    // console.log(result.data.chats);
                     const tmp = { ...allChats.current };
                     tmp[currChatGroup.current.id] = tmp[currChatGroup.current.id] ?
                         [...tmp[currChatGroup.current.id], ...result.data.chats] : [...result.data.chats];
-                    // console.log(allChats);
                     allChats.current = tmp;
                     setCurrChats(currChats => tmp[currChatGroup.current.id]);
                 }
@@ -91,21 +83,8 @@ function Message() {
                 console.error(err);
             }
         }
-
-        // setTimeout(() => {
-        //     getNewChat();
-        // }, 100);
     };
 
-    // const getAllMembers = () => {
-    //     axios.get('/api/chat/getAllMembers')
-    //         .then((result) => {
-    //             setMembers(result.data.members);
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         })
-    // };
     const getAllChatGroups = (nickname) => {
         axios.post('/api/chat/getallchatgroupsbynickanme', null, { params: { nickname } })
             .then(result => {
@@ -186,27 +165,21 @@ function Message() {
 
                     <div className="wrap_friend" style={chatGroupBoxStyle}>
                         <div className="background">
+                            <div className="head_menu">
+                                <div className="btn create">
+                                    <img src={ImgCreate} />
+                                    <div className="description">새 그룹 만들기</div>
+                                </div>
+                            </div>
                             {
-                                // members.map((member) => {
-                                //     return (
-                                //         <div key={member.nickname} className="row_friend">
-                                //             <div><img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" /></div>
-                                //             <div className="friend_nickname" onClick={() => {
-                                //                 currMember.current = member;
-                                //                 setReceiver(receiver => member);
-                                //             }} >{member.nickname}</div>
-                                //         </div>
-                                //     )
-                                // })
                                 chatGroups.map((chatGroup) => {
-
                                     return (
                                         <div key={chatGroup.id} className="row_friend">
                                             {
                                                 chatGroup.members.map((member) => {
                                                     return (
                                                         member.nickname !== loginUser.nickname ?
-                                                            <div key={`friend_icon_${member.nickname}`} style={{ display: 'flex' }}>
+                                                            <div key={`friend_icon_${member.nickname}`} style={{ display: 'flex', alignItems: 'center', flex: '1' }}>
                                                                 <div >
                                                                     <img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" />
                                                                 </div>
@@ -218,29 +191,33 @@ function Message() {
                                                                     console.log(chatGroups);
                                                                 }} >
                                                                     {member.nickname}
+                                                                    <div className="btn delete"><img src={ImgQuit} /></div>
                                                                 </div>
                                                             </div> : null
                                                     );
                                                 })
                                             }
-
                                         </div>
                                     );
                                 })
                             }
                         </div>
-
                     </div>
 
 
                     <div className="wrap_chat" style={chatBoxStyle}>
                         <div className="head_chat">
+                            <button className="btn_back" onClick={() => {
+                                setChatBoxStyle(styleHidden);
+                                setChatGroupBoxStyle(styleShow);
+                                setBtnMenuState(false);
+                            }}><img src={ImgBack} /></button>
                             {
                                 selectedChatGroup?.members ? (
                                     selectedChatGroup?.members?.map((member, memberIndex) => {
                                         return (
                                             member.nickname !== loginUser.nickname ?
-                                                <div key={`icon_${memberIndex}`} style={{ display: 'flex' }}>
+                                                <div className="head" key={`icon_${memberIndex}`} >
                                                     <div ><img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" /></div>
                                                     <div className="friend_nickname">{member.nickname}</div>
                                                 </div> : null
@@ -250,37 +227,29 @@ function Message() {
                                     <div><img src={ImgUser} className="friend_icon" /></div>
                                     <div className="friend_nickname"></div>
                                 </>
-
                             }
-                            <button onClick={() => {
+                            {/* <button onClick={() => {
                                 setChatBoxStyle(styleHidden);
                                 setChatGroupBoxStyle(styleShow);
-                            }}>닫기</button>
+                            }}>닫기</button> */}
+                            <button className="btn_menu" onClick={() => {
+                                setBtnMenuState(!btnMenuState);
+                            }}><img src={btnMenuState ? ImgCancel : ImgMore} /></button>
+                            {
+                                btnMenuState ? (
+                                    <div className="menu">
+                                        <div className="option">123</div>
+                                        <div className="option">초대하기</div>
+                                        <div className="option">나가기</div>
+                                    </div>
+                                ) : null
+                            }
+
+
                         </div>
-
                         <div className='wrap_content' ref={scrollBox}>
-
                             <div className="content_box" ref={contentBox}>
                                 <div className="background">
-                                    {/* <div className="row_content">
-                                    <div className="sender">김스캇</div>
-                                    <div className="row_content_box sent">
-                                        <div className="friend_icon">
-                                            <img src={`http://localhost:8070/images/${getSrcByNickname('김스캇')}`} />
-                                        </div>
-                                        <div className="content">안녕하세요</div>
-                                    </div>
-                                </div>
-
-                                <div className="row_content">
-                                    <div className="sender">김스캇</div>
-                                    <div className="row_content_box recieved">
-                                        <div className="friend_icon">
-                                            <img src={`http://localhost:8070/images/${getSrcByNickname('김스캇')}`} />
-                                        </div>
-                                        <div className="content">안녕하세요</div>
-                                    </div>
-                                </div> */}
                                     {
                                         currChats.map((chat, chatIndex) => {
                                             // console.log(currChatGroup);
@@ -296,15 +265,13 @@ function Message() {
                                                                 chat.sender !== loginUser.nickname ?
                                                                     <div className="friend_icon">
                                                                         {
-                                                                            chat.sender !== currChats[chatIndex === 0 ? 0 : chatIndex - 1].sender ?
+                                                                            !chatIndex || (chat.sender !== currChats[chatIndex - 1].sender) ?
                                                                                 <img src={getSrcByNickname(chat.sender)} /> : null
                                                                         }
-
                                                                     </div> : null
                                                             }
                                                             <div className="content">{chat.content}</div>
                                                         </div>
-
                                                     }
                                                 </div>)
                                         })
@@ -312,7 +279,6 @@ function Message() {
                                 </div>
                             </div>
                         </div>
-
 
                         <div className="input_box">
                             <div contentEditable
@@ -359,16 +325,9 @@ function Message() {
                                 }}
                             />
                         </div>
-
                     </div>
-
-
-
-
                 </div>
             } />
-
-
 
             {/* <aside id="aside"><Sub /></aside> */}
         </div>

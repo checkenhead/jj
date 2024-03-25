@@ -9,6 +9,7 @@ import './style/feeds.css';
 import './style/dropdown.css';
 import './style/feed/search.css';
 import './style/members/member.css';
+import './style/members/message.css';
 import './style/sub.css';
 import './style/members/join.css';
 import './style/members/login.css';
