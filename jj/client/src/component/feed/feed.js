@@ -408,6 +408,7 @@ function Feed(props) {
                         suppressContentEditableWarning
                         placeholder="Reply here"
                         className="input_reply"
+
                         onInput={(e) => {
                             inputReply.current.textContent = e.currentTarget.textContent;
                             setReplyContent(e.currentTarget.textContent);
@@ -418,7 +419,10 @@ function Feed(props) {
                         addReply(feed.id, loginUser.nickname, replyContent);
                     }}>확인</button>
                 </div>
-                <div className='activeBtn'>
+                <div className='activeBtn' tabIndex='0' >
+                    <button className="btn_emoji" onClick={() => {
+                        onoffEmoji();
+                    }}><img src={ImgEmoji} className="icon" /></button>
                     {
                         length > 0 ? (
                             <div className="outer" style={{ background: `conic-gradient(${length > MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length / MAX_CONTENT_LENGTH * 360}deg, white 0deg)` }}>
@@ -426,13 +430,6 @@ function Feed(props) {
                             </div>
                         ) : null
 
-                    }
-                    {
-                        length > 0 ? (
-                            <button className="btn_emoji" onClick={() => {
-                                onoffEmoji();
-                            }}><img src={ImgEmoji} className="icon" /></button>
-                        ) : null
                     }
                 </div>
                 <div className='emoji' style={emojiStyle}>
