@@ -88,13 +88,7 @@ function Header({setNewFeed}) {
                         </button>
                     </div>
                 </nav>
-                <nav className="hamburger_menu">
-                    <div className="row">
-                        <button className="link">
-                            <img src="" className="icon" /><span className="name">햄버거메뉴</span>
-                        </button>
-                    </div>
-                </nav>
+                
             </div >
             <Modal className="modal" overlayClassName="orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
                 <img src={ImgCancel} className="icon close link" onClick={() => {

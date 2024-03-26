@@ -1,0 +1,17 @@
+.wrap_top{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+
+    /* opacity: 0.5; */
+    /* background-color: black; */
+}
+.wrap_top .hamburger_menu{
+    display: none;
+}
+/* 모바일 */
+@media (max-width: 640px){
+    .wrap_top .hamburger_menu{
+        display: block;
+    }
+}

@@ -5,6 +5,7 @@ import Main from './common/main';
 import Aside from './common/aside';
 import Sub from './common/sub';
 import Feeds from './feed/feeds';
+import TopLayer from './common/toplayer';
 
 function Mainpage() {
   const [newFeed, setNewFeed] = useState({});
@@ -32,6 +33,7 @@ function Mainpage() {
       <header><Header setNewFeed={setNewFeed} /></header>
       <Main component={<Feeds newFeed={newFeed} setNewFeed={setNewFeed} />} />
       <Aside component={<Sub />}/>
+      <TopLayer />
     </div>
   )
 }

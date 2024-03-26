@@ -11,6 +11,7 @@ import './style/feed/search.css';
 import './style/members/member.css';
 import './style/members/message.css';
 import './style/sub.css';
+import './style/top.css';
 import './style/members/join.css';
 import './style/members/login.css';
 import 'slick-carousel/slick/slick.css';
