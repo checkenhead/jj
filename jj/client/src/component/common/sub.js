@@ -135,7 +135,21 @@ function Sub() {
                             );
                         })
                     }
-
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} />
+    
                 </div>
             </div>
             <footer><Footer /></footer>

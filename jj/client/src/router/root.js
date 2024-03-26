@@ -19,6 +19,7 @@ const Bookmarks = lazy(() => import('../component/feed/bookmarks'));
 
 //feed
 const View = lazy(()=> import('../component/feed/View'));
+const Mobile = lazy(()=> import('../component/feed/mobile'));
 
 //search
 const Search = lazy(() => import('../component/search/search'));
@@ -87,6 +88,10 @@ const root = createBrowserRouter([
     {
         path: 'bookmarks',
         element: <Suspense fallback={Loading}><Bookmarks /></Suspense>
+    },
+    {
+        path: 'mobile',
+        element: <Suspense fallback={Loading}><Mobile /></Suspense>
     },
     
 ]);
