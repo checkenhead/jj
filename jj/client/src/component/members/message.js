@@ -179,18 +179,18 @@ function Message() {
                                                 chatGroup.members.map((member) => {
                                                     return (
                                                         member.nickname !== loginUser.nickname ?
-                                                            <div key={`friend_icon_${member.nickname}`} style={{ display: 'flex', alignItems: 'center', flex: '1' }}>
-                                                                <div >
-                                                                    <img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" />
-                                                                </div>
-                                                                <div className="friend_nickname" onClick={() => {
-                                                                    currChatGroup.current = chatGroup;
-                                                                    setSelectedChatGroup(chatGroup);
-                                                                    setChatBoxStyle(styleShow);
-                                                                    setChatGroupBoxStyle(styleHidden);
-                                                                    console.log(chatGroups);
-                                                                }} >
-                                                                    {member.nickname}
+                                                            <div key={`friend_icon_${member.nickname}`} className="friend_nickname">
+                                                                <div className="box_nickname">
+                                                                    <div className="btn align" onClick={() => {
+                                                                        currChatGroup.current = chatGroup;
+                                                                        setSelectedChatGroup(chatGroup);
+                                                                        setChatBoxStyle(styleShow);
+                                                                        setChatGroupBoxStyle(styleHidden);
+                                                                        console.log(chatGroups);
+                                                                    }}>
+                                                                        <img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" />
+                                                                        {member.nickname}
+                                                                    </div>
                                                                     <div className="btn delete"><img src={ImgQuit} /></div>
                                                                 </div>
                                                             </div> : null
