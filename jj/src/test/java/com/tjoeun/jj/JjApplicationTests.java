@@ -34,7 +34,6 @@ class JjApplicationTests {
 				.nickname("scott")
 				.build();
 		member2.addRole(MemberRole.USER);
-		member2.addRole(MemberRole.MANAGER);
 		mr.save(member2);
 		
 		Member member3 = Member.builder()
@@ -43,8 +42,6 @@ class JjApplicationTests {
 				.nickname("김스캇스캇")
 				.build();
 		member3.addRole(MemberRole.USER);
-		member3.addRole(MemberRole.MANAGER);
-		member3.addRole(MemberRole.ADMIN);
 		mr.save(member3);
 	}
 
