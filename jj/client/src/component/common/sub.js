@@ -13,6 +13,7 @@ function Sub() {
     const loginUserFollow = useSelector(state => state.follow);
     const loginUser = useSelector(state => state.user);
     const [recommendMember, setRecommendMember] = useState([]);
+    const [recommendFeeds, setRecommendFeeds] = useState([]);
     const [members, setMembers] = useState([]);
 
     // const syncScroll = () => {
@@ -46,26 +47,37 @@ function Sub() {
                 console.error(err);
             })
     }
+    const getRecommendFeedsBynickname = () => {
+        jwtAxios.post('/api/feeds/getrecommendfeedsbynickname', null, { params: { nickname: loginUser.nickname } })
+            .then(result => {
+                // setRecommendFeeds(result.data.recommendfeeds);
+                console.log(result.data.recommendfeeds, '추천 피드');
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    }
+
     useEffect(() => {
         getRecommendPeopleBynickname();
+        getRecommendFeedsBynickname();
         getAllMembersNickname();
-
     }, [loginUserFollow]);
-        // main의 height가 짧아 스크롤이 없을때(main의 height가 sub의 height보다 작을때) sub가 스크롤 되지 않는데 이때는 root의 height를 조정하여 강제로 스크롤 생성
-        // const root = document.getElementById("root");
-        // root.style.height = '2000px';
+    // main의 height가 짧아 스크롤이 없을때(main의 height가 sub의 height보다 작을때) sub가 스크롤 되지 않는데 이때는 root의 height를 조정하여 강제로 스크롤 생성
+    // const root = document.getElementById("root");
+    // root.style.height = '2000px';
 
-        // window.addEventListener('scroll', syncScroll);
-        // // scrollAside.current.addEventListener('scroll', syncScroll);
+    // window.addEventListener('scroll', syncScroll);
+    // // scrollAside.current.addEventListener('scroll', syncScroll);
 
-        // return () => {
-        //     window.removeEventListener('scroll', syncScroll);
-        //     // scrollAside.current.addEventListener('scroll', syncScroll);
-        // }
+    // return () => {
+    //     window.removeEventListener('scroll', syncScroll);
+    //     // scrollAside.current.addEventListener('scroll', syncScroll);
+    // }
 
 
 
-    
+
     // useEffect(() => {
     //     getRecommendPeopleBynickname();
     // },[loginUserFollow])
@@ -118,42 +130,41 @@ function Sub() {
             </div>
             <div className="wrap_recommend_feed">
                 <div className="recommend_feed">
-                    {/* 태그 연관성에 따른 피드 표시 */}
                     <div className="title">Trends for you</div>
-                    <div className="sub_content feeds">Sub Content #1</div>
+                    <div className="sub_content feeds">
+                        {/* 태그 연관성에 따른 피드 표시 */}
+                        
+                        {/* {
+                            recommendFeeds.map((feed, feedIndex) => {
+                                return (
+                                    <RecommendFeed feed={feed} key={feedIndex} />
+                                )
+                            })
+                        } */}
+                    </div>
                 </div>
             </div>
-            <div className="wrap_recommend_follow">
-                <div className="title">Who to follow</div>
-                <div className="recommend_follow">
-                    {/* 나를/내가 팔로우하는 사람들이/사람들을 팔로우하는 유저 표시 */}
+            {
+                recommendMember.length !== 0
+                    ? (<div className="wrap_recommend_follow">
+                        <div className="title">Who to follow</div>
+                        <div className="recommend_follow">
+                            {/* 나를/내가 팔로우하는 사람들이/사람들을 팔로우하는 유저 표시 */}
 
-                    {
-                        recommendMember.map((member, memberIndex) => {
-                            return (
-                                loginUserFollow.followings.some((following) => following === member)
-                                ? null
-                                :<UserSummary member={member} key={memberIndex} />
-                            );
-                        })
-                    }
-    {/* <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} /> */}
-    
-                </div>
-            </div>
+                            {
+                                recommendMember.map((member, memberIndex) => {
+                                    return (
+                                        loginUserFollow.followings.some((following) => following === member)
+                                            ? null
+                                            : <UserSummary member={member} key={memberIndex} />
+                                    );
+                                })
+                            }
+
+                        </div>
+                    </div>)
+                    : null
+            }
             <footer><Footer /></footer>
         </div>
     )

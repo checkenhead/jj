@@ -21,6 +21,8 @@ function Member() {
     const param = useParams();
     const loginUser = useSelector(state => state.user);
     const [summarys, setSummarys] = useState([]);
+    const styleSelected = { borderBottom: '2px solid #aaaaaa' };
+    const [SelectedTab, setSelectedTab] = useState([true, false]);
     const scrollAside = useRef();
 
     const navigate = useNavigate();
@@ -38,13 +40,13 @@ function Member() {
                 })
         } else {
             jwtAxios.post('/api/feeds/getsummarymentions', null, { params: { nickname: param.nickname } })
-            .then(result => {
-                setSummarys(result.data.summarys);
-                console.log(result.data);
-            })
-            .catch(err => {
-                console.error(err);
-            })
+                .then(result => {
+                    setSummarys(result.data.summarys);
+                    console.log(result.data);
+                })
+                .catch(err => {
+                    console.error(err);
+                })
         }
     }
 
@@ -75,37 +77,43 @@ function Member() {
     useEffect(() => {
         // getUser();
         // getSummarys();
-        getSummaryView();
     }, [param]);
+
+    useEffect(() => {
+        document.getElementById("root").style.height = 0;
+        getSummaryView();
+    }, [SelectedTab]);
 
     return (
         <div className="wrap_main">
             <header><Header /></header>
             <Main component={
                 <>
-                <UserInfo nickname={param.nickname} />
-                <div className="tab">
-                    <div className="tab_col">
-                        <button className="link" onClick={() => {
-                            navigate(`/member/${param.nickname}`, { state: { action: 'feeds' } })
-                        }}>
-                            <img src={ImgFeeds} className="icon" />
-                        </button>
+                    <UserInfo nickname={param.nickname} />
+                    <div className="tab">
+                        <div className="tab_col">
+                            <button className="link" style={SelectedTab[0] ? styleSelected : null} onClick={() => {
+                                setSelectedTab([true, false]);
+                                navigate(`/member/${param.nickname}`, { state: { action: 'feeds' } })
+                            }}>
+                                <img src={ImgFeeds} className="icon" />
+                            </button>
+                        </div>
+                        <div className="tab_col">
+                            <button className="link" style={SelectedTab[1] ? styleSelected : null} onClick={() => {
+                                setSelectedTab([false, true]);
+                                navigate(`/member/${param.nickname}`, { state: { action: 'mentions' } })
+                            }}>
+                                <img src={ImgAt} className="icon" />
+                            </button>
+                        </div>
                     </div>
-                    <div className="tab_col">
-                        <button className="link" onClick={() => {
-                            navigate(`/member/${param.nickname}`, { state: { action: 'mentions' } })
-                        }}>
-                            <img src={ImgAt} className="icon" />
-                        </button>
-                    </div>
-                </div>
-                <Summary summarys={summarys} />
+                    <Summary summarys={summarys} />
                 </>
-            }/>
-                
+            } />
 
-            <Aside component={<Sub />}/>
+
+            <Aside component={<Sub />} />
         </div>
     )
 }

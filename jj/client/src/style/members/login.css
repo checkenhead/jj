@@ -276,9 +276,10 @@ input:valid~label {
         margin-bottom: 10px;
         padding: 0;
         text-align: center;
+        width: 91vw;
     }
     .login_grid img{
-        width: 80%;
+        width: 200px;
     }
 }
 

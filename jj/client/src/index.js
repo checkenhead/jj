@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import './style/members/login.css';
+import './style/members/join.css';
 import './style/main.css';
 import './style/header.css';
 import './style/feeds.css';
@@ -12,8 +14,6 @@ import './style/members/member.css';
 import './style/members/message.css';
 import './style/sub.css';
 import './style/top.css';
-import './style/members/join.css';
-import './style/members/login.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
