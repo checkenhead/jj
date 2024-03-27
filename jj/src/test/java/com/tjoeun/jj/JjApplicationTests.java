@@ -21,15 +21,15 @@ class JjApplicationTests {
 	@Test
 	void contextLoads() {
 		Member member1 = Member.builder()
-				.email("scott@gmail.com")
-				.pwd(pe.encode("1234"))
-				.nickname("김스캇캇")
+				.email("123")
+				.pwd(pe.encode("123"))
+				.nickname("123")
 				.build();
 		member1.addRole(MemberRole.USER);
 		mr.save(member1);
 		
 		Member member2 = Member.builder()
-				.email("scott2@gmail.com")
+				.email("scott@gmail.com")
 				.pwd(pe.encode("1234"))
 				.nickname("scott")
 				.build();
@@ -37,7 +37,7 @@ class JjApplicationTests {
 		mr.save(member2);
 		
 		Member member3 = Member.builder()
-				.email("scott3@gmail.com")
+				.email("scott2@gmail.com")
 				.pwd(pe.encode("1234"))
 				.nickname("김스캇스캇")
 				.build();
