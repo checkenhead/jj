@@ -45,7 +45,7 @@ body{
     box-sizing: border-box;
     transition: all 0.1s;
 }
-.wrap_main #aside{
+#aside{
     position: sticky;
     top: 0;
     min-width: 300px;
@@ -80,7 +80,7 @@ body{
         min-width: 100%;
         /* height: auto !important; */
     }
-    .wrap_main aside{
+    .wrap_main #aside{
         display: none;
     }
 }
@@ -90,7 +90,7 @@ body{
         min-width: 60px;
         max-width: 100px;
     }
-    .wrap_main aside{
+    .wrap_main #aside{
         display: none;
     }
 }
@@ -98,7 +98,7 @@ body{
     .wrap_main header{
         max-width: 200px;
     }
-    .wrap_main aside{
+    .wrap_main #aside{
         display: none;
     }
 }
