@@ -18,21 +18,21 @@ function Feeds({ newFeed, setNewFeed }) {
     });
 
 
-    const getFeeds = async (isRefreshing) => {
+    const getFeeds = async (requireRefressh) => {
         try {
-            if (isRefreshing) { currPage.current = 0; }
+            if (requireRefressh) { currPage.current = 0; }
             const result = await jwtAxios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } });
-            setFeeds(feeds => isRefreshing ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
+            setFeeds(feeds => requireRefressh ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
         } catch (err) {
             console.error(err);
         }
     }
 
-    const getFollowingFeeds = async (isRefreshing) => {
+    const getFollowingFeeds = async (requireRefressh) => {
         try {
-            if (isRefreshing) { currPage.current = 0; }
+            if (requireRefressh) { currPage.current = 0; }
             const result = await jwtAxios.post('/api/feeds/getfollowingfeeds', null, { params: { page: currPage.current++, nickname: loginUser.nickname} });
-            setFeeds(feeds => isRefreshing ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
+            setFeeds(feeds => requireRefressh ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
         } catch (err) {
             console.error(err);
         }
@@ -42,7 +42,6 @@ function Feeds({ newFeed, setNewFeed }) {
         if (SelectedTab[0]) {
             getFeeds(false);
         } else {
-
             getFollowingFeeds(false);
         }
     }, [inView]);
@@ -52,7 +51,6 @@ function Feeds({ newFeed, setNewFeed }) {
         if (SelectedTab[0]) {
             getFeeds(true);
         } else {
-
             getFollowingFeeds(true);
         }
     }, [SelectedTab]);
