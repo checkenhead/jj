@@ -134,6 +134,24 @@ function Feed(props) {
         return result;
     }
 
+    const transKBM = (countKBM) => {
+        const length = countKBM;
+        let result = '';
+
+        if (length < 1000) {
+            result = length;
+        } else if (length < 1000000) {
+            result = (Math.floor((length / 1000) * 10) / 10) + 'K';
+        } else if (length < 1000000000) {
+            result = (Math.floor((length / 1000000) * 10) / 10) + 'M';
+        } else if (length > 999999999) {
+            result = (Math.floor((length / 1000000000) * 10) / 10) + 'B';
+        }
+
+        return result;
+    }
+
+
     const addReply = (feedid, writer, content) => {
         if (replyContent === '') {
             alert('댓글 내용을 입력해주세요');
@@ -329,7 +347,12 @@ function Feed(props) {
                     <Dropdown pagename={'profile'} feedid={feed.id} toggleModal={toggleModal} style={style1} writer={feed.writer} />
                 </div>
                 <div className="timestamp">
-                    {feed.createdat}
+                    {transDateString(feed.updatedat)}
+                    {
+                        feed.createdat === feed.updatedat
+                            ? null
+                            : "(수정됨)"
+                    }
                 </div>
                 <Modal className="modal" overlayClassName="orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
                     <img src={ImgCancel} className="icon close link" onClick={() => {
@@ -355,15 +378,19 @@ function Feed(props) {
                         : null
                 }
             </div>
-            <Slider {...settings}>
-                {
-                    images.map((image, imageIndex) => {
-                        return (
-                            <Feedimg key={imageIndex} img_filename={image.filename} img_style={image.style} />
-                        );
-                    })
-                }
-            </Slider>
+            <div onClick={() => {
+                navigate(`/view/${feed.writer}/${feed.id}`);
+            }}>
+                <Slider {...settings}>
+                    {
+                        images.map((image, imageIndex) => {
+                            return (
+                                <Feedimg key={imageIndex} img_filename={image.filename} img_style={image.style} />
+                            );
+                        })
+                    }
+                </Slider>
+            </div>
             <div className="feed_content">
                 {feed.content}<br />
                 <div className="btn"><input type="checkbox" className="toggle_content" /></div>
@@ -373,11 +400,11 @@ function Feed(props) {
                 <div className="like"><img src={stateLike ? ImgLike : ImgUnlike} className="icon" onClick={() => {
                     setStateLike(!stateLike);
                     toggleLikes(feed.id, loginUser.nickname);
-                }} />{likes.length}</div>
-                <div className="reply" onClick={() => { toggleReply() }}><img src={ImgReply} className="icon" />{replys.length}</div>
+                }} />{transKBM(likes.length)}</div>
+                <div className="reply" onClick={() => { toggleReply() }}><img src={ImgReply} className="icon" />{transKBM(replys.length)}</div>
                 <div className="bookmark"><img src={iconBookmark} className="icon" onClick={() => {
                     toggleBookmarks(feed.id, loginUser.nickname);
-                }} />{bookmarks.length}</div>
+                }} />{transKBM(bookmarks.length)}</div>
             </div>
             <div className="feed_reply" style={style3} ref={elementReply}>
                 {

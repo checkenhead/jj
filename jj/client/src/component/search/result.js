@@ -25,6 +25,8 @@ function Result() {
     const loginUserFollow = useSelector(state => state.follow);
     const { target, keyword } = useParams();
     const [currentTarget, setCurrentTarget] = useState(target);
+    const styleSelected = { borderBottom: '2px solid #aaaaaa' };
+    const [SelectedTab, setSelectedTab] = useState([true, false]);
 
     const [inputKeyword, setInputKeyword] = useState('');
     const [recentKeywords, setRecentKeywords] = useState([]);
@@ -162,15 +164,17 @@ function Result() {
 
                     <div className="tab">
                         <div className="tab_col">
-                            <button className="link" onClick={() => {
+                            <button className="link" style={SelectedTab[0] ? styleSelected : null} onClick={() => {
                                 // getResult();
+                                setSelectedTab([true, false]);
                                 setCurrentTarget("feed");
                                 navigate(`/result/feed/${keyword}`);
                             }}>Feed</button>
                         </div>
                         <div className="tab_col">
-                            <button className="link" onClick={() => {
+                            <button className="link" style={SelectedTab[1] ? styleSelected : null} onClick={() => {
                                 // getResult();
+                                setSelectedTab([false, true]);
                                 setCurrentTarget("people");
                                 navigate(`/result/people/${keyword}`);
                             }}>People</button>
@@ -187,15 +191,16 @@ function Result() {
                                             );
                                         })
                                     ) : <div className="empty_feed_message">
-                                            <div className="empty_feed_message_text">
-                                                "{keyword}"으로 검색한 Feed가 없습니다
-                                            </div>
-                                            <div className='empty_feed_message_list'>
-                                                <label>원하는 검색결과가 나오지 않았다면?</label>
-                                                <p> - 검색어가 정확한지 확인하세요</p>
-                                                <p> - 다른 검색어를 사용해 보세요</p>
-                                            </div>
+                                        <div className="empty_feed_message_text">
+                                            "{keyword}"으로 검색한 Feed가 없습니다
                                         </div>
+                                        <div className='empty_feed_message_list'>
+                                            <label>원하는 검색결과가 나오지 않았다면?</label>
+                                            <p> - Feed 검색은 해시태그만 가능합니다</p>
+                                            <p> - 검색어가 정확한지 확인하세요</p>
+                                            <p> - 다른 검색어를 사용해 보세요</p>
+                                        </div>
+                                    </div>
                                     }
                                 </div>
                             ) : (
