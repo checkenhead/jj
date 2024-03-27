@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios'
+import jwtAxios from '../../util/jwtUtil'; 
 import Modal from "react-modal";
 
 import { logoutAction } from '../../store/userSlice';
@@ -19,6 +20,7 @@ import ImgCancel from '../../images/cancel.png';
 
 
 
+
 function Header({setNewFeed}) {
     const loginUser = useSelector(state => state.user);
     const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +28,7 @@ function Header({setNewFeed}) {
     const dispatch = useDispatch();
 
     const onLogout = () => {
-        axios.get('/api/members/logout')
+        jwtAxios.get('/api/members/logout')
             .then(() => {
                 dispatch(logoutAction());
                 navigate('/')

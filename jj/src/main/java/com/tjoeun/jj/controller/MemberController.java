@@ -1,16 +1,20 @@
 package com.tjoeun.jj.controller;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,13 +23,17 @@ import org.springframework.web.multipart.MultipartFile;
 import com.tjoeun.jj.dto.UserInfoDto;
 import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Member;
+import com.tjoeun.jj.security.util.CustomJwtException;
+import com.tjoeun.jj.security.util.JwtUtil;
 import com.tjoeun.jj.service.FeedService;
 import com.tjoeun.jj.service.MemberService;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RestController
 @RequestMapping("/api/members")
 public class MemberController {
@@ -36,36 +44,37 @@ public class MemberController {
 	@Autowired
 	FeedService fs;
 
-	@PostMapping("/loginlocal")
-	public HashMap<String, Object> loginLocal(@RequestBody Member member, HttpServletRequest request) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
-
-		Member mdto = ms.getMemberByEmail(member.getEmail());
-
-		// email이 존재하지 않는 경우
-		if (mdto == null) {
-			result.put("message", "이메일이 존재하지 않습니다.");
-
-			// pwd가 일치하지 않는 경우
-		} else if (!mdto.getPwd().equals(member.getPwd())) {
-			result.put("message", "비밀번호가 틀립니다.");
-
-			// sns계정이 비정상적으로 로그인하는 경우
-		} else if (mdto.getProvider() != null) {
-			result.put("message", "SNS로 로그인해주세요.");
-
-			// 정상 로그인
-		} else {
-			mdto.setPwd(null);
-			result.put("message", "OK");
-			result.put("loginUser", mdto);
-
-			// session에 저장
-			request.getSession().setAttribute("loginUser", mdto);
-		}
-
-		return result;
-	}
+//	@PostMapping("/loginlocal")
+//	public HashMap<String, Object> loginLocal(@RequestBody Member member, HttpServletRequest request) {
+//		HashMap<String, Object> result = new HashMap<String, Object>();
+//
+//		Member mdto = ms.getMemberByEmail(member.getEmail());
+//
+//		// email이 존재하지 않는 경우
+//		if (mdto == null) {
+//			result.put("message", "이메일이 존재하지 않습니다.");
+//
+//			// pwd가 일치하지 않는 경우
+//		} else if (!mdto.getPwd().equals(member.getPwd())) {
+//			result.put("message", "비밀번호가 틀립니다.");
+//
+//			// sns계정이 비정상적으로 로그인하는 경우
+//		} else if (mdto.getProvider() != null) {
+//			result.put("message", "SNS로 로그인해주세요.");
+//
+//			// 정상 로그인
+//		} else {
+//			mdto.changePwd(null);
+//			result.put("message", "OK");
+//			result.put("loginUser", mdto);
+//
+//			// session에 저장
+//			request.getSession().setAttribute("loginUser", mdto);
+//		}
+//
+//		return result;
+//	}
+	
 
 	@GetMapping("/logout")
 	public HashMap<String, Object> logout(HttpServletRequest request) {
@@ -134,12 +143,12 @@ public class MemberController {
 		} else {
 			// 정상 회원정보수정완료
 			Member CheckEmail = ms.getMemberByEmail(member.getEmail());
-			member.setPwd(CheckEmail.getPwd());
+			member.changePwd(CheckEmail.getPwd());
 			ms.insertMember(member);
 
 			Member mdto = ms.insertMember(member);
 
-			mdto.setPwd(null);
+			mdto.changePwd(null);
 			request.getSession().setAttribute("loginUser", mdto);
 
 			result.put("message", "ok");
@@ -160,7 +169,7 @@ public class MemberController {
 		} else {
 			result.put("message", "OK");
 
-			mdto.setPwd(null);
+			mdto.changePwd(null);
 			result.put("user", mdto);
 		}
 		return result;
@@ -182,7 +191,7 @@ public class MemberController {
 		Integer count = fs.getFeedCountByNickname(nickname);
 
 		result.put("message", "OK");
-		mdto.setPwd(null);
+		mdto.changePwd(null);
 		result.put("user", mdto);
 		result.put("followers", ms.getFollowersByNickname(nickname));
 		result.put("followings", ms.getFollowingsByNickname(nickname));
@@ -202,7 +211,7 @@ public class MemberController {
 			result.put("message", "비밀번호가 틀립니다.");
 		} else {
 			result.put("message", "OK");
-			mdto.setPwd(null);
+			mdto.changePwd(null);
 		}
 
 		return result;
@@ -214,7 +223,7 @@ public class MemberController {
 
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		Member mdto = ms.getMemberByNickname(nickname);
-		mdto.setPwd(newpwd);
+		mdto.changePwd(newpwd);
 		// 1. 받아온 member로 insert
 		ms.insertMember(mdto);
 		// 2. result에 메세지 담아서 return
@@ -240,7 +249,10 @@ public class MemberController {
 
 		result.put("followers", ms.getFollowersByNickname(nickname));
 		result.put("followings", ms.getFollowingsByNickname(nickname));
-
+		
+		System.out.println("followers : " + result.get("followers"));
+		System.out.println("followings : " + result.get("followings"));
+		
 		return result;
 	}
 
@@ -283,5 +295,54 @@ public class MemberController {
 		result.put("recommendmembers", list);
 		
 		return result;
+	}
+	
+	@GetMapping("/refreshtoken/{refreshToken}")
+	public Map<String, Object> refreshToken(@RequestHeader("Authorization") String authHeader,
+			@PathVariable("refreshToken") String refreshToken) throws CustomJwtException {
+
+		if (refreshToken == null) {
+			throw new CustomJwtException("NULL_REFRESH");
+		}
+		if (authHeader == null || authHeader.length() < 7) {
+			throw new CustomJwtException("INVALID_STRING");
+		}
+		String accessToken = authHeader.substring(7);
+
+		// Access 토큰이 만료되지 않았다면
+		if (checkExpiredToken(accessToken) == false) {
+			return Map.of("accessToken", accessToken, "refreshToken", refreshToken);
+		}
+
+		// Refresh토큰 검증
+		Map<String, Object> claims = JwtUtil.validateToken(refreshToken);
+		log.info("refresh ... claims: " + claims);
+		String newAccessToken = JwtUtil.generateToken(claims, 10);
+		String newRefreshToken = checkTime((Integer) claims.get("exp")) == true ? JwtUtil.generateToken(claims, 60 * 24)
+				: refreshToken;
+		return Map.of("accessToken", newAccessToken, "refreshToken", newRefreshToken);
+	}
+
+	// 시간이 1시간 미만으로 남았다면
+	private boolean checkTime(Integer exp) {
+		// JWT exp를 날짜로 변환
+		java.util.Date expDate = new java.util.Date((long) exp * (1000));
+		// 현재 시간과의 차이 계산 - 밀리세컨즈
+		long gap = expDate.getTime() - System.currentTimeMillis();
+		// 분단위 계산
+		long leftMin = gap / (1000 * 60);
+		// 1시간도 안남았는지..
+		return leftMin < 60;
+	}
+
+	private boolean checkExpiredToken(String token) {
+		try {
+			JwtUtil.validateToken(token);
+		} catch (CustomJwtException ex) {
+			if (ex.getMessage().equals("Expired")) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

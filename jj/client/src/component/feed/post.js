@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 import Modal from "react-modal";
 import { useSelector } from 'react-redux';
 
@@ -37,7 +38,7 @@ function Post(props) {
         } else if (content === '') {
             alert('내용을 입력해주세요')
         } else {
-            axios.post('/api/feeds/post', { feedid, writer: loginUser.nickname, content, feedimgid, filenames: images, styles: filters })
+            jwtAxios.post('/api/feeds/post', { feedid, writer: loginUser.nickname, content, feedimgid, filenames: images, styles: filters })
                 .then((result) => {
                     if (result.data.message !== 'OK') {
                         alert('Feed 업로드에 실패했습니다. 관리자에게 문의하세요.');
@@ -82,7 +83,7 @@ function Post(props) {
 
             const formData = new FormData();
             formData.append("image", e.target.files[0]);
-            axios.post('/api/members/fileupload', formData)
+            jwtAxios.post('/api/members/fileupload', formData)
                 .then((result) => {
                     setImages([...images, result.data.filename]);
                     setFilters([...filters, null]);

@@ -9,6 +9,7 @@ import ImgProfile from '../../images/profile.png';
 import ImgMessage from '../../images/message.png';
 import { setFollowAction } from '../../store/followSlice';
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 
 function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
         let ans = window.confirm('정말로 삭제 하시겠습니까?');
         // console.log(props.feedid);
         if (ans) {
-            axios.post('/api/feeds/deletebyid', { id: feedid })
+            jwtAxios.post('/api/feeds/deletebyid', { id: feedid })
                 .then(result => {
                     navigate('/');
                     return alert('게시물 삭제가 완료되었습니다');
@@ -38,7 +39,7 @@ function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
     }
 
     const getFollow = () => {
-        axios.post('/api/members/getfollow', null, { params: { nickname: loginUser.nickname } })
+        jwtAxios.post('/api/members/getfollow', null, { params: { nickname: loginUser.nickname } })
             .then(result => {
                 dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }))
             })
@@ -48,7 +49,7 @@ function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
     }
 
     const toggleFollow = () => {
-        axios.post('/api/members/togglefollow', { following: writer, follower: loginUser.nickname })
+        jwtAxios.post('/api/members/togglefollow', { following: writer, follower: loginUser.nickname })
             .then(result => {
                 getFollow();
             })

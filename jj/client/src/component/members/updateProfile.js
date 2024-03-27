@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import jwtAxios from '../../util/jwtUtil';
 
 import Header from '../common/header';
 import Sub from '../common/sub';
@@ -14,6 +15,7 @@ import ImgUser from '../../images/user.png';
 import DaumPostcode from "react-daum-postcode";
 // 모달창
 import Modal from "react-modal";
+
 
 function UpdateProfile() {
     const [nickname, setNickname] = useState('');
@@ -92,7 +94,7 @@ function UpdateProfile() {
         } else {
             const formData = new FormData();
             formData.append('image', e.target.files[0]);
-            axios.post('/api/members/fileupload', formData)
+            jwtAxios.post('/api/members/fileupload', formData)
                 .then((result) => {
                     setFilename(result.data.filename);
                     setImgSrc(`http://localhost:8070/images/${result.data.filename}`);
@@ -104,7 +106,7 @@ function UpdateProfile() {
     const onSubmit = () => {
         if (nickname === '') { return alert('닉네임을 입력하세요'); }
 
-        axios.post('api/members/updateProfile', { email, nickname, intro, profileimg: filename, zipnum, address1, address2, address3 })
+        jwtAxios.post('api/members/updateProfile', { email, nickname, intro, profileimg: filename, zipnum, address1, address2, address3 })
             .then((result) => {
                 if (result.data.message === 'no') {
                     return alert('닉네임이 중복됩니다');

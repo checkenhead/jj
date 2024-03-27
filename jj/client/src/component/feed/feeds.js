@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import axios from 'axios';
-
+import jwtAxios from '../../util/jwtUtil';
 import Post from './post';
 import Feed from './feed';
 
@@ -15,8 +15,9 @@ function Feeds({ newFeed, setNewFeed }) {
 
     const getFeeds = async () => {
         try{
-            const result = await axios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } });
+            const result = await jwtAxios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } });
             setFeeds(feeds => [...feeds, ...result.data.feeds]);
+            console.log('feeds:', result);
         }catch(err){
             console.error(err);
         }

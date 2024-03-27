@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 import Modal from "react-modal";
 import Dropdown from './Dropdown';
 //import Editpost from './Editpost';
@@ -51,7 +52,7 @@ function Feed(props) {
     const navigate = useNavigate();
 
     const getWriterInfo = (nickname) => {
-        axios.post('/api/members/getmemberbynickname', null, { params: { nickname } })
+        jwtAxios.post('/api/members/getmemberbynickname', null, { params: { nickname } })
             .then(result => {
                 setWriterInfo(result.data.user);
                 setProfileimg(`http://localhost:8070/images/${result.data.user.profileimg}`);
@@ -62,7 +63,7 @@ function Feed(props) {
     }
 
     const getLikes = (feedid) => {
-        axios.post('/api/feeds/getlikesbyfeedid', { feedid })
+        jwtAxios.post('/api/feeds/getlikesbyfeedid', { feedid })
             .then(result => {
                 // setIconLike(ImgUnlike);
                 setStateLike(false);
@@ -80,7 +81,7 @@ function Feed(props) {
     }
 
     const toggleLikes = (feedid, nickname) => {
-        axios.post('/api/feeds/togglelike', { feedid, nickname })
+        jwtAxios.post('/api/feeds/togglelike', { feedid, nickname })
             .then(result => {
                 getLikes(feedid);
             })
@@ -90,7 +91,7 @@ function Feed(props) {
     }
 
     const getImages = (feedid) => {
-        axios.post('/api/feeds/getfeedimgbyfeedid', null, { params: { feedid } })
+        jwtAxios.post('/api/feeds/getfeedimgbyfeedid', null, { params: { feedid } })
             .then(result => {
                 setImages(result.data.images);
             })
@@ -101,7 +102,7 @@ function Feed(props) {
     }
 
     const getReplys = (feedid) => {
-        axios.post('/api/feeds/getreplysbyfeedid', { feedid })
+        jwtAxios.post('/api/feeds/getreplysbyfeedid', { feedid })
             .then(result => {
                 setReplys(reply => result.data.replys);
             })
@@ -139,7 +140,7 @@ function Feed(props) {
         } else if (replyContent.length > MAX_CONTENT_LENGTH) {
             alert('입력 가능한 최대 글자수는 200자 입니다');
         } else {
-            axios.post('/api/feeds/addreply', { feedid, writer, content })
+            jwtAxios.post('/api/feeds/addreply', { feedid, writer, content })
                 .then(result => {
                     getReplys(feedid);
                     inputReply.current.textContent = '';
@@ -153,7 +154,7 @@ function Feed(props) {
 
     const deleteReply = (id, feedid) => {
         if (window.confirm('삭제하시겠습니까?')) {
-            axios.post('/api/feeds/deletereply', null, { params: { id } })
+            jwtAxios.post('/api/feeds/deletereply', null, { params: { id } })
                 .then(result => {
                     alert('삭제 완료');
                     getReplys(feedid);
@@ -165,7 +166,7 @@ function Feed(props) {
     }
 
     const getBookmarks = (feedid) => {
-        axios.post('/api/feeds/getbookmarksbyfeedid', { feedid })
+        jwtAxios.post('/api/feeds/getbookmarksbyfeedid', { feedid })
             .then(result => {
                 setIconBookmark(ImgBookmark);
                 setBookmarks(result.data.bookmarks.map((bookmark) => {
@@ -181,7 +182,7 @@ function Feed(props) {
     }
 
     const toggleBookmarks = (feedid, nickname) => {
-        axios.post('/api/feeds/togglebookmark', { feedid, nickname })
+        jwtAxios.post('/api/feeds/togglebookmark', { feedid, nickname })
             .then(result => {
                 getBookmarks(feedid);
             })

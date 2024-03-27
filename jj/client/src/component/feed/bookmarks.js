@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 import { useSelector } from 'react-redux';
 import Header from '../common/header';
 import Main from '../common/main';
@@ -14,7 +15,7 @@ function Feeds({ newFeed, setNewFeed }) {
     const loginUser = useSelector(state => state.user);
 
     const getFeeds = () => {
-        axios.post('/api/feeds/getbookmarkfeedsbynickname', null, { params: { page, nickname: loginUser.nickname } })
+        jwtAxios.post('/api/feeds/getbookmarkfeedsbynickname', null, { params: { page, nickname: loginUser.nickname } })
             .then(result => {
                 setFeeds([...feeds, ...result.data.feeds]);
             })

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 import { useNavigate } from "react-router-dom";
 
 import Header from '../common/header';
@@ -8,6 +9,7 @@ import Aside from '../common/aside';
 import Sub from '../common/sub';
 import User from './user';
 import Feed from '../feed/feed';
+
 
 function Search() {
     const navigate = useNavigate();
@@ -23,7 +25,7 @@ function Search() {
         if (word === '') {
             alert('검색어를 입력해주세요')
         } else {
-            axios.post('/api/search/stats', null, { params: { keyword: word } })
+            jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
                 .then(result => {
                     navigate(`/result/feed/${word}`);
                 })
@@ -34,7 +36,7 @@ function Search() {
     }
 
     const getRecentKeyword = () => {
-        axios.get('/api/search/getrecentkeyword')
+        jwtAxios.get('/api/search/getrecentkeyword')
             .then(result => {
                 setRecentKeywords(result.data.recent);
             })
@@ -44,7 +46,7 @@ function Search() {
     }
 
     const getFeeds = () => {
-        axios.post('/api/feeds/getallfeeds', null, { params: { page: 0 } })
+        jwtAxios.post('/api/feeds/getallfeeds', null, { params: { page: 0 } })
             .then(result => {
                 setFeeds([...feeds, ...result.data.feeds]);
             })
