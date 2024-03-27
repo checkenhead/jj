@@ -64,6 +64,7 @@ public class JwtCheckFilter extends OncePerRequestFilter{
 	         Gson gson = new Gson();
 	         String msg = gson.toJson(Map.of("error", "ERROR_ACCESS_TOKEN"));
 	         response.setContentType("application/json");
+	         response.setStatus(401);
 	         PrintWriter printWriter = response.getWriter();
 	         printWriter.println(msg);
 	         printWriter.close();
