@@ -345,6 +345,37 @@
     content: attr(placeholder);
     color: #BBBBBB;
 }
+.orverlay_modal {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .5);
+
+    display: flex;
+    align-items: center;
+}
+
+.modal {
+    position: relative;
+    /* top: 0; */
+    /* left: 0; */
+    width: 500px;
+    padding: 5px;
+    margin: auto;
+    border: 1px solid #DDDDDD;
+    /* border-radius: 10px; */
+    background-color: white;
+}
+.modal .close {
+    width: 40px;
+    height: 40px;
+    /* filter:invert(100%); */
+    /* opacity: 0.5; */
+    /* border: 1px solid black; */
+}
 
 /* .messagebox .message .sent{
     margin-top: 20px;
