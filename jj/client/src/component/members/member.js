@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 
 import Header from '../common/header';
 import Main from '../common/main';
@@ -12,6 +13,7 @@ import ImgFeeds from '../../images/feeds.png';
 import ImgAt from '../../images/at.png';
 import UserInfo from './UserInfo';
 import Summary from '../feed/Summary';
+
 
 function Member() {
     const location = useLocation();
@@ -26,7 +28,7 @@ function Member() {
     const getSummaryView = () => {
         if (!location?.state?.action || location?.state?.action === 'feeds') {
 
-            axios.post('/api/feeds/getsummaryview', null, { params: { nickname: param.nickname } })
+            jwtAxios.post('/api/feeds/getsummaryview', null, { params: { nickname: param.nickname } })
                 .then(result => {
                     setSummarys(result.data.summarys);
                     console.log(result.data);
@@ -35,7 +37,7 @@ function Member() {
                     console.error(err);
                 })
         } else {
-            axios.post('/api/feeds/getsummarymentions', null, { params: { nickname: param.nickname } })
+            jwtAxios.post('/api/feeds/getsummarymentions', null, { params: { nickname: param.nickname } })
             .then(result => {
                 setSummarys(result.data.summarys);
                 console.log(result.data);

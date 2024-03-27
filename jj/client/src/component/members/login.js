@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import jwtAxios from '../../util/jwtUtil';
+import { setCookie, getCookie, removeCookie } from '../../util/cookieUtil';
 import { useSelector, useDispatch } from 'react-redux';
-import { loginAction } from '../../store/userSlice';
+import { loginAction, logoutAction } from '../../store/userSlice';
 import { setFollowAction } from '../../store/followSlice';
 
 
 import ImgLogo from '../../images/logo.png';
-import testImg from '../../images/Koala.jpg'
-
 import woman from '../../images/loginImg/woman.jpg'
 import books from '../../images/loginImg/books.jpg';
 import camera1 from '../../images/loginImg/camera-1.jpg';
@@ -23,110 +23,116 @@ import selfie from '../../images/loginImg/selfie.jpg';
 import smartphone from '../../images/loginImg/smartphone.jpg';
 
 
+
 /** 로그인 */
 function Login() {
-    const loginUser = useSelector(state => state.user);
-    const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [pwd, setPwd] = useState('');
-    const dispatch = useDispatch();
-    const MAX_CONTENT_LENGTH = 200;
-    const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
+  const loginUser = useSelector(state => state.user);
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [pwd, setPwd] = useState('');
+  const dispatch = useDispatch();
+  const MAX_CONTENT_LENGTH = 200;
+  const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
 
-    const onLogin = () => {
-        if (!email) { return alert('아이디를 입력하세요') }
-        if (!pwd) { return alert('패스워드를 입력하세요') }
-        axios.post('/api/members/loginlocal', { email, pwd })
-            .then((result) => {
-                // console.log(result.data)
-                // 로그인 실패 했을 경우
-                if (result.data.message !== 'OK') {
-                    setPwd("");
-                    return alert(result.data.message);
-                    // 로그인에 성공 했을 경우
-                } else {
-                    alert("로그인 되었습니다.");
-                    dispatch(loginAction(result.data.loginUser));
-                    getFollow(result.data.loginUser.nickname);
-                    navigate('/main');
-                    // console.log(result.data);
-                }
-            })
-            .catch((error) => {
-                console.error(error)
-                navigate('/');
-            })
-    }
-
-    const getFollow = (nickname) => {
-      axios.post('/api/members/getfollow', null, { params: { nickname } })
-          .then(result => {
-              dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }))
-          })
-          .catch(err => {
-              console.error(err);
-          });
+  const onLogin = () => {
+    if (!email) { return alert('아이디를 입력하세요') }
+    if (!pwd) { return alert('패스워드를 입력하세요') }
+    axios.post('/api/members/loginlocal', null, { params: { username: email, password: pwd } })
+      .then((result) => {
+        // 로그인 실패 했을 경우
+        if (result.data.error === 'ERROR_LOGIN') {
+          setPwd("");
+          return alert('아이디 또는 비밀번호가 틀립니다.');
+          // 로그인에 성공 했을 경우
+        } else {
+          // console.log(result);
+          alert("로그인 되었습니다.");
+          setCookie("user", JSON.stringify(result.data), 1);
+          dispatch(loginAction(result.data));
+          getFollow(result.data.nickname);
+          navigate('/main');
+          // console.log('login result.data:', result.data);
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        navigate('/');
+      })
   }
 
-    function mousemove(e) {
-        var x = e.offsetX;
-        var y = e.offsetY;
-        var rotateY = -1 / 5 * x + 20;
-        var rotateX = 4 / 30 * y - 20; 
-        e.target.style.transform = `perspective(350px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  const getFollow = (nickname) => {
+    jwtAxios.post('/api/members/getfollow', null, { params: { nickname } })
+      .then(result => {
+        console.log('getFollow:', result);
+        dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }))
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  function mousemove(e) {
+    var x = e.offsetX;
+    var y = e.offsetY;
+    var rotateY = -1 / 5 * x + 20;
+    var rotateX = 4 / 30 * y - 20;
+    e.target.style.transform = `perspective(350px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  }
+
+  function mouseout(e) {
+    e.target.style.transform = 'perspective(350px) rotateY(0deg) rotateX(0deg)';
+  }
+
+  const handleScroll = () => {
+    // clearTimeout(timeoutId); // 이전의 timeoutId를 제거하여 중복 호출 방지
+
+    const scrollY = window.scrollY;
+    const rotationAngle = scrollY; // 스크롤 위치에 따라 회전 각도 조절
+    // console.log(rotationAngle, rotationAngle * 0.005)
+    const items = document.querySelectorAll('.item');
+
+    items.forEach(item => {
+      item.style.transform = `perspective(350px) rotateX(${rotationAngle * 0.03}deg) rotateY(${rotationAngle * 0.03}deg)`;
+    });
+
+    let timeoutId = setTimeout(() => {
+      items.forEach(item => {
+        item.style.transform = 'perspective(350px) rotateY(0deg) rotateX(0deg)';
+      })
+      clearTimeout(timeoutId);
+    }, 350);
+  };
+
+  useEffect(() => {
+    // console.log('redux loginUser', loginUser);
+    dispatch(logoutAction());
+    removeCookie('user');
+    if (loginUser.email !== '') {
+      navigate('/main');
+    } else {
+      var item = document.getElementsByClassName('item')
+      // console.log(item.length);
+      for (let i = 0; i < item.length; i++) {
+        item[i].addEventListener('mousemove', mousemove);
+        item[i].addEventListener('mouseout', mouseout);
+      }
+
+      window.addEventListener('scroll', handleScroll);
     }
 
-    function mouseout(e) {
-        e.target.style.transform = 'perspective(350px) rotateY(0deg) rotateX(0deg)';
+    return () => {
+      if (loginUser.email === '') {
+        window.removeEventListener('scroll', handleScroll);
+        // clearTimeout(timeoutId); // 컴포넌트가 언마운트될 때 timeoutId 제거
+
+        for (let i = 0; i < item.length; i++) {
+          item[i].removeEventListener('mousemove', mousemove);
+          item[i].removeEventListener('mouseout', mouseout);
+        }
+      }
     }
 
-    const handleScroll = () => {
-        // clearTimeout(timeoutId); // 이전의 timeoutId를 제거하여 중복 호출 방지
-
-        const scrollY = window.scrollY;
-        const rotationAngle = scrollY; // 스크롤 위치에 따라 회전 각도 조절
-        // console.log(rotationAngle, rotationAngle * 0.005)
-        const items = document.querySelectorAll('.item');
-
-        items.forEach(item => {
-            item.style.transform = `perspective(350px) rotateX(${rotationAngle * 0.03}deg) rotateY(${rotationAngle * 0.03}deg)`;
-        });
-
-        let timeoutId = setTimeout(() => {
-            items.forEach(item => {
-                item.style.transform = 'perspective(350px) rotateY(0deg) rotateX(0deg)';
-            })
-            clearTimeout(timeoutId);
-        }, 350);
-    };
-
-    useEffect(() => {
-        if (loginUser.email !== '') {
-            navigate('/main');
-        } else {
-            var item = document.getElementsByClassName('item')
-            // console.log(item.length);
-            for (let i = 0; i < item.length; i++) {
-                item[i].addEventListener('mousemove', mousemove);
-                item[i].addEventListener('mouseout', mouseout);
-            }
-
-            window.addEventListener('scroll', handleScroll);
-        }
-
-        return () => {
-            if (loginUser.email === '') {
-                window.removeEventListener('scroll', handleScroll);
-                // clearTimeout(timeoutId); // 컴포넌트가 언마운트될 때 timeoutId 제거
-
-                for (let i = 0; i < item.length; i++) {
-                    item[i].removeEventListener('mousemove', mousemove);
-                    item[i].removeEventListener('mouseout', mouseout);
-                }
-            }
-        }
-
-    }, []);
+  }, []);
 
   return (
     <div className='login'>
@@ -192,7 +198,7 @@ function Login() {
                   } required />
                   <label>Password</label>
                 </div>
-                <div className='forgotPwd'><label onClick={ () => {
+                <div className='forgotPwd'><label onClick={() => {
                   navigate('/EmailCheck')
                 }}>Forgot Password</label></div>
                 <div className='btns'>

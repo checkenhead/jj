@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 import { useDispatch } from 'react-redux';
 import { setFollowAction } from '../../store/followSlice';
+
 
 function FollowButton({ followState, follow }) {
     const dispatch = useDispatch();
@@ -15,7 +17,7 @@ function FollowButton({ followState, follow }) {
     },[state])
 
     const toggleFollow = () => {
-        axios.post('/api/members/togglefollow', follow)
+        jwtAxios.post('/api/members/togglefollow', follow)
             .then(result => {
                 console.log(result.data, followState);
                 dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }));

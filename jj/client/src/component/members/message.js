@@ -14,6 +14,7 @@ import ImgCreate from '../../images/create.png';
 import ImgQuit from '../../images/quit.png';
 
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 
 
 function Message() {
@@ -51,7 +52,7 @@ function Message() {
         inputMessage.current.textContent = '';
 
         if (content !== '') {
-            axios.post('/api/chat/send', { sender: loginUser.nickname, chatgroupid: currChatGroup.current.id, content })
+            jwtAxios.post('/api/chat/send', { sender: loginUser.nickname, chatgroupid: currChatGroup.current.id, content })
                 .then((result) => {
                     if (result.data.message === 'Error') {
                         alert("Error");
@@ -71,7 +72,7 @@ function Message() {
             const id = (oldChat && oldChat.length > 0) ? oldChat[oldChat.length - 1].id : 0;
 
             try {
-                const result = await axios.post('/api/chat/getNewChat', { chatgroupid: currChatGroup.current.id, id: id });
+                const result = await jwtAxios.post('/api/chat/getNewChat', { chatgroupid: currChatGroup.current.id, id: id });
                 if (result.data.chats !== null && result.data.chats.length > 0) {
                     const tmp = { ...allChats.current };
                     tmp[currChatGroup.current.id] = tmp[currChatGroup.current.id] ?
@@ -86,7 +87,7 @@ function Message() {
     };
 
     const getAllChatGroups = (nickname) => {
-        axios.post('/api/chat/getallchatgroupsbynickanme', null, { params: { nickname } })
+        jwtAxios.post('/api/chat/getallchatgroupsbynickanme', null, { params: { nickname } })
             .then(result => {
                 setChatGroups(result.data.groups);
 
@@ -108,7 +109,7 @@ function Message() {
     }
 
     const createGroup = (members) => {
-        axios.post('/api/chat/creategroup', { members })
+        jwtAxios.post('/api/chat/creategroup', { members })
             .then(result => {
                 currChatGroup.current = result.data.group;
                 setSelectedChatGroup(result.data.group);

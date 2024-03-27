@@ -3,6 +3,8 @@ import FollowButton from '../utility/FollowButton'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
+
 function User({ nickname }) {
     const [currUser, setCurrUser] = useState({});
     const [feedCount, setFeedCount] = useState(0);
@@ -15,7 +17,7 @@ function User({ nickname }) {
     const navigate = useNavigate();
 
     const getUserInfo = () => {
-        axios.post('/api/members/getUserInfo', null, { params: { nickname } })
+        jwtAxios.post('/api/members/getUserInfo', null, { params: { nickname } })
             .then(result => {
                 setCurrUser(result.data.user);
                 setFeedCount(result.data.count);

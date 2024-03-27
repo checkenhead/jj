@@ -27,6 +27,9 @@ public interface MemberRepository extends JpaRepository<Member, String>{
 			+ "	(SELECT f.following FROM Follow f WHERE f.follower = :nickname)"
 			+ ") and f.following not in (:nickname)")
 	List<String> findRecommendPeopleByNickname(@Param("nickname") String nickname);
+	
+	@Query("select m from Member m where m.email = :email")
+	Optional<Member> getWithRolesById(@Param("email") String email);
 
 
 

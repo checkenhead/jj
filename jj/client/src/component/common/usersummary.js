@@ -3,6 +3,7 @@ import ImgUser from '../../images/user.png';
 import { useSelector } from 'react-redux';
 import FollowButton from '../utility/FollowButton';
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 import { useNavigate } from 'react-router-dom';
 
 function UserSummary({ member }) {
@@ -13,7 +14,7 @@ function UserSummary({ member }) {
     const [followState, setFollowState] = useState(loginUserFollow.followings.some((following) => following === member));
 
     const getMemberInfo = () => {
-        axios.post('/api/members/getmemberbynickname', null, { params: { nickname: member } })
+        jwtAxios.post('/api/members/getmemberbynickname', null, { params: { nickname: member } })
             .then(result => {
                 setCurrUser(result.data.user);
                 // console.log(result.data.user);

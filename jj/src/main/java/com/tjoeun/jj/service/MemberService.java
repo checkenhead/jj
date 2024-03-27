@@ -30,13 +30,13 @@ public class MemberService {
 
 	public Member getMemberByEmail(String email) {
 		Optional<Member> member = mr.findById(email);
-		em.clear();
+//		em.clear();
 		return member.isPresent() ? member.get() : null;
 	}
 
 	public Member getMemberByNickname(String nickname) {
 		Optional<Member> member = mr.findByNickname(nickname);
-		em.clear();
+//		em.clear();
 		return member.isPresent() ? member.get() : null;
 	}
 

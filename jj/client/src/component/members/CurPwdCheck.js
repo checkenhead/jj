@@ -7,6 +7,7 @@ import Aside from '../common/aside';
 import Sub from '../common/sub';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 
 function CurPwdCheck() {
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ function CurPwdCheck() {
         if (curpwd === '') {
             return alert('비밀번호를 입력해주세요')
         } else {
-            axios.post('/api/members/passwordCheck', null, { params: { curpwd, nickname: loginUser.nickname } })
+            jwtAxios.post('/api/members/passwordCheck', null, { params: { curpwd, nickname: loginUser.nickname } })
                 .then((result) => {
                     console.log(result.data);
                     if (result.data.message !== 'OK') {

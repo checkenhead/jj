@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 
 import Header from '../common/header';
 import Main from '../common/main';
@@ -19,7 +20,7 @@ function View() {
     const scrollAside = useRef();
     
     const getFeed = () => {
-        axios.post('/api/feeds/getfeedbyid', { id: param.feedid })
+        jwtAxios.post('/api/feeds/getfeedbyid', { id: param.feedid })
             .then(result => {
                 setFeed(result.data.feed);
 

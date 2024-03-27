@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
+
 import Feed from '../feed/feed';
 import User from './user';
 
@@ -9,6 +11,7 @@ import Main from '../common/main';
 import Aside from '../common/aside';
 import Sub from '../common/sub';
 import { useSelector } from 'react-redux';
+
 
 
 function Result() {
@@ -30,7 +33,7 @@ function Result() {
     const getResult = () => {
 
         if (currentTarget === "feed") {
-            axios.post('/api/feeds/getFeedByKeyword', null, { params: { keyword } })
+            jwtAxios.post('/api/feeds/getFeedByKeyword', null, { params: { keyword } })
                 .then((result) => {
                     setFeeds(result.data.feeds);
                 })
@@ -38,7 +41,7 @@ function Result() {
                     console.error(error);
                 })
         } else if (currentTarget === "people") {
-            axios.post('/api/members/getUserInfoByKeyword', null, { params: { keyword } })
+            jwtAxios.post('/api/members/getUserInfoByKeyword', null, { params: { keyword } })
                 .then((result) => {
                     setUsers(result.data.users.map(user => { return user.nickname }));
                 })
@@ -52,7 +55,7 @@ function Result() {
         if (word === '') {
             alert('검색어를 입력해주세요')
         } else {
-            axios.post('/api/search/stats', null, { params: { keyword: word } })
+            jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
                 .then(result => {
                     navigate(`/result/${target}/${word}`);
                 })
@@ -63,7 +66,7 @@ function Result() {
     }
 
     const getRecentKeyword = () => {
-        axios.get('/api/search/getrecentkeyword')
+        jwtAxios.get('/api/search/getrecentkeyword')
             .then(result => {
                 setRecentKeywords(result.data.recent);
             })

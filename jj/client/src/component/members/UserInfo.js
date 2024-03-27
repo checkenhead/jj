@@ -3,11 +3,13 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 
 import ImgSetting from '../../images/setting.png';
 import ImgUser from '../../images/user.png';
 import ImgMessage from '../../images/message.png';
 import FollowButton from '../utility/FollowButton';
+
 
 function UserInfo({ nickname }) {
     const [currUser, setCurrUser] = useState({});
@@ -20,7 +22,7 @@ function UserInfo({ nickname }) {
     const navigate = useNavigate();
 
     const getUserInfo = () => {
-        axios.post('/api/members/getUserInfo', null, { params: { nickname } })
+        jwtAxios.post('/api/members/getUserInfo', null, { params: { nickname } })
             .then(result => {
                 setCurrUser(result.data.user);
                 setFeedCount(result.data.count);

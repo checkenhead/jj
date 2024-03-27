@@ -3,7 +3,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import Footer from './footer';
 import UserSummary from './usersummary';
 import axios from 'axios';
+import jwtAxios from '../../util/jwtUtil';
 import { useSelector } from 'react-redux';
+
 
 function Sub() {
     // const currScroll = useRef(0);
@@ -25,7 +27,7 @@ function Sub() {
     // }
 
     const getAllMembersNickname = () => {
-        axios.post('/api/members/getallmembersnickname')
+        jwtAxios.post('/api/members/getallmembersnickname')
             .then(result => {
                 setMembers(result.data.members);
             })
@@ -35,10 +37,10 @@ function Sub() {
     }
 
     const getRecommendPeopleBynickname = () => {
-        axios.post('/api/members/getrecommendpeoplebynickname', null, { params: { nickname: loginUser.nickname } })
+        jwtAxios.post('/api/members/getrecommendpeoplebynickname', null, { params: { nickname: loginUser.nickname } })
             .then(result => {
                 setRecommendMember(result.data.recommendmembers);
-                console.log(result.data.recommendmembers, '추천 유저');
+                // console.log(result.data.recommendmembers, '추천 유저');
             })
             .catch(err => {
                 console.error(err);

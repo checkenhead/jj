@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-
+import jwtAxios from '../../util/jwtUtil';
 import Post from './post';
 import Feed from './feed';
 
@@ -17,10 +17,11 @@ function Feeds({ newFeed, setNewFeed }) {
         triggerOnce: true
     });
 
+
     const getFeeds = async (isRefreshing) => {
         try {
             if (isRefreshing) { currPage.current = 0; }
-            const result = await axios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } });
+            const result = await jwtAxios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } });
             setFeeds(feeds => isRefreshing ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
         } catch (err) {
             console.error(err);
@@ -30,7 +31,7 @@ function Feeds({ newFeed, setNewFeed }) {
     const getFollowingFeeds = async (isRefreshing) => {
         try {
             if (isRefreshing) { currPage.current = 0; }
-            const result = await axios.post('/api/feeds/getfollowingfeeds', null, { params: { page: currPage.current++, nickname: loginUser.nickname} });
+            const result = await jwtAxios.post('/api/feeds/getfollowingfeeds', null, { params: { page: currPage.current++, nickname: loginUser.nickname} });
             setFeeds(feeds => isRefreshing ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
         } catch (err) {
             console.error(err);
