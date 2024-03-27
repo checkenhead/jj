@@ -39,8 +39,6 @@ function Main({ component }) {
     
 
     useEffect(() => {
-        
-
         const inteval = setInterval(() => {
             setHeight();
         }, 100);
