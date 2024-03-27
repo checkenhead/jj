@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios'
-import jwtAxios from '../../util/jwtUtil'; 
+import jwtAxios from '../../util/jwtUtil';
 import Modal from "react-modal";
 
 import { logoutAction } from '../../store/userSlice';
@@ -17,25 +17,32 @@ import ImgMessage from '../../images/message.png';
 import ImgPost from '../../images/post.png';
 import ImgLogout from '../../images/logout.png';
 import ImgCancel from '../../images/cancel.png';
+import { removeCookie } from '../../util/cookieUtil';
 
 
 
 
-function Header({setNewFeed}) {
+function Header({ setNewFeed }) {
     const loginUser = useSelector(state => state.user);
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    // const onLogout = () => {
+    //     jwtAxios.get('/api/members/logout')
+    //         .then(() => {
+    //             dispatch(logoutAction());
+    //             navigate('/')
+    //         })
+    //         .catch(err => {
+    //             console.error(err);
+    //         })
+    // }
+
     const onLogout = () => {
-        jwtAxios.get('/api/members/logout')
-            .then(() => {
-                dispatch(logoutAction());
-                navigate('/')
-            })
-            .catch(err => {
-                console.error(err);
-            })
+        removeCookie('user');
+        dispatch(logoutAction());
+        navigate('/')
     }
 
     const toggleModal = () => {
@@ -90,13 +97,13 @@ function Header({setNewFeed}) {
                         </button>
                     </div>
                 </nav>
-                
+
             </div >
             <Modal className="modal" overlayClassName="orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
                 <img src={ImgCancel} className="icon close link" onClick={() => {
-                   toggleModal();
+                    toggleModal();
                 }} />
-                <Post setIsOpen={setIsOpen} setNewFeed={setNewFeed}/>
+                <Post setIsOpen={setIsOpen} setNewFeed={setNewFeed} />
             </Modal>
         </>
     )

@@ -50,7 +50,12 @@ public class CustomUserDetailsService implements UserDetailsService{
 				member.getSnsid(),
 				member.getProfileimg(),
 				member.getIntro(),
-				member.getMemberRoleList().stream().map(memberRole -> memberRole.name()).collect(Collectors.toList())
+				member.getMemberRoleList().stream().map(memberRole -> memberRole.name()).collect(Collectors.toList()),
+				member.getCreatedat().toString(),
+				member.getZipnum(),
+				member.getAddress1(),
+				member.getAddress2(),
+				member.getAddress3()
 				);
 				
 		log.info(memberdto);

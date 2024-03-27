@@ -3,8 +3,10 @@ package com.tjoeun.jj.entity;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -43,63 +45,51 @@ public class Member {
 	@Builder.Default // Default : new ArrayList<>()  비어있는 리스트로 객체 저장
 	private List<MemberRole> memberRoleList = new ArrayList<>();
 	
-	public Member addRole(MemberRole memberRole) {
+	public void addRole(MemberRole memberRole) {
 		memberRoleList.add(memberRole);
-		return this;
 	}
 	
-	public Member clearRole() {
+	public void clearRole() {
 		memberRoleList.clear();
-		return this;
 	}
 	
-	public Member changeNickname(String nickname) {
+	public void changeNickname(String nickname) {
 		this.nickname = nickname;
-		return this;
 	}
 	
-	public Member changePwd(String pwd) {
+	public void changePwd(String pwd) {
 		this.pwd = pwd;
-		return this;
 	}
 	
-	public Member changeSnsid(String snsid) {
+	public void changeSnsid(String snsid) {
 		this.snsid = snsid;
-		return this;
 	}
 	
-	public Member changeProfileimg(String profileimg) {
+	public void changeProfileimg(String profileimg) {
 		this.profileimg = profileimg;
-		return this;
 	}
 	
-	public Member changeIntro(String intro) {
+	public void changeIntro(String intro) {
 		this.intro = intro;
-		return this;
 	}
 	
-	public Member changeProvider(String provider) {
+	public void changeProvider(String provider) {
 		this.provider = provider;
-		return this;
 	}
 	
-	public Member changeZipnum(String zipnum) {
+	public void changeZipnum(String zipnum) {
 		this.zipnum = zipnum;
-		return this;
 	}
 	
-	public Member changeAddress1(String address1) {
+	public void changeAddress1(String address1) {
 		this.address1 = address1;
-		return this;
 	}
 	
-	public Member changeAddress2(String address2) {
+	public void changeAddress2(String address2) {
 		this.address2 = address2;
-		return this;
 	}
 	
-	public Member changeAddress3(String address3) {
+	public void changeAddress3(String address3) {
 		this.address3 = address3;
-		return this;
 	}
 }

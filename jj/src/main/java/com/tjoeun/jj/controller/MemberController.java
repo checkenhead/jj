@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tjoeun.jj.dto.MemberDto;
 import com.tjoeun.jj.dto.UserInfoDto;
 import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Member;
@@ -29,8 +30,6 @@ import com.tjoeun.jj.service.FeedService;
 import com.tjoeun.jj.service.MemberService;
 
 import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -76,26 +75,26 @@ public class MemberController {
 //	}
 	
 
-	@GetMapping("/logout")
-	public HashMap<String, Object> logout(HttpServletRequest request) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		HttpSession session = request.getSession();
-		session.removeAttribute("loginUser");
-		return result;
-	}
+//	@GetMapping("/logout")
+//	public HashMap<String, Object> logout(HttpServletRequest request) {
+//		HashMap<String, Object> result = new HashMap<String, Object>();
+//		HttpSession session = request.getSession();
+//		session.removeAttribute("loginUser");
+//		return result;
+//	}
 
 	@PostMapping("/join")
 	public HashMap<String, Object> join(@RequestBody Member member) {
 
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
-		Member CheckEmail = ms.getMemberByEmail(member.getEmail());
+		MemberDto CheckEmail = ms.getMemberByEmail(member.getEmail());
 
 		if (CheckEmail != null) {
 			result.put("message", "email");
 
 		} else {
-			Member CheckNickname = ms.getMemberByNickname(member.getNickname());
+			MemberDto CheckNickname = ms.getMemberByNickname(member.getNickname());
 
 			if (CheckNickname != null) {
 				result.put("message", "nickname");
@@ -131,28 +130,21 @@ public class MemberController {
 		return result;
 	}
 
-	@PostMapping("/updateProfile")
-	public HashMap<String, Object> updateProfile(@RequestBody Member member, HttpServletRequest request) {
-		Member loginUser = ((Member) request.getSession().getAttribute("loginUser"));
+	@PostMapping("/updateprofile")
+	public HashMap<String, Object> updateProfile(@RequestBody Member member, @RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
-		Member CheckNickname = ms.getMemberByNickname(member.getNickname());
+		MemberDto CheckNickname = ms.getMemberByNickname(member.getNickname());
 		// 닉네임이 중복된 경우
-		if (CheckNickname != null && !member.getNickname().equals(loginUser.getNickname())) {
+		if (CheckNickname != null && !member.getNickname().equals(nickname)) {
 			result.put("message", "no");
 		} else {
 			// 정상 회원정보수정완료
-			Member CheckEmail = ms.getMemberByEmail(member.getEmail());
-			member.changePwd(CheckEmail.getPwd());
-			ms.insertMember(member);
-
-			Member mdto = ms.insertMember(member);
-
-			mdto.changePwd(null);
-			request.getSession().setAttribute("loginUser", mdto);
+			MemberDto mdto = ms.getMemberByEmail(member.getEmail());
+			mdto.setPwd(member.getPwd());
 
 			result.put("message", "ok");
-			result.put("loginUser", mdto);
+			result.put("loginUser", ms.updateMember(mdto));
 		}
 
 		return result;
@@ -162,14 +154,14 @@ public class MemberController {
 	public HashMap<String, Object> getMemberByNickname(@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
-		Member mdto = ms.getMemberByNickname(nickname);
+		MemberDto mdto = ms.getMemberByNickname(nickname);
 
 		if (mdto == null) {
 			result.put("message", "user not found");
 		} else {
 			result.put("message", "OK");
 
-			mdto.changePwd(null);
+			mdto.setPwd(null);
 			result.put("user", mdto);
 		}
 		return result;
@@ -185,17 +177,21 @@ public class MemberController {
 
 	@PostMapping("/getUserInfo")
 	public HashMap<String, Object> getUserInfo(@RequestParam("nickname") String nickname) {
+		
+		System.out.println("nickname : " + nickname);
+		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
-		Member mdto = ms.getMemberByNickname(nickname);
+		MemberDto mdto = ms.getMemberByNickname(nickname);
 		Integer count = fs.getFeedCountByNickname(nickname);
 
 		result.put("message", "OK");
-		mdto.changePwd(null);
+		mdto.setPwd(null);
 		result.put("user", mdto);
 		result.put("followers", ms.getFollowersByNickname(nickname));
 		result.put("followings", ms.getFollowingsByNickname(nickname));
 		result.put("count", count);
+		
 		return result;
 	}
 
@@ -204,14 +200,14 @@ public class MemberController {
 			@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
-		Member mdto = ms.getMemberByNickname(nickname);
+		MemberDto mdto = ms.getMemberByNickname(nickname);
 		if (mdto == null) {
 			result.put("message", "Password is different");
 		} else if (!mdto.getPwd().equals(curpwd)) {
 			result.put("message", "비밀번호가 틀립니다.");
 		} else {
 			result.put("message", "OK");
-			mdto.changePwd(null);
+			mdto.setPwd(null);
 		}
 
 		return result;
@@ -222,10 +218,10 @@ public class MemberController {
 			@RequestParam("nickname") String nickname) {
 
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		Member mdto = ms.getMemberByNickname(nickname);
-		mdto.changePwd(newpwd);
+		MemberDto mdto = ms.getMemberByNickname(nickname);
+		mdto.setPwd(newpwd);
 		// 1. 받아온 member로 insert
-		ms.insertMember(mdto);
+		ms.updateMember(mdto);
 		// 2. result에 메세지 담아서 return
 		result.put("message", "ok");
 		return result;

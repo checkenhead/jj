@@ -11,7 +11,6 @@ const refreshJwt = async (accessToken, refreshToken) => {
 }
 
 const beforeReq = async (config) => {
-
     const memberCookieValue = getCookie('user');
     const result = await refreshJwt(memberCookieValue.accessToken, memberCookieValue.refreshToken);
     memberCookieValue.accessToken = result.accessToken;

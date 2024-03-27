@@ -1,17 +1,20 @@
 package com.tjoeun.jj.service;
 
-import java.util.HashMap;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tjoeun.jj.dao.FollowRepository;
 import com.tjoeun.jj.dao.MemberRepository;
+import com.tjoeun.jj.dto.MemberDto;
 import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Member;
+import com.tjoeun.jj.entity.MemberRole;
 
 import jakarta.persistence.EntityManager;
 
@@ -27,21 +30,56 @@ public class MemberService {
 
 	@Autowired
 	FollowRepository fr;
+	
+	@Autowired
+	private PasswordEncoder pe;
 
-	public Member getMemberByEmail(String email) {
+	public MemberDto getMemberByEmail(String email) {
 		Optional<Member> member = mr.findById(email);
+		
 //		em.clear();
-		return member.isPresent() ? member.get() : null;
+		return member.isPresent() ? new MemberDto(member.get()) : null;
 	}
 
-	public Member getMemberByNickname(String nickname) {
+	public MemberDto getMemberByNickname(String nickname) {
 		Optional<Member> member = mr.findByNickname(nickname);
 //		em.clear();
-		return member.isPresent() ? member.get() : null;
+		return member.isPresent() ? new MemberDto(member.get()) : null;
 	}
-
+	
 	public Member insertMember(Member member) {
-		return mr.save(member);
+		Member member1 = Member.builder()
+				.email(member.getEmail())
+				.pwd(pe.encode(member.getPwd())) //pe.encode("1234")
+				.nickname(member.getNickname())
+				.intro(member.getIntro())
+				.profileimg(member.getProfileimg())
+				.provider(member.getProvider())
+				.zipnum(member.getZipnum())
+				.address1(member.getAddress1())
+				.address2(member.getAddress2())
+				.address3(member.getAddress3())
+				.build();
+		member1.addRole(MemberRole.USER);
+		return mr.save(member1);
+	}
+	
+	public Member updateMember(MemberDto mdto) {
+		Member member1 = Member.builder()
+				.email(mdto.getEmail())
+				.pwd(mdto.getPwd()) //pe.encode("1234")
+				.nickname(mdto.getNickname())
+				.intro(mdto.getIntro())
+				.profileimg(mdto.getProfileimg())
+				.provider(mdto.getProvider())
+				.createdat(java.sql.Timestamp.valueOf(mdto.getCreatedat()))
+				.zipnum(mdto.getZipnum())
+				.address1(mdto.getAddress1())
+				.address2(mdto.getAddress2())
+				.address3(mdto.getAddress3())
+				.build();
+		member1.addRole(MemberRole.USER);
+		return mr.save(member1);
 	}
 
 	public List<Member> getAllMembers() {
