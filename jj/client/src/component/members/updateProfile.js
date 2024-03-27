@@ -106,7 +106,7 @@ function UpdateProfile() {
     const onSubmit = () => {
         if (nickname === '') { return alert('닉네임을 입력하세요'); }
 
-        jwtAxios.post('api/members/updateProfile', { email, nickname, intro, profileimg: filename, zipnum, address1, address2, address3 })
+        jwtAxios.post('api/members/updateprofile', { email, nickname, intro, profileimg: filename, zipnum, address1, address2, address3 }, {params:{nickname:loginUser.nickname}})
             .then((result) => {
                 if (result.data.message === 'no') {
                     return alert('닉네임이 중복됩니다');

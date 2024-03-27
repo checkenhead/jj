@@ -105,8 +105,8 @@ function Login() {
 
   useEffect(() => {
     // console.log('redux loginUser', loginUser);
-    dispatch(logoutAction());
-    removeCookie('user');
+    // dispatch(logoutAction());
+    // removeCookie('user');
     if (loginUser.email !== '') {
       navigate('/main');
     } else {

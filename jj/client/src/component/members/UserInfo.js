@@ -22,6 +22,7 @@ function UserInfo({ nickname }) {
     const navigate = useNavigate();
 
     const getUserInfo = () => {
+        console.log("nickname : ", nickname);
         jwtAxios.post('/api/members/getUserInfo', null, { params: { nickname } })
             .then(result => {
                 setCurrUser(result.data.user);

@@ -40,10 +40,15 @@ public class JwtCheckFilter extends OncePerRequestFilter{
 	         String provider = (String) claims.get("provider");
 	         String profileimg = (String) claims.get("profileimg");
 	         String intro = (String) claims.get("intro");
+	         String createdat = (String) claims.get("createdat");
+	         String zipnum = (String) claims.get("zipnum");
+	         String address1 = (String) claims.get("address1");
+	         String address2 = (String) claims.get("address2");
+	         String address3 = (String) claims.get("address3");
 	         
 	         List<String> roleNames = (List<String>) claims.get("roleNames");
 	         MemberDto memberDTO = new MemberDto( email, pwd, nickname, snsid,
-	               provider, profileimg, intro, roleNames);
+	               provider, profileimg, intro, roleNames, createdat, zipnum, address1, address2, address3);
 	         log.info("-----------------------------------");
 	         log.info(memberDTO);
 	         log.info(memberDTO.getAuthorities()); // 권한 추출
