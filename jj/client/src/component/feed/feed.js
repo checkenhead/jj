@@ -48,6 +48,9 @@ function Feed(props) {
     const [length, setLength] = useState(0);
     const [emojiStyle, setEmojiStyle] = useState({ display: 'none' });
     const [onoffCheck, setOnoffCheck] = useState(false);
+    const [likeCount, setLikeCount] = useState(0);
+    const [bookmarkCount, setBookmarkCount] = useState(0);
+    const [stateBookmark, setStateBookmark] = useState(false);
     const loginUser = useSelector(state => state.user);
     const navigate = useNavigate();
 
@@ -74,6 +77,7 @@ function Feed(props) {
                     }
                     return like.nickname;
                 }));
+                setLikeCount(result.data.likes.length);
             })
             .catch(err => {
                 console.error(err);
@@ -81,6 +85,7 @@ function Feed(props) {
     }
 
     const toggleLikes = (feedid, nickname) => {
+
         jwtAxios.post('/api/feeds/togglelike', { feedid, nickname })
             .then(result => {
                 getLikes(feedid);
@@ -187,12 +192,15 @@ function Feed(props) {
         jwtAxios.post('/api/feeds/getbookmarksbyfeedid', { feedid })
             .then(result => {
                 setIconBookmark(ImgBookmark);
+                setStateBookmark(false);
                 setBookmarks(result.data.bookmarks.map((bookmark) => {
                     if (bookmark.nickname === loginUser.nickname) {
                         setIconBookmark(ImgBookmarked);
+                        setStateBookmark(true);
                     }
                     return bookmark.nickname;
                 }));
+                setBookmarkCount(result.data.bookmarks.length);
             })
             .catch(err => {
                 console.error(err);
@@ -398,13 +406,26 @@ function Feed(props) {
 
             <div className="feed_icon">
                 <div className="like"><img src={stateLike ? ImgLike : ImgUnlike} className="icon" onClick={() => {
+                    if (stateLike) {
+                        setLikeCount(likeCount - 1);
+                    } else {
+                        setLikeCount(likeCount + 1);
+                    }
                     setStateLike(!stateLike);
                     toggleLikes(feed.id, loginUser.nickname);
-                }} />{transKBM(likes.length)}</div>
+                }} />
+                    {transKBM(likeCount)}
+                </div>
                 <div className="reply" onClick={() => { toggleReply() }}><img src={ImgReply} className="icon" />{transKBM(replys.length)}</div>
-                <div className="bookmark"><img src={iconBookmark} className="icon" onClick={() => {
+                <div className="bookmark"><img src={stateBookmark ? ImgBookmarked : ImgBookmark} className="icon" onClick={() => {
+                    if (stateBookmark) {
+                        setBookmarkCount(bookmarkCount - 1);
+                    } else {
+                        setBookmarkCount(bookmarkCount + 1);
+                    }
+                    setStateBookmark(!stateBookmark)
                     toggleBookmarks(feed.id, loginUser.nickname);
-                }} />{transKBM(bookmarks.length)}</div>
+                }} />{transKBM(bookmarkCount)}</div>
             </div>
             <div className="feed_reply" style={style3} ref={elementReply}>
                 {
