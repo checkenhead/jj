@@ -38,4 +38,9 @@ public interface FeedRepository extends JpaRepository<Feed, Integer> {
 			+ " group by sv.feedid)"
 			+ " order by sv.id desc")
 	List<SummaryView> findMentionsByNickname(@Param("nickname") String nickname);
+	
+	@Query("select f from Feed f where f.writer in"
+			+ "(select fw.following from Follow fw where fw.follower = :nickname)"
+			+ "order by f.id desc")
+	List<Feed> findFollowingsByOrderByIdDesc(PageRequest pageRequest, @Param("nickname") String nickname);
 }

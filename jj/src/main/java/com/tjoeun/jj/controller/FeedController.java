@@ -46,7 +46,7 @@ public class FeedController {
 			result.put("feed", feed);
 
 		}
-	
+
 		return result;
 	}
 
@@ -59,14 +59,15 @@ public class FeedController {
 
 		return result;
 	}
-	
+
 	@PostMapping("/getbookmarkfeedsbynickname")
-	public HashMap<String, Object> getBookmarkfeedsBynickname(@RequestParam("page") int page, @RequestParam("nickname") String nickname) {
+	public HashMap<String, Object> getBookmarkfeedsBynickname(@RequestParam("page") int page,
+			@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		PageRequest pageRequest = PageRequest.of(page, 3);
-		
+
 		result.put("feeds", fs.getBookmarkfeedsBynickname(pageRequest, nickname));
-		
+
 		return result;
 	}
 
@@ -87,15 +88,15 @@ public class FeedController {
 
 		return result;
 	}
+
 	@PostMapping("/getsummarymentions")
 	public HashMap<String, Object> getSummaryMentions(@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		
+
 		result.put("summarys", fs.getMentionsByNickname(nickname));
-		
+
 		return result;
 	}
-	
 
 	@PostMapping("/deletebyid")
 	public HashMap<String, Object> deleteById(@RequestBody Feed feed) {
@@ -133,12 +134,12 @@ public class FeedController {
 	public void addReply(@RequestBody Reply reply) {
 		fs.insertReply(reply);
 	}
-	
+
 	@PostMapping("/deletereply")
 	public void deleteReply(@RequestParam("id") Integer id) {
-		fs.deleteReply(id); 
+		fs.deleteReply(id);
 	}
-	
+
 	@PostMapping("/getbookmarksbyfeedid")
 	public HashMap<String, Object> getBookmarksByFeedid(@RequestBody Bookmarks bookmark) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -161,14 +162,23 @@ public class FeedController {
 
 		return result;
 	}
-	
-	@PostMapping("getFeedByKeyword")
+
+	@PostMapping("/getFeedByKeyword")
 	public HashMap<String, Object> getFeedByKeyword(@RequestParam("keyword") String keyword) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		
+
 		result.put("feeds", fs.getFeedByKeyword(keyword));
 
 		return result;
 	}
 
+	@PostMapping("/getfollowingfeeds")
+	public HashMap<String, Object> getFollowingFeeds(@RequestParam("page") int page, @RequestParam("nickname") String nickname) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		PageRequest pageRequest = PageRequest.of(page, 3);
+
+		result.put("feeds", fs.getFollowingFeeds(pageRequest, nickname));
+
+		return result;
+	}
 }

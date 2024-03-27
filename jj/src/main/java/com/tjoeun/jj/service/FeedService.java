@@ -241,6 +241,10 @@ public class FeedService {
 		
 	}
 
+	public List<Feed> getFollowingFeeds(PageRequest pageRequest, String nickname) {
+		return fr.findFollowingsByOrderByIdDesc(pageRequest, nickname);
+	}
+
 
 	
 }

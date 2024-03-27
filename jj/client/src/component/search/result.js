@@ -183,7 +183,16 @@ function Result() {
                                                 <Feed feed={feed} key={feed.updatedat} feeds={feeds} setFeeds={setFeeds} />
                                             );
                                         })
-                                    ) : <div className="empty_feed_message">Feed가 없습니다.</div>
+                                    ) : <div className="empty_feed_message">
+                                            <div className="empty_feed_message_text">
+                                                "{keyword}"으로 검색한 Feed가 없습니다
+                                            </div>
+                                            <div className='empty_feed_message_list'>
+                                                <label>원하는 검색결과가 나오지 않았다면?</label>
+                                                <p> - 검색어가 정확한지 확인하세요</p>
+                                                <p> - 다른 검색어를 사용해 보세요</p>
+                                            </div>
+                                        </div>
                                     }
                                 </div>
                             ) : (

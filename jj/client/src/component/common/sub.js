@@ -135,6 +135,7 @@ function Sub() {
                             );
                         })
                     }
+    {/* <UserSummary member={"홍승희"} />
     <UserSummary member={"홍승희"} />
     <UserSummary member={"홍승희"} />
     <UserSummary member={"홍승희"} />
@@ -147,8 +148,7 @@ function Sub() {
     <UserSummary member={"홍승희"} />
     <UserSummary member={"홍승희"} />
     <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
-    <UserSummary member={"홍승희"} />
+    <UserSummary member={"홍승희"} /> */}
     
                 </div>
             </div>

@@ -1,4 +1,4 @@
-.wrap_search{
+.wrap_search {
     position: relative;
     width: 100%;
     min-height: calc(100vh - 10px);
@@ -8,14 +8,16 @@
 
     border: 1px solid #DDDDDD;
 }
-.search_container{
+
+.search_container {
     padding: 5px;
     margin-bottom: 5px;
     background-color: white;
     border: 1px solid #DDDDDD;
     box-sizing: border-box;
 }
-.wrap_search_keyword{
+
+.wrap_search_keyword {
     width: 100%;
     padding: 5px;
     /* margin-bottom: 20px; */
@@ -27,21 +29,23 @@
 
     display: flex;
     flex-direction: column;
-    
-    
+
+
 }
-.wrap_search_keyword .wrap_input{
+
+.wrap_search_keyword .wrap_input {
     /* height: 50px; */
     /* padding: 5px; */
-    
+
     box-sizing: border-box;
-    
+
     /* padding: 10px; */
     display: flex;
     /* align-items: center; */
 
-    
+
 }
+
 .wrap_search_keyword .wrap_input .input_search {
     flex: 1;
     /* margin: 5px; */
@@ -58,9 +62,10 @@
     display: flex;
     align-items: center;
 
-    
+
 }
-.wrap_search_keyword .wrap_input button{
+
+.wrap_search_keyword .wrap_input button {
     width: 80px;
     font-size: 1rem;
     font-weight: bold;
@@ -71,6 +76,7 @@
 .input_search:hover {
     cursor: text;
 }
+
 .input_search:empty::before {
     content: attr(placeholder);
     color: #BBBBBB;
@@ -78,32 +84,35 @@
 }
 
 
-.recommend_keyword{
+.recommend_keyword {
     width: 100%;
     padding-top: 10px;
     padding-bottom: 5px;
     /* margin: 5px; */
-    
+
     box-sizing: border-box;
     /* border: 1px solid #DDDDDD; */
 
     display: flex;
     flex-direction: column;
-    
+
 }
-.recommend_keyword .keyword{
+
+.recommend_keyword .keyword {
     padding: 5px 20px;
     font-size: 1.2rem;
     color: #BBBBBB;
     /* border: 1px solid black; */
     transition: all 0.1s;
 }
-.recommend_keyword .keyword:hover{
+
+.recommend_keyword .keyword:hover {
     /* background-color: #DDDDDD; */
     color: black;
     cursor: pointer;
 }
-.wrap_search .title{
+
+.wrap_search .title {
     position: sticky;
     top: -5px;
     padding: 5px;
@@ -115,21 +124,48 @@
     /* border-bottom: 1px solid #DDDDDD; */
     background-color: white;
 }
-.wrap_search .recommend_people, .wrap_search .recommend_feed{
+
+.wrap_search .recommend_people,
+.wrap_search .recommend_feed {
     width: 100%;
     padding: 5px;
     margin: 20px 0;
     box-sizing: border-box;
     /* border: 1px solid #DDDDDD; */
 }
-.wrap_search .result_people{
+
+.wrap_search .result_people {
     width: 100%;
     padding: 5px;
     /* margin: 20px 0; */
     box-sizing: border-box;
     /* border: 1px solid #DDDDDD; */
 }
-#user{
+
+.wrap_feeds .empty_feed_message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-size: 20px;
+    flex-direction: column;
+    word-break: keep-all;
+}
+
+.wrap_feeds .empty_feed_message_text {
+    margin-bottom: 30%;
+}
+
+.wrap_feeds .empty_feed_message_list label{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.wrap_feeds .empty_feed_message_list p {
+    font-size: 14px;
+}
+
+#user {
     width: 100%;
     margin-bottom: 5px;
     border: 1px solid #DDDDDD;
@@ -139,10 +175,11 @@
 
     display: flex;
     flex-direction: column;
-    
+
     /* border: 1px solid black; */
 }
-#user .row{
+
+#user .row {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
@@ -153,27 +190,32 @@
     align-items: center;
     /* justify-content: space-between; */
 }
-#user .row:last-child{
+
+#user .row:last-child {
     border-bottom: 0;
 }
-#user .row .profileimg{
+
+#user .row .profileimg {
     /* flex: 1; */
     width: 100px;
     height: 100px;
 
 }
 
-#user .row .profileimg, #user .row .nickname {
+#user .row .profileimg,
+#user .row .nickname {
     cursor: pointer;
 }
-#user .row .profileimg img{
+
+#user .row .profileimg img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     aspect-ratio: 1;
     border-radius: 50%;
 }
-#user .row .nickname{
+
+#user .row .nickname {
     flex: 1;
     font-size: 1.2rem;
     font-weight: bold;
@@ -182,7 +224,8 @@
     justify-content: center;
     /* border: 1px solid black; */
 }
-#user .row .btn_follow{
+
+#user .row .btn_follow {
     flex: 1;
     width: 100%;
     padding: 0 30px;
@@ -191,7 +234,8 @@
 
     /* border: 1px solid black; */
 }
-#user .row .btn_follow button{
+
+#user .row .btn_follow button {
     flex: 1;
     padding: 5px 15px;
     font-size: 1.2rem;
@@ -203,19 +247,22 @@
 
     transition: all 0.1s;
 }
-#user .row .btn_follow button:hover{
+
+#user .row .btn_follow button:hover {
     color: #BBBBBB;
     border: 3px solid #BBBBBB;
     /* transform: scale(0.98); */
     cursor: pointer;
 }
-#user .row .intro{
+
+#user .row .intro {
     flex: 1;
     font-size: 1rem;
-    
+
     /* border: 1px solid black; */
 }
-#user .row .followings{
+
+#user .row .followings {
     flex: 1;
     font-size: 1rem;
     font-weight: bold;
@@ -225,7 +272,8 @@
 
     /* border: 1px solid black; */
 }
-#user .row .followers{
+
+#user .row .followers {
     flex: 1;
     font-size: 1rem;
     font-weight: bold;

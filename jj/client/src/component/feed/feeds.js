@@ -1,30 +1,60 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 import Post from './post';
 import Feed from './feed';
 
 function Feeds({ newFeed, setNewFeed }) {
+    const loginUser = useSelector(state=>state.user);
     const [feeds, setFeeds] = useState([]);
+    const styleSelected = { borderBottom: '2px solid #aaaaaa' };
+    const [SelectedTab, setSelectedTab] = useState([true, false]);
     const currPage = useRef(0);
     const dummyRef = useRef();
     const [lastFeedRef, inView] = useInView({
         triggerOnce: true
     });
 
-    const getFeeds = async () => {
-        try{
+    const getFeeds = async (isRefreshing) => {
+        try {
+            if (isRefreshing) { currPage.current = 0; }
             const result = await axios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } });
-            setFeeds(feeds => [...feeds, ...result.data.feeds]);
-        }catch(err){
+            setFeeds(feeds => isRefreshing ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const getFollowingFeeds = async (isRefreshing) => {
+        try {
+            if (isRefreshing) { currPage.current = 0; }
+            const result = await axios.post('/api/feeds/getfollowingfeeds', null, { params: { page: currPage.current++, nickname: loginUser.nickname} });
+            setFeeds(feeds => isRefreshing ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
+        } catch (err) {
             console.error(err);
         }
     }
 
     useEffect(() => {
-        getFeeds();        
+        if (SelectedTab[0]) {
+            getFeeds(false);
+        } else {
+
+            getFollowingFeeds(false);
+        }
     }, [inView]);
+
+    useEffect(() => {
+        document.getElementById("root").style.height = 0;
+        if (SelectedTab[0]) {
+            getFeeds(true);
+        } else {
+
+            getFollowingFeeds(true);
+        }
+    }, [SelectedTab]);
 
     useEffect(() => {
         if (newFeed?.id) {
@@ -37,11 +67,15 @@ function Feeds({ newFeed, setNewFeed }) {
         <>
             <Post setNewFeed={setNewFeed} />
             <div className="tab">
-                <div className="tab_col">
-                    <button className="link">For you</button>
+                <div className="tab_col" >
+                    <button className="link" style={SelectedTab[0] ? styleSelected : null} onClick={() => {
+                        setSelectedTab([true, false]);
+                    }}>For you</button>
                 </div>
                 <div className="tab_col">
-                    <button className="link">Following</button>
+                    <button className="link" style={SelectedTab[1] ? styleSelected : null} onClick={() => {
+                        setSelectedTab([false, true]);
+                    }}>Following</button>
                 </div>
             </div>
             <div className="wrap_feeds">
@@ -49,7 +83,7 @@ function Feeds({ newFeed, setNewFeed }) {
                     feeds.length ? (
                         feeds.map((feed, feedIndex) => {
                             return (
-                                <Feed scrollRef={feeds.length-1 === feedIndex ? lastFeedRef : dummyRef} feed={feed} key={feed.updatedat} feeds={feeds} setFeeds={setFeeds} />
+                                <Feed scrollRef={feeds.length - 1 === feedIndex ? lastFeedRef : dummyRef} feed={feed} key={feed.updatedat} feeds={feeds} setFeeds={setFeeds} />
                             );
                         })
                     ) : <div className="empty_feed_message">Feed가 없습니다.</div>
