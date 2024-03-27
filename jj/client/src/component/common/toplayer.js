@@ -48,15 +48,18 @@ function TopLayer() {
     // }, [loginUserFollow]);
 
     const handleResize = () => {
-        setMenuState(false);
+        // setMenuState(false);
+        const newDiv = document.createElement('div');
+        newDiv.style = "";
+        document.body.appendChild(newDiv);
     }
 
-    // useEffect(() => {
-    //     window.addEventListener("resize", handleResize);
-    //     return (() => {
-    //         window.removeEventListener("resize", handleResize);
-    //     })
-    // }, []);
+    useEffect(() => {
+        window.addEventListener("resize", handleResize);
+        return (() => {
+            window.removeEventListener("resize", handleResize);
+        })
+    }, []);
 
     return (
         <div className="wrap_top">
