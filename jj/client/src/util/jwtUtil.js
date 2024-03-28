@@ -55,7 +55,7 @@ const responseFail = async (err) => {
 
         console.log('responseFail.response:', response);
 
-        return response.data;
+        return response.data.data;
     }
 }
 
