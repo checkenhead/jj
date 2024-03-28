@@ -54,12 +54,15 @@ function Result() {
     }
 
     const onSearch = (word) => {
+        // let w = word.replace('#','')
         if (word === '') {
             alert('검색어를 입력해주세요')
         } else {
             jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
                 .then(result => {
-                    navigate(`/result/${target}/${word}`);
+                    let encodedURL = encodeURIComponent(word);
+                    console.log(encodedURL);
+                    navigate(`/result/${target}/${encodedURL}`);
                 })
                 .catch(err => {
                     console.error(err);
@@ -206,15 +209,24 @@ function Result() {
                             ) : (
                                 <div className="wrap_recommend_people">
                                     <div className="result_people">
-
-                                        {
+                                        {users.length ? (
                                             users.map((user, userIndex) => {
                                                 return (
                                                     <User nickname={user} key={userIndex} />
                                                 );
                                             })
+                                        ) : <div className="empty_feed_message">
+                                            <div className="empty_feed_message_text">
+                                                "{keyword}"으로 검색한 User가 없습니다
+                                            </div>
+                                            <div className='empty_feed_message_list'>
+                                                <label>원하는 검색결과가 나오지 않았다면?</label>
+                                                <p> - 오타가 없는지 확인해 보세요</p>
+                                                <p> - 검색어가 정확한지 확인하세요</p>
+                                                <p> - 다른 검색어를 사용해 보세요</p>
+                                            </div>
+                                        </div>
                                         }
-
                                     </div>
                                 </div>
                             )
@@ -224,10 +236,7 @@ function Result() {
             } />
 
             <Aside component={<Sub />} />
-
         </div>
-
-
     )
 }
 
