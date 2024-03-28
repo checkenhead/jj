@@ -165,16 +165,6 @@ function Sub() {
                     </div>)
                     : null
             }
-            <UserSummary member={'김스캇스캇스캇'} />
-            <UserSummary member={'김스캇스캇스캇'} />
-            <UserSummary member={'김스캇스캇스캇'} />
-            <UserSummary member={'김스캇스캇스캇'} />
-            <UserSummary member={'김스캇스캇스캇'} />
-            <UserSummary member={'김스캇스캇스캇'} />
-            <UserSummary member={'김스캇스캇스캇'} />
-            <UserSummary member={'김스캇스캇스캇'} />
-            <UserSummary member={'김스캇스캇스캇'} />
-            <UserSummary member={'김스캇스캇스캇'} />
             <footer><Footer /></footer>
         </div>
     )
