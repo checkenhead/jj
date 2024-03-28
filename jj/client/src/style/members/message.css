@@ -428,7 +428,7 @@
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, .5);
-
+    
     display: flex;
     align-items: center;
 }
@@ -437,7 +437,8 @@
     position: relative;
     /* top: 0; */
     /* left: 0; */
-    width: 500px;
+    width: 300px;
+    height: 500px;
     padding: 5px;
     margin: auto;
     border: 1px solid #DDDDDD;
@@ -453,14 +454,43 @@
     /* border: 1px solid black; */
     cursor: pointer;
 }
-
-.message_modal .modal_group_button .group_confirm{
+.wrap_modal .modal_group_button{
+    display: flex;
+    width: 100%;
+}
+.message_modal .group_confirm{
+    /* position: relative; */
     width: 40px;
     height: 40px;
-    top: 0;
-    right: 0;
+    margin-left: auto;
     cursor: pointer;
 }
+
+.message_modal .following_user{
+    position: relative;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+}
+
+.message_modal .following_user .mask{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+}
+.message_modal .following_user .mask img{
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 1;
+    filter: invert(100%);
+}
+
 
 
 
