@@ -452,12 +452,15 @@
     /* filter:invert(100%); */
     /* opacity: 0.5; */
     /* border: 1px solid black; */
+    cursor: pointer;
 }
 
 .message_modal .modal_group_button .group_confirm{
     width: 40px;
     height: 40px;
-    
+    top: 0;
+    right: 0;
+    cursor: pointer;
 }
 
 

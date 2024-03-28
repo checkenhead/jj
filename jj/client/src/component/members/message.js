@@ -20,7 +20,7 @@ import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import User from '../search/user';
 import userSlice from '../../store/userSlice';
-import followSlice from '../../store/followSlice';
+
 
 
 function Message() {
@@ -201,7 +201,6 @@ function Message() {
                                         <img src={ImgCancel} className="icon close link" onClick={() => {
                                             toggleModal();
                                         }} />
-    
                                         <img src={ImgConfirm} className='group_confirm' />
                                     </div>
 
