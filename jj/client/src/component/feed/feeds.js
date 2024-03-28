@@ -7,8 +7,9 @@ import Post from './post';
 import Feed from './feed';
 
 function Feeds({ newFeed, setNewFeed }) {
-    const loginUser = useSelector(state=>state.user);
+    const loginUser = useSelector(state => state.user);
     const [feeds, setFeeds] = useState([]);
+    // const [feeds, setFeeds] = useState({});
     const styleSelected = { borderBottom: '2px solid #aaaaaa' };
     const [SelectedTab, setSelectedTab] = useState([true, false]);
     const currPage = useRef(0);
@@ -23,6 +24,8 @@ function Feeds({ newFeed, setNewFeed }) {
             if (requireRefressh) { currPage.current = 0; }
             const result = await jwtAxios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } });
             setFeeds(feeds => requireRefressh ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
+            // setFeeds();
+            console.log(result.data.feeds);
         } catch (err) {
             console.error(err);
         }
@@ -31,7 +34,7 @@ function Feeds({ newFeed, setNewFeed }) {
     const getFollowingFeeds = async (requireRefressh) => {
         try {
             if (requireRefressh) { currPage.current = 0; }
-            const result = await jwtAxios.post('/api/feeds/getfollowingfeeds', null, { params: { page: currPage.current++, nickname: loginUser.nickname} });
+            const result = await jwtAxios.post('/api/feeds/getfollowingfeeds', null, { params: { page: currPage.current++, nickname: loginUser.nickname } });
             setFeeds(feeds => requireRefressh ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
         } catch (err) {
             console.error(err);
@@ -39,21 +42,23 @@ function Feeds({ newFeed, setNewFeed }) {
     }
 
     useEffect(() => {
+        if (currPage.current > 0) {
+            console.log('SelectedTab  called');
+            if (SelectedTab[0]) {
+                getFeeds(true);
+            } else {
+                getFollowingFeeds(true);
+            }
+        }
+    }, [SelectedTab]);
+
+    useEffect(() => {
         if (SelectedTab[0]) {
             getFeeds(false);
         } else {
             getFollowingFeeds(false);
         }
-    }, [inView]);
-
-    useEffect(() => {
-        // document.getElementById("root").style.height = 0;
-        if (SelectedTab[0]) {
-            getFeeds(true);
-        } else {
-            getFollowingFeeds(true);
-        }
-    }, [SelectedTab]);
+    }, [inView]);    
 
     useEffect(() => {
         if (newFeed?.id) {
