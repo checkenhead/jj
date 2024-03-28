@@ -104,6 +104,10 @@ function Message() {
             });
     }
 
+    const leaveChat = () => {
+        
+    }
+
     /** currGroup에서 sender의 profileimg를 찾아 return */
     const getSrcByNickname = (sender) => {
         for (let i = 0; i < currChatGroup.current.members.length; i++) {
@@ -133,7 +137,7 @@ function Message() {
         if (onoffCheck == true) {
             setEmojiStyle({ display: 'none' });
         } else {
-            setEmojiStyle({ display: 'block' });
+            setEmojiStyle({ display: 'flex' });
         }
     }
 
@@ -236,6 +240,9 @@ function Message() {
                                 setChatBoxStyle(styleHidden);
                                 setChatGroupBoxStyle(styleShow);
                                 setBtnMenuState(false);
+                                if (onoffCheck) {
+                                    onoffEmoji();
+                                }
                             }}><img src={ImgBack} /></button>
                             {
                                 selectedChatGroup?.members ? (
@@ -265,7 +272,7 @@ function Message() {
                                     <div className="menu">
                                         <div className="option">123</div>
                                         <div className="option">초대하기</div>
-                                        <div className="option">나가기</div>
+                                        <div className="option" onClick={ ()=>{leaveChat()}}>나가기</div>
                                     </div>
                                 ) : null
                             }
@@ -273,7 +280,11 @@ function Message() {
 
                         </div>
                         <div className='wrap_content' ref={scrollBox}>
-                            <div className="content_box" ref={contentBox}>
+                            <div className="content_box" ref={contentBox} onClick={() => {
+                                if (onoffCheck) {
+                                    onoffEmoji();
+                                }
+                            }}>
                                 <div className="background">
                                     {
                                         currChats.map((chat, chatIndex) => {
@@ -305,50 +316,52 @@ function Message() {
                             </div>
                         </div>
 
-                        <div className="input_box">
-                            <div contentEditable
-                                ref={inputMessage}
-                                suppressContentEditableWarning
-                                placeholder="Type here"
-                                className="input"
-                                onKeyDown={(e) => {
-                                    if (e.nativeEvent.key === "Enter") {
-                                        inputEnter.current.click();
-                                    }
-                                }} onInput={(e) => {
-                                    inputMessage.current.textContent = e.currentTarget.textContent;
-                                    setContent(e.currentTarget.textContent);
-                                    setLength(e.currentTarget.textContent.length);
-                                }}>
-                            </div>
-                            <button ref={inputEnter} onClick={() => {
-                                send();
-                            }}>확인</button>
-                        </div>
-                        <div className='activeBtn'>
-                            {
-                                length > 0 ? (
-                                    <button className="btn_emoji" onClick={() => {
+                        <div className="input_box" tabIndex="0">
+                            <div className="input_container" tabIndex="0">
+                                <div contentEditable
+                                    ref={inputMessage}
+                                    suppressContentEditableWarning
+                                    placeholder="Type here"
+                                    className="input"
+                                    tabIndex="0"
+                                    onKeyDown={(e) => {
+                                        if (e.nativeEvent.key === "Enter") {
+                                            inputEnter.current.click();
+                                        }
+                                    }} onInput={(e) => {
+                                        inputMessage.current.textContent = e.currentTarget.textContent;
+                                        setContent(e.currentTarget.textContent);
+                                        setLength(e.currentTarget.textContent.length);
+                                    }}>
+                                </div>
+                                <button className="inputBtn" ref={inputEnter} onClick={() => {
+                                    send();
+                                    if (onoffCheck) {
                                         onoffEmoji();
-                                    }}><img src={ImgEmoji} className="icon" /></button>
-                                ) : null
-                            }
-                        </div>
-                        <div className='emoji' style={emojiStyle}>
-                            <EmojiPicker
-                                height={'350px'}
-                                width={'100%'}
-                                emojiStyle={'native'}
-                                emojiVersion={'5.0'}
-                                searchDisabled={true}
-                                previewConfig={{ showPreview: false }}
-                                searchPlaceholder='Search Emoji'
-                                autoFocusSearch={false}
-                                onEmojiClick={(e) => {
-                                    inputMessage.current.textContent += e.emoji;
-                                    setContent(content => content + e.emoji);
-                                }}
-                            />
+                                    }
+                                }}>확인</button>
+                            </div>
+                            <div className='activeBtn' tabIndex="0">
+                                <button className="btn_emoji" onClick={() => {
+                                    onoffEmoji();
+                                }}><img src={ImgEmoji} className="icon" /></button>
+                            </div>
+                            <div className='emoji' style={emojiStyle}>
+                                <EmojiPicker
+                                    height={'350px'}
+                                    width={'100%'}
+                                    emojiStyle={'native'}
+                                    emojiVersion={'5.0'}
+                                    searchDisabled={true}
+                                    previewConfig={{ showPreview: false }}
+                                    searchPlaceholder='Search Emoji'
+                                    autoFocusSearch={false}
+                                    onEmojiClick={(e) => {
+                                        inputMessage.current.textContent += e.emoji;
+                                        setContent(content => content + e.emoji);
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

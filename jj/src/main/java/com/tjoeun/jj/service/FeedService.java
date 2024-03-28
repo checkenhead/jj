@@ -245,7 +245,7 @@ public class FeedService {
 		return fr.findFollowingsByOrderByIdDesc(pageRequest, nickname);
 	}
 
-	public List<String> getRecommendFeedsByNickname(String nickname) {
+	public List<Feed> getRecommendFeedsByNickname(String nickname) {
 		return fr.findRecommendFeedsByNickname(nickname);
 	}
 
