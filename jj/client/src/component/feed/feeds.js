@@ -47,7 +47,7 @@ function Feeds({ newFeed, setNewFeed }) {
     }, [inView]);
 
     useEffect(() => {
-        document.getElementById("root").style.height = 0;
+        // document.getElementById("root").style.height = 0;
         if (SelectedTab[0]) {
             getFeeds(true);
         } else {
