@@ -192,6 +192,8 @@ function Message() {
                                     toggleModal();
                                 }} />
                                 <User setIsOpen={setIsOpen}/>
+                                <User setIsOpen={setIsOpen}/>
+                                <User setIsOpen={setIsOpen} />
                             </Modal>
                             {
                                 chatGroups.map((chatGroup) => {
