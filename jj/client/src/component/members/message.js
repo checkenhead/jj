@@ -14,12 +14,14 @@ import ImgMore from '../../images/more.png';
 import ImgCancel from '../../images/cancel.png';
 import ImgCreate from '../../images/create.png';
 import ImgQuit from '../../images/quit.png';
+import ImgSend from '../../images/send.png'
 import ImgConfirm from '../../images/confirm.png'
 
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
-import User from '../search/user';
+import FollowUser from '../search/followUser';
 import userSlice from '../../store/userSlice';
+import UserSummary from '../common/usersummary';
 
 
 
@@ -57,6 +59,10 @@ function Message() {
 
     //모달
     const [isOpen, setIsOpen] = useState(false);
+
+
+    const [selectedMember, setSelectedMember] = useState([]);
+    const selectedStyle = {opacity:'0.3'};
 
     const send = () => {
         inputMessage.current.textContent = '';
@@ -176,6 +182,13 @@ function Message() {
         setIsOpen(!isOpen);
     }
 
+    useEffect(()=>{
+        setSelectedMember([loginUser.nickname]);
+    },[]);
+
+
+
+
     return (
 
         <div className="wrap_main">
@@ -195,22 +208,44 @@ function Message() {
                                     <div className="description" >새 그룹 만들기</div>
                                 </div>
                             </div>
-                            <div className='wrap_modal'>
-                                <Modal className="message_modal" overlayClassName="message_orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
+
+                            <Modal className="message_modal" overlayClassName="message_orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
+                                <div className='wrap_modal'>
                                     <div className='modal_group_button'>
                                         <img src={ImgCancel} className="icon close link" onClick={() => {
                                             toggleModal();
                                         }} />
-                                        <img src={ImgConfirm} className='group_confirm' />
+                                        <img src={ImgSend} className='group_confirm' onClick={()=>{
+                                            createGroup(selectedMember);
+                                        }}/>
                                     </div>
+
+
 
                                     {
                                         follow.followings.map((following) => {
-                                            return <User nickname={following} />
+                                            return <div className='following_user'  onClick={()=>{
+                                                if(selectedMember.some((member)=>{
+                                                    return member === following;
+                                                })){
+                                                    setSelectedMember(selectedMember.filter((member)=>{
+                                                        return member!==following;
+                                                    }));
+                                                }else{
+                                                    setSelectedMember([...selectedMember, following]);
+                                                }
+                                                
+
+                                                console.log(selectedMember);
+                                            }}><div className='mask' style={selectedMember.some((member)=>{
+                                                return member === following;
+                                            }) ? selectedStyle : null }
+                                            ><img src={ImgConfirm} /></div><FollowUser member={following} /></div>
                                         })
                                     }
-                                </Modal>
-                            </div>
+                                </div>
+                            </Modal>
+
                             {
                                 chatGroups.map((chatGroup) => {
                                     return (

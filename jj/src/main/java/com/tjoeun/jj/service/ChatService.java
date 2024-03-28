@@ -94,6 +94,15 @@ public class ChatService {
 		// 2. 1:다 채팅일 경우
 		}else if(members.size() > 2) {
 			
+			ChatGroup cg = null;
+			
+			cg = cgr.save(new ChatGroup(members.get(0), 2));
+			
+			for(String nickname : members) {
+				cgmr.save(new ChatGroupMember(cg.getId(), nickname));				
+			}
+			
+			return new ChatGroupDto(cg.getId(), cg.getCreatedby(), cg.getMembercount(), null);
 		}
 		
 		return null;
