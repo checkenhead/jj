@@ -5,7 +5,7 @@ import UserSummary from './usersummary';
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import { useSelector } from 'react-redux';
-
+import RecommendFeed from '../common/recommendfeed';
 
 function Sub() {
     // const currScroll = useRef(0);
@@ -50,7 +50,7 @@ function Sub() {
     const getRecommendFeedsBynickname = () => {
         jwtAxios.post('/api/feeds/getrecommendfeedsbynickname', null, { params: { nickname: loginUser.nickname } })
             .then(result => {
-                // setRecommendFeeds(result.data.recommendfeeds);
+                setRecommendFeeds(result.data.recommendfeeds);
                 console.log(result.data.recommendfeeds, '추천 피드');
             })
             .catch(err => {
@@ -134,13 +134,13 @@ function Sub() {
                     <div className="sub_content feeds">
                         {/* 태그 연관성에 따른 피드 표시 */}
                         
-                        {/* {
+                        {
                             recommendFeeds.map((feed, feedIndex) => {
                                 return (
                                     <RecommendFeed feed={feed} key={feedIndex} />
                                 )
                             })
-                        } */}
+                        }
                     </div>
                 </div>
             </div>

@@ -187,7 +187,7 @@ public class FeedController {
 	public HashMap<String, Object> getRecommendFeedsByNickname(@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 			
-		List<String> list = fs.getRecommendFeedsByNickname(nickname);
+		List<Feed> list = fs.getRecommendFeedsByNickname(nickname);
 		
 		result.put("recommendfeeds", list);
 		

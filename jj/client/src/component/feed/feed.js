@@ -451,22 +451,24 @@ function Feed(props) {
                     })
                 }
 
-                <div className="input_box">
-                    <div ref={inputReply}
-                        contentEditable
-                        suppressContentEditableWarning
-                        placeholder="Reply here"
-                        className="input_reply"
+                <div className="input_box" tabIndex='0'>
+                    <div className='input_container'>
+                        <div ref={inputReply}
+                            contentEditable
+                            suppressContentEditableWarning
+                            placeholder="Reply here"
+                            className="input_reply"
 
-                        onInput={(e) => {
-                            inputReply.current.textContent = e.currentTarget.textContent;
-                            setReplyContent(e.currentTarget.textContent);
-                            setLength(e.currentTarget.textContent.length);
-                        }}>
+                            onInput={(e) => {
+                                inputReply.current.textContent = e.currentTarget.textContent;
+                                setReplyContent(e.currentTarget.textContent);
+                                setLength(e.currentTarget.textContent.length);
+                            }}>
+                        </div>
+                        <button className="inputBtn" onClick={() => {
+                            addReply(feed.id, loginUser.nickname, replyContent);
+                        }}>확인</button>
                     </div>
-                    <button onClick={() => {
-                        addReply(feed.id, loginUser.nickname, replyContent);
-                    }}>확인</button>
                 </div>
                 <div className='activeBtn' tabIndex='0' >
                     <button className="btn_emoji" onClick={() => {
