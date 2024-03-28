@@ -80,7 +80,7 @@ function Member() {
     }, [param]);
 
     useEffect(() => {
-        document.getElementById("root").style.height = 0;
+        // document.getElementById("root").style.height = 0;
         getSummaryView();
     }, [SelectedTab]);
 
