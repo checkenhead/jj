@@ -1,9 +1,9 @@
 .wrap_sub{
-    position: sticky;
+    /* position: sticky; */
     width: 100%;
     /* min-height: calc(100vh - 10px); */
-    height: 100vh;
-    top: -5px;
+    /* height: 100vh; */
+    /* top: -5px; */
     padding: 5px;
     border: 1px solid #DDDDDD;
     background-color: white;
