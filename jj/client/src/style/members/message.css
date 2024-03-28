@@ -414,14 +414,11 @@
     color: #BBBBBB;
 }
 
-<<<<<<< HEAD
-=======
 .wrap_message .wrap_chat .input_box .input_container {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
 }
->>>>>>> branch 'main' of https://github.com/checkenhead/jj.git
 
 /* .messagebox .message .sent{
     margin-top: 20px;
