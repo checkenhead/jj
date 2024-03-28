@@ -12,6 +12,8 @@ import EmojiPicker from 'emoji-picker-react';
 import ImgEmoji from '../../images/emoji.png';
 
 import Feedimg from './feedimg';
+
+
 import ImgUser from '../../images/user.png';
 import ImgUnlike from '../../images/unlike.png';
 import ImgLike from '../../images/like.png';
@@ -21,6 +23,7 @@ import ImgBookmarked from '../../images/bookmarked.png';
 import ImgRemove from '../../images/remove.png';
 import ImgMore from '../../images/more.png';
 import ImgCancel from '../../images/cancel.png';
+import ImgDefault from '../../images/pic.png';
 
 function Feed(props) {
     const MAX_CONTENT_LENGTH = 200;
@@ -30,7 +33,7 @@ function Feed(props) {
     const elementReply = useRef();
     const heightReply = useRef();
     const [feed, setFeed] = useState(props.feed);
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState([ImgDefault]);
     const [writerInfo, setWriterInfo] = useState({});
     const [profileimg, setProfileimg] = useState(null);
     const [likes, setLikes] = useState([]);

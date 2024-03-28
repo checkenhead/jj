@@ -22,10 +22,13 @@ function Search() {
     const [recentKeywords, setRecentKeywords] = useState([]);
     const [toggleKeywords, setToggleKeywords] = useState(false);
     const loginUser = useSelector(state => state.user);
+    const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 
     const onSearch = (word) => {
         if (word === '') {
-            alert('검색어를 입력해주세요')
+            alert('검색어를 입력해주세요');
+        } else if (regExp.test(word)){ 
+            alert(' 특수문자는 입력할 수 없습니다');
         } else {
             jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
                 .then(result => {

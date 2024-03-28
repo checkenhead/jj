@@ -31,6 +31,8 @@ function Result() {
     const [inputKeyword, setInputKeyword] = useState('');
     const [recentKeywords, setRecentKeywords] = useState([]);
     const [toggleKeywords, setToggleKeywords] = useState(false);
+    // 특수문자 정규식
+    const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 
     const getResult = () => {
 
@@ -57,15 +59,18 @@ function Result() {
         // let w = word.replace('#','')
         if (word === '') {
             alert('검색어를 입력해주세요')
+        } else if (regExp.test(word)){ 
+            alert(' 특수문자는 입력할 수 없습니다');
         } else {
             jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
                 .then(result => {
-                    let encodedURL = encodeURIComponent(word);
-                    console.log(encodedURL);
-                    navigate(`/result/${target}/${encodedURL}`);
+
+                    navigate(`/result/${target}/${word}`);
                 })
                 .catch(err => {
+                    console.log(123);
                     console.error(err);
+                    alert('부적절한 접속 시도');
                 });
         }
     }

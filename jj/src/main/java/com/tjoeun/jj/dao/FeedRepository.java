@@ -65,4 +65,7 @@ public interface FeedRepository extends JpaRepository<Feed, Integer> {
 			+ "		(select fm.feedid from FeedMention fm where fm.nickname = :nickname )"
 			+ "	) and writer not in (:nickname) order by f.id desc")
 	List<Feed> findRecommendFeedsByNickname(@Param("nickname")String nickname);
+	
+	
+	
 }

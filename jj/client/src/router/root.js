@@ -1,4 +1,5 @@
 import { Suspense, lazy } from 'react';
+import ErrorPage from '../component/ErrorPage';
 const { createBrowserRouter } = require('react-router-dom');
 
 const Loading = <div><h3>Loadging...</h3></div>
@@ -92,6 +93,10 @@ const root = createBrowserRouter([
     {
         path: 'mobile',
         element: <Suspense fallback={Loading}><Mobile /></Suspense>
+    },
+    {
+        path: '/*',
+        element: <Suspense fallback={Loading}><ErrorPage /></Suspense>
     },
     
 ]);
