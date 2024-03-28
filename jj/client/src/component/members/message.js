@@ -14,16 +14,20 @@ import ImgMore from '../../images/more.png';
 import ImgCancel from '../../images/cancel.png';
 import ImgCreate from '../../images/create.png';
 import ImgQuit from '../../images/quit.png';
+import ImgConfirm from '../../images/confirm.png'
 
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import User from '../search/user';
+import userSlice from '../../store/userSlice';
+import followSlice from '../../store/followSlice';
 
 
 function Message() {
     const location = useLocation();
 
     const loginUser = useSelector(state => state.user);
+    const follow = useSelector(state => state.follow);
     const [content, setContent] = useState('');
 
     const inputEnter = useRef();
@@ -105,7 +109,7 @@ function Message() {
     }
 
     const leaveChat = () => {
-        
+
     }
 
     /** currGroup에서 sender의 profileimg를 찾아 return */
@@ -185,20 +189,29 @@ function Message() {
                         <div className="background">
                             <div className="head_menu">
                                 <div className="btn create" onClick={() => {
-                                        toggleModal();
-                                    }}>
-                                    <img src={ImgCreate}  />
+                                    toggleModal();
+                                }}>
+                                    <img src={ImgCreate} />
                                     <div className="description" >새 그룹 만들기</div>
                                 </div>
                             </div>
-                            <Modal className="modal" overlayClassName="orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
-                                <img src={ImgCancel} className="icon close link" onClick={() => {
-                                    toggleModal();
-                                }} />
-                                <User setIsOpen={setIsOpen}/>
-                                <User setIsOpen={setIsOpen}/>
-                                <User setIsOpen={setIsOpen} />
-                            </Modal>
+                            <div className='wrap_modal'>
+                                <Modal className="message_modal" overlayClassName="message_orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
+                                    <div className='modal_group_button'>
+                                        <img src={ImgCancel} className="icon close link" onClick={() => {
+                                            toggleModal();
+                                        }} />
+    
+                                        <img src={ImgConfirm} className='group_confirm' />
+                                    </div>
+
+                                    {
+                                        follow.followings.map((following) => {
+                                            return <User nickname={following} />
+                                        })
+                                    }
+                                </Modal>
+                            </div>
                             {
                                 chatGroups.map((chatGroup) => {
                                     return (
@@ -272,7 +285,7 @@ function Message() {
                                     <div className="menu">
                                         <div className="option">123</div>
                                         <div className="option">초대하기</div>
-                                        <div className="option" onClick={ ()=>{leaveChat()}}>나가기</div>
+                                        <div className="option" onClick={() => { leaveChat() }}>나가기</div>
                                     </div>
                                 ) : null
                             }
