@@ -142,7 +142,7 @@
     /* border: 1px solid #DDDDDD; */
 }
 
-.wrap_feeds .empty_feed_message {
+.wrap_search .empty_feed_message {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -152,16 +152,16 @@
     word-break: keep-all;
 }
 
-.wrap_feeds .empty_feed_message_text {
+.wrap_search .empty_feed_message_text {
     margin-bottom: 30%;
 }
 
-.wrap_feeds .empty_feed_message_list label{
+.wrap_search .empty_feed_message_list label{
     font-weight: bold;
     font-size: 16px;
 }
 
-.wrap_feeds .empty_feed_message_list p {
+.wrap_search .empty_feed_message_list p {
     font-size: 14px;
 }
 
