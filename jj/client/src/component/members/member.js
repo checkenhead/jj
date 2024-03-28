@@ -73,10 +73,11 @@ function Member() {
     //             console.error(err);
     //         });
     // }
-
+    
     useEffect(() => {
         // getUser();
         // getSummarys();
+        getSummaryView();
     }, [param]);
 
     useEffect(() => {
@@ -89,7 +90,7 @@ function Member() {
             <header><Header /></header>
             <Main component={
                 <>
-                    <UserInfo nickname={param.nickname} />
+                    <UserInfo nickname={param.nickname} key={param.nickname}/>
                     <div className="tab">
                         <div className="tab_col">
                             <button className="link" style={SelectedTab[0] ? styleSelected : null} onClick={() => {
