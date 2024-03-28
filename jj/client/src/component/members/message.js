@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Modal from "react-modal";
 import Header from '../common/header';
 import Main from '../common/main';
+
 
 import EmojiPicker from 'emoji-picker-react';
 import ImgEmoji from '../../images/emoji.png';
@@ -15,6 +17,7 @@ import ImgQuit from '../../images/quit.png';
 
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
+import User from '../search/user';
 
 
 function Message() {
@@ -47,6 +50,9 @@ function Message() {
     const [chatBoxStyle, setChatBoxStyle] = useState(styleHidden);
 
     const [btnMenuState, setBtnMenuState] = useState(false);
+
+    //모달
+    const [isOpen, setIsOpen] = useState(false);
 
     const send = () => {
         inputMessage.current.textContent = '';
@@ -161,6 +167,11 @@ function Message() {
         scrollBox.current.scrollTop = scrollBox.current.scrollHeight;
     }, [currChats]);
 
+    const toggleModal = () => {
+        document.body.style.overflow = isOpen ? "auto" : "hidden";
+        setIsOpen(!isOpen);
+    }
+
     return (
 
         <div className="wrap_main">
@@ -168,14 +179,26 @@ function Message() {
             <Main component={
                 <div className="wrap_message">
 
+
                     <div className="wrap_friend" style={chatGroupBoxStyle}>
+
                         <div className="background">
                             <div className="head_menu">
-                                <div className="btn create">
-                                    <img src={ImgCreate} />
-                                    <div className="description">새 그룹 만들기</div>
+                                <div className="btn create" onClick={() => {
+                                        toggleModal();
+                                    }}>
+                                    <img src={ImgCreate}  />
+                                    <div className="description" >새 그룹 만들기</div>
                                 </div>
                             </div>
+                            <Modal className="modal" overlayClassName="orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
+                                <img src={ImgCancel} className="icon close link" onClick={() => {
+                                    toggleModal();
+                                }} />
+                                <User setIsOpen={setIsOpen}/>
+                                <User setIsOpen={setIsOpen}/>
+                                <User setIsOpen={setIsOpen} />
+                            </Modal>
                             {
                                 chatGroups.map((chatGroup) => {
                                     return (
@@ -208,6 +231,7 @@ function Message() {
                             }
                         </div>
                     </div>
+
 
 
                     <div className="wrap_chat" style={chatBoxStyle}>
@@ -344,7 +368,7 @@ function Message() {
             } />
 
             {/* <aside id="aside"><Sub /></aside> */}
-        </div>
+        </div >
 
     )
 }

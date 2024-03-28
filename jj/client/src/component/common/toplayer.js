@@ -48,10 +48,7 @@ function TopLayer() {
     // }, [loginUserFollow]);
 
     const handleResize = () => {
-        // setMenuState(false);
-        const newDiv = document.createElement('div');
-        newDiv.style = "";
-        document.body.appendChild(newDiv);
+        setMenuState(false);
     }
 
     useEffect(() => {
