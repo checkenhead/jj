@@ -17,6 +17,7 @@ import './style/top.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+import './style/error.css';
 
 
 import store from './store/index';
