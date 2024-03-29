@@ -29,7 +29,7 @@ function UserInfo({ nickname }) {
                 setFeedCount(result.data.count);
                 setFollowers(result.data.followers || []);
                 setFollowings(result.data.followings || []);
-                setFollowState(loginUserFollow.followings.some((following)=> following === currUser.nickname));
+                setFollowState(loginUserFollow.followings.some((following) => following === currUser.nickname));
                 console.log(result.data);
             })
             .catch(err => {
@@ -53,11 +53,11 @@ function UserInfo({ nickname }) {
                         // toggleModal();
                     }
                 }}>
-                    <img src={
-                        currUser.profileimg
-                            ? `http://localhost:8070/images/${currUser.profileimg}`
-                            : ImgUser
-                    } className="img" />
+                    <img src={currUser.profileimg
+                        ? currUser.provider === "Kakao"
+                            ? currUser.profileimg
+                            : `http://localhost:8070/images/${currUser.profileimg}`
+                        : ImgUser} className="img" />
                     {
                         currUser.nickname === loginUser.nickname
                             ? <img src={ImgSetting} className="icon" />
@@ -75,9 +75,9 @@ function UserInfo({ nickname }) {
                     ? (
                         <div className='action_wrap'>
                             <div className='DirectMessage' onClick={() => {
-                                navigate('/message', {state:{writer: currUser.nickname}});
+                                navigate('/message', { state: { writer: currUser.nickname } });
                             }}>
-                                <img src={ImgMessage}/>Message</div>
+                                <img src={ImgMessage} />Message</div>
                             <div className='btn_follow'>
                                 <FollowButton followState={followState} follow={{ following: currUser.nickname, follower: loginUser.nickname }} />
                             </div>

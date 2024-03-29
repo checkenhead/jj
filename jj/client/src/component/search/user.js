@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 
+import ImgUser from '../../images/user.png';
+
 function User({ nickname }) {
     const [currUser, setCurrUser] = useState({});
     const [feedCount, setFeedCount] = useState(0);
@@ -41,7 +43,11 @@ function User({ nickname }) {
                 <div className="profileimg" onClick={() => {
                     navigate(`/member/${currUser.nickname}`);
                 }}>
-                    <img src={`http://localhost:8070/images/${currUser.profileimg}`} />
+                    <img src={currUser.profileimg
+                        ? currUser.provider === "Kakao"
+                            ? currUser.profileimg
+                            : `http://localhost:8070/images/${currUser.profileimg}`
+                        : ImgUser} />
                 </div>
                 <div className="nickname" onClick={() => {
                     navigate(`/member/${currUser.nickname}`);

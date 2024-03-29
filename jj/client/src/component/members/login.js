@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loginAction, logoutAction } from '../../store/userSlice';
 import { setFollowAction } from '../../store/followSlice';
 
-
+import ImgKakao from '../../images/loginImg/kakaosimbol.png';
 import ImgLogo from '../../images/logo.png';
 import woman from '../../images/loginImg/woman.jpg'
 import books from '../../images/loginImg/books.jpg';
@@ -33,6 +33,15 @@ function Login() {
   const dispatch = useDispatch();
   const MAX_CONTENT_LENGTH = 200;
   const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
+
+  const Rest_api_key = process.env.REACT_APP_KAKAO_REST_API_KEY; //REST API KEY
+  const redirect_uri = process.env.REACT_APP_KAKAO_REDIRECT_URI; //Redirect URI
+  // oauth 요청 URL
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
+
+  const handleLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  }
 
   const onLogin = () => {
     if (!email) { return alert('아이디를 입력하세요') }
@@ -202,11 +211,13 @@ function Login() {
                   navigate('/EmailCheck')
                 }}>Forgot Password</label></div>
                 <div className='btns'>
-                  <button className='button'>SNS Login</button>
                   <button className='button'
                     onClick={() => { onLogin() }}>Login</button>
                   <button className='button'
                     onClick={() => { navigate('/join') }}>Join</button>
+                  <button className='kakao button' onClick={() => { handleLogin() }}>
+                    <img src={ImgKakao}></img><label>Login with Kakao</label>
+                  </button>
                 </div>
               </div>
             </div>

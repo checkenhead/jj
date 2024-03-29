@@ -42,11 +42,11 @@
     transition: 0s all;
 }
 
-.item{
+.item {
     transition: transform 0.8s;
 }
 
-.item img{ 
+.item img {
     box-shadow: 20px 20px 20px #AAAAAA;
 }
 
@@ -217,6 +217,32 @@ input:valid~label {
     transform: translateY(0);
 }
 
+.kakao {
+    display: flex;
+    background-color: #FEE500 !important;
+    color: #000000 !important;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.kakao:hover {
+    color: #000000 !important;
+}
+
+.kakao label {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.kakao img {
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    align-items: center;
+}
+
 .loginfooter {
     display: flex;
     height: 60px;
@@ -257,28 +283,34 @@ input:valid~label {
         width: 100%;
         margin: 0 auto;
     }
+
     .loginform {
         width: 100%;
         margin: 0 auto;
     }
+
     .login_logo {
         display: none;
     }
+
     .login_input {
         padding: 30px;
         width: 93vw;
     }
+
     .wrap_login {
         margin: 0 auto;
         margin-bottom: 10px;
     }
+
     .login_grid {
         margin-bottom: 10px;
         padding: 0;
         text-align: center;
         width: 91vw;
     }
-    .login_grid img{
+
+    .login_grid img {
         width: 200px;
     }
 }
@@ -304,10 +336,7 @@ input:valid~label {
 @media (min-width: 921px) and (max-width: 1000px) {}
 
 /* 데스크탑 */
-@media (min-width: 1025px) {
-
-}
+@media (min-width: 1025px) {}
 
 /* 모바일 가로모드 */
-@media (max-height: 450px) {
-}
+@media (max-height: 450px) {}

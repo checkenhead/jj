@@ -66,7 +66,11 @@ function Header({ setNewFeed }) {
                     </div>
                     <div className="row">
                         <Link to={`/member/${loginUser.nickname}`} className="link">
-                            <img src={loginUser.profileimg ? `http://localhost:8070/images/${loginUser.profileimg}` : ImgUser} className="icon" /><span className="name">My page</span>
+                            <img src={loginUser.profileimg
+                                ? loginUser.provider === "Kakao"
+                                    ? loginUser.profileimg
+                                    : `http://localhost:8070/images/${loginUser.profileimg}`
+                                : ImgUser} className="icon" /><span className="name">My page</span>
                         </Link>
                     </div>
                     <div className="row" >
