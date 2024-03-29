@@ -265,11 +265,11 @@ function Message() {
                                                                     }}>
                                                                         <div className='friend_profileimg'>
                                                                             <img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" />
-                                                                            {member.nickname}
+                                                                            {/* {member.nickname} */}
                                                                         </div>
                                                                     </div>
-
-                                                                    <div className="btn delete"><img src={ImgQuit} /></div>
+                                                                    
+                                                                    {/* <div className="btn delete"><img src={ImgQuit} /></div> */} {member.nickname}
                                                                 </div>
 
                                                             </div> : null

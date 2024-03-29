@@ -86,7 +86,7 @@
 .wrap_message .wrap_friend .row_friend {
     /* width: calc(100% - 10px); */
     width: 100%;
-    /* padding: 10px; */
+    padding: 10px;
     /* margin-bottom: 5px; */
     border-bottom: 1px solid #DDDDDD;
     box-sizing: border-box;
