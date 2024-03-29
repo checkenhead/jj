@@ -86,7 +86,7 @@
 .wrap_message .wrap_friend .row_friend {
     /* width: calc(100% - 10px); */
     width: 100%;
-    padding: 10px;
+    /* padding: 10px; */
     /* margin-bottom: 5px; */
     border-bottom: 1px solid #DDDDDD;
     box-sizing: border-box;
@@ -98,13 +98,18 @@
     /* border: 1px solid black; */
 
 }
-
+.wrap_message .friend_profileimg{
+    display: flex;
+    width: 100%;
+}
 .wrap_message .friend_icon {
     width: 35px;
     height: 35px;
     border-radius: 50px;
     display: flex;
+    margin-right: auto;
 }
+
 
 .wrap_message .friend_nickname {
     flex: 1;

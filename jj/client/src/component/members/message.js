@@ -62,7 +62,7 @@ function Message() {
 
 
     const [selectedMember, setSelectedMember] = useState([]);
-    const selectedStyle = {opacity:'0.3'};
+    const selectedStyle = { opacity: '0.3' };
 
     const send = () => {
         inputMessage.current.textContent = '';
@@ -182,9 +182,9 @@ function Message() {
         setIsOpen(!isOpen);
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         setSelectedMember([loginUser.nickname]);
-    },[]);
+    }, []);
 
 
 
@@ -215,31 +215,31 @@ function Message() {
                                         <img src={ImgCancel} className="icon close link" onClick={() => {
                                             toggleModal();
                                         }} />
-                                        <img src={ImgSend} className='group_confirm' onClick={()=>{
+                                        <img src={ImgSend} className='group_confirm' onClick={() => {
                                             createGroup(selectedMember);
-                                        }}/>
+                                        }} />
                                     </div>
 
 
 
                                     {
                                         follow.followings.map((following) => {
-                                            return <div className='following_user'  onClick={()=>{
-                                                if(selectedMember.some((member)=>{
+                                            return <div className='following_user' onClick={() => {
+                                                if (selectedMember.some((member) => {
                                                     return member === following;
-                                                })){
-                                                    setSelectedMember(selectedMember.filter((member)=>{
-                                                        return member!==following;
+                                                })) {
+                                                    setSelectedMember(selectedMember.filter((member) => {
+                                                        return member !== following;
                                                     }));
-                                                }else{
+                                                } else {
                                                     setSelectedMember([...selectedMember, following]);
                                                 }
-                                                
+
 
                                                 console.log(selectedMember);
-                                            }}><div className='mask' style={selectedMember.some((member)=>{
+                                            }}><div className='mask' style={selectedMember.some((member) => {
                                                 return member === following;
-                                            }) ? selectedStyle : null }
+                                            }) ? selectedStyle : null}
                                             ><img src={ImgConfirm} /></div><FollowUser member={following} /></div>
                                         })
                                     }
@@ -263,16 +263,22 @@ function Message() {
                                                                         setChatGroupBoxStyle(styleHidden);
                                                                         console.log(chatGroups);
                                                                     }}>
-                                                                        <img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" />
-                                                                        {member.nickname}
+                                                                        <div className='friend_profileimg'>
+                                                                            <img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" />
+                                                                            {member.nickname}
+                                                                        </div>
                                                                     </div>
+
                                                                     <div className="btn delete"><img src={ImgQuit} /></div>
                                                                 </div>
+
                                                             </div> : null
+
                                                     );
                                                 })
                                             }
                                         </div>
+
                                     );
                                 })
                             }
