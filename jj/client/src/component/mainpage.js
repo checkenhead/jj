@@ -15,7 +15,7 @@ function Mainpage() {
       <header><Header setNewFeed={setNewFeed} /></header>
       <Main component={<Feeds newFeed={newFeed} setNewFeed={setNewFeed} />} />
       <Aside component={<Sub />}/>
-      <TopLayer />
+      <TopLayer setNewFeed={setNewFeed}/>
     </div>
   )
 }
