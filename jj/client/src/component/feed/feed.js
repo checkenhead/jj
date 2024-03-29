@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setMessageAction } from '../../store/notifySlice';
 import Slider from 'react-slick';
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
@@ -56,6 +57,7 @@ function Feed(props) {
     const [stateBookmark, setStateBookmark] = useState(false);
     const loginUser = useSelector(state => state.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const getWriterInfo = (nickname) => {
         jwtAxios.post('/api/members/getmemberbynickname', null, { params: { nickname } })
@@ -162,9 +164,9 @@ function Feed(props) {
 
     const addReply = (feedid, writer, content) => {
         if (replyContent === '') {
-            alert('댓글 내용을 입력해주세요');
+            dispatch(setMessageAction({message: '댓글 내용을 입력해주세요.'}));
         } else if (replyContent.length > MAX_CONTENT_LENGTH) {
-            alert('입력 가능한 최대 글자수는 200자 입니다');
+            dispatch(setMessageAction({message: '입력 가능한 최대 글자수는 200자 입니다.'}));
         } else {
             jwtAxios.post('/api/feeds/addreply', { feedid, writer, content })
                 .then(result => {
@@ -182,7 +184,7 @@ function Feed(props) {
         if (window.confirm('삭제하시겠습니까?')) {
             jwtAxios.post('/api/feeds/deletereply', null, { params: { id } })
                 .then(result => {
-                    alert('삭제 완료');
+                    dispatch(setMessageAction({message: '댓글이 삭제되었습니다.'}));
                     getReplys(feedid);
                 })
                 .catch(err => {

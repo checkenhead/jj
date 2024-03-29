@@ -13,8 +13,8 @@
     box-sizing: border-box;
     /* opacity: 0.5; */
     /* background-color: black; */
-    overflow-y: scroll;
-    background-color: white;
+    overflow-y: auto;
+    /* background-color: white; */
 }
 .link{
     transition: all 0.1s;
@@ -151,7 +151,63 @@
     /* border: 1px solid red; */
     box-sizing: border-box;
 }
+.wrap_notify{
+    position: fixed;
+    width:300px;
+    height:150px;
+    margin: 20px;
+    bottom: -180px;
+    left: 0;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #DDDDDD;
+    box-shadow: 0 0  10px #DDDDDD;
+    overflow: hidden;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+}
+.appear{
+    bottom: 0;
+}
+.wrap_notify .close{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    
+    /* box-sizing: border-box; */
+    padding: 5px;
 
+    border: 1px solid transparent;
+    border-radius: 50%;
+}
+.wrap_notify .close:hover{
+    border: 1px solid #DDDDDD;
+}
+.wrap_notify .notify{
+    width: 100%;
+    height: 100%;
+    margin: 10px;
+    /* box-sizing: border-box; */
+    word-break: break-all;
+    font-size: 1rem;
+    font-weight: bold;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    /* border: 1px solid black; */
+}
+.wrap_notify .close img{
+    width: 100%;
+    height: 100%;
+}
 /* 모바일 */
 @media (max-width: 640px){
     .wrap_top .hamburger_menu{

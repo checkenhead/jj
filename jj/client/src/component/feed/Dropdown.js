@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import {setMessageAction} from '../../store/notifySlice';
 import ImgRemove from '../../images/remove.png';
 import ImgEdit from '../../images/confirm.png';
 import ImgFollow from '../../images/follow.png';
@@ -27,7 +28,8 @@ function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
             jwtAxios.post('/api/feeds/deletebyid', { id: feedid })
                 .then(result => {
                     navigate('/');
-                    return alert('게시물 삭제가 완료되었습니다');
+                    dispatch(setMessageAction({message:'게시물 삭제가 완료되었습니다'}));  
+                    return;
                 })
                 .catch(error => {
                     console.error(error);

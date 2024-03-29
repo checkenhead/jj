@@ -12,6 +12,7 @@ import Sub from './sub';
 
 import Post from '../feed/post';
 import Modal from "react-modal";
+import Notify from './notify';
 
 import ImgHome from '../../images/home.png';
 import ImgUser from '../../images/user.png';
@@ -82,8 +83,6 @@ function TopLayer({ setNewFeed }) {
                         <img src={ImgHam} className="icon" /><span className="name"></span>
                     </button>) : null
                 }
-
-
             </div>
             {
                 menuState ? (
@@ -93,6 +92,7 @@ function TopLayer({ setNewFeed }) {
 
                             <button className="link" onClick={() => {
                                 setMenuState(false);
+                                document.body.style.overflow = 'auto';
                             }}>
                                 <img src={ImgReturn} className="icon" />
                             </button>
@@ -146,13 +146,10 @@ function TopLayer({ setNewFeed }) {
                             <Sub />
                         </div>
                     </div>
-
-
-
                 ) : null
             }
 
-
+            <Notify />
 
         </div>
     )

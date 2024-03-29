@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import Modal from "react-modal";
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setMessageAction } from '../../store/notifySlice';
 import EmojiPicker from 'emoji-picker-react';
 
 import ImgPic from '../../images/pic.png';
@@ -18,6 +18,8 @@ function Post(props) {
     const MAX_CONTENT_LENGTH = 200;
     const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
     const loginUser = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
     const inputPost = useRef();
     const inputFile = useRef();
     const [content, setContent] = useState('');
@@ -34,14 +36,14 @@ function Post(props) {
 
     const onPost = () => {
         if (images.length === 0) {
-            alert('사진 업로드는 필수입니다')
+            dispatch(setMessageAction({message: '사진 업로드는 필수입니다.'}));
         } else if (content === '') {
-            alert('내용을 입력해주세요')
+            dispatch(setMessageAction({message: '내용을 입력하세요.'}));
         } else {
             jwtAxios.post('/api/feeds/post', { feedid, writer: loginUser.nickname, content, feedimgid, filenames: images, styles: filters })
                 .then((result) => {
                     if (result.data.message !== 'OK') {
-                        alert('Feed 업로드에 실패했습니다. 관리자에게 문의하세요.');
+                        dispatch(setMessageAction({message: 'Feed 업로드에 실패했습니다. 관리자에게 문의하세요.'}));
                     } else {
                         inputPost.current.textContent = '';
                         //document.getElementById("target").textcontent = '';
@@ -62,7 +64,6 @@ function Post(props) {
                                 props.setFeeds(tmp);
                             }
                         }
-                        // alert('Feed가 업로드 되었습니다.');
                         if (props.setIsOpen) {
                             props.setIsOpen(false);
                             document.body.style.overflow = "auto";
@@ -78,7 +79,7 @@ function Post(props) {
 
     const onFileup = (e) => {
         if (e?.target?.files[0]?.size > MAX_CONTENT_SIZE) {
-            alert(`업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`)
+            dispatch(setMessageAction({message: `업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`}));
         } else {
 
             const formData = new FormData();
