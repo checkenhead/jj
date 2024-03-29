@@ -3,6 +3,7 @@
 } */
 .wrap_top{
     position: fixed;
+    z-index: 3;
     /* width: 100vw;
     height: 100vh; */
     top: 0;
@@ -12,6 +13,13 @@
     /* background-color: black; */
     overflow-y: scroll;
     background-color: white;
+}
+.link{
+    transition: all 0.1s;
+}
+.link:hover{
+    cursor: pointer;
+    transform: scale(0.95);
 }
 .wrap_mobile{
     position: relative;
@@ -35,10 +43,11 @@
 .wrap_top .hamburger_menu button{
     width: 100%;
     height: 100%;
-    padding: 0;
+    padding: 5px;
     border: 0;
-    background-color: transparent;
-    opacity: 0.7;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0.6;
 }
 .wrap_top .hamburger_menu img{
     width: 100%;

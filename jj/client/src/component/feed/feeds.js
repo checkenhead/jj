@@ -6,6 +6,8 @@ import jwtAxios from '../../util/jwtUtil';
 import Post from './post';
 import Feed from './feed';
 
+import { throttle } from 'lodash';
+
 function Feeds({ newFeed, setNewFeed }) {
     const loginUser = useSelector(state => state.user);
     const [feeds, setFeeds] = useState([]);
@@ -18,8 +20,8 @@ function Feeds({ newFeed, setNewFeed }) {
         triggerOnce: true
     });
 
+    const getFeeds = throttle(async (requireRefressh) => {
 
-    const getFeeds = async (requireRefressh) => {
         try {
             if (requireRefressh) { currPage.current = 0; }
             const result = await jwtAxios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } });
@@ -29,7 +31,10 @@ function Feeds({ newFeed, setNewFeed }) {
         } catch (err) {
             console.error(err);
         }
-    }
+
+    }, 1000);
+
+
 
     const getFollowingFeeds = async (requireRefressh) => {
         try {
@@ -58,7 +63,7 @@ function Feeds({ newFeed, setNewFeed }) {
         } else {
             getFollowingFeeds(false);
         }
-    }, [inView]);    
+    }, [inView]);
 
     useEffect(() => {
         if (newFeed?.id) {
