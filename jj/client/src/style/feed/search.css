@@ -1,7 +1,7 @@
 .wrap_search {
     position: relative;
     width: 100%;
-    min-height: calc(100vh - 10px);
+    /* min-height: calc(100vh - 10px); */
     padding: 5px;
     box-sizing: border-box;
     background-color: white;
@@ -136,7 +136,7 @@
 
 .wrap_search .result_people {
     width: 100%;
-    padding: 5px;
+    /* padding: 5px; */
     /* margin: 20px 0; */
     box-sizing: border-box;
     /* border: 1px solid #DDDDDD; */
@@ -163,6 +163,19 @@
 
 .wrap_search .empty_feed_message_list p {
     font-size: 14px;
+}
+
+.wrap_search .wrap_recommend_people {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #DDDDDD;
+    background-color: white;
+    /* box-shadow: 0 0 20px #DDDDDD; */
+    /* border-radius: 10px; */
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
 }
 
 #user {
