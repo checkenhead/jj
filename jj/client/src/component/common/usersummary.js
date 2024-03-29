@@ -35,7 +35,11 @@ function UserSummary({ member }) {
             <div className="profileimg" onClick={() => {
                 navigate(`/member/${currUser.nickname}`);
             }}>
-                <img src={currUser.profileimg ? `http://localhost:8070/images/${currUser.profileimg}` : ImgUser} />
+                <img src={currUser.profileimg
+                    ?   currUser.provider === "Kakao"
+                        ?   currUser.profileimg
+                        : `http://localhost:8070/images/${currUser.profileimg}`
+                    : ImgUser} />
             </div>
             <div className="nickname" onClick={() => {
                 navigate(`/member/${currUser.nickname}`);
