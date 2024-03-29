@@ -87,7 +87,11 @@ function Mobile() {
                         </div>
                         <div className="row">
                             <Link to={`/member/${loginUser.nickname}`} className="link">
-                                <img src={loginUser.profileimg ? `http://localhost:8070/images/${loginUser.profileimg}` : ImgUser} className="icon" />
+                                <img src={loginUser.profileimg
+                                    ? loginUser.provider === "Kakao"
+                                        ? loginUser.profileimg
+                                        : `http://localhost:8070/images/${loginUser.profileimg}`
+                                    : ImgUser} className="icon" />
                                 {/* <span className="name">My page</span> */}
                             </Link>
                         </div>
@@ -124,55 +128,55 @@ function Mobile() {
                             </button>
                         </div>
                     </nav>
-                    
+
                 </div>
                 <div className="mobile_sub" id="wrap_sub">
-                        <div className="search">
-                            <input type="text" list="recent_list" placeholder="Search" />
-                            {/* <button>Search</button> */}
-                            <datalist id="recent_list">
-                                <option value="가나다라" />
-                                <option value="마바사" />
-                                <option value="아자차카" />
-                                <option value="타파하" />
-                                <option value="abcd" />
-                            </datalist>
-                        </div>
-                        <div className="wrap_relevant_people">
-                            <div className="title">Relevant people</div>
-                            <div className="relevant_people">
-                            </div>
-                        </div>
-                        <div className="wrap_recommend_people">
-                            <div className="title">You might like</div>
-                            <div className="recommend_people">
-                            </div>
-                        </div>
-                        <div className="wrap_recommend_feed">
-                            <div className="recommend_feed">
-                                <div className="title">Trends for you</div>
-                                <div className="sub_content feeds">Sub Content #1</div>
-                            </div>
-                        </div>
-                        <div className="wrap_recommend_follow">
-                            <div className="title">Who to follow
-                            </div>
-                            <div className="recommend_follow">
-
-                                {
-                                    recommendMember.map((member, memberIndex) => {
-                                        return (
-                                            loginUserFollow.followings.some((following) => following === member)
-                                                ? null
-                                                : <UserSummary member={member} key={memberIndex} />
-                                        );
-                                    })
-                                }
-
-                            </div>
-                        </div>
-                        {/* <footer><Footer /></footer> */}
+                    <div className="search">
+                        <input type="text" list="recent_list" placeholder="Search" />
+                        {/* <button>Search</button> */}
+                        <datalist id="recent_list">
+                            <option value="가나다라" />
+                            <option value="마바사" />
+                            <option value="아자차카" />
+                            <option value="타파하" />
+                            <option value="abcd" />
+                        </datalist>
                     </div>
+                    <div className="wrap_relevant_people">
+                        <div className="title">Relevant people</div>
+                        <div className="relevant_people">
+                        </div>
+                    </div>
+                    <div className="wrap_recommend_people">
+                        <div className="title">You might like</div>
+                        <div className="recommend_people">
+                        </div>
+                    </div>
+                    <div className="wrap_recommend_feed">
+                        <div className="recommend_feed">
+                            <div className="title">Trends for you</div>
+                            <div className="sub_content feeds">Sub Content #1</div>
+                        </div>
+                    </div>
+                    <div className="wrap_recommend_follow">
+                        <div className="title">Who to follow
+                        </div>
+                        <div className="recommend_follow">
+
+                            {
+                                recommendMember.map((member, memberIndex) => {
+                                    return (
+                                        loginUserFollow.followings.some((following) => following === member)
+                                            ? null
+                                            : <UserSummary member={member} key={memberIndex} />
+                                    );
+                                })
+                            }
+
+                        </div>
+                    </div>
+                    {/* <footer><Footer /></footer> */}
+                </div>
             </div>
 
         </>

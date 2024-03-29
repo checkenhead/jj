@@ -33,7 +33,11 @@ function FollowUser({ member }) {
     return (
         <div className="user_summary">
             <div className="profileimg">
-                <img src={currUser.profileimg ? `http://localhost:8070/images/${currUser.profileimg}` : ImgUser} />
+                <img src={currUser.profileimg 
+                    ? currUser.provider === "Kakao"
+                        ? currUser.profileimg
+                        :`http://localhost:8070/images/${currUser.profileimg}` 
+                    : ImgUser} />
             </div>
             <div className="nickname">
                 {currUser.nickname}

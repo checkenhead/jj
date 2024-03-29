@@ -13,7 +13,7 @@ import ImgReply from '../../images/reply.png';
 import ImgBookmark from '../../images/bookmark.png';
 import ImgBookmarked from '../../images/bookmarked.png';
 
-function Feed({feed}) {
+function Feed({ feed }) {
     const [images, setImages] = useState([]);
     const [writerInfo, setWriterInfo] = useState({});
     const [profileimg, setProfileimg] = useState(null);
@@ -184,7 +184,11 @@ function Feed({feed}) {
                     <div className="profileimg link" onClick={() => {
                         navigate(`/member/${feed.writer}`)
                     }}>
-                        <img src={profileimg || ImgUser} />
+                        <img src={writerInfo.profileimg
+                            ? writerInfo.provider === "Kakao"
+                                ? writerInfo.profileimg
+                                : profileimg
+                            : ImgUser} />
                     </div>
                     <div className="nickname link" onClick={() => {
                         navigate(`/member/${feed.writer}`)

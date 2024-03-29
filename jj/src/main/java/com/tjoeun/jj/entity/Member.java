@@ -24,7 +24,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude="memberRoleList")
+@ToString(exclude = "memberRoleList")
 public class Member {
 	@Id
 	private String email;
@@ -40,55 +40,55 @@ public class Member {
 	private String address1;
 	private String address2;
 	private String address3;
-	
-	@ElementCollection(fetch=FetchType.LAZY)
-	@Builder.Default // Default : new ArrayList<>()  비어있는 리스트로 객체 저장
+
+	@ElementCollection(fetch = FetchType.LAZY)
+	@Builder.Default // Default : new ArrayList<>() 비어있는 리스트로 객체 저장
 	private List<MemberRole> memberRoleList = new ArrayList<>();
-	
+
 	public void addRole(MemberRole memberRole) {
 		memberRoleList.add(memberRole);
 	}
-	
+
 	public void clearRole() {
 		memberRoleList.clear();
 	}
-	
+
 	public void changeNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	
+
 	public void changePwd(String pwd) {
 		this.pwd = pwd;
 	}
-	
+
 	public void changeSnsid(String snsid) {
 		this.snsid = snsid;
 	}
-	
+
 	public void changeProfileimg(String profileimg) {
 		this.profileimg = profileimg;
 	}
-	
+
 	public void changeIntro(String intro) {
 		this.intro = intro;
 	}
-	
+
 	public void changeProvider(String provider) {
 		this.provider = provider;
 	}
-	
+
 	public void changeZipnum(String zipnum) {
 		this.zipnum = zipnum;
 	}
-	
+
 	public void changeAddress1(String address1) {
 		this.address1 = address1;
 	}
-	
+
 	public void changeAddress2(String address2) {
 		this.address2 = address2;
 	}
-	
+
 	public void changeAddress3(String address3) {
 		this.address3 = address3;
 	}

@@ -17,7 +17,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MemberDto extends User {
-	public MemberDto(String username, String password, String nickname, String provider, String snsid, String profileimg, String intro, List<String> roleNames, String createdat, String zipnum, String address1, String address2, String address3) {
+	public MemberDto(String username, String password, String nickname, String provider, String snsid,
+			String profileimg, String intro, List<String> roleNames, String createdat, String zipnum, String address1,
+			String address2, String address3) {
 
 		super(username, password,
 				roleNames.stream().map(str -> new SimpleGrantedAuthority("ROLE_" + str)).collect(Collectors.toList()));
@@ -35,11 +37,11 @@ public class MemberDto extends User {
 		this.address2 = address2;
 		this.address3 = address3;
 	}
-	
+
 	public MemberDto(Member member) {
-		super(member.getEmail(), member.getPwd(),
-				member.getMemberRoleList().stream().map(memberRole -> new SimpleGrantedAuthority("" + memberRole.name())).collect(Collectors.toList()));
-		
+		super(member.getEmail(), member.getPwd(), member.getMemberRoleList().stream()
+				.map(memberRole -> new SimpleGrantedAuthority("" + memberRole.name())).collect(Collectors.toList()));
+
 		this.email = member.getEmail();
 		this.pwd = member.getPwd();
 		this.nickname = member.getNickname();
@@ -47,15 +49,14 @@ public class MemberDto extends User {
 		this.snsid = member.getSnsid();
 		this.profileimg = member.getProfileimg();
 		this.intro = member.getIntro();
-		this.roleNames = member.getMemberRoleList().stream().map(memberRole -> memberRole.name()).collect(Collectors.toList());
+		this.roleNames = member.getMemberRoleList().stream().map(memberRole -> memberRole.name())
+				.collect(Collectors.toList());
 		this.createdat = member.getCreatedat().toString();
 		this.zipnum = member.getZipnum();
 		this.address1 = member.getAddress1();
 		this.address2 = member.getAddress2();
 		this.address3 = member.getAddress3();
 	}
-	
-	
 
 	private String email;
 	private String pwd;
@@ -65,7 +66,7 @@ public class MemberDto extends User {
 	private String profileimg;
 	private String intro;
 	private List<String> roleNames = new ArrayList<>();
-	
+
 	private String createdat;
 	private String zipnum;
 	private String address1;
@@ -94,5 +95,5 @@ public class MemberDto extends User {
 
 		return dataMap;
 	}
-	
+
 }

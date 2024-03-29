@@ -346,7 +346,11 @@ function Feed(props) {
                             navigate(`/member/${feed.writer}`)
                         }
                     }}>
-                        <img src={profileimg || ImgUser} />
+                        <img src={writerInfo.profileimg
+                            ?writerInfo.provider === "Kakao"
+                                ? writerInfo.profileimg
+                                : profileimg
+                            :ImgUser} />
                     </div>
                     <div className="nickname link" onClick={() => {
                         if (feed.writer !== loginUser.nickname) {
@@ -438,7 +442,11 @@ function Feed(props) {
                                 <div className="row_reply profile" onClick={() => {
                                     navigate(`/member/${reply.writer}`);
                                 }}>
-                                    <img src={`http://localhost:8070/images/${reply.profileimg}`} className="writer_img" />{reply.writer}
+                                    <img src={reply.writer
+                                        ? reply.provider === "Kakao"
+                                            ? reply.profileimg
+                                            :`http://localhost:8070/images/${reply.profileimg}`
+                                        : ImgUser} className="writer_img" />{reply.writer}
                                 </div>
                                 <div className="row_reply content">{reply.content}</div>
                                 <div className="row_reply timestamp">{transDateString(reply.createdat)}</div>

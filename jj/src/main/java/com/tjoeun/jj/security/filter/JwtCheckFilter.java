@@ -84,16 +84,19 @@ public class JwtCheckFilter extends OncePerRequestFilter{
 		if(path.startsWith("/images"))
 			return true;
 		
-		if(path.startsWith("/api/members/loginlocal"))
-			return true;
-		
-		if(path.startsWith("/api/members/join"))
+		if(path.startsWith("/api/members/refreshtoken"))
 			return true;
 		
 		if(path.startsWith("/api/members/fileupload"))
 			return true;
 		
-		if(path.startsWith("/api/members/refreshtoken"))
+		if(path.startsWith("/api/members/loginlocal"))
+			return true;
+		
+		if(path.startsWith("/api/members/kakaoLogin"))
+			return true;
+		
+		if(path.startsWith("/api/members/join"))
 			return true;
 		
 		return false;
