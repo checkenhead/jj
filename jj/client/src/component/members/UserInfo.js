@@ -22,7 +22,7 @@ function UserInfo({ nickname }) {
     const navigate = useNavigate();
 
     const getUserInfo = () => {
-        console.log("nickname : ", nickname);
+        // console.log("nickname : ", nickname);
         jwtAxios.post('/api/members/getUserInfo', null, { params: { nickname } })
             .then(result => {
                 setCurrUser(result.data.user);
@@ -30,7 +30,7 @@ function UserInfo({ nickname }) {
                 setFollowers(result.data.followers || []);
                 setFollowings(result.data.followings || []);
                 setFollowState(loginUserFollow.followings.some((following) => following === currUser.nickname));
-                console.log(result.data);
+                // console.log(result.data);
             })
             .catch(err => {
                 console.error(err);

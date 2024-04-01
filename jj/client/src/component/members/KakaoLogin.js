@@ -18,7 +18,6 @@ function KakaoLogin() {
     const KakaoStart = () => {
         axios.post('/api/members/kakaoLogin', null, { params: { code, apikey: Rest_api_key, redirectUri: Redirect_uri } })
             .then(result => {
-                console.log(2, result.data);
                 dispatch(setMessageAction('로그인/회원가입 성공'));
                 setCookie("user", JSON.stringify(result.data), 1);
                 dispatch(loginAction(result.data));
@@ -34,7 +33,7 @@ function KakaoLogin() {
     const getFollow = (nickname) => {
         jwtAxios.post('/api/members/getfollow', null, { params: { nickname } })
           .then(result => {
-            console.log('getFollow:', result);
+            // console.log('getFollow:', result);
             dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }))
           })
           .catch(err => {

@@ -69,7 +69,7 @@ function Result() {
                     navigate(`/result/${target}/${word}`);
                 })
                 .catch(err => {
-                    console.log(123);
+                    // console.log(123);
                     console.error(err);
                     dispatch(setMessageAction('부적절한 접속 시도'));
                 });

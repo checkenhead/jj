@@ -126,7 +126,7 @@ function Post(props) {
         if (props?.feed?.id) {
             inputPost.current.textContent = props.feed.content;
             setContent(props.feed.content);
-            console.log(props.images);
+            // console.log(props.images);
             setFilters(props.images.map((image) => {
                 return image.style;
             }))

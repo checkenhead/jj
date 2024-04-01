@@ -51,7 +51,7 @@ function Sub() {
         jwtAxios.post('/api/feeds/getrecommendfeedsbynickname', null, { params: { nickname: loginUser.nickname } })
             .then(result => {
                 setRecommendFeeds(result.data.recommendfeeds);
-                console.log(result.data.recommendfeeds, '추천 피드');
+                // console.log(result.data.recommendfeeds, '추천 피드');
             })
             .catch(err => {
                 console.error(err);

@@ -26,7 +26,7 @@ function Aside({ component }) {
                 if (getComponentTop() > 0) {
                     currComponent.current.style.top = 0;
                 }
-                console.log(getComponentTop());
+                // console.log(getComponentTop());
             }
     
             preScroll.current = currScroll;

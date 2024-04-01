@@ -33,7 +33,7 @@ function Member() {
             jwtAxios.post('/api/feeds/getsummaryview', null, { params: { nickname: param.nickname } })
                 .then(result => {
                     setSummarys(result.data.summarys);
-                    console.log(result.data);
+                    // console.log(result.data);
                 })
                 .catch(err => {
                     console.error(err);
@@ -42,7 +42,7 @@ function Member() {
             jwtAxios.post('/api/feeds/getsummarymentions', null, { params: { nickname: param.nickname } })
                 .then(result => {
                     setSummarys(result.data.summarys);
-                    console.log(result.data);
+                    // console.log(result.data);
                 })
                 .catch(err => {
                     console.error(err);

@@ -80,7 +80,7 @@ function Login() {
   const getFollow = (nickname) => {
     jwtAxios.post('/api/members/getfollow', null, { params: { nickname } })
       .then(result => {
-        console.log('getFollow:', result);
+        // console.log('getFollow:', result);
         dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }))
       })
       .catch(err => {

@@ -34,7 +34,7 @@ function CurPwdCheck() {
         } else {
             jwtAxios.post('/api/members/passwordCheck', null, { params: { curpwd, nickname: loginUser.nickname } })
                 .then((result) => {
-                    console.log(result.data);
+                    // console.log(result.data);
                     if (result.data.message !== 'OK') {
                         setCurPwd("");
                         dispatch(setMessageAction({message: '비밀번호가 틀립니다.'}));
