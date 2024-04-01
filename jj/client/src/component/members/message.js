@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { setMessageAction } from '../../store/notifySlice';
 import Modal from "react-modal";
 import Header from '../common/header';
 import Main from '../common/main';
@@ -26,7 +27,7 @@ import UserSummary from '../common/usersummary';
 
 function Message() {
     const location = useLocation();
-
+    const dispatch = useDispatch();
     const loginUser = useSelector(state => state.user);
     const follow = useSelector(state => state.follow);
     const [content, setContent] = useState('');
@@ -71,7 +72,7 @@ function Message() {
             jwtAxios.post('/api/chat/send', { sender: loginUser.nickname, chatgroupid: currChatGroup.current.id, content })
                 .then((result) => {
                     if (result.data.message === 'Error') {
-                        alert("Error");
+                        dispatch(setMessageAction('Error'));
                     } else {
                         setContent('');
                     }

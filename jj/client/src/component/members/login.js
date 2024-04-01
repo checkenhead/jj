@@ -5,6 +5,7 @@ import jwtAxios from '../../util/jwtUtil';
 import { setCookie, getCookie, removeCookie } from '../../util/cookieUtil';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction, logoutAction } from '../../store/userSlice';
+import { setMessageAction } from '../../store/notifySlice';
 import { setFollowAction } from '../../store/followSlice';
 
 import ImgKakao from '../../images/loginImg/kakaosimbol.png';
@@ -44,18 +45,25 @@ function Login() {
   }
 
   const onLogin = () => {
-    if (!email) { return alert('아이디를 입력하세요') }
-    if (!pwd) { return alert('패스워드를 입력하세요') }
+    if (!email) {
+      dispatch(setMessageAction('아이디를 입력하세요'));
+      return;
+    }
+    if (!pwd) {
+      dispatch(setMessageAction('패스워드를 입력하세요'));
+      return;
+    }
     axios.post('/api/members/loginlocal', null, { params: { username: email, password: pwd } })
       .then((result) => {
         // 로그인 실패 했을 경우
         if (result.data.error === 'ERROR_LOGIN') {
           setPwd("");
-          return alert('아이디 또는 비밀번호가 틀립니다.');
+          dispatch(setMessageAction('아이디 또는 비밀번호가 틀립니다.'));
+          return;
           // 로그인에 성공 했을 경우
         } else {
           // console.log(result);
-          alert("로그인 되었습니다.");
+          dispatch(setMessageAction('로그인 되었습니다.'));
           setCookie("user", JSON.stringify(result.data), 1);
           dispatch(loginAction(result.data));
           getFollow(result.data.nickname);

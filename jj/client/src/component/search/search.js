@@ -9,11 +9,12 @@ import Aside from '../common/aside';
 import Sub from '../common/sub';
 import User from './user';
 import Feed from '../feed/feed';
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setMessageAction } from '../../store/notifySlice';
 
 function Search() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [recommendMember, setRecommendMember] = useState([]);
     const [recommendFeeds, setRecommendFeeds] = useState([]);
     const scrollAside = useRef();
@@ -26,9 +27,9 @@ function Search() {
 
     const onSearch = (word) => {
         if (word === '') {
-            alert('검색어를 입력해주세요');
+            dispatch(setMessageAction('검색어를 입력해주세요'));
         } else if (regExp.test(word)){ 
-            alert(' 특수문자는 입력할 수 없습니다');
+            dispatch(setMessageAction('특수문자는 입력할 수 없습니다'));
         } else {
             jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
                 .then(result => {

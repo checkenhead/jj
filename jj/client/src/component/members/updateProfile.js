@@ -8,6 +8,7 @@ import Sub from '../common/sub';
 // 로그인 관련
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../../store/userSlice';
+import { setMessageAction } from '../../store/notifySlice';
 // 사진
 import ImgUser from '../../images/user.png';
 
@@ -43,7 +44,7 @@ function UpdateProfile() {
 
     useEffect(() => {
         if (!loginUser) {
-            alert('로그인이 필요합니다');
+            dispatch(setMessageAction('로그인이 필요합니다'));
             navigate('/');
         } else {
 
@@ -90,7 +91,7 @@ function UpdateProfile() {
 
     const onFileUpload = (e) => {
         if (e?.target?.files[0]?.size > MAX_CONTENT_SIZE) {
-            alert(`업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`)
+            dispatch(setMessageAction(`업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`));
         } else {
             const formData = new FormData();
             formData.append('image', e.target.files[0]);
@@ -104,15 +105,19 @@ function UpdateProfile() {
     }
 
     const onSubmit = () => {
-        if (nickname === '') { return alert('닉네임을 입력하세요'); }
+        if (nickname === '') {
+            dispatch(setMessageAction('닉네임을 입력하세요'));
+            return;
+        }
 
         jwtAxios.post('api/members/updateprofile', { email, nickname, intro, profileimg: filename, zipnum, address1, address2, address3 }, {params:{nickname:loginUser.nickname}})
             .then((result) => {
                 if (result.data.message === 'no') {
-                    return alert('닉네임이 중복됩니다');
+                    dispatch(setMessageAction('닉네임이 중복됩니다'));
+                    return;
                 }
                 else if (result.data.message === 'ok') {
-                    alert('회원정보수정이 완료되었습니다.');
+                    dispatch(setMessageAction('회원정보수정이 완료되었습니다.'));
                     dispatch(loginAction(result.data.loginUser));
                     navigate('/main');
                 }
