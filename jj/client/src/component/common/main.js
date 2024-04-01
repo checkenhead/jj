@@ -27,7 +27,7 @@ function Main({ component }) {
     },
         {
             enabled: !!memberCookieValue,
-            refetchInterval: 50 * 1000,
+            refetchInterval: 4 * 60 * 1000,
             refetchIntervalInBackground: true,
             refetchOnMount: false,
             refetchOnWindowFocus: 'always'

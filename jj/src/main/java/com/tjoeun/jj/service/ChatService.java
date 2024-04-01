@@ -108,8 +108,14 @@ public class ChatService {
 		
 		return null;
 	}
+	
+	public void inviteGroup(Integer chatgroupid, List<String> members) {
+		for(String nickname : members) {
+			cgmr.save(new ChatGroupMember(chatgroupid, nickname));				
+		}
+	}
 
-	public void leaveChatGroup(Integer chatgroupid, String nickname) {
+	public void leaveGroup(Integer chatgroupid, String nickname) {
 		// ChatGroupMember 레코드 삭제
 		Optional<ChatGroupMember> optionalCgm = cgmr.findByChatgroupidAndNickname(chatgroupid, nickname);
 		cgmr.delete(optionalCgm.get());
@@ -130,6 +136,8 @@ public class ChatService {
 		cgdto.setMembercount(cgdto.getMembercount() - 1);
 		cgr.save(cgdto);
 	}
+
+	
 
 
 

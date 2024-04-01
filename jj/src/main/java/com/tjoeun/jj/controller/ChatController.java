@@ -89,8 +89,13 @@ public class ChatController {
 		return result;
 	}
 	
-	@PostMapping("/leavechatgroup")
-	public void leaveChatGroup(@RequestParam("chatgroupid") Integer chatgroupid, @RequestParam("nickname") String nickname){
-		cs.leaveChatGroup(chatgroupid, nickname);
+	@PostMapping("/invitegroup")
+	public void inviteGroup(@RequestParam("chatgroupid") Integer chatgroupid, @RequestBody ChatGroupMemberDto cgmdto) {
+		cs.inviteGroup(chatgroupid, cgmdto.getMembers());
+	}
+	
+	@PostMapping("/leavegroup")
+	public void leaveGroup(@RequestParam("chatgroupid") Integer chatgroupid, @RequestParam("nickname") String nickname){
+		cs.leaveGroup(chatgroupid, nickname);
 	}
 }
