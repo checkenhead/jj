@@ -33,5 +33,11 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 			+ "(select l.nickname from Likes l where l.feedid = :feedid) "
 			+ " and m.nickname not in (:nickname) order by rand() desc limit 5")
 	List<Member> findRecommendPeopleByFeedid(@Param("nickname") String nickname, @Param("feedid") String feedid);
+	
+	@Query("select m from Member m where m.nickname not in"
+			+ " (select f.following from Follow f where f.follower = :nickname ) "
+			+ "	and m.nickname not in (:nickname) "
+			+ " order by rand() desc limit 5")
+	List<Member> findRandomMember(@Param("nickname") String nickname);
 
 }

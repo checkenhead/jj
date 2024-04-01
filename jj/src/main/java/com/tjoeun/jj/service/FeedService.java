@@ -249,6 +249,11 @@ public class FeedService {
 		return fr.findRecommendFeedsByNickname(nickname);
 	}
 
+	public List<Feed> getRandomFeed(String nickname) {
+		
+		return fr.findRandomFeed(nickname);
+	}
+
 
 	
 }

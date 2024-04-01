@@ -20,6 +20,7 @@ function Sub() {
     const [recommendByFeedid, setRecommendByFeedid] = useState([]);
     const [recommendFeeds, setRecommendFeeds] = useState([]);
     const [members, setMembers] = useState([]);
+    const [feeds, setFeeds] = useState([]);
 
     // const syncScroll = () => {
     //     if (scrollAside.current) {
@@ -32,31 +33,22 @@ function Sub() {
     //     // console.log("window.scrollY : ", window.scrollY);
     // }
 
-    const getAllMembersNickname = () => {
-        jwtAxios.post('/api/members/getallmembersnickname')
-            .then(result => {
-                setMembers(result.data.members);
-            })
-            .catch(err => {
-                console.error(err);
-            })
-    }
 
     const getRecommendPeopleByFeedid = (feedid) => {
-        if(!page){
+        if (!page) {
             return;
-        }else{
+        } else {
             console.log(2, getCookie('user'));
             jwtAxios.post('/api/members/getrecommendpeoplebyfeedid', null, { params: { nickname: loginUser.nickname, feedid } })
-            .then(result => {
-                console.log(3, result.data.recommendmemberbyfeedid);
-                setRecommendByFeedid(result.data.recommendmemberbyfeedid);
-                // console.log(result.data.recommendmembers, '추천 유저');
-            })
-            .catch(err => {
-                console.log(4, getCookie('user'));
-                console.error(err);
-            })
+                .then(result => {
+                    // console.log(3, result.data.recommendmemberbyfeedid);
+                    setRecommendByFeedid(result.data.recommendmemberbyfeedid);
+                    // console.log(result.data.recommendmembers, '추천 유저');
+                })
+                .catch(err => {
+                    console.log(4, getCookie('user'));
+                    console.error(err);
+                })
         }
     }
     const getRecommendPeopleBynickname = () => {
@@ -72,8 +64,33 @@ function Sub() {
     const getRecommendFeedsBynickname = () => {
         jwtAxios.post('/api/feeds/getrecommendfeedsbynickname', null, { params: { nickname: loginUser.nickname } })
             .then(result => {
+                if (result.data.recommendfeeds.length !== 0) {
+                    console.log(result.data.recommendfeeds);
                     setRecommendFeeds(result.data.recommendfeeds);
-                console.log(result.data.recommendfeeds, '추천 피드');
+                } else {
+                    getRandomfeed()
+                }
+                // console.log(result.data.recommendfeeds, '추천 피드');
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    }
+    const getRandompeople = () => {
+        jwtAxios.post('/api/members/getrandompeople', null, { params: { nickname: loginUser.nickname } })
+            .then(result => {
+                // console.log(1, result.data.members);
+                setMembers(result.data.members);
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    }
+    const getRandomfeed = () => {
+        jwtAxios.post('/api/feeds/getrandomfeed', null, { params: { nickname: loginUser.nickname } })
+            .then(result => {
+                // console.log(result.data);
+                setFeeds(result.data.feeds);
             })
             .catch(err => {
                 console.error(err);
@@ -82,8 +99,8 @@ function Sub() {
     useEffect(() => {
         getRecommendPeopleBynickname();
         getRecommendFeedsBynickname();
-        getAllMembersNickname();
         getRecommendPeopleByFeedid(location.pathname.split("/").at(-1));
+        getRandompeople();
     }, [loginUserFollow]);
 
     // main의 height가 짧아 스크롤이 없을때(main의 height가 sub의 height보다 작을때) sub가 스크롤 되지 않는데 이때는 root의 height를 조정하여 강제로 스크롤 생성
@@ -157,22 +174,41 @@ function Sub() {
 
                 </div>
             </div>
-            <div className="wrap_recommend_feed">
-                <div className="recommend_feed">
-                    <div className="title">Trends for you</div>
-                    <div className="sub_content feeds">
-                        {/* 태그 연관성에 따른 피드 표시 */}
+            {
+                recommendFeeds.length !== 0
+                    ? (<div className="wrap_recommend_feed">
+                        <div className="recommend_feed">
+                            <div className="title">Trends for you</div>
+                            <div className="sub_content feeds">
+                                {/* 태그 연관성에 따른 피드 표시 */}
 
-                        {
-                            recommendFeeds.map((feed, feedIndex) => {
-                                return (
-                                    <RecommendFeed feed={feed} key={feedIndex} />
-                                )
-                            })
-                        }
-                    </div>
-                </div>
-            </div>
+                                {
+                                    recommendFeeds.map((feed, feedIndex) => {
+                                        return (
+                                            <RecommendFeed feed={feed} key={feedIndex} />
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                    </div>)
+                    : (<div className="wrap_recommend_feed">
+                        <div className="recommend_feed">
+                            <div className="title">Trends for you</div>
+                            <div className="sub_content feeds">
+                                {/* 랜덤 피드 */}
+
+                                {
+                                    feeds?.map((feed, feedIndex) => {
+                                        return (
+                                            <RecommendFeed feed={feed} key={feedIndex} />
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                    </div>)
+            }
             {
                 recommendMember.length !== 0
                     ? (<div className="wrap_recommend_follow">
@@ -192,7 +228,23 @@ function Sub() {
 
                         </div>
                     </div>)
-                    : null
+                    : (<div className="wrap_recommend_follow">
+                        <div className="title">Members</div>
+                        <div className="recommend_follow">
+                            {/* 랜덤 맴버 */}
+
+                            {
+                                members.map((member, memberIndex) => {
+                                    return (
+                                        member.nickname !== loginUser.nickname
+                                            ? <UserSummary member={member.nickname} key={memberIndex} />
+                                            : null
+                                    );
+                                })
+                            }
+
+                        </div>
+                    </div>)
             }
             <footer><Footer /></footer>
         </div>
