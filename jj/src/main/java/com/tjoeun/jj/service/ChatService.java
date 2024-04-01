@@ -96,7 +96,7 @@ public class ChatService {
 			
 			ChatGroup cg = null;
 			
-			cg = cgr.save(new ChatGroup(members.get(0), 2));
+			cg = cgr.save(new ChatGroup(members.get(0), members.size()));
 			
 			for(String nickname : members) {
 				cgmr.save(new ChatGroupMember(cg.getId(), nickname));				

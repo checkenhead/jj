@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setMessageAction } from '../../store/notifySlice';
 import Slider from 'react-slick';
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
+import { debounce } from 'lodash';
+
 import Modal from "react-modal";
 import Dropdown from './Dropdown';
 //import Editpost from './Editpost';
@@ -89,8 +91,7 @@ function Feed(props) {
             });
     }
 
-    const toggleLikes = (feedid, nickname) => {
-
+    const toggleLikes = useCallback(debounce((feedid, nickname) => {
         jwtAxios.post('/api/feeds/togglelike', { feedid, nickname })
             .then(result => {
                 getLikes(feedid);
@@ -98,7 +99,21 @@ function Feed(props) {
             .catch(err => {
                 console.error(err);
             });
-    }
+    }, 500), []);
+
+
+    // const toggleLikes = (feedid, nickname) => {
+
+    //     jwtAxios.post('/api/feeds/togglelike', { feedid, nickname })
+    //         .then(result => {
+    //             getLikes(feedid);
+    //         })
+    //         .catch(err => {
+    //             console.error(err);
+    //         });
+    // }
+
+
 
     const getImages = (feedid) => {
         jwtAxios.post('/api/feeds/getfeedimgbyfeedid', null, { params: { feedid } })
@@ -164,9 +179,9 @@ function Feed(props) {
 
     const addReply = (feedid, writer, content) => {
         if (replyContent === '') {
-            dispatch(setMessageAction({message: '댓글 내용을 입력해주세요.'}));
+            dispatch(setMessageAction({ message: '댓글 내용을 입력해주세요.' }));
         } else if (replyContent.length > MAX_CONTENT_LENGTH) {
-            dispatch(setMessageAction({message: '입력 가능한 최대 글자수는 200자 입니다.'}));
+            dispatch(setMessageAction({ message: '입력 가능한 최대 글자수는 200자 입니다.' }));
         } else {
             jwtAxios.post('/api/feeds/addreply', { feedid, writer, content })
                 .then(result => {
@@ -184,7 +199,7 @@ function Feed(props) {
         if (window.confirm('삭제하시겠습니까?')) {
             jwtAxios.post('/api/feeds/deletereply', null, { params: { id } })
                 .then(result => {
-                    dispatch(setMessageAction({message: '댓글이 삭제되었습니다.'}));
+                    dispatch(setMessageAction({ message: '댓글이 삭제되었습니다.' }));
                     getReplys(feedid);
                 })
                 .catch(err => {
@@ -212,7 +227,7 @@ function Feed(props) {
             });
     }
 
-    const toggleBookmarks = (feedid, nickname) => {
+    const toggleBookmarks = useCallback(debounce((feedid, nickname) => {
         jwtAxios.post('/api/feeds/togglebookmark', { feedid, nickname })
             .then(result => {
                 getBookmarks(feedid);
@@ -220,7 +235,16 @@ function Feed(props) {
             .catch(err => {
                 console.error(err);
             });
-    }
+    }, 500), []);
+    // const toggleBookmarks = (feedid, nickname) => {
+    //     jwtAxios.post('/api/feeds/togglebookmark', { feedid, nickname })
+    //         .then(result => {
+    //             getBookmarks(feedid);
+    //         })
+    //         .catch(err => {
+    //             console.error(err);
+    //         });
+    // }
 
     useEffect(() => {
         getWriterInfo(feed.writer);
@@ -349,10 +373,10 @@ function Feed(props) {
                         }
                     }}>
                         <img src={writerInfo.profileimg
-                            ?writerInfo.provider === "Kakao"
+                            ? writerInfo.provider === "Kakao"
                                 ? writerInfo.profileimg
                                 : profileimg
-                            :ImgUser} />
+                            : ImgUser} />
                     </div>
                     <div className="nickname link" onClick={() => {
                         if (feed.writer !== loginUser.nickname) {
@@ -447,7 +471,7 @@ function Feed(props) {
                                     <img src={reply.writer
                                         ? reply.provider === "Kakao"
                                             ? reply.profileimg
-                                            :`http://localhost:8070/images/${reply.profileimg}`
+                                            : `http://localhost:8070/images/${reply.profileimg}`
                                         : ImgUser} className="writer_img" />{reply.writer}
                                 </div>
                                 <div className="row_reply content">{reply.content}</div>
