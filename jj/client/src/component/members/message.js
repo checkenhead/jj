@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { setMessageAction } from '../../store/notifySlice';
 import Modal from "react-modal";
 import Header from '../common/header';
 import Main from '../common/main';
@@ -26,8 +25,11 @@ import UserSummary from '../common/usersummary';
 
 
 function Message() {
+
+    const navigate = useNavigate();
+
     const location = useLocation();
-    const dispatch = useDispatch();
+
     const loginUser = useSelector(state => state.user);
     const follow = useSelector(state => state.follow);
     const [content, setContent] = useState('');
@@ -72,7 +74,7 @@ function Message() {
             jwtAxios.post('/api/chat/send', { sender: loginUser.nickname, chatgroupid: currChatGroup.current.id, content })
                 .then((result) => {
                     if (result.data.message === 'Error') {
-                        dispatch(setMessageAction('Error'));
+                        alert("Error");
                     } else {
                         setContent('');
                     }
@@ -124,16 +126,14 @@ function Message() {
     }
 
     const leaveChat = () => {
-
+       
     }
+
 
     /** currGroup에서 sender의 profileimg를 찾아 return */
     const getSrcByNickname = (sender) => {
         for (let i = 0; i < currChatGroup.current.members.length; i++) {
             if (currChatGroup.current.members[i].nickname === sender) {
-                if (currChatGroup.current.members[i].provider === "Kakao") {
-                    return currChatGroup.current.members[i].profileimg;
-                }
                 return 'http://localhost:8070/images/' + currChatGroup.current.members[i].profileimg;
             }
         }
@@ -277,11 +277,7 @@ function Message() {
                                                                         setChatGroupBoxStyle(styleHidden);
                                                                         // console.log(chatGroups);
                                                                     }}>
-                                                                        <img src={member.profileimg
-                                                                            ? member.provider === "Kakao"
-                                                                                ? member.profileimg
-                                                                                : `http://localhost:8070/images/${member.profileimg}`
-                                                                            : ImgUser} className="friend_icon" />
+                                                                        <img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" />
                                                                         {/* {member.nickname} */}
 
                                                                     </div>
@@ -293,15 +289,25 @@ function Message() {
                                                 })
                                             }
 
-                                            {
-                                                groupMembers[chatGroup.id][0] !== loginUser.nickname ? groupMembers[chatGroup.id][0] : groupMembers[chatGroup.id][1]
-                                            }
-                                            {
-                                                groupMembers[chatGroup.id].length > 2 ? `외 ${groupMembers[chatGroup.id].length - 1} 명` : null
-                                            }
+                                            <div className="group_nickname" onClick={() => {
+                                                currChatGroup.current = chatGroup;
+                                                setSelectedChatGroup(chatGroup);
+                                                setChatBoxStyle(styleShow);
+                                                setChatGroupBoxStyle(styleHidden);
+                                                // console.log(chatGroups);
+                                            }}>
+
+                                                {
+                                                    groupMembers[chatGroup.id][0] !== loginUser.nickname ? groupMembers[chatGroup.id][0] : groupMembers[chatGroup.id][1]
+                                                }
+                                                {
+                                                    groupMembers[chatGroup.id].length > 2 ? ` 외 ${groupMembers[chatGroup.id].length - 1}명` : null
+                                                }
+                                            </div>
                                             {
                                                 <div className='btn delete'><img src={ImgQuit} /></div>
                                             }
+
                                         </div>
                                     );
                                 })
@@ -328,11 +334,7 @@ function Message() {
                                             return (
                                                 member.nickname !== loginUser.nickname ?
 
-                                                    <div key={memberIndex}><img src={member.profileimg
-                                                        ? member.provider === "Kakao"
-                                                            ? member.profileimg
-                                                            : `http://localhost:8070/images/${member.profileimg}`
-                                                        : ImgUser} className="friend_icon" /></div>
+                                                    <div ><img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" /></div>
 
                                                     : null
                                             );

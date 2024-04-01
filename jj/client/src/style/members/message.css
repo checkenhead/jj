@@ -98,24 +98,33 @@
     /* border: 1px solid black; */
 
 }
-.wrap_message .row_member{
+
+.wrap_message .wrap_friend .row_friend .group_nickname {
+    cursor: pointer;
+    /* border: 1px solid black; */
+    width: 100%;
+    display: flex;
+    margin: auto;
+    margin-left: 10px;
+
+}
+.wrap_message .row_member {
     display: flex;
     /* border: 1px solid green; */
 }
+
 .wrap_message .member_profileimg {
-    
     flex: 1;
     width: 100%;
     /* border: 1px solid black; */
 }
-
-
 
 .wrap_message .friend_icon {
     width: 35px;
     height: 35px;
     border-radius: 50px;
     display: flex;
+    /* padding: 2px; */
 }
 
 
@@ -138,7 +147,7 @@
 
 .wrap_message .friend_nickname .btn {
     cursor: pointer;
-
+    /* border: 1px solid black; */
 }
 
 .wrap_message .friend_nickname .box_nickname {
@@ -151,6 +160,7 @@
 .wrap_message .friend_nickname .box_nickname .align {
     display: flex;
     align-items: center;
+
     /* border: 1px solid black; */
 }
 
@@ -162,10 +172,9 @@
 .wrap_message .wrap_friend .delete {
     margin-left: auto;
     display: flex;
-    justify-content: flex-end;
+    /* justify-content: flex-end; */
     opacity: 0.2;
     transition: all 0.1s;
-    left: 0;
     /* border: 1px solid black; */
 }
 
