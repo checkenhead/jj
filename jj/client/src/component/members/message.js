@@ -123,8 +123,20 @@ function Message() {
             });
     }
 
-    const leaveChat = () => {
-
+    const leaveChat = (chatgroupid, nickname) => {
+        jwtAxios.post('/api/chat/leavechatgroup', null, { params: { chatgroupid, nickname } })
+            .then(result => {
+                getAllChatGroups(nickname);
+                setChatBoxStyle(styleHidden);
+                setChatGroupBoxStyle(styleShow);
+                setBtnMenuState(false);
+                if (onoffCheck) {
+                    onoffEmoji();
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
     }
 
     /** currGroup에서 sender의 profileimg를 찾아 return */
@@ -137,7 +149,7 @@ function Message() {
                 return 'http://localhost:8070/images/' + currChatGroup.current.members[i].profileimg;
             }
         }
-        return null;
+        return ImgUser;
     }
 
     const createGroup = (members) => {
@@ -262,47 +274,70 @@ function Message() {
                             {
                                 chatGroups.map((chatGroup) => {
                                     return (
-                                        <div key={chatGroup.id} className="row_friend">
-                                            {
-                                                chatGroup.members.map((member, memberIndex) => {
-                                                    return (
-                                                        member.nickname !== loginUser.nickname ?
-                                                            <div className="friend_nickname" key={memberIndex}>
+                                        chatGroup.members.length === 1 ? (
+                                            <div key={chatGroup.id} className="row_friend">
+                                                <div className="friend_nickname" key={123}>
+                                                    <div className="box_nickname">
+                                                        <div className="btn align" onClick={() => {
+                                                            currChatGroup.current = chatGroup;
+                                                            setSelectedChatGroup(chatGroup);
+                                                            setChatBoxStyle(styleShow);
+                                                            setChatGroupBoxStyle(styleHidden);
+                                                            // console.log(chatGroups);
+                                                        }}><img src={ImgUser} className="friend_icon" /></div>
+                                                    </div>
+                                                </div>
+                                                대화상대가 나갔습니다.
+                                                <div className='btn delete' onClick={() => {
+                                                    leaveChat(chatGroup.id, loginUser.nickname);
+                                                }}><img src={ImgQuit} /></div>
+                                            </div>
+                                        ) : (
+                                            <div key={chatGroup.id} className="row_friend">
+                                                {
+                                                    chatGroup.members.map((member, memberIndex) => {
+                                                        return (
+                                                            member.nickname !== loginUser.nickname ?
+                                                                <div className="friend_nickname" key={memberIndex}>
 
-                                                                <div className="box_nickname">
-                                                                    <div className="btn align" onClick={() => {
-                                                                        currChatGroup.current = chatGroup;
-                                                                        setSelectedChatGroup(chatGroup);
-                                                                        setChatBoxStyle(styleShow);
-                                                                        setChatGroupBoxStyle(styleHidden);
-                                                                        // console.log(chatGroups);
-                                                                    }}>
-                                                                        <img src={member.profileimg
-                                                                            ? member.provider === "Kakao"
-                                                                                ? member.profileimg
-                                                                                : `http://localhost:8070/images/${member.profileimg}`
-                                                                            : ImgUser} className="friend_icon" />
-                                                                        {/* {member.nickname} */}
+                                                                    <div className="box_nickname">
+                                                                        <div className="btn align" onClick={() => {
+                                                                            currChatGroup.current = chatGroup;
+                                                                            setSelectedChatGroup(chatGroup);
+                                                                            setChatBoxStyle(styleShow);
+                                                                            setChatGroupBoxStyle(styleHidden);
+                                                                            // console.log(chatGroups);
+                                                                        }}>
+                                                                            <img src={member.profileimg
+                                                                                ? member.provider === "Kakao"
+                                                                                    ? member.profileimg
+                                                                                    : `http://localhost:8070/images/${member.profileimg}`
+                                                                                : ImgUser} className="friend_icon" />
+                                                                            {/* {member.nickname} */}
 
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </div> : null
+                                                                </div> : null
 
 
-                                                    );
-                                                })
-                                            }
+                                                        );
+                                                    })
+                                                }
 
-                                            {
-                                                groupMembers[chatGroup.id][0] !== loginUser.nickname ? groupMembers[chatGroup.id][0] : groupMembers[chatGroup.id][1]
-                                            }
-                                            {
-                                                groupMembers[chatGroup.id].length > 2 ? `외 ${groupMembers[chatGroup.id].length - 1} 명` : null
-                                            }
-                                            {
-                                                <div className='btn delete'><img src={ImgQuit} /></div>
-                                            }
-                                        </div>
+                                                {
+                                                    groupMembers[chatGroup.id][0] !== loginUser.nickname ? groupMembers[chatGroup.id][0] : groupMembers[chatGroup.id][1]
+                                                }
+                                                {
+                                                    groupMembers[chatGroup.id].length > 2 ? `외 ${groupMembers[chatGroup.id].length - 1} 명` : null
+                                                }
+                                                {
+                                                    <div className='btn delete' onClick={() => {
+                                                        leaveChat(chatGroup.id, loginUser.nickname);
+                                                    }}><img src={ImgQuit} /></div>
+                                                }
+                                            </div>
+                                        )
+
                                     );
                                 })
                             }
@@ -385,7 +420,9 @@ function Message() {
                                     <div className="menu">
                                         <div className="option">123</div>
                                         <div className="option">초대하기</div>
-                                        <div className="option" onClick={() => { leaveChat() }}>나가기</div>
+                                        <div className="option" onClick={() => {
+                                            leaveChat(selectedChatGroup.id, loginUser.nickname);
+                                        }}>나가기</div>
                                     </div>
                                 ) : null
                             }

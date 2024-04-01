@@ -30,7 +30,7 @@ function Main({ component }) {
             refetchInterval: 50 * 1000,
             refetchIntervalInBackground: true,
             refetchOnMount: false,
-            refetchOnWindowFocus: false
+            refetchOnWindowFocus: 'always'
 
         }
     );
