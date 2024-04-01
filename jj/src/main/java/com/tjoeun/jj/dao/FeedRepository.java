@@ -47,7 +47,7 @@ public interface FeedRepository extends JpaRepository<Feed, Integer> {
 	@Query("select f from Feed f where f.id in"
 			+ "	(select fh.feedid from FeedHashtag fh where fh.id in"
 			+ "		(select h.id from Hashtag h where h.word in"
-			+ "			(select h.word from Hashtag where h.id in"
+			+ "			(select h.word from Hashtag h where h.id in"
 			+ "				(select fh.hashtagid from FeedHashtag fh where fh.feedid in"
 			+ "					(select f.id from Feed f where f.id in"
 			+ "						(select f.id from Feed f where f.writer = :nickname ) or id in"
@@ -58,12 +58,12 @@ public interface FeedRepository extends JpaRepository<Feed, Integer> {
 			+ "				)"
 			+ "			)"
 			+ "		)"
-			+ "	) and f.writer not in (:nickname)"
+			+ "	) and f.writer not in (:nickname) and not exists (select l from Likes l where l.nickname = :nickname) "
 			+ "union "
 			+ "select f from Feed f where f.writer in"
 			+ "	(select f.writer from Feed f where f.id in"
 			+ "		(select fm.feedid from FeedMention fm where fm.nickname = :nickname )"
-			+ "	) and writer not in (:nickname) order by f.id desc")
+			+ "	) and f.writer not in (:nickname) order by rand() desc limit 3")
 	List<Feed> findRecommendFeedsByNickname(@Param("nickname")String nickname);
 	
 	
