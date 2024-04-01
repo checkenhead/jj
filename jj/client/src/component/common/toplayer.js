@@ -2,7 +2,7 @@ import ImgHam from '../../images/menu.png';
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios'
+import { removeCookie } from '../../util/cookieUtil';
 
 import { logoutAction } from '../../store/userSlice';
 
@@ -34,15 +34,21 @@ function TopLayer({ setNewFeed }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    // const onLogout = () => {
+    //     axios.get('/api/members/logout')
+    //         .then(() => {
+    //             dispatch(logoutAction());
+    //             navigate('/')
+    //         })
+    //         .catch(err => {
+    //             console.error(err);
+    //         })
+    // }
+
     const onLogout = () => {
-        axios.get('/api/members/logout')
-            .then(() => {
-                dispatch(logoutAction());
-                navigate('/')
-            })
-            .catch(err => {
-                console.error(err);
-            })
+        removeCookie('user');
+        dispatch(logoutAction());
+        navigate('/')
     }
 
     // useEffect(() => {
