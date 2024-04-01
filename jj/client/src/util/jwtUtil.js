@@ -1,6 +1,5 @@
 import axios from "axios";
 import { setCookie, getCookie } from "./cookieUtil";
-import { useSelector } from "react-redux";
 
 const jwtAxios = axios.create();
 
@@ -43,19 +42,20 @@ const responseFail = async (err) => {
     // console.log(err);
     // status 401 시
     if (err.response.status === 401) {
-        // refresh
-        const memberCookieValue = getCookie('user');
-        const result = await refreshJwt(memberCookieValue.accessToken, memberCookieValue.refreshToken);
-        memberCookieValue.accessToken = result.accessToken;
-        memberCookieValue.refreshToken = result.refreshToken;
-        setCookie('user', JSON.stringify(memberCookieValue), 1);
+        // // refresh
+        // const memberCookieValue = getCookie('user');
+        // const result = await refreshJwt(memberCookieValue.accessToken, memberCookieValue.refreshToken);
+        // memberCookieValue.accessToken = result.accessToken;
+        // memberCookieValue.refreshToken = result.refreshToken;
+        // setCookie('user', JSON.stringify(memberCookieValue), 1);
 
-        // 재시도
-        const response = await axios.request(err.config);
+        // // 재시도
+        // console.log('err.config:', err.config);
+        // const response = await axios.request(err.config);
 
-        // console.log('responseFail.response:', response);
+        // // console.log('responseFail.response:', response);
 
-        return response.data.data;
+        // return response.data.data;
     }
 }
 
