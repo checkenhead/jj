@@ -10,12 +10,13 @@ import Header from '../common/header';
 import Main from '../common/main';
 import Aside from '../common/aside';
 import Sub from '../common/sub';
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setMessageAction } from '../../store/notifySlice';
 
 
 function Result() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [feeds, setFeeds] = useState([]);
     const [page, setPage] = useState(0);
     const [newFeed, setNewFeed] = useState({});
@@ -58,9 +59,9 @@ function Result() {
     const onSearch = (word) => {
         // let w = word.replace('#','')
         if (word === '') {
-            alert('검색어를 입력해주세요')
+            dispatch(setMessageAction('검색어를 입력해주세요'));
         } else if (regExp.test(word)){ 
-            alert(' 특수문자는 입력할 수 없습니다');
+            dispatch(setMessageAction('특수문자는 입력할 수 없습니다'));
         } else {
             jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
                 .then(result => {
@@ -70,7 +71,7 @@ function Result() {
                 .catch(err => {
                     console.log(123);
                     console.error(err);
-                    alert('부적절한 접속 시도');
+                    dispatch(setMessageAction('부적절한 접속 시도'));
                 });
         }
     }

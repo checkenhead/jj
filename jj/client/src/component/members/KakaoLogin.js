@@ -5,6 +5,7 @@ import jwtAxios from '../../util/jwtUtil';
 import { setCookie } from '../../util/cookieUtil';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../../store/userSlice';
+import { setMessageAction } from '../../store/notifySlice';
 import { setFollowAction } from '../../store/followSlice';
 /** 로그인 페이지로 이동 */
 function KakaoLogin() {
@@ -18,7 +19,7 @@ function KakaoLogin() {
         axios.post('/api/members/kakaoLogin', null, { params: { code, apikey: Rest_api_key, redirectUri: Redirect_uri } })
             .then(result => {
                 console.log(2, result.data);
-                alert('로그인/회원가입 성공');
+                dispatch(setMessageAction('로그인/회원가입 성공'));
                 setCookie("user", JSON.stringify(result.data), 1);
                 dispatch(loginAction(result.data));
                 getFollow(result.data.nickname);
