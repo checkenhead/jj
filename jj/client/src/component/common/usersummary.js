@@ -36,8 +36,8 @@ function UserSummary({ member }) {
                 navigate(`/member/${currUser.nickname}`);
             }}>
                 <img src={currUser.profileimg
-                    ?   currUser.provider === "Kakao"
-                        ?   currUser.profileimg
+                    ? currUser.provider === "Kakao"
+                        ? currUser.profileimg
                         : `http://localhost:8070/images/${currUser.profileimg}`
                     : ImgUser} />
             </div>
@@ -47,7 +47,11 @@ function UserSummary({ member }) {
                 {currUser.nickname}
             </div>
             <div className="btn_follow">
-                <FollowButton followState={followState} follow={{ following: currUser.nickname, follower: loginUser.nickname }} />
+                {
+                    currUser.nickname !== loginUser.nickname
+                        ? <FollowButton followState={followState} follow={{ following: currUser.nickname, follower: loginUser.nickname }} />
+                        : null
+                }
             </div>
 
         </div>

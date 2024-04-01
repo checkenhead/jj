@@ -122,4 +122,8 @@ public class MemberService {
 		return mr.findRecommendPeopleByFeedid(nickname, feedid);
 	}
 
+	public List<Member> getRandomPeople(String nickname) {
+		return mr.findRandomMember(nickname);
+	}
+
 }

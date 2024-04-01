@@ -58,13 +58,23 @@ public interface FeedRepository extends JpaRepository<Feed, Integer> {
 			+ "				)"
 			+ "			)"
 			+ "		)"
-			+ "	) and f.writer not in (:nickname) and not exists (select l from Likes l where l.nickname = :nickname) "
+			+ "	) and f.writer not in (:nickname) "
+			+ " and f.id not in (select l.feedid from Likes l where l.nickname = :nickname) "
 			+ "union "
 			+ "select f from Feed f where f.writer in"
 			+ "	(select f.writer from Feed f where f.id in"
 			+ "		(select fm.feedid from FeedMention fm where fm.nickname = :nickname )"
-			+ "	) and f.writer not in (:nickname) order by rand() desc limit 3")
+			+ "	) and f.writer not in (:nickname)"
+			+ " and f.id not in (select l.feedid from Likes l where l.nickname = :nickname) "
+			+ " order by rand() desc limit 3")
 	List<Feed> findRecommendFeedsByNickname(@Param("nickname")String nickname);
+	
+	@Query("select f from Feed f where f.id not in "
+			+ " (select l.feedid from Likes l where l.nickname = : nickname ) "
+			+ " and f.id not in (select f.id from Feed f where f.writer = :nickname ) "
+			+ " and f.id not in (select b.feedid from Bookmarks b where b.nickname = :nickname ) "
+			+ " order by rand() desc limit 5")
+	List<Feed> findRandomFeed(@Param("nickname")String nickname);
 	
 	
 	
