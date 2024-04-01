@@ -130,6 +130,9 @@ function Message() {
     const getSrcByNickname = (sender) => {
         for (let i = 0; i < currChatGroup.current.members.length; i++) {
             if (currChatGroup.current.members[i].nickname === sender) {
+                if (currChatGroup.current.members[i].provider === "Kakao") {
+                    return currChatGroup.current.members[i].profileimg;
+                }
                 return 'http://localhost:8070/images/' + currChatGroup.current.members[i].profileimg;
             }
         }
@@ -232,7 +235,7 @@ function Message() {
 
 
                                     {
-                                        follow.followings.map((following,followingIndex) => {
+                                        follow.followings.map((following, followingIndex) => {
                                             return <div className='following_user' key={followingIndex} onClick={() => {
                                                 if (selectedMember.some((member) => {
                                                     return member === following;
@@ -260,7 +263,7 @@ function Message() {
                                     return (
                                         <div key={chatGroup.id} className="row_friend">
                                             {
-                                                chatGroup.members.map((member,memberIndex) => {
+                                                chatGroup.members.map((member, memberIndex) => {
                                                     return (
                                                         member.nickname !== loginUser.nickname ?
                                                             <div className="friend_nickname" key={memberIndex}>
@@ -273,7 +276,11 @@ function Message() {
                                                                         setChatGroupBoxStyle(styleHidden);
                                                                         // console.log(chatGroups);
                                                                     }}>
-                                                                        <img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" />
+                                                                        <img src={member.profileimg
+                                                                            ? member.provider === "Kakao"
+                                                                                ? member.profileimg
+                                                                                : `http://localhost:8070/images/${member.profileimg}`
+                                                                            : ImgUser} className="friend_icon" />
                                                                         {/* {member.nickname} */}
 
                                                                     </div>
@@ -292,7 +299,7 @@ function Message() {
                                                 groupMembers[chatGroup.id].length > 2 ? `외 ${groupMembers[chatGroup.id].length - 1} 명` : null
                                             }
                                             {
-                                                <div className='btn delete'><img src={ImgQuit}/></div>
+                                                <div className='btn delete'><img src={ImgQuit} /></div>
                                             }
                                         </div>
                                     );
@@ -320,7 +327,11 @@ function Message() {
                                             return (
                                                 member.nickname !== loginUser.nickname ?
 
-                                                    <div ><img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" /></div>
+                                                    <div key={memberIndex}><img src={member.profileimg
+                                                        ? member.provider === "Kakao"
+                                                            ? member.profileimg
+                                                            : `http://localhost:8070/images/${member.profileimg}`
+                                                        : ImgUser} className="friend_icon" /></div>
 
                                                     : null
                                             );
@@ -340,23 +351,23 @@ function Message() {
 
                                         groupMembers[selectedChatGroup.id][0] !== loginUser.nickname ?
                                             (
-                                                groupMembers[selectedChatGroup.id].length > 2 ? 
-                                                (`${groupMembers[selectedChatGroup.id][0]} 외 ${groupMembers[selectedChatGroup.id].length - 1} 명`) 
-                                                : (groupMembers[selectedChatGroup.id][0])
-                                                
+                                                groupMembers[selectedChatGroup.id].length > 2 ?
+                                                    (`${groupMembers[selectedChatGroup.id][0]} 외 ${groupMembers[selectedChatGroup.id].length - 1} 명`)
+                                                    : (groupMembers[selectedChatGroup.id][0])
+
                                             )
                                             : (
-                                                groupMembers[selectedChatGroup.id].length > 2 ? 
-                                                (`${groupMembers[selectedChatGroup.id][1]} 외 ${groupMembers[selectedChatGroup.id].length - 1} 명`) 
-                                                : (groupMembers[selectedChatGroup.id][1])
-                                                )
+                                                groupMembers[selectedChatGroup.id].length > 2 ?
+                                                    (`${groupMembers[selectedChatGroup.id][1]} 외 ${groupMembers[selectedChatGroup.id].length - 1} 명`)
+                                                    : (groupMembers[selectedChatGroup.id][1])
+                                            )
 
 
-                                )
-                                : <>
-                                    <div><img src={ImgUser} className="friend_icon" /></div>
-                                    <div className="friend_nickname"></div>
-                                </>
+                                    )
+                                        : <>
+                                            <div><img src={ImgUser} className="friend_icon" /></div>
+                                            <div className="friend_nickname"></div>
+                                        </>
                                 }
                             </div>
 
