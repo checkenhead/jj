@@ -167,7 +167,7 @@ public class MemberController {
 			member = ms.getMemberByEmail( ac.getEmail() );
 		}
 		Map<String, Object> claims = member.getClaims();
-		String accessToken = JwtUtil.generateToken(claims, 1);
+		String accessToken = JwtUtil.generateToken(claims, 5);
 		String refreshToken = JwtUtil.generateToken(claims,60*24);
 		claims.put("accessToken", accessToken);
 		claims.put("refreshToken", refreshToken);
