@@ -64,7 +64,7 @@ function Feeds({ newFeed, setNewFeed }) {
 
     useEffect(() => {
         if (currPage.current > 0) {
-            // console.log('SelectedTab  called');
+            console.log('SelectedTab  called');
             if (SelectedTab[0]) {
                 getFeeds(true);
             } else {

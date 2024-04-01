@@ -388,6 +388,16 @@ public class MemberController {
 		
 		return result;
 	}
+	@PostMapping("/getrecommendpeoplebyfeedid")
+	public HashMap<String, Object> getRecommendPeopleByFeedid(@RequestParam("nickname") String nickname, @RequestParam("feedid") String feedid) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		List<Member> list = ms.getRecommendPeopleByFeedid(nickname, feedid);
+		
+		result.put("recommendmemberbyfeedid", list);
+		
+		return result;
+	}
 	
 	@GetMapping("/refreshtoken/{refreshToken}")
 	public Map<String, Object> refreshToken(@RequestHeader("Authorization") String authHeader,
