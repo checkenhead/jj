@@ -33,7 +33,7 @@ function Search() {
             jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
                 .then(result => {
                     let encodedURL = encodeURIComponent(word);
-                    console.log(encodedURL);
+                    // console.log(encodedURL);
                     navigate(`/result/feed/${encodedURL}`);
                 })
                 .catch(err => {

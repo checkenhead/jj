@@ -57,7 +57,7 @@ function Mobile() {
         axios.post('/api/members/getrecommendpeoplebynickname', null, { params: { nickname: loginUser.nickname } })
             .then(result => {
                 setRecommendMember(result.data.recommendmembers);
-                console.log(result.data.recommendmembers, '추천 유저');
+                // console.log(result.data.recommendmembers, '추천 유저');
             })
             .catch(err => {
                 console.error(err);

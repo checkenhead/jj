@@ -27,7 +27,7 @@ function Feeds({ newFeed, setNewFeed }) {
             const result = await jwtAxios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } });
             setFeeds(feeds => requireRefressh ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
             // setFeeds();
-            console.log(result.data.feeds);
+            // console.log(result.data.feeds);
         } catch (err) {
             console.error(err);
         }
@@ -48,7 +48,7 @@ function Feeds({ newFeed, setNewFeed }) {
 
     useEffect(() => {
         if (currPage.current > 0) {
-            console.log('SelectedTab  called');
+            // console.log('SelectedTab  called');
             if (SelectedTab[0]) {
                 getFeeds(true);
             } else {

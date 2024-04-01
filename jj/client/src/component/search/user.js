@@ -25,7 +25,7 @@ function User({ nickname }) {
                 setFeedCount(result.data.count);
                 setFollowers(result.data.followers || []);
                 setFollowings(result.data.followings || []);
-                console.log(result.data);
+                // console.log(result.data);
             })
             .catch(err => {
                 console.error(err);

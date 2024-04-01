@@ -32,7 +32,7 @@ function View() {
 
     useEffect(() => {
         getFeed();
-        console.log(param);
+        // console.log(param);
     }, []);
 
     return (

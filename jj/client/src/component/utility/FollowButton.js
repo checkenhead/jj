@@ -19,7 +19,7 @@ function FollowButton({ followState, follow }) {
     const toggleFollow = () => {
         jwtAxios.post('/api/members/togglefollow', follow)
             .then(result => {
-                console.log(result.data, followState);
+                // console.log(result.data, followState);
                 dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }));
                 setState(!state);
             })
