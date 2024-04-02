@@ -18,6 +18,7 @@ public class ReplyView {
 	private Integer id;
 	private Integer feedid;
 	private String profileimg;
+	private String provider;
 	private String writer;
 	private String content;
 	private Timestamp createdat;
