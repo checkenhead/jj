@@ -4,7 +4,7 @@ import FollowButton from '../utility/FollowButton';
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import { useNavigate } from 'react-router-dom';
-import { getImgSrc } from '../../util/ImgSrcUtil';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function UserSummary({ member }) {
     const [currUser, setCurrUser] = useState(member);
@@ -36,7 +36,7 @@ function UserSummary({ member }) {
             <div className="profileimg" onClick={() => {
                 navigate(`/member/${currUser.nickname}`);
             }}>
-                <img src={ getImgSrc(currUser) }/>
+                <img src={ getUserimgSrc(currUser) }/>
             </div>
             <div className="nickname" onClick={() => {
                 navigate(`/member/${currUser.nickname}`);

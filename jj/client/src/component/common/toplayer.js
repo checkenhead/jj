@@ -23,6 +23,7 @@ import ImgPost from '../../images/post.png';
 import ImgLogout from '../../images/logout.png';
 import ImgReturn from '../../images/return.png';
 import ImgCancel from '../../images/cancel.png';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function TopLayer({ setNewFeed }) {
     const loginUser = useSelector(state => state.user);
@@ -109,11 +110,7 @@ function TopLayer({ setNewFeed }) {
                             </Link>
 
                             <Link to={`/member/${loginUser.nickname}`} className="link">
-                                <img src={loginUser.profileimg
-                                    ? loginUser.provider === "Kakao"
-                                        ? loginUser.profileimg
-                                        : `http://localhost:8070/images/${loginUser.profileimg}`
-                                    : ImgUser} className="icon" />
+                                <img src={getUserimgSrc(loginUser)} className="icon" />
                                 {/* <span className="name">My page</span> */}
                             </Link>
 

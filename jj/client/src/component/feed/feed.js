@@ -27,6 +27,7 @@ import ImgRemove from '../../images/remove.png';
 import ImgMore from '../../images/more.png';
 import ImgCancel from '../../images/cancel.png';
 import ImgDefault from '../../images/pic.png';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function Feed(props) {
     const MAX_CONTENT_LENGTH = 200;
@@ -38,7 +39,6 @@ function Feed(props) {
     const [feed, setFeed] = useState(props.feed);
     const [images, setImages] = useState([ImgDefault]);
     const [writerInfo, setWriterInfo] = useState({});
-    const [profileimg, setProfileimg] = useState(null);
     const [likes, setLikes] = useState([]);
     // const [iconLike, setIconLike] = useState(ImgUnlike);
     const [stateLike, setStateLike] = useState(false);
@@ -65,7 +65,6 @@ function Feed(props) {
         jwtAxios.post('/api/members/getmemberbynickname', null, { params: { nickname } })
             .then(result => {
                 setWriterInfo(result.data.user);
-                setProfileimg(`http://localhost:8070/images/${result.data.user.profileimg}`);
             })
             .catch(err => {
                 console.error(err);
@@ -372,11 +371,7 @@ function Feed(props) {
                             navigate(`/member/${feed.writer}`)
                         }
                     }}>
-                        <img src={writerInfo.profileimg
-                            ? writerInfo.provider === "Kakao"
-                                ? writerInfo.profileimg
-                                : profileimg
-                            : ImgUser} />
+                        <img src={getUserimgSrc(writerInfo)} />
                     </div>
                     <div className="nickname link" onClick={() => {
                         if (feed.writer !== loginUser.nickname) {
@@ -468,11 +463,7 @@ function Feed(props) {
                                 <div className="row_reply profile" onClick={() => {
                                     navigate(`/member/${reply.writer}`);
                                 }}>
-                                    <img src={reply.writer
-                                        ? reply.provider === "Kakao"
-                                            ? reply.profileimg
-                                            : `http://localhost:8070/images/${reply.profileimg}`
-                                        : ImgUser} className="writer_img" />{reply.writer}
+                                    <img src={getUserimgSrc(reply)} className="writer_img" />{reply.writer}
                                 </div>
                                 <div className="row_reply content">{reply.content}</div>
                                 <div className="row_reply timestamp">{transDateString(reply.createdat)}</div>

@@ -149,7 +149,7 @@ function Sub() {
                                         return (
                                             loginUserFollow.followings.some((following) => following === member)
                                                 ? null
-                                                : <UserSummary member={member.nickname} key={memberIndex} />
+                                                : <UserSummary member={member.nickname} key={`${member.nickname}_${memberIndex}`} />
                                         );
                                     })
                                 }
@@ -183,9 +183,9 @@ function Sub() {
                                 {/* 태그 연관성에 따른 피드 표시 */}
 
                                 {
-                                    recommendFeeds.map((feed, feedIndex) => {
+                                    recommendFeeds.map((feed) => {
                                         return (
-                                            <RecommendFeed feed={feed} key={feedIndex} />
+                                            <RecommendFeed feed={feed} key={feed.updatedat} />
                                         )
                                     })
                                 }
@@ -199,9 +199,9 @@ function Sub() {
                                 {/* 랜덤 피드 */}
 
                                 {
-                                    feeds?.map((feed, feedIndex) => {
+                                    feeds?.map((feed) => {
                                         return (
-                                            <RecommendFeed feed={feed} key={feedIndex} />
+                                            <RecommendFeed feed={feed} key={feed.updatedat} />
                                         )
                                     })
                                 }
@@ -221,7 +221,7 @@ function Sub() {
                                     return (
                                         loginUserFollow.followings.some((following) => following === member)
                                             ? null
-                                            : <UserSummary member={member} key={memberIndex} />
+                                            : <UserSummary member={member} key={`${member.nickname}_${memberIndex}`} />
                                     );
                                 })
                             }
@@ -237,7 +237,7 @@ function Sub() {
                                 members.map((member, memberIndex) => {
                                     return (
                                         member.nickname !== loginUser.nickname
-                                            ? <UserSummary member={member.nickname} key={memberIndex} />
+                                            ? <UserSummary member={member.nickname} key={`${member.nickname}_${memberIndex}`} />
                                             : null
                                     );
                                 })

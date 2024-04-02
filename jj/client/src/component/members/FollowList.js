@@ -11,7 +11,7 @@ function FollowList({ followList, setIsOpen }) {
                 {
                     followList.map((nickname, followListIndex) => {
                         return (
-                            <UserSummary member={nickname} key={followListIndex} />
+                                <UserSummary member={nickname} key={followListIndex} />
                         );
                     })
                 }

@@ -4,9 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeCookie } from '../util/cookieUtil';
 import { logoutAction } from '../store/userSlice';
 
+import { getUserimgSrc } from '../util/ImgSrcUtil';
+
 import ImgLogo from '../images/logo.png';
 import ImgHome from '../images/home.png';
-import ImgUser from '../images/user.png';
 import ImgBookmark from '../images/bookmark.png';
 import ImgSearch from '../images/search.png';
 import ImgMessage from '../images/message.png';
@@ -50,11 +51,7 @@ function ErrorPage() {
                         </div>
                         <div className="row">
                             <Link to={`/member/${loginUser.nickname}`} className="link">
-                                <img src={loginUser.profileimg
-                                    ? loginUser.provider === "Kakao"
-                                        ? loginUser.profileimg
-                                        : `http://localhost:8070/images/${loginUser.profileimg}`
-                                    : ImgUser} className="icon" /><span className="name">My page</span>
+                                <img src={getUserimgSrc(loginUser)} className="icon" /><span className="name">My page</span>
                             </Link>
                         </div>
                         <div className="row" >

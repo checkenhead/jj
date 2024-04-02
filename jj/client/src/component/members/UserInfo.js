@@ -11,6 +11,7 @@ import ImgMessage from '../../images/message.png';
 import FollowButton from '../utility/FollowButton';
 import FollowList from './FollowList';
 import Modal from "react-modal";
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 
 function UserInfo({ nickname }) {
@@ -66,11 +67,7 @@ function UserInfo({ nickname }) {
                         // toggleModal();
                     }
                 }}>
-                    <img src={currUser.profileimg
-                        ? currUser.provider === "Kakao"
-                            ? currUser.profileimg
-                            : `http://localhost:8070/images/${currUser.profileimg}`
-                        : ImgUser} className="img" />
+                    <img src={getUserimgSrc(currUser)} className="img" />
                     {
                         currUser.nickname === loginUser.nickname
                             ? <img src={ImgSetting} className="icon" />

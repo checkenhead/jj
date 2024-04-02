@@ -22,6 +22,7 @@ import jwtAxios from '../../util/jwtUtil';
 import FollowUser from '../search/followUser';
 import userSlice from '../../store/userSlice';
 import UserSummary from '../common/usersummary';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 
 
@@ -158,10 +159,7 @@ function Message() {
     const getSrcByNickname = (sender) => {
         for (let i = 0; i < currChatGroup.current.members.length; i++) {
             if (currChatGroup.current.members[i].nickname === sender) {
-                if (currChatGroup.current.members[i].provider === "Kakao") {
-                    return currChatGroup.current.members[i].profileimg;
-                }
-                return 'http://localhost:8070/images/' + currChatGroup.current.members[i].profileimg;
+                return getUserimgSrc(currChatGroup.current.members[i]);
             }
         }
         return ImgUser;
@@ -320,11 +318,7 @@ function Message() {
                                                                             setChatGroupBoxStyle(styleHidden);
                                                                             // console.log(chatGroups);
                                                                         }}>
-                                                                            <img src={member.profileimg
-                                                                                ? member.provider === "Kakao"
-                                                                                    ? member.profileimg
-                                                                                    : `http://localhost:8070/images/${member.profileimg}`
-                                                                                : ImgUser} className="friend_icon" />
+                                                                            <img src={getUserimgSrc(member)} className="friend_icon" />
                                                                             {/* {member.nickname} */}
 
                                                                         </div>
@@ -382,11 +376,7 @@ function Message() {
                                             return (
                                                 member.nickname !== loginUser.nickname ?
 
-                                                    <div key={memberIndex}><img src={member.profileimg
-                                                        ? member.provider === "Kakao"
-                                                            ? member.profileimg
-                                                            : `http://localhost:8070/images/${member.profileimg}`
-                                                        : ImgUser} className="friend_icon" /></div>
+                                                    <div key={memberIndex}><img src={getUserimgSrc(member)} className="friend_icon" /></div>
 
                                                     : null
                                             );

@@ -18,6 +18,7 @@ import ImgPost from '../../images/post.png';
 import ImgLogout from '../../images/logout.png';
 import ImgCancel from '../../images/cancel.png';
 import { removeCookie } from '../../util/cookieUtil';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 
 
@@ -66,11 +67,7 @@ function Header({ setNewFeed }) {
                     </div>
                     <div className="row">
                         <Link to={`/member/${loginUser.nickname}`} className="link">
-                            <img src={loginUser.profileimg
-                                ? loginUser.provider === "Kakao"
-                                    ? loginUser.profileimg
-                                    : `http://localhost:8070/images/${loginUser.profileimg}`
-                                : ImgUser} className="icon" /><span className="name">My page</span>
+                            <img src={getUserimgSrc(loginUser)} className="icon" /><span className="name">My page</span>
                         </Link>
                     </div>
                     <div className="row" >

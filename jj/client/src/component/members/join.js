@@ -9,6 +9,7 @@ import { setMessageAction } from '../../store/notifySlice';
 import DaumPostcode from "react-daum-postcode";
 // 모달창
 import Modal from "react-modal";
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function Join() {
     const dispatch = useDispatch();
@@ -68,7 +69,7 @@ function Join() {
             axios.post('/api/members/fileupload', formData)
                 .then((result) => {
                     setFilename(result.data.filename);
-                    setImgSrc(`http://localhost:8070/images/${result.data.filename}`);
+                    setImgSrc(getUserimgSrc(result.data.filename));
                     setImgStyle({ display: "block", width: "250px" });
                 })
         }

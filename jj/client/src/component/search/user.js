@@ -2,27 +2,24 @@ import React, { useEffect, useState } from 'react'
 import FollowButton from '../utility/FollowButton'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 
-import ImgUser from '../../images/user.png';
+
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function User({ nickname }) {
     const [currUser, setCurrUser] = useState({});
-    const [feedCount, setFeedCount] = useState(0);
-    const [follow, setFollow] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [followings, setFollowings] = useState([]);
     const loginUserFollow = useSelector(state => state.follow);
     const loginUser = useSelector(state => state.user);
-    const [followState, setFollowState] = useState(loginUserFollow.followings.some((following) => following === nickname));
+    const [followState, setFollowState] = useState(false);
     const navigate = useNavigate();
 
     const getUserInfo = () => {
         jwtAxios.post('/api/members/getUserInfo', null, { params: { nickname } })
             .then(result => {
                 setCurrUser(result.data.user);
-                setFeedCount(result.data.count);
                 setFollowers(result.data.followers || []);
                 setFollowings(result.data.followings || []);
                 // console.log(result.data);
@@ -34,6 +31,9 @@ function User({ nickname }) {
 
     useEffect(() => {
         getUserInfo();
+    }, [followState])
+    
+    useEffect(() => {
         setFollowState(loginUserFollow.followings.some((following) => following === nickname));
     }, [loginUserFollow])
 
@@ -43,11 +43,7 @@ function User({ nickname }) {
                 <div className="profileimg" onClick={() => {
                     navigate(`/member/${currUser.nickname}`);
                 }}>
-                    <img src={currUser.profileimg
-                        ? currUser.provider === "Kakao"
-                            ? currUser.profileimg
-                            : `http://localhost:8070/images/${currUser.profileimg}`
-                        : ImgUser} />
+                    <img src={getUserimgSrc(currUser)} />
                 </div>
                 <div className="nickname" onClick={() => {
                     navigate(`/member/${currUser.nickname}`);
