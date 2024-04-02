@@ -5,6 +5,7 @@ import { setMessageAction } from '../../store/notifySlice';
 import Modal from "react-modal";
 import Header from '../common/header';
 import Main from '../common/main';
+import Group from './group';
 
 
 import EmojiPicker from 'emoji-picker-react';
@@ -201,6 +202,8 @@ function Message() {
 
     useEffect(() => {
         scrollBox.current.scrollTop = scrollBox.current.scrollHeight;
+        setChatBoxStyle(styleShow);
+        setChatGroupBoxStyle(styleHidden);
     }, [currChats]);
 
     const toggleModal = () => {
@@ -274,86 +277,13 @@ function Message() {
                             </Modal>
 
                             {
-                                chatGroups.map((chatGroup) => {
-                                    return (
-                                        chatGroup.members.length === 1 ? (
-                                            <div key={chatGroup.id} className="row_friend">
-                                                <div className="friend_nickname" >
-                                                    <div className="box_nickname">
-                                                        <div className="btn align" onClick={() => {
-                                                            currChatGroup.current = chatGroup;
-                                                            setSelectedChatGroup(chatGroup);
-                                                            setChatBoxStyle(styleShow);
-                                                            setChatGroupBoxStyle(styleHidden);
-                                                            // console.log(chatGroups);
-                                                        }}><img src={ImgUser} className="friend_icon" /></div>
-                                                    </div>
-                                                </div>
-                                                <div className="btn nickname" onClick={() => {
-                                                    currChatGroup.current = chatGroup;
-                                                    setSelectedChatGroup(chatGroup);
-                                                    setChatBoxStyle(styleShow);
-                                                    setChatGroupBoxStyle(styleHidden);
-                                                    // console.log(chatGroups);
-                                                }}>
-                                                    대화상대가 나갔습니다.
-                                                </div>
-                                                <div className='btn delete' onClick={() => {
-                                                    leaveGroup(chatGroup.id, loginUser.nickname);
-                                                }}><img src={ImgQuit} /></div>
-                                            </div>
-                                        ) : (
-                                            <div key={chatGroup.id} className="row_friend">
-                                                {
-                                                    chatGroup.members.map((member, memberIndex) => {
-                                                        return (
-                                                            member.nickname !== loginUser.nickname ?
-                                                                <div className="friend_nickname" key={memberIndex}>
-
-                                                                    <div className="box_nickname">
-                                                                        <div className="btn align" onClick={() => {
-                                                                            currChatGroup.current = chatGroup;
-                                                                            setSelectedChatGroup(chatGroup);
-                                                                            setChatBoxStyle(styleShow);
-                                                                            setChatGroupBoxStyle(styleHidden);
-                                                                            // console.log(chatGroups);
-                                                                        }}>
-                                                                            <img src={getUserimgSrc(member)} className="friend_icon" />
-                                                                            {/* {member.nickname} */}
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div> : null
-
-
-                                                        );
-                                                    })
-                                                }
-                                                <div className="btn nickname" onClick={() => {
-                                                    currChatGroup.current = chatGroup;
-                                                    setSelectedChatGroup(chatGroup);
-                                                    setChatBoxStyle(styleShow);
-                                                    setChatGroupBoxStyle(styleHidden);
-                                                    // console.log(chatGroups);
-                                                }}>
-                                                    {
-                                                        groupMembers[chatGroup.id][0] !== loginUser.nickname ? groupMembers[chatGroup.id][0] : groupMembers[chatGroup.id][1]
-                                                    }
-                                                    {
-                                                        groupMembers[chatGroup.id].length > 2 ? `외 ${groupMembers[chatGroup.id].length - 1} 명` : null
-                                                    }
-                                                </div>
-                                                {
-                                                    <div className='btn delete' onClick={() => {
-                                                        leaveGroup(chatGroup.id, loginUser.nickname);
-                                                    }}><img src={ImgQuit} /></div>
-                                                }
-                                            </div>
-                                        )
-
-                                    );
-                                })
+                                chatGroups.map(chatGroup => <div className="group">
+                                    <Group group={chatGroup} enter={setSelectedChatGroup} key={chatGroup.id} />
+                                    <div className="delete"><img src={ImgQuit}/></div>
+                                </div>)
                             }
+                            
+
                         </div>
                     </div>
 
@@ -369,62 +299,15 @@ function Message() {
                             }}><img src={ImgBack} /></button>
                             <div className="head">
                                 {
-
-                                    selectedChatGroup?.members ? (
-
-                                        selectedChatGroup?.members?.map((member, memberIndex) => {
-                                            return (
-                                                member.nickname !== loginUser.nickname ?
-
-                                                    <div key={memberIndex}><img src={getUserimgSrc(member)} className="friend_icon" /></div>
-
-                                                    : null
-                                            );
-                                        })
-
-
-                                    )
-                                        : <>
-                                            <div><img src={ImgUser} className="friend_icon" /></div>
-                                            <div className="friend_nickname"></div>
-                                        </>
+                                    selectedChatGroup?.id ?
+                                        <Group group={selectedChatGroup} enter={setSelectedChatGroup} key={selectedChatGroup.id} /> : null
                                 }
-                                <div className="nickname">
-                                    {
-
-                                        selectedChatGroup?.members && groupMembers[selectedChatGroup.id] ? (
-
-                                            groupMembers[selectedChatGroup.id][0] !== loginUser.nickname ?
-                                                (
-                                                    groupMembers[selectedChatGroup.id].length > 2 ?
-                                                        (`${groupMembers[selectedChatGroup.id][0]} 외 ${groupMembers[selectedChatGroup.id].length - 1} 명`)
-                                                        : (groupMembers[selectedChatGroup.id][0])
-
-                                                )
-                                                : (
-                                                    groupMembers[selectedChatGroup.id].length > 2 ?
-                                                        (`${groupMembers[selectedChatGroup.id][1]} 외 ${groupMembers[selectedChatGroup.id].length - 1} 명`)
-                                                        : (groupMembers[selectedChatGroup.id][1])
-                                                )
-
-
-                                        )
-                                            : <>
-                                                <div><img src={ImgUser} className="friend_icon" /></div>
-                                                <div className="friend_nickname"></div>
-                                            </>
-                                    }
-                                </div>
                             </div>
 
-
-                            {/* <button onClick={() => {
-                                setChatBoxStyle(styleHidden);
-                                setChatGroupBoxStyle(styleShow);
-                            }}>닫기</button> */}
                             <button className="btn_menu" onClick={() => {
                                 setBtnMenuState(!btnMenuState);
                             }}><img src={btnMenuState ? ImgCancel : ImgMore} /></button>
+
                             {
                                 btnMenuState ? (
                                     <div className="menu">
