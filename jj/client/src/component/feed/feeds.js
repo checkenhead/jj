@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -21,7 +21,7 @@ function Feeds({ newFeed, setNewFeed }) {
         triggerOnce: true
     });
 
-    const getFeeds = throttle(async (requireRefressh) => {
+    const getFeeds = useCallback(throttle(async (requireRefressh) => {
 
         try {
             if (requireRefressh) { currPage.current = 0; }
@@ -33,7 +33,7 @@ function Feeds({ newFeed, setNewFeed }) {
             console.error(err);
         }
 
-    }, 1000);
+    }, 500), []);
 
     // let result = useQuery(['getFeeds'], (requireRefressh) => {
     //     if (requireRefressh) {
