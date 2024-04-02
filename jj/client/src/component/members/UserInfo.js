@@ -61,8 +61,6 @@ function UserInfo({ nickname }) {
                 <div className="profileimg" onClick={() => {
                     if (currUser.nickname === loginUser.nickname) {
                         navigate('/updateprofile');
-                    } else {
-                        // toggleModal();
                     }
                 }}>
                     <img src={getUserimgSrc(currUser)} className="img" />

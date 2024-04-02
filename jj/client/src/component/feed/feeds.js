@@ -4,14 +4,12 @@ import { useSelector } from 'react-redux';
 import jwtAxios from '../../util/jwtUtil';
 import Post from './post';
 import Feed from './feed';
-// import { useQuery } from 'react-query';
 
 import { throttle } from 'lodash';
 
 function Feeds({ newFeed, setNewFeed }) {
     const loginUser = useSelector(state => state.user);
     const [feeds, setFeeds] = useState([]);
-    // const [feeds, setFeeds] = useState({});
     const styleSelected = { borderBottom: '2px solid #aaaaaa' };
     const [SelectedTab, setSelectedTab] = useState([true, false]);
     const currPage = useRef(0);
@@ -26,30 +24,12 @@ function Feeds({ newFeed, setNewFeed }) {
             if (requireRefressh) { currPage.current = 0; }
             const result = await jwtAxios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } });
             setFeeds(feeds => requireRefressh ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
-            // setFeeds();
             // console.log(result.data.feeds);
         } catch (err) {
             console.error(err);
         }
 
     }, 500), []);
-
-    // let result = useQuery(['getFeeds'], (requireRefressh) => {
-    //     if (requireRefressh) {
-    //         currPage.current = 0;
-    //     }
-
-    //     return jwtAxios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } })
-    //     .then(respons => {
-    //         setFeeds(feeds => requireRefressh ? [...respons.data.feeds] : [...feeds, ...respons.data.feeds]);
-    //         return respons.data;
-    //     })
-    //     .catch(err => {
-    //         console.error(err);
-    //     });
-    // });
-
-
 
     const getFollowingFeeds = async (requireRefressh) => {
         try {

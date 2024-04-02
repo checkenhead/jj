@@ -54,7 +54,6 @@ function Result() {
     }
 
     const onSearch = (word) => {
-        // let w = word.replace('#','')
         if (word === '') {
             dispatch(setMessageAction('검색어를 입력해주세요'));
         } else if (regExp.test(word)) {
