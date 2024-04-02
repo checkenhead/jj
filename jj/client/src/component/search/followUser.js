@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import ImgUser from '../../images/user.png';
 import { useSelector } from 'react-redux';
 import FollowButton from '../utility/FollowButton';
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
-import { useNavigate } from 'react-router-dom';
 import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function FollowUser({ member }) {
     const [currUser, setCurrUser] = useState(member);
-    const navigate = useNavigate();
     const loginUserFollow = useSelector(state => state.follow);
     const loginUser = useSelector(state => state.user);
     const [followState, setFollowState] = useState(loginUserFollow.followings.some((following) => following === member));

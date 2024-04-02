@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import Modal from "react-modal";
 import { useSelector, useDispatch } from 'react-redux';
@@ -47,7 +46,6 @@ function Post(props) {
                         dispatch(setMessageAction({ message: 'Feed 업로드에 실패했습니다. 관리자에게 문의하세요.' }));
                     } else {
                         inputPost.current.textContent = '';
-                        //document.getElementById("target").textcontent = '';
                         setContent('');
                         setImages([]);
                         setFilters([]);
@@ -226,7 +224,6 @@ function Post(props) {
             </div>
             <div className="btn">
                 <button className="link" onClick={() => {
-                    // document.getElementById("upload").click();
                     inputFile.current.click();
                 }}><img src={ImgPic} className="icon" /></button>
 

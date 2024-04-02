@@ -1,13 +1,11 @@
 import ImgHam from '../../images/menu.png';
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import { removeCookie } from '../../util/cookieUtil';
 
 import { logoutAction } from '../../store/userSlice';
 
-import UserSummary from './usersummary';
-import Aside from './aside';
 import Sub from './sub';
 
 import Post from '../feed/post';
@@ -15,7 +13,6 @@ import Modal from "react-modal";
 import Notify from './notify';
 
 import ImgHome from '../../images/home.png';
-import ImgUser from '../../images/user.png';
 import ImgBookmark from '../../images/bookmark.png';
 import ImgSearch from '../../images/search.png';
 import ImgMessage from '../../images/message.png';
@@ -35,16 +32,6 @@ function TopLayer({ setNewFeed }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // const onLogout = () => {
-    //     axios.get('/api/members/logout')
-    //         .then(() => {
-    //             dispatch(logoutAction());
-    //             navigate('/')
-    //         })
-    //         .catch(err => {
-    //             console.error(err);
-    //         })
-    // }
 
     const onLogout = () => {
         removeCookie('user');
@@ -52,14 +39,7 @@ function TopLayer({ setNewFeed }) {
         navigate('/')
     }
 
-    // useEffect(() => {
-    //     getRecommendPeopleBynickname();
-    //     getAllMembersNickname();
-
-    // }, [loginUserFollow]);
-
     const toggleModal = () => {
-        // document.body.style.overflow = isOpen ? "auto" : "hidden";
         setIsOpen(!isOpen);
     }
 
@@ -106,39 +86,32 @@ function TopLayer({ setNewFeed }) {
 
                             <Link to="/" className="link">
                                 <img src={ImgHome} className="icon" />
-                                {/* <span className="name">Home</span> */}
                             </Link>
 
                             <Link to={`/member/${loginUser.nickname}`} className="link">
                                 <img src={getUserimgSrc(loginUser)} className="icon" />
-                                {/* <span className="name">My page</span> */}
                             </Link>
 
                             <Link to="/search" className="link">
                                 <img src={ImgSearch} className="icon" />
-                                {/* <span className="name">Search</span> */}
                             </Link>
 
                             <Link to="/bookmarks" className="link">
                                 <img src={ImgBookmark} className="icon" />
-                                {/* <span className="name">Bookmarks</span> */}
                             </Link>
 
                             <Link to="/message" className="link">
                                 <img src={ImgMessage} className="icon" />
-                                {/* <span className="name">Message</span> */}
                             </Link>
 
                             <button className="link" onClick={() => {
                                 toggleModal();
                             }}>
                                 <img src={ImgPost} className="icon" />
-                                {/* <span className="name">Post</span> */}
                             </button>
 
                             <button className="link logout" onClick={() => { onLogout() }}>
                                 <img src={ImgLogout} className="icon" />
-                                {/* <span className="name">Logout</span> */}
                             </button>
                         </nav>
 

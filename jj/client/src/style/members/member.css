@@ -1,6 +1,5 @@
 .wrap_member {
     width: 100%;
-    /* height: 300px; */
     padding: 5px;
     margin-bottom: 5px;
     box-sizing: border-box;
@@ -19,8 +18,6 @@
 
     font-size: 1.5rem;
     font-weight: bold;
-
-    /* border: 1px solid black; */
 }
 
 .wrap_member .info {
@@ -31,7 +28,6 @@
     display: flex;
     flex-direction: row;
 
-    /* border: 1px solid black; */
 }
 
 .wrap_member .info .profileimg {
@@ -53,9 +49,7 @@
     height: 50px;
     bottom: 0;
     right: 0;
-    /* border: 15px solid black; */
     border-radius: 50%;
-    /* filter: invert(100%); */
     transition: all 0.5s;
 }
 
@@ -76,7 +70,6 @@
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    /* border: 1px solid black; */
 }
 
 .wrap_member .info .status .followings,
@@ -87,12 +80,11 @@
 .wrap_member .followList_wrap {
     width: 150px;
     height: 300px;
-    
+
 }
 
 .summary {
     width: 100%;
-    /* height: 300px; */
     padding: 5px;
     margin-bottom: 5px;
     box-sizing: border-box;
@@ -141,7 +133,6 @@
     display: flex;
     justify-content: center;
 
-    /* border: 1px solid black; */
 }
 
 .action_wrap .DirectMessage {
@@ -176,6 +167,5 @@
 .action_wrap .btn_follow button:hover {
     color: #BBBBBB;
     border: 3px solid #BBBBBB;
-    /* transform: scale(0.98); */
     cursor: pointer;
 }

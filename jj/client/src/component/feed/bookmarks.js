@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import jwtAxios from '../../util/jwtUtil';
 import { useSelector } from 'react-redux';
 import Header from '../common/header';
@@ -11,7 +10,6 @@ import Feed from './feed';
 function Feeds({ newFeed, setNewFeed }) {
     const [feeds, setFeeds] = useState([]);
     const [page, setPage] = useState(0);
-    const scrollAside = useRef();;
     const loginUser = useSelector(state => state.user);
 
     const getFeeds = () => {

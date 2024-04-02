@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setMessageAction } from '../../store/notifySlice';
 import Slider from 'react-slick';
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import { debounce } from 'lodash';
 
@@ -17,7 +16,6 @@ import ImgEmoji from '../../images/emoji.png';
 import Feedimg from './feedimg';
 
 
-import ImgUser from '../../images/user.png';
 import ImgUnlike from '../../images/unlike.png';
 import ImgLike from '../../images/like.png';
 import ImgReply from '../../images/reply.png';
@@ -40,7 +38,6 @@ function Feed(props) {
     const [images, setImages] = useState([ImgDefault]);
     const [writerInfo, setWriterInfo] = useState({});
     const [likes, setLikes] = useState([]);
-    // const [iconLike, setIconLike] = useState(ImgUnlike);
     const [stateLike, setStateLike] = useState(false);
     const [replys, setReplys] = useState([]);
     const [bookmarks, setBookmarks] = useState([]);
@@ -74,11 +71,9 @@ function Feed(props) {
     const getLikes = (feedid) => {
         jwtAxios.post('/api/feeds/getlikesbyfeedid', { feedid })
             .then(result => {
-                // setIconLike(ImgUnlike);
                 setStateLike(false);
                 setLikes(result.data.likes.map((like) => {
                     if (like.nickname === loginUser.nickname) {
-                        // setIconLike(ImgLike);
                         setStateLike(true);
                     }
                     return like.nickname;
@@ -99,20 +94,6 @@ function Feed(props) {
                 console.error(err);
             });
     }, 500), []);
-
-
-    // const toggleLikes = (feedid, nickname) => {
-
-    //     jwtAxios.post('/api/feeds/togglelike', { feedid, nickname })
-    //         .then(result => {
-    //             getLikes(feedid);
-    //         })
-    //         .catch(err => {
-    //             console.error(err);
-    //         });
-    // }
-
-
 
     const getImages = (feedid) => {
         jwtAxios.post('/api/feeds/getfeedimgbyfeedid', null, { params: { feedid } })
@@ -235,15 +216,6 @@ function Feed(props) {
                 console.error(err);
             });
     }, 500), []);
-    // const toggleBookmarks = (feedid, nickname) => {
-    //     jwtAxios.post('/api/feeds/togglebookmark', { feedid, nickname })
-    //         .then(result => {
-    //             getBookmarks(feedid);
-    //         })
-    //         .catch(err => {
-    //             console.error(err);
-    //         });
-    // }
 
     useEffect(() => {
         getWriterInfo(feed.writer);
@@ -263,26 +235,11 @@ function Feed(props) {
         slidesToScroll: 1
     };
 
-    // const [dropdownDisplay1, setDropdownDisplay1] = useState(false);
-    // const [dropdownDisplay2, setDropdownDisplay2] = useState(false);
-
-
     const toggleModal = () => {
         document.body.style.overflow = isOpen ? "auto" : "hidden";
         setIsOpen(!isOpen);
     }
 
-    // const setChangeDrop = () => {
-    //     setDropdownDisplay2(!dropdownDisplay2)
-    //     if (!dropdownDisplay2) {
-    //         setMoreDropdown();
-    //     }
-    //     setDropdownDisplay1(!dropdownDisplay1)
-    //     if(!dropdownDisplay1){
-    //         setProfileDropdown();
-    //     } 
-
-    // }
     const setProfileDropdown = () => {
         dropdownDisplay1.current = !dropdownDisplay1.current;
         // console.log(dropdownDisplay1.current, 1);
@@ -394,7 +351,6 @@ function Feed(props) {
                     <img src={ImgCancel} className="icon close link" onClick={() => {
                         toggleModal();
                     }} />
-                    {/* <Editpost feed={feed}/> */}
                     <Post feed={feed} images={images} setIsOpen={setIsOpen} feeds={props.feeds} setFeeds={props.setFeeds} />
                 </Modal>
                 {
@@ -405,7 +361,6 @@ function Feed(props) {
                                     <Dropdown pagename={'feed'} feedid={feed.id} toggleModal={toggleModal} style={style2} />
                                     <img src={ImgMore} className='icon' onClick={() => {
                                         setMoreDropdown()
-                                        // setChangeDrop();
                                     }} />
                                 </div>
                             </>

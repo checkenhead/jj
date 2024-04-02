@@ -1,23 +1,23 @@
-body{
+body {
     width: calc(100vw - 20px);
     margin: 0 auto;
-    /* padding: 0; */
     box-sizing: border-box;
     background-color: #EEEEEE;
 
     display: flex;
     justify-content: center;
 }
-#root{
+
+#root {
     position: relative;
     width: 100%;
-    /* height: calc(100vh + 1px); */
     box-sizing: border-box;
 
     display: flex;
     justify-content: center;
 }
-.wrap_main{
+
+.wrap_main {
     position: relative;
     width: 100%;
     box-sizing: border-box;
@@ -27,8 +27,9 @@ body{
     justify-content: center;
     align-items: flex-start;
 }
-.wrap_main header{
-    position:sticky;
+
+.wrap_main header {
+    position: sticky;
     top: 0;
     width: 100%;
     min-width: 100px;
@@ -38,88 +39,83 @@ body{
     box-sizing: border-box;
     transition: all 0.1s;
 }
-.wrap_main main{
-    /* position: sticky;
-    top: 0; */
-    /* height: 100vh; */
-    /* overflow-y: hidden; */
+
+.wrap_main main {
     min-width: 500px;
     max-width: 500px;
     padding: 5px;
     box-sizing: border-box;
     transition: all 0.1s;
 }
-#aside{
+
+#aside {
     position: sticky;
-    /* top: 0; */
     min-width: 300px;
     max-width: 300px;
-    /* height: 1200px; */
-    /* height: auto; */
-    /* height: 100vh; */
-    /* height: 1000px; */
-    /* overflow-y: hidden;
-    overflow-x: hidden; */
 
-    
+
     padding: 5px;
     padding-right: 20px;
     box-sizing: border-box;
     transition: all 0.1s;
 }
-/* .wrap_main #aside::-webkit-scrollbar{
-    display: none;
-} */
 
 /* 모바일 */
-@media (max-width: 640px){
-    body{
+@media (max-width: 640px) {
+    body {
         width: 100%;
     }
-    .wrap_main{
+
+    .wrap_main {
         flex-direction: column;
         justify-content: flex-start;
-        
+
     }
-    .wrap_main header{
+
+    .wrap_main header {
         width: 100%;
         min-width: 100%;
         max-width: 100%;
     }
-    .wrap_main main{
+
+    .wrap_main main {
         width: 100%;
         min-width: 100%;
-        /* height: auto !important; */
     }
-    .wrap_main #aside{
+
+    .wrap_main #aside {
         display: none;
     }
 }
+
 /* 테블릿 */
-@media (min-width: 641px) and (max-width: 720px){
-    .wrap_main header{
+@media (min-width: 641px) and (max-width: 720px) {
+    .wrap_main header {
         min-width: 60px;
         max-width: 100px;
     }
-    .wrap_main #aside{
+
+    .wrap_main #aside {
         display: none;
     }
 }
-@media (min-width: 721px) and (max-width: 950px){
-    .wrap_main header{
+
+@media (min-width: 721px) and (max-width: 950px) {
+    .wrap_main header {
         max-width: 200px;
     }
-    .wrap_main #aside{
+
+    .wrap_main #aside {
         display: none;
     }
 }
-@media (min-width: 951px) and (max-width: 1024px){
-    .wrap_main header{
+
+@media (min-width: 951px) and (max-width: 1024px) {
+    .wrap_main header {
         min-width: 60px;
         max-width: 100px;
     }
 }
+
 /* 데스크탑 */
-@media (min-width: 1025px){
-    
-}
+@media (min-width: 1025px) {}
