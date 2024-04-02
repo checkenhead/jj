@@ -7,7 +7,6 @@ export const setCookie = (name, value, days = 1) => {
     expires.setUTCDate(expires.getUTCDate() + days);
     
     return cookies.set(name, value, { path: '/', expires });
-    //return cookies.set(name, value, { path: '/', maxAge:30 });
 }
 
 export const getCookie = (name) => {

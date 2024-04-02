@@ -17,16 +17,6 @@ function ErrorPage() {
     const loginUser = useSelector(state => state.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    // const onLogout = () => {
-    //     jwtAxios.get('/api/members/logout')
-    //         .then(() => {
-    //             dispatch(logoutAction());
-    //             navigate('/')
-    //         })
-    //         .catch(err => {
-    //             console.error(err);
-    //         })
-    // }
 
     const onLogout = () => {
         removeCookie('user');

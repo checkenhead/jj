@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import {setMessageAction} from '../../store/notifySlice';
+import { setMessageAction } from '../../store/notifySlice';
 import ImgRemove from '../../images/remove.png';
 import ImgEdit from '../../images/confirm.png';
 import ImgFollow from '../../images/follow.png';
@@ -9,12 +9,10 @@ import ImgUnFollow from '../../images/unfollow.png';
 import ImgProfile from '../../images/profile.png';
 import ImgMessage from '../../images/message.png';
 import { setFollowAction } from '../../store/followSlice';
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 
 function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
     const navigate = useNavigate();
-    const [isOpen, setIsOpen] = useState(false);
     const [followState, setFollowState] = useState(false);
     const loginUser = useSelector(state => state.user);
     // 팔로우 정보 가져오기
@@ -28,7 +26,7 @@ function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
             jwtAxios.post('/api/feeds/deletebyid', { id: feedid })
                 .then(result => {
                     navigate('/');
-                    dispatch(setMessageAction({message:'게시물 삭제가 완료되었습니다'}));  
+                    dispatch(setMessageAction({ message: '게시물 삭제가 완료되었습니다' }));
                     return;
                 })
                 .catch(error => {
@@ -83,7 +81,7 @@ function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
                                 </div>
                                 <div className='dropdown_button_wrap' onClick={() => { toggleModal() }} >
                                     <div className='dropdown_button'>
-                                        <img src={ImgEdit}/>
+                                        <img src={ImgEdit} />
                                     </div>
                                     <div className='dropdown_label'>수정</div>
                                 </div>
@@ -108,7 +106,7 @@ function Dropdown({ pagename, style, feedid, toggleModal, writer }) {
                                     <div className='dropdown_label'>프로필</div>
                                 </div>
                                 <div className='dropdown_button_wrap' onClick={() => {
-                                    navigate('/message', {state:{writer}});
+                                    navigate('/message', { state: { writer } });
                                 }}>
                                     <div className='dropdown_button DM'>
                                         <img src={ImgMessage} />

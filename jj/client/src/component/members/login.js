@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import jwtAxios from '../../util/jwtUtil';
-import { setCookie, getCookie, removeCookie } from '../../util/cookieUtil';
+import { setCookie } from '../../util/cookieUtil';
 import { useSelector, useDispatch } from 'react-redux';
-import { loginAction, logoutAction } from '../../store/userSlice';
+import { loginAction } from '../../store/userSlice';
 import { setMessageAction } from '../../store/notifySlice';
 import { setFollowAction } from '../../store/followSlice';
-import { useQuery } from 'react-query';
 
 import ImgKakao from '../../images/loginImg/kakaosimbol.png';
 import ImgLogo from '../../images/logo.png';
@@ -34,8 +33,6 @@ function Login() {
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
   const dispatch = useDispatch();
-  const MAX_CONTENT_LENGTH = 200;
-  const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
 
   const Rest_api_key = process.env.REACT_APP_KAKAO_REST_API_KEY; //REST API KEY
   const redirect_uri = process.env.REACT_APP_KAKAO_REDIRECT_URI; //Redirect URI
@@ -69,7 +66,6 @@ function Login() {
           setCookie("user", JSON.stringify(result.data), 1);
           dispatch(loginAction(result.data));
           getFollow(result.data.nickname);
-          // getFollow.refetch(result.data.nickname);
           navigate('/main');
           // console.log('login result.data:', result.data);
         }
@@ -91,20 +87,6 @@ function Login() {
       });
   }
 
-  // const getFollow = useQuery(['getFollow', nickname], () => {
-  //   return axios.post('/api/members/getfollow', null, { params: { nickname } })
-  //   .then(result => {
-  //     // dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }));
-  //     return result.data;
-  //   })
-  //   .catch(err => {
-  //     console.error(err);
-  //   }),
-  //   {
-  //     enabled: false
-  //   }
-  // });
-
   function mousemove(e) {
     var x = e.offsetX;
     var y = e.offsetY;
@@ -118,7 +100,6 @@ function Login() {
   }
 
   const handleScroll = () => {
-    // clearTimeout(timeoutId); // 이전의 timeoutId를 제거하여 중복 호출 방지
 
     const scrollY = window.scrollY;
     const rotationAngle = scrollY; // 스크롤 위치에 따라 회전 각도 조절
@@ -139,8 +120,6 @@ function Login() {
 
   useEffect(() => {
     // console.log('redux loginUser', loginUser);
-    // dispatch(logoutAction());
-    // removeCookie('user');
     if (loginUser.email !== '') {
       navigate('/main');
     } else {
@@ -157,7 +136,6 @@ function Login() {
     return () => {
       if (loginUser.email === '') {
         window.removeEventListener('scroll', handleScroll);
-        // clearTimeout(timeoutId); // 컴포넌트가 언마운트될 때 timeoutId 제거
 
         for (let i = 0; i < item.length; i++) {
           item[i].removeEventListener('mousemove', mousemove);

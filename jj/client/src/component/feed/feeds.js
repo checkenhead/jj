@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import Post from './post';
 import Feed from './feed';

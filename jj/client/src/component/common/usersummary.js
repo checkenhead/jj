@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import FollowButton from '../utility/FollowButton';
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import { useNavigate } from 'react-router-dom';
 import { getUserimgSrc } from '../../util/ImgSrcUtil';
@@ -17,7 +16,7 @@ function UserSummary({ member }) {
         jwtAxios.post('/api/members/getmemberbynickname', null, { params: { nickname: member } })
             .then(result => {
                 setCurrUser(result.data.user);
-               
+
                 // console.log(result.data.user);
             })
             .catch(err => {
@@ -36,7 +35,7 @@ function UserSummary({ member }) {
             <div className="profileimg" onClick={() => {
                 navigate(`/member/${currUser.nickname}`);
             }}>
-                <img src={ getUserimgSrc(currUser) }/>
+                <img src={getUserimgSrc(currUser)} />
             </div>
             <div className="nickname" onClick={() => {
                 navigate(`/member/${currUser.nickname}`);

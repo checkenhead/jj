@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useSelector } from 'react-redux';
-import axios from 'axios';
+
 import jwtAxios from '../../util/jwtUtil';
 
 import Header from '../common/header';
 import Main from '../common/main';
 import Aside from '../common/aside';
 import Sub from '../common/sub';
-import ImgSetting from '../../images/setting.png';
 import ImgFeeds from '../../images/feeds.png';
 import ImgAt from '../../images/at.png';
 import UserInfo from './UserInfo';
@@ -19,11 +17,9 @@ function Member() {
     const location = useLocation();
     // console.log("state", location.state);
     const param = useParams();
-    const loginUser = useSelector(state => state.user);
     const [summarys, setSummarys] = useState([]);
     const styleSelected = { borderBottom: '2px solid #aaaaaa' };
     const [SelectedTab, setSelectedTab] = useState([true, false]);
-    const scrollAside = useRef();
 
     const navigate = useNavigate();
 
@@ -50,38 +46,12 @@ function Member() {
         }
     }
 
-    // const getSummarys = () => {
-    //     axios.post('/api/feeds/getsumarrysbynickname', null, { params: { nickname: param.nickname } })
-    //         .then(result => {
-    //             setSummarys(result.data.summarys);
-    //         })
-    //         .catch(err => {
-    //             console.error(err);
-    //         });
-    // }
 
-    // const getUser = () => {
-    //     axios.post('/api/members/getmemberbynickname', null, { params: { nickname: param.nickname } })
-    //         .then(result => {
-    //             if (result.data.message !== 'OK') {
-    //                 navigate('/main');
-    //             } else {
-    //                 setCurrUser(result.data.user);
-    //             }
-    //         })
-    //         .catch(err => {
-    //             console.error(err);
-    //         });
-    // }
-    
     useEffect(() => {
-        // getUser();
-        // getSummarys();
         getSummaryView();
     }, [param]);
 
     useEffect(() => {
-        // document.getElementById("root").style.height = 0;
         getSummaryView();
     }, [SelectedTab]);
 
@@ -90,7 +60,7 @@ function Member() {
             <header><Header /></header>
             <Main component={
                 <>
-                    <UserInfo nickname={param.nickname} key={param.nickname}/>
+                    <UserInfo nickname={param.nickname} key={param.nickname} />
                     <div className="tab">
                         <div className="tab_col">
                             <button className="link" style={SelectedTab[0] ? styleSelected : null} onClick={() => {

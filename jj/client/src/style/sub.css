@@ -1,33 +1,30 @@
-.wrap_sub{
-    /* position: sticky; */
+.wrap_sub {
     width: 100%;
-    /* min-height: calc(100vh - 10px); */
-    /* height: 100vh; */
-    /* top: -5px; */
     padding: 5px;
     border: 1px solid #DDDDDD;
     background-color: white;
-    /* box-shadow: 0 0 20px #DDDDDD; */
-    /* border-radius: 10px; */
     box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.wrap_sub footer{
+
+.wrap_sub footer {
     margin-top: auto;
     padding: 5px;
     border-top: 1px solid #DDDDDD;
     box-sizing: border-box;
 }
-.wrap_sub footer .wrap_footer{
+
+.wrap_sub footer .wrap_footer {
     font-size: 0.8rem;
     color: #AAAAAA;
     padding: 5px;
     box-sizing: border-box;
 }
-.wrap_sub .search{
+
+.wrap_sub .search {
     position: sticky;
     z-index: 2;
     top: -5px;
@@ -35,36 +32,39 @@
     padding: 5px;
     padding-bottom: 10px;
     box-sizing: border-box;
-    /* border-bottom: 1px solid #DDDDDD; */
     background-color: white;
     opacity: 0.97;
 
     display: flex;
     justify-content: center;
 }
-.wrap_sub .search input[type=text]{
+
+.wrap_sub .search input[type=text] {
     flex: 1;
     padding: 10px;
     font-weight: bold;
     font-size: 1em;
     border: 1px solid #DDDDDD;
-    border-radius: 20px;  
+    border-radius: 20px;
 }
-.wrap_sub .search button{
+
+.wrap_sub .search button {
     padding: 10px;
     font-weight: bold;
     border: 1px solid #DDDDDD;
     border-left: 0;
     border-radius: 0 20px 20px 0;
 }
+
 .wrap_sub .wrap_relevant_people,
 .wrap_sub .wrap_recommend_people,
 .wrap_sub .wrap_recommend_feed,
-.wrap_sub .wrap_recommend_follow{
+.wrap_sub .wrap_recommend_follow {
     width: 100%;
     margin: 20px 0;
 }
-.wrap_sub .title{
+
+.wrap_sub .title {
     width: 100%;
     margin-bottom: 5px;
     font-size: 1.5em;
@@ -74,17 +74,16 @@
     justify-content: center;
 
     border-bottom: 1px solid #DDDDDD;
-    /* border: 1px solid black; */
 }
+
 .wrap_sub .relevant_people,
 .wrap_sub .recommend_people,
 .wrap_sub .recommend_feed,
-.wrap_sub .recommend_follow{
+.wrap_sub .recommend_follow {
     width: 100%;
-    /* border: 1px solid #DDDDDD; */
 }
-.user_summary{
-    /* position: relative; */
+
+.user_summary {
     width: 100%;
     padding: 5px;
     margin-bottom: 5px;
@@ -97,24 +96,26 @@
     border: 1px solid #DDDDDD;
 }
 
-.user_summary .profileimg:hover ,
+.user_summary .profileimg:hover,
 .user_summary .nickname:hover {
- transform: scale(0.95);
+    transform: scale(0.95);
 }
 
-.user_summary .profileimg{
+.user_summary .profileimg {
     width: 50px;
     height: 50px;
     cursor: pointer;
 }
-.user_summary .profileimg img{
+
+.user_summary .profileimg img {
     width: 100%;
     height: 100%;
     aspect-ratio: 1;
     object-fit: cover;
     border-radius: 50%;
 }
-.user_summary .nickname{
+
+.user_summary .nickname {
     position: relative;
     flex: 1;
     font-size: 1rem;
@@ -123,18 +124,18 @@
     display: flex;
     justify-content: center;
 
-    /* border: 1px solid black; */
     cursor: pointer;
 }
-.user_summary .btn_follow{
+
+.user_summary .btn_follow {
     flex: 1;
     width: 100%;
     display: flex;
     justify-content: center;
 
-    /* border: 1px solid black; */
 }
-.user_summary .btn_follow button{
+
+.user_summary .btn_follow button {
     flex: 1;
     padding: 5px 15px;
     font-size: 0.8rem;
@@ -146,9 +147,9 @@
 
     transition: all 0.1s;
 }
-.user_summary .btn_follow button:hover{
+
+.user_summary .btn_follow button:hover {
     color: #BBBBBB;
     border: 3px solid #BBBBBB;
-    /* transform: scale(0.98); */
     cursor: pointer;
 }

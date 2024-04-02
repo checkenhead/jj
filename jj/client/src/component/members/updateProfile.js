@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import jwtAxios from '../../util/jwtUtil';
 
 import Header from '../common/header';
@@ -24,14 +23,12 @@ function UpdateProfile() {
     const [intro, setIntro] = useState('');
     const [email, setEmail] = useState('');
     const [imgSrc, setImgSrc] = useState(ImgUser);
-    const [imgStyle, setImgStyle] = useState({ display: "none" });
     const [filename, setFilename] = useState('');
 
     const [zipnum, setZipnum] = useState('');
     const [address1, setAddress1] = useState('');
     const [address2, setAddress2] = useState('');
     const [address3, setAddress3] = useState('');
-    const MAX_CONTENT_LENGTH = 200;
     const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
 
     const navigate = useNavigate();
@@ -51,7 +48,7 @@ function UpdateProfile() {
 
             setEmail(loginUser.email);
             setNickname(loginUser.nickname);
-            if(loginUser.profileimg){
+            if (loginUser.profileimg) {
                 setImgSrc(getUserimgSrc(loginUser));
             }
             setZipnum(loginUser.zipnum);
@@ -100,7 +97,6 @@ function UpdateProfile() {
                 .then((result) => {
                     setFilename(result.data.filename);
                     setImgSrc(getFeedimgSrc(result.data.filename));
-                    // setImgStyle({ display: "block", width: "330px" });
                 })
         }
     }
@@ -111,7 +107,7 @@ function UpdateProfile() {
             return;
         }
 
-        jwtAxios.post('api/members/updateprofile', { email, nickname, intro, profileimg: filename, zipnum, address1, address2, address3 }, {params:{nickname:loginUser.nickname}})
+        jwtAxios.post('api/members/updateprofile', { email, nickname, intro, profileimg: filename, zipnum, address1, address2, address3 }, { params: { nickname: loginUser.nickname } })
             .then((result) => {
                 if (result.data.message === 'no') {
                     dispatch(setMessageAction('닉네임이 중복됩니다'));
@@ -130,7 +126,7 @@ function UpdateProfile() {
     }
 
     useEffect(() => {
-        
+
     }, [onFileUpload])
 
     return (
@@ -164,23 +160,15 @@ function UpdateProfile() {
                                     <input value={zipnum} readOnly placeholder="우편번호" />
                                     <button onClick={toggle}>검색</button></div>
                                 <br />
-                                {/* 
-                        아래 새로운 div 생성
-                    <input value={address1} readOnly placeholder="도로명 주소" />
-                    <br />
-                    <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
-                        <DaumPostcode onComplete={completeHandler} height="100%" />
-                    </Modal> 
-                    */}
                             </div>
 
-                            {<div className='field'>
+                            <div className='field'>
                                 <input value={address1} readOnly placeholder="도로명 주소" />
                                 <br />
                                 <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
                                     <DaumPostcode onComplete={completeHandler} height="100%" />
                                 </Modal>
-                            </div>}
+                            </div>
 
                             <div className='field'>
                                 <input type="text" value={address2} onChange={
@@ -207,13 +195,6 @@ function UpdateProfile() {
                                         onFileUpload(e);
                                     }
                                 }} />
-                            </div>
-
-                            <div className='field'>
-                                {/* 
-                        아래 새로운 div 생성
-                    <div><img src={imgSrc} style={imgStyle} /></div> 
-                    */}
                             </div>
                             <div className='field'>
                                 <div><img src={imgSrc}

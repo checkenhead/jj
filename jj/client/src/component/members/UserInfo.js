@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 
 import ImgSetting from '../../images/setting.png';
-import ImgUser from '../../images/user.png';
 import ImgMessage from '../../images/message.png';
 import FollowButton from '../utility/FollowButton';
 import FollowList from './FollowList';

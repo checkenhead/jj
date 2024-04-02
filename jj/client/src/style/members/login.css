@@ -56,7 +56,6 @@
     margin: 25px;
     border: 1px solid #DDDDDD;
     background-color: white;
-    /* box-shadow: 0 0 20px #DDDDDD; */
     border-radius: 10px;
     box-sizing: border-box;
     flex-direction: column;
@@ -107,7 +106,6 @@
     font-weight: bold;
     margin-right: 5px;
     align-items: center;
-    /* border: 1px solid black; */
 }
 
 .login_input {
@@ -249,7 +247,6 @@ input:valid~label {
     margin: 25px;
     border: 1px solid #DDDDDD;
     background-color: white;
-    /* box-shadow: 0 0 20px #DDDDDD; */
     border-radius: 10px;
     box-sizing: border-box;
     flex-direction: column;

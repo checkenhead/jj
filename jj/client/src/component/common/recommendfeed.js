@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import jwtAxios from '../../util/jwtUtil';
-//import Editpost from './Editpost';
 
 import Feedimg from '../feed/feedimg';
-import ImgUser from '../../images/user.png';
 import ImgUnlike from '../../images/unlike.png';
 import ImgLike from '../../images/like.png';
 import ImgReply from '../../images/reply.png';
@@ -18,7 +16,6 @@ function Feed({ feed }) {
     const [images, setImages] = useState([]);
     const [writerInfo, setWriterInfo] = useState({});
     const [likes, setLikes] = useState([]);
-    // const [iconLike, setIconLike] = useState(ImgUnlike);
     const [stateLike, setStateLike] = useState(false);
     const [replys, setReplys] = useState([]);
     const [bookmarks, setBookmarks] = useState([]);
@@ -42,11 +39,9 @@ function Feed({ feed }) {
     const getLikes = (feedid) => {
         jwtAxios.post('/api/feeds/getlikesbyfeedid', { feedid })
             .then(result => {
-                // setIconLike(ImgUnlike);
                 setStateLike(false);
                 setLikes(result.data.likes.map((like) => {
                     if (like.nickname === loginUser.nickname) {
-                        // setIconLike(ImgLike);
                         setStateLike(true);
                     }
                     return like.nickname;

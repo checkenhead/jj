@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import { UseDispatch, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setMessageAction } from '../../store/notifySlice';
 
 // 다음 주소 검색
@@ -27,7 +27,6 @@ function Join() {
     const [address1, setAddress1] = useState('');
     const [address2, setAddress2] = useState('');
     const [address3, setAddress3] = useState('');
-    const MAX_CONTENT_LENGTH = 200;
     const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
     // 모달창 여닫이 버튼
     const [isOpen, setIsOpen] = useState(false);
@@ -62,7 +61,7 @@ function Join() {
 
     const onFileUpload = (e) => {
         if (e?.target?.files[0]?.size > MAX_CONTENT_SIZE) {
-            dispatch(setMessageAction({message: `업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`}));
+            dispatch(setMessageAction({ message: `업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요` }));
         } else {
             const formData = new FormData();
             formData.append('image', e.target.files[0]);
@@ -154,23 +153,14 @@ function Join() {
                         <input value={zipnum} readOnly placeholder="우편번호" />
                         <button onClick={toggle}>검색</button></div>
                     <br />
-                    {/* 
-                        아래 새로운 div 생성
-                    <input value={address1} readOnly placeholder="도로명 주소" />
-                    <br />
-                    <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
-                        <DaumPostcode onComplete={completeHandler} height="100%" />
-                    </Modal> 
-                    */}
                 </div>
-
-                {<div className='field'>
+                <div className='field'>
                     <input value={address1} readOnly placeholder="도로명 주소" />
                     <br />
                     <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
                         <DaumPostcode onComplete={completeHandler} height="100%" />
                     </Modal>
-                </div>}
+                </div>
 
                 <div className='field'>
                     <input type="text" value={address2} onChange={
@@ -198,13 +188,6 @@ function Join() {
                                 onFileUpload(e);
                             }
                         }} />
-                </div>
-
-                <div className='field'>
-                    {/* 
-                        아래 새로운 div 생성
-                    <div><img src={imgSrc} style={imgStyle} /></div> 
-                    */}
                 </div>
                 <div className='field'>
                     <div><img src={imgSrc} style={imgStyle} /></div>
