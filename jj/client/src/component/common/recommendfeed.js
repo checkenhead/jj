@@ -12,11 +12,11 @@ import ImgLike from '../../images/like.png';
 import ImgReply from '../../images/reply.png';
 import ImgBookmark from '../../images/bookmark.png';
 import ImgBookmarked from '../../images/bookmarked.png';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function Feed({ feed }) {
     const [images, setImages] = useState([]);
     const [writerInfo, setWriterInfo] = useState({});
-    const [profileimg, setProfileimg] = useState(null);
     const [likes, setLikes] = useState([]);
     // const [iconLike, setIconLike] = useState(ImgUnlike);
     const [stateLike, setStateLike] = useState(false);
@@ -33,7 +33,6 @@ function Feed({ feed }) {
         jwtAxios.post('/api/members/getmemberbynickname', null, { params: { nickname } })
             .then(result => {
                 setWriterInfo(result.data.user);
-                setProfileimg(`http://localhost:8070/images/${result.data.user.profileimg}`);
             })
             .catch(err => {
                 console.error(err);
@@ -184,11 +183,7 @@ function Feed({ feed }) {
                     <div className="profileimg link" onClick={() => {
                         navigate(`/member/${feed.writer}`)
                     }}>
-                        <img src={writerInfo.profileimg
-                            ? writerInfo.provider === "Kakao"
-                                ? writerInfo.profileimg
-                                : profileimg
-                            : ImgUser} />
+                        <img src={getUserimgSrc(writerInfo)} />
                     </div>
                     <div className="nickname link" onClick={() => {
                         navigate(`/member/${feed.writer}`)

@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import Post from './post';
 import Feed from './feed';
+// import { useQuery } from 'react-query';
 
 import { throttle } from 'lodash';
 
@@ -20,7 +21,7 @@ function Feeds({ newFeed, setNewFeed }) {
         triggerOnce: true
     });
 
-    const getFeeds = throttle(async (requireRefressh) => {
+    const getFeeds = useCallback(throttle(async (requireRefressh) => {
 
         try {
             if (requireRefressh) { currPage.current = 0; }
@@ -32,7 +33,22 @@ function Feeds({ newFeed, setNewFeed }) {
             console.error(err);
         }
 
-    }, 1000);
+    }, 500), []);
+
+    // let result = useQuery(['getFeeds'], (requireRefressh) => {
+    //     if (requireRefressh) {
+    //         currPage.current = 0;
+    //     }
+
+    //     return jwtAxios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } })
+    //     .then(respons => {
+    //         setFeeds(feeds => requireRefressh ? [...respons.data.feeds] : [...feeds, ...respons.data.feeds]);
+    //         return respons.data;
+    //     })
+    //     .catch(err => {
+    //         console.error(err);
+    //     });
+    // });
 
 
 
@@ -48,7 +64,7 @@ function Feeds({ newFeed, setNewFeed }) {
 
     useEffect(() => {
         if (currPage.current > 0) {
-            // console.log('SelectedTab  called');
+            console.log('SelectedTab  called');
             if (SelectedTab[0]) {
                 getFeeds(true);
             } else {

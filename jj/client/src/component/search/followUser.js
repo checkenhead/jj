@@ -5,6 +5,7 @@ import FollowButton from '../utility/FollowButton';
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import { useNavigate } from 'react-router-dom';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function FollowUser({ member }) {
     const [currUser, setCurrUser] = useState(member);
@@ -33,11 +34,7 @@ function FollowUser({ member }) {
     return (
         <div className="user_summary">
             <div className="profileimg">
-                <img src={currUser.profileimg 
-                    ? currUser.provider === "Kakao"
-                        ? currUser.profileimg
-                        :`http://localhost:8070/images/${currUser.profileimg}` 
-                    : ImgUser} />
+                <img src={getUserimgSrc(currUser)} />
             </div>
             <div className="nickname">
                 {currUser.nickname}

@@ -16,6 +16,7 @@ import ImgUser from '../../images/user.png';
 import DaumPostcode from "react-daum-postcode";
 // 모달창
 import Modal from "react-modal";
+import { getFeedimgSrc, getUserimgSrc } from '../../util/ImgSrcUtil';
 
 
 function UpdateProfile() {
@@ -51,7 +52,7 @@ function UpdateProfile() {
             setEmail(loginUser.email);
             setNickname(loginUser.nickname);
             if(loginUser.profileimg){
-                setImgSrc(`http://localhost:8070/images/${loginUser.profileimg}`);
+                setImgSrc(getUserimgSrc(loginUser));
             }
             setZipnum(loginUser.zipnum);
             setAddress1(loginUser.address1);
@@ -98,7 +99,7 @@ function UpdateProfile() {
             jwtAxios.post('/api/members/fileupload', formData)
                 .then((result) => {
                     setFilename(result.data.filename);
-                    setImgSrc(`http://localhost:8070/images/${result.data.filename}`);
+                    setImgSrc(getFeedimgSrc(result.data.filename));
                     // setImgStyle({ display: "block", width: "330px" });
                 })
         }

@@ -21,6 +21,7 @@ import jwtAxios from '../../util/jwtUtil';
 import FollowUser from '../search/followUser';
 import userSlice from '../../store/userSlice';
 import UserSummary from '../common/usersummary';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 
 
@@ -125,6 +126,7 @@ function Message() {
             });
     }
 
+
     const leaveChat = () => {
        
     }
@@ -140,6 +142,8 @@ function Message() {
         return null;
     }
 
+
+
     const createGroup = (members) => {
         jwtAxios.post('/api/chat/creategroup', { members })
             .then(result => {
@@ -152,6 +156,36 @@ function Message() {
                 console.error(err);
             });
     }
+
+    const inviteGroup = () => { }
+
+    const leaveGroup = (chatgroupid, nickname) => {
+        jwtAxios.post('/api/chat/leavechatgroup', null, { params: { chatgroupid, nickname } })
+            .then(result => {
+                getAllChatGroups(nickname);
+                setChatBoxStyle(styleHidden);
+                setChatGroupBoxStyle(styleShow);
+                setBtnMenuState(false);
+                if (onoffCheck) {
+                    onoffEmoji();
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
+    /** currGroup에서 sender의 profileimg를 찾아 return */
+    const getSrcByNickname = (sender) => {
+        for (let i = 0; i < currChatGroup.current.members.length; i++) {
+            if (currChatGroup.current.members[i].nickname === sender) {
+                return getUserimgSrc(currChatGroup.current.members[i]);
+            }
+        }
+        return ImgUser;
+    }
+
+
 
     // 이모지 온오프
     const onoffEmoji = () => {
@@ -262,12 +296,39 @@ function Message() {
                             {
                                 chatGroups.map((chatGroup) => {
                                     return (
-                                        <div key={chatGroup.id} className="row_friend">
-                                            {
-                                                chatGroup.members.map((member, memberIndex) => {
-                                                    return (
-                                                        member.nickname !== loginUser.nickname ?
-                                                            <div className="friend_nickname" key={memberIndex}>
+                                        chatGroup.members.length === 1 ? (
+                                            <div key={chatGroup.id} className="row_friend">
+                                                <div className="friend_nickname" >
+                                                    <div className="box_nickname">
+                                                        <div className="btn align" onClick={() => {
+                                                            currChatGroup.current = chatGroup;
+                                                            setSelectedChatGroup(chatGroup);
+                                                            setChatBoxStyle(styleShow);
+                                                            setChatGroupBoxStyle(styleHidden);
+                                                            // console.log(chatGroups);
+                                                        }}><img src={ImgUser} className="friend_icon" /></div>
+                                                    </div>
+                                                </div>
+                                                <div className="btn nickname" onClick={() => {
+                                                    currChatGroup.current = chatGroup;
+                                                    setSelectedChatGroup(chatGroup);
+                                                    setChatBoxStyle(styleShow);
+                                                    setChatGroupBoxStyle(styleHidden);
+                                                    // console.log(chatGroups);
+                                                }}>
+                                                    대화상대가 나갔습니다.
+                                                </div>
+                                                <div className='btn delete' onClick={() => {
+                                                    leaveGroup(chatGroup.id, loginUser.nickname);
+                                                }}><img src={ImgQuit} /></div>
+                                            </div>
+                                        ) : (
+                                            <div key={chatGroup.id} className="row_friend">
+                                                {
+                                                    chatGroup.members.map((member, memberIndex) => {
+                                                        return (
+                                                            member.nickname !== loginUser.nickname ?
+                                                                <div className="friend_nickname" key={memberIndex}>
 
                                                                 <div className="box_nickname">
                                                                     <div className="btn align" onClick={() => {
@@ -280,14 +341,48 @@ function Message() {
                                                                         <img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" />
                                                                         {/* {member.nickname} */}
 
+                                                                    <div className="box_nickname">
+                                                                        <div className="btn align" onClick={() => {
+                                                                            currChatGroup.current = chatGroup;
+                                                                            setSelectedChatGroup(chatGroup);
+                                                                            setChatBoxStyle(styleShow);
+                                                                            setChatGroupBoxStyle(styleHidden);
+                                                                            // console.log(chatGroups);
+                                                                        }}>
+                                                                            <img src={getUserimgSrc(member)} className="friend_icon" />
+                                                                            {/* {member.nickname} */}
+
+
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </div> : null
+                                                                </div> : null
 
 
-                                                    );
-                                                })
-                                            }
+                                                        );
+                                                    })
+                                                }
+                                                <div className="btn nickname" onClick={() => {
+                                                    currChatGroup.current = chatGroup;
+                                                    setSelectedChatGroup(chatGroup);
+                                                    setChatBoxStyle(styleShow);
+                                                    setChatGroupBoxStyle(styleHidden);
+                                                    // console.log(chatGroups);
+                                                }}>
+                                                    {
+                                                        groupMembers[chatGroup.id][0] !== loginUser.nickname ? groupMembers[chatGroup.id][0] : groupMembers[chatGroup.id][1]
+                                                    }
+                                                    {
+                                                        groupMembers[chatGroup.id].length > 2 ? `외 ${groupMembers[chatGroup.id].length - 1} 명` : null
+                                                    }
+                                                </div>
+                                                {
+                                                    <div className='btn delete' onClick={() => {
+                                                        leaveGroup(chatGroup.id, loginUser.nickname);
+                                                    }}><img src={ImgQuit} /></div>
+                                                }
+                                            </div>
+                                        )
+
 
                                             <div className="group_nickname" onClick={() => {
                                                 currChatGroup.current = chatGroup;
@@ -309,6 +404,7 @@ function Message() {
                                             }
 
                                         </div>
+
                                     );
                                 })
                             }
@@ -336,6 +432,9 @@ function Message() {
 
                                                     <div ><img src={`http://localhost:8070/images/${member.profileimg}`} className="friend_icon" /></div>
 
+                                                    <div key={memberIndex}><img src={getUserimgSrc(member)} className="friend_icon" /></div>
+
+
                                                     : null
                                             );
                                         })
@@ -347,31 +446,32 @@ function Message() {
                                             <div className="friend_nickname"></div>
                                         </>
                                 }
+                                <div className="nickname">
+                                    {
 
-                                {
+                                        selectedChatGroup?.members && groupMembers[selectedChatGroup.id] ? (
 
-                                    selectedChatGroup?.members && groupMembers[selectedChatGroup.id] ? (
+                                            groupMembers[selectedChatGroup.id][0] !== loginUser.nickname ?
+                                                (
+                                                    groupMembers[selectedChatGroup.id].length > 2 ?
+                                                        (`${groupMembers[selectedChatGroup.id][0]} 외 ${groupMembers[selectedChatGroup.id].length - 1} 명`)
+                                                        : (groupMembers[selectedChatGroup.id][0])
 
-                                        groupMembers[selectedChatGroup.id][0] !== loginUser.nickname ?
-                                            (
-                                                groupMembers[selectedChatGroup.id].length > 2 ?
-                                                    (`${groupMembers[selectedChatGroup.id][0]} 외 ${groupMembers[selectedChatGroup.id].length - 1} 명`)
-                                                    : (groupMembers[selectedChatGroup.id][0])
-
-                                            )
-                                            : (
-                                                groupMembers[selectedChatGroup.id].length > 2 ?
-                                                    (`${groupMembers[selectedChatGroup.id][1]} 외 ${groupMembers[selectedChatGroup.id].length - 1} 명`)
-                                                    : (groupMembers[selectedChatGroup.id][1])
-                                            )
+                                                )
+                                                : (
+                                                    groupMembers[selectedChatGroup.id].length > 2 ?
+                                                        (`${groupMembers[selectedChatGroup.id][1]} 외 ${groupMembers[selectedChatGroup.id].length - 1} 명`)
+                                                        : (groupMembers[selectedChatGroup.id][1])
+                                                )
 
 
-                                    )
-                                        : <>
-                                            <div><img src={ImgUser} className="friend_icon" /></div>
-                                            <div className="friend_nickname"></div>
-                                        </>
-                                }
+                                        )
+                                            : <>
+                                                <div><img src={ImgUser} className="friend_icon" /></div>
+                                                <div className="friend_nickname"></div>
+                                            </>
+                                    }
+                                </div>
                             </div>
 
 
@@ -385,9 +485,10 @@ function Message() {
                             {
                                 btnMenuState ? (
                                     <div className="menu">
-                                        <div className="option">123</div>
                                         <div className="option">초대하기</div>
-                                        <div className="option" onClick={() => { leaveChat() }}>나가기</div>
+                                        <div className="option" onClick={() => {
+                                            leaveGroup(selectedChatGroup.id, loginUser.nickname);
+                                        }}>나가기</div>
                                     </div>
                                 ) : null
                             }
@@ -407,7 +508,7 @@ function Message() {
                                             return (
                                                 <div key={chat.id} className={`row_content ${chat.sender === loginUser.nickname ? 'sent' : 'recieved'}`}>
                                                     {
-                                                        chat.sender !== loginUser.nickname && chat.sender !== currChats[chatIndex === 0 ? 0 : chatIndex - 1].sender ?
+                                                        chat.sender !== loginUser.nickname && chat.sender !== currChats[chatIndex === 0 ? 0 : chatIndex - 1].sender || chatIndex === 0 ?
                                                             <div className="sender">{chat.sender}</div> : null
                                                     }
                                                     {

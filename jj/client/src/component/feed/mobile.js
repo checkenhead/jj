@@ -20,6 +20,7 @@ import ImgMessage from '../../images/message.png';
 import ImgPost from '../../images/post.png';
 import ImgLogout from '../../images/logout.png';
 import ImgCancel from '../../images/cancel.png';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function Mobile() {
 
@@ -87,11 +88,7 @@ function Mobile() {
                         </div>
                         <div className="row">
                             <Link to={`/member/${loginUser.nickname}`} className="link">
-                                <img src={loginUser.profileimg
-                                    ? loginUser.provider === "Kakao"
-                                        ? loginUser.profileimg
-                                        : `http://localhost:8070/images/${loginUser.profileimg}`
-                                    : ImgUser} className="icon" />
+                                <img src={getUserimgSrc(loginUser)} className="icon" />
                                 {/* <span className="name">My page</span> */}
                             </Link>
                         </div>

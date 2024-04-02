@@ -117,4 +117,13 @@ public class MemberService {
 		return pe.matches(curpwd, encodedpwd);
 	}
 
+	public List<Member> getRecommendPeopleByFeedid(String nickname, String feedid) {
+
+		return mr.findRecommendPeopleByFeedid(nickname, feedid);
+	}
+
+	public List<Member> getRandomPeople(String nickname) {
+		return mr.findRandomMember(nickname);
+	}
+
 }

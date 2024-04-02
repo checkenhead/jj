@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loginAction, logoutAction } from '../../store/userSlice';
 import { setMessageAction } from '../../store/notifySlice';
 import { setFollowAction } from '../../store/followSlice';
+import { useQuery } from 'react-query';
 
 import ImgKakao from '../../images/loginImg/kakaosimbol.png';
 import ImgLogo from '../../images/logo.png';
@@ -22,6 +23,7 @@ import people from '../../images/loginImg/people.jpg';
 import santorini from '../../images/loginImg/santorini.jpg';
 import selfie from '../../images/loginImg/selfie.jpg';
 import smartphone from '../../images/loginImg/smartphone.jpg';
+
 
 
 
@@ -67,6 +69,7 @@ function Login() {
           setCookie("user", JSON.stringify(result.data), 1);
           dispatch(loginAction(result.data));
           getFollow(result.data.nickname);
+          // getFollow.refetch(result.data.nickname);
           navigate('/main');
           // console.log('login result.data:', result.data);
         }
@@ -87,6 +90,20 @@ function Login() {
         console.error(err);
       });
   }
+
+  // const getFollow = useQuery(['getFollow', nickname], () => {
+  //   return axios.post('/api/members/getfollow', null, { params: { nickname } })
+  //   .then(result => {
+  //     // dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }));
+  //     return result.data;
+  //   })
+  //   .catch(err => {
+  //     console.error(err);
+  //   }),
+  //   {
+  //     enabled: false
+  //   }
+  // });
 
   function mousemove(e) {
     var x = e.offsetX;

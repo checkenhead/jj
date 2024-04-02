@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import ImgUser from '../../images/user.png';
 import { useSelector } from 'react-redux';
 import FollowButton from '../utility/FollowButton';
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import { useNavigate } from 'react-router-dom';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function UserSummary({ member }) {
     const [currUser, setCurrUser] = useState(member);
@@ -17,6 +17,7 @@ function UserSummary({ member }) {
         jwtAxios.post('/api/members/getmemberbynickname', null, { params: { nickname: member } })
             .then(result => {
                 setCurrUser(result.data.user);
+               
                 // console.log(result.data.user);
             })
             .catch(err => {
@@ -35,11 +36,7 @@ function UserSummary({ member }) {
             <div className="profileimg" onClick={() => {
                 navigate(`/member/${currUser.nickname}`);
             }}>
-                <img src={currUser.profileimg
-                    ?   currUser.provider === "Kakao"
-                        ?   currUser.profileimg
-                        : `http://localhost:8070/images/${currUser.profileimg}`
-                    : ImgUser} />
+                <img src={ getUserimgSrc(currUser) }/>
             </div>
             <div className="nickname" onClick={() => {
                 navigate(`/member/${currUser.nickname}`);
@@ -47,7 +44,11 @@ function UserSummary({ member }) {
                 {currUser.nickname}
             </div>
             <div className="btn_follow">
-                <FollowButton followState={followState} follow={{ following: currUser.nickname, follower: loginUser.nickname }} />
+                {
+                    currUser.nickname !== loginUser.nickname
+                        ? <FollowButton followState={followState} follow={{ following: currUser.nickname, follower: loginUser.nickname }} />
+                        : null
+                }
             </div>
 
         </div>

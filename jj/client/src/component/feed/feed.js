@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setMessageAction } from '../../store/notifySlice';
 import Slider from 'react-slick';
 import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
+import { debounce } from 'lodash';
+
 import Modal from "react-modal";
 import Dropdown from './Dropdown';
 //import Editpost from './Editpost';
@@ -25,6 +27,7 @@ import ImgRemove from '../../images/remove.png';
 import ImgMore from '../../images/more.png';
 import ImgCancel from '../../images/cancel.png';
 import ImgDefault from '../../images/pic.png';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function Feed(props) {
     const MAX_CONTENT_LENGTH = 200;
@@ -36,7 +39,6 @@ function Feed(props) {
     const [feed, setFeed] = useState(props.feed);
     const [images, setImages] = useState([ImgDefault]);
     const [writerInfo, setWriterInfo] = useState({});
-    const [profileimg, setProfileimg] = useState(null);
     const [likes, setLikes] = useState([]);
     // const [iconLike, setIconLike] = useState(ImgUnlike);
     const [stateLike, setStateLike] = useState(false);
@@ -63,7 +65,6 @@ function Feed(props) {
         jwtAxios.post('/api/members/getmemberbynickname', null, { params: { nickname } })
             .then(result => {
                 setWriterInfo(result.data.user);
-                setProfileimg(`http://localhost:8070/images/${result.data.user.profileimg}`);
             })
             .catch(err => {
                 console.error(err);
@@ -89,8 +90,7 @@ function Feed(props) {
             });
     }
 
-    const toggleLikes = (feedid, nickname) => {
-
+    const toggleLikes = useCallback(debounce((feedid, nickname) => {
         jwtAxios.post('/api/feeds/togglelike', { feedid, nickname })
             .then(result => {
                 getLikes(feedid);
@@ -98,7 +98,21 @@ function Feed(props) {
             .catch(err => {
                 console.error(err);
             });
-    }
+    }, 500), []);
+
+
+    // const toggleLikes = (feedid, nickname) => {
+
+    //     jwtAxios.post('/api/feeds/togglelike', { feedid, nickname })
+    //         .then(result => {
+    //             getLikes(feedid);
+    //         })
+    //         .catch(err => {
+    //             console.error(err);
+    //         });
+    // }
+
+
 
     const getImages = (feedid) => {
         jwtAxios.post('/api/feeds/getfeedimgbyfeedid', null, { params: { feedid } })
@@ -164,9 +178,9 @@ function Feed(props) {
 
     const addReply = (feedid, writer, content) => {
         if (replyContent === '') {
-            dispatch(setMessageAction({message: '댓글 내용을 입력해주세요.'}));
+            dispatch(setMessageAction({ message: '댓글 내용을 입력해주세요.' }));
         } else if (replyContent.length > MAX_CONTENT_LENGTH) {
-            dispatch(setMessageAction({message: '입력 가능한 최대 글자수는 200자 입니다.'}));
+            dispatch(setMessageAction({ message: '입력 가능한 최대 글자수는 200자 입니다.' }));
         } else {
             jwtAxios.post('/api/feeds/addreply', { feedid, writer, content })
                 .then(result => {
@@ -184,7 +198,7 @@ function Feed(props) {
         if (window.confirm('삭제하시겠습니까?')) {
             jwtAxios.post('/api/feeds/deletereply', null, { params: { id } })
                 .then(result => {
-                    dispatch(setMessageAction({message: '댓글이 삭제되었습니다.'}));
+                    dispatch(setMessageAction({ message: '댓글이 삭제되었습니다.' }));
                     getReplys(feedid);
                 })
                 .catch(err => {
@@ -212,7 +226,7 @@ function Feed(props) {
             });
     }
 
-    const toggleBookmarks = (feedid, nickname) => {
+    const toggleBookmarks = useCallback(debounce((feedid, nickname) => {
         jwtAxios.post('/api/feeds/togglebookmark', { feedid, nickname })
             .then(result => {
                 getBookmarks(feedid);
@@ -220,7 +234,16 @@ function Feed(props) {
             .catch(err => {
                 console.error(err);
             });
-    }
+    }, 500), []);
+    // const toggleBookmarks = (feedid, nickname) => {
+    //     jwtAxios.post('/api/feeds/togglebookmark', { feedid, nickname })
+    //         .then(result => {
+    //             getBookmarks(feedid);
+    //         })
+    //         .catch(err => {
+    //             console.error(err);
+    //         });
+    // }
 
     useEffect(() => {
         getWriterInfo(feed.writer);
@@ -348,11 +371,7 @@ function Feed(props) {
                             navigate(`/member/${feed.writer}`)
                         }
                     }}>
-                        <img src={writerInfo.profileimg
-                            ?writerInfo.provider === "Kakao"
-                                ? writerInfo.profileimg
-                                : profileimg
-                            :ImgUser} />
+                        <img src={getUserimgSrc(writerInfo)} />
                     </div>
                     <div className="nickname link" onClick={() => {
                         if (feed.writer !== loginUser.nickname) {
@@ -444,11 +463,7 @@ function Feed(props) {
                                 <div className="row_reply profile" onClick={() => {
                                     navigate(`/member/${reply.writer}`);
                                 }}>
-                                    <img src={reply.writer
-                                        ? reply.provider === "Kakao"
-                                            ? reply.profileimg
-                                            :`http://localhost:8070/images/${reply.profileimg}`
-                                        : ImgUser} className="writer_img" />{reply.writer}
+                                    <img src={getUserimgSrc(reply)} className="writer_img" />{reply.writer}
                                 </div>
                                 <div className="row_reply content">{reply.content}</div>
                                 <div className="row_reply timestamp">{transDateString(reply.createdat)}</div>
@@ -465,13 +480,13 @@ function Feed(props) {
                 }
 
                 <div className="input_box" tabIndex='0'>
-                    <div className='input_container'>
+                    <div className='input_container' tabIndex='0'>
                         <div ref={inputReply}
                             contentEditable
                             suppressContentEditableWarning
                             placeholder="Reply here"
                             className="input_reply"
-
+                            tabIndex='0'
                             onInput={(e) => {
                                 inputReply.current.textContent = e.currentTarget.textContent;
                                 setReplyContent(e.currentTarget.textContent);
@@ -480,37 +495,40 @@ function Feed(props) {
                         </div>
                         <button className="inputBtn" onClick={() => {
                             addReply(feed.id, loginUser.nickname, replyContent);
-                        }}>확인</button>
+                            if (onoffCheck) {
+                                onoffEmoji();
+                            }
+                        }} tabIndex='0'>확인</button>
                     </div>
-                </div>
-                <div className='activeBtn' tabIndex='0' >
-                    <button className="btn_emoji" onClick={() => {
-                        onoffEmoji();
-                    }}><img src={ImgEmoji} className="icon" /></button>
-                    {
-                        length > 0 ? (
-                            <div className="outer" style={{ background: `conic-gradient(${length > MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length / MAX_CONTENT_LENGTH * 360}deg, white 0deg)` }}>
-                                <div className="inner">{length}</div>
-                            </div>
-                        ) : null
+                    <div className='activeBtn' tabIndex='0' >
+                        <button className="btn_emoji" onClick={() => {
+                            onoffEmoji();
+                        }}><img src={ImgEmoji} className="icon" /></button>
+                        {
+                            length > 0 ? (
+                                <div className="outer" style={{ background: `conic-gradient(${length > MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length / MAX_CONTENT_LENGTH * 360}deg, white 0deg)` }}>
+                                    <div className="inner">{length}</div>
+                                </div>
+                            ) : null
 
-                    }
-                </div>
-                <div className='emoji' style={emojiStyle}>
-                    <EmojiPicker
-                        height={'350px'}
-                        width={'100%'}
-                        emojiStyle={'native'}
-                        emojiVersion={'5.0'}
-                        searchDisabled={true}
-                        previewConfig={{ showPreview: false }}
-                        searchPlaceholder='Search Emoji'
-                        autoFocusSearch={false}
-                        onEmojiClick={(e) => {
-                            inputReply.current.textContent += e.emoji;
-                            setReplyContent(content => content + e.emoji);
-                        }}
-                    />
+                        }
+                    </div>
+                    <div className='emoji' style={emojiStyle}>
+                        <EmojiPicker
+                            height={'350px'}
+                            width={'100%'}
+                            emojiStyle={'native'}
+                            emojiVersion={'5.0'}
+                            searchDisabled={true}
+                            previewConfig={{ showPreview: false }}
+                            searchPlaceholder='Search Emoji'
+                            autoFocusSearch={false}
+                            onEmojiClick={(e) => {
+                                inputReply.current.textContent += e.emoji;
+                                setReplyContent(content => content + e.emoji);
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

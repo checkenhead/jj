@@ -165,13 +165,15 @@ public class MemberController {
 			member1.addRole(MemberRole.USER);
 			ms.insertMember(member1);
 			member = ms.getMemberByEmail( ac.getEmail() );
+		}else {
+			member.setProfileimg(pf.getProfile_image_url());
+			ms.updateMember(member);
 		}
 		Map<String, Object> claims = member.getClaims();
 		String accessToken = JwtUtil.generateToken(claims, 5);
 		String refreshToken = JwtUtil.generateToken(claims,60*24);
 		claims.put("accessToken", accessToken);
 		claims.put("refreshToken", refreshToken);
-		
 		// 완성된 객체를 Json 형식으로 변경하고 client 로 전송
 		gson = new Gson();
 		String jsonStr = gson.toJson(claims);
@@ -388,6 +390,16 @@ public class MemberController {
 		
 		return result;
 	}
+	@PostMapping("/getrecommendpeoplebyfeedid")
+	public HashMap<String, Object> getRecommendPeopleByFeedid(@RequestParam("nickname") String nickname, @RequestParam("feedid") String feedid) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		List<Member> list = ms.getRecommendPeopleByFeedid(nickname, feedid);
+		
+		result.put("recommendmemberbyfeedid", list);
+		
+		return result;
+	}
 	
 	@GetMapping("/refreshtoken/{refreshToken}")
 	public Map<String, Object> refreshToken(@RequestHeader("Authorization") String authHeader,
@@ -436,5 +448,14 @@ public class MemberController {
 			}
 		}
 		return false;
+	}
+	
+	@PostMapping("/getrandompeople")
+	public HashMap<String, Object> getRandomPeople(@RequestParam("nickname") String nickname){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		result.put("members", ms.getRandomPeople(nickname));
+		
+		return result;
 	}
 }

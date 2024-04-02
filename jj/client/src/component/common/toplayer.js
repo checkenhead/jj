@@ -2,7 +2,7 @@ import ImgHam from '../../images/menu.png';
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios'
+import { removeCookie } from '../../util/cookieUtil';
 
 import { logoutAction } from '../../store/userSlice';
 
@@ -23,6 +23,7 @@ import ImgPost from '../../images/post.png';
 import ImgLogout from '../../images/logout.png';
 import ImgReturn from '../../images/return.png';
 import ImgCancel from '../../images/cancel.png';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function TopLayer({ setNewFeed }) {
     const loginUser = useSelector(state => state.user);
@@ -34,15 +35,21 @@ function TopLayer({ setNewFeed }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    // const onLogout = () => {
+    //     axios.get('/api/members/logout')
+    //         .then(() => {
+    //             dispatch(logoutAction());
+    //             navigate('/')
+    //         })
+    //         .catch(err => {
+    //             console.error(err);
+    //         })
+    // }
+
     const onLogout = () => {
-        axios.get('/api/members/logout')
-            .then(() => {
-                dispatch(logoutAction());
-                navigate('/')
-            })
-            .catch(err => {
-                console.error(err);
-            })
+        removeCookie('user');
+        dispatch(logoutAction());
+        navigate('/')
     }
 
     // useEffect(() => {
@@ -103,11 +110,7 @@ function TopLayer({ setNewFeed }) {
                             </Link>
 
                             <Link to={`/member/${loginUser.nickname}`} className="link">
-                                <img src={loginUser.profileimg
-                                    ? loginUser.provider === "Kakao"
-                                        ? loginUser.profileimg
-                                        : `http://localhost:8070/images/${loginUser.profileimg}`
-                                    : ImgUser} className="icon" />
+                                <img src={getUserimgSrc(loginUser)} className="icon" />
                                 {/* <span className="name">My page</span> */}
                             </Link>
 

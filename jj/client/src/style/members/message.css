@@ -145,9 +145,13 @@
 
 }
 
-.wrap_message .friend_nickname .btn {
+.wrap_message .btn {
     cursor: pointer;
     /* border: 1px solid black; */
+}
+.wrap_message .nickname{
+    margin-left: 5px;
+    font-weight: bold;
 }
 
 .wrap_message .friend_nickname .box_nickname {
@@ -410,9 +414,10 @@
 .wrap_message .wrap_chat .input_box {
     width: 100%;
     margin: 5px 0;
-    padding: 5px 10px;
+    padding: 0 10px;
+    padding-top: 10px;
     position: relative;
-    border-top: 1px solid #5e5e5e;
+    border-top: 1px solid #DDDDDD;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;

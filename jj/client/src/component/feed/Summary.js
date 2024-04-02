@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { getFeedimgSrc } from '../../util/ImgSrcUtil';
 
 function Summary({ summarys }) {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ function Summary({ summarys }) {
                         <div key={summaryIndex} className="link" onClick={() => {
                             navigate(`/view/${summary.writer}/${summary.feedid}`);
                         }}>
-                            <img src={`http://localhost:8070/images/${summary.filename}`} />
+                            <img src={getFeedimgSrc(summary.filename)} />
                         </div>
                     );
                 })
