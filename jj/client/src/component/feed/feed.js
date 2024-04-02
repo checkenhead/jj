@@ -480,13 +480,13 @@ function Feed(props) {
                 }
 
                 <div className="input_box" tabIndex='0'>
-                    <div className='input_container'>
+                    <div className='input_container' tabIndex='0'>
                         <div ref={inputReply}
                             contentEditable
                             suppressContentEditableWarning
                             placeholder="Reply here"
                             className="input_reply"
-
+                            tabIndex='0'
                             onInput={(e) => {
                                 inputReply.current.textContent = e.currentTarget.textContent;
                                 setReplyContent(e.currentTarget.textContent);
@@ -495,37 +495,40 @@ function Feed(props) {
                         </div>
                         <button className="inputBtn" onClick={() => {
                             addReply(feed.id, loginUser.nickname, replyContent);
-                        }}>확인</button>
+                            if (onoffCheck) {
+                                onoffEmoji();
+                            }
+                        }} tabIndex='0'>확인</button>
                     </div>
-                </div>
-                <div className='activeBtn' tabIndex='0' >
-                    <button className="btn_emoji" onClick={() => {
-                        onoffEmoji();
-                    }}><img src={ImgEmoji} className="icon" /></button>
-                    {
-                        length > 0 ? (
-                            <div className="outer" style={{ background: `conic-gradient(${length > MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length / MAX_CONTENT_LENGTH * 360}deg, white 0deg)` }}>
-                                <div className="inner">{length}</div>
-                            </div>
-                        ) : null
+                    <div className='activeBtn' tabIndex='0' >
+                        <button className="btn_emoji" onClick={() => {
+                            onoffEmoji();
+                        }}><img src={ImgEmoji} className="icon" /></button>
+                        {
+                            length > 0 ? (
+                                <div className="outer" style={{ background: `conic-gradient(${length > MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length / MAX_CONTENT_LENGTH * 360}deg, white 0deg)` }}>
+                                    <div className="inner">{length}</div>
+                                </div>
+                            ) : null
 
-                    }
-                </div>
-                <div className='emoji' style={emojiStyle}>
-                    <EmojiPicker
-                        height={'350px'}
-                        width={'100%'}
-                        emojiStyle={'native'}
-                        emojiVersion={'5.0'}
-                        searchDisabled={true}
-                        previewConfig={{ showPreview: false }}
-                        searchPlaceholder='Search Emoji'
-                        autoFocusSearch={false}
-                        onEmojiClick={(e) => {
-                            inputReply.current.textContent += e.emoji;
-                            setReplyContent(content => content + e.emoji);
-                        }}
-                    />
+                        }
+                    </div>
+                    <div className='emoji' style={emojiStyle}>
+                        <EmojiPicker
+                            height={'350px'}
+                            width={'100%'}
+                            emojiStyle={'native'}
+                            emojiVersion={'5.0'}
+                            searchDisabled={true}
+                            previewConfig={{ showPreview: false }}
+                            searchPlaceholder='Search Emoji'
+                            autoFocusSearch={false}
+                            onEmojiClick={(e) => {
+                                inputReply.current.textContent += e.emoji;
+                                setReplyContent(content => content + e.emoji);
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

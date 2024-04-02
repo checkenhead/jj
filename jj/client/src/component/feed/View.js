@@ -33,7 +33,7 @@ function View() {
     useEffect(() => {
         getFeed();
         // console.log(param);
-    }, []);
+    }, [param]);
 
     return (
         <div className="wrap_main">
