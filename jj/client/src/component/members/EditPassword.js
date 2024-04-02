@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import jwtAxios from '../../util/jwtUtil';
 
 import Header from '../common/header';

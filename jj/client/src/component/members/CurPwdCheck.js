@@ -8,7 +8,6 @@ import Sub from '../common/sub';
 import { useSelector, useDispatch } from 'react-redux';
 import { setMessageAction } from '../../store/notifySlice';
 
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 
 

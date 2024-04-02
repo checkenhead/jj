@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import jwtAxios from '../../util/jwtUtil';
 import { setCookie } from '../../util/cookieUtil';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loginAction } from '../../store/userSlice';
 import { setMessageAction } from '../../store/notifySlice';
 import { setFollowAction } from '../../store/followSlice';
@@ -14,7 +14,7 @@ function KakaoLogin() {
     const Rest_api_key = process.env.REACT_APP_KAKAO_REST_API_KEY; //REST API KEY
     const Redirect_uri = process.env.REACT_APP_KAKAO_REDIRECT_URI; //Redirect URI
     const code = new URL(window.location.href).searchParams.get("code");
-    
+
     const KakaoStart = () => {
         axios.post('/api/members/kakaoLogin', null, { params: { code, apikey: Rest_api_key, redirectUri: Redirect_uri } })
             .then(result => {
@@ -32,14 +32,14 @@ function KakaoLogin() {
 
     const getFollow = (nickname) => {
         jwtAxios.post('/api/members/getfollow', null, { params: { nickname } })
-          .then(result => {
-            // console.log('getFollow:', result);
-            dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }))
-          })
-          .catch(err => {
-            console.error(err);
-          });
-      }
+            .then(result => {
+                // console.log('getFollow:', result);
+                dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }))
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
 
     useEffect(() => {
         KakaoStart();

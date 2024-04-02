@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { setMessageAction } from '../../store/notifySlice';
 import Modal from "react-modal";
 import Header from '../common/header';
@@ -18,11 +18,9 @@ import ImgCreate from '../../images/create.png';
 import ImgQuit from '../../images/quit.png';
 import ImgConfirm from '../../images/confirm.png'
 
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import FollowUser from '../search/followUser';
-import userSlice from '../../store/userSlice';
-import UserSummary from '../common/usersummary';
+
 import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 
@@ -40,7 +38,6 @@ function Message() {
     const scrollBox = useRef();
 
     // 이모지, 글자 수 인디케이터
-    const [length, setLength] = useState(0);
     const [emojiStyle, setEmojiStyle] = useState({ display: 'none' });
     const [onoffCheck, setOnoffCheck] = useState(false);
 
@@ -303,7 +300,6 @@ function Message() {
                                         <Group group={selectedChatGroup} enter={setSelectedChatGroup} key={selectedChatGroup.id} /> : null
                                 }
                             </div>
-
                             <button className="btn_menu" onClick={() => {
                                 setBtnMenuState(!btnMenuState);
                             }}><img src={btnMenuState ? ImgCancel : ImgMore} /></button>
@@ -373,7 +369,6 @@ function Message() {
                                     }} onInput={(e) => {
                                         inputMessage.current.textContent = e.currentTarget.textContent;
                                         setContent(e.currentTarget.textContent);
-                                        setLength(e.currentTarget.textContent.length);
                                     }}>
                                 </div>
                                 <button className="inputBtn" ref={inputEnter} onClick={() => {
@@ -408,8 +403,6 @@ function Message() {
                     </div>
                 </div>
             } />
-
-            {/* <aside id="aside"><Sub /></aside> */}
         </div >
 
     )

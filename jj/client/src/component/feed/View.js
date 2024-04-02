@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { useNavigate, useParams } from "react-router-dom";
-import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useParams } from "react-router-dom";
 import jwtAxios from '../../util/jwtUtil';
 
 import Header from '../common/header';
@@ -10,15 +9,11 @@ import Sub from '../common/sub';
 import UserInfo from '../members/UserInfo';
 import Feed from '../feed/feed';
 
-import ImgUser from '../../images/user.png';
-import ImgSetting from '../../images/setting.png';
 
 function View() {
     const [feed, setFeed] = useState({});
-    const navigate = useNavigate();
     const param = useParams();
-    const scrollAside = useRef();
-    
+
     const getFeed = () => {
         jwtAxios.post('/api/feeds/getfeedbyid', { id: param.feedid })
             .then(result => {
@@ -40,17 +35,17 @@ function View() {
             <header><Header /></header>
             <Main component={
                 <>
-                <UserInfo nickname={param.nickname} />
-                <div className='wrap_feeds'>
-                    {
-                        feed?.id ? (
-                            <Feed feed={feed} key={feed.updatedat} />
-                        ) : null
-                    }
-                </div>
+                    <UserInfo nickname={param.nickname} />
+                    <div className='wrap_feeds'>
+                        {
+                            feed?.id ? (
+                                <Feed feed={feed} key={feed.updatedat} />
+                            ) : null
+                        }
+                    </div>
                 </>
-            }/>
-            <Aside component={<Sub/>}/>
+            } />
+            <Aside component={<Sub />} />
         </div>
     )
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 
 import Feed from '../feed/feed';
@@ -10,7 +9,7 @@ import Header from '../common/header';
 import Main from '../common/main';
 import Aside from '../common/aside';
 import Sub from '../common/sub';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setMessageAction } from '../../store/notifySlice';
 
 
@@ -21,9 +20,7 @@ function Result() {
     const [page, setPage] = useState(0);
     const [newFeed, setNewFeed] = useState({});
     const [users, setUsers] = useState([]);
-    const scrollAside = useRef();
     const inputSearch = useRef();
-    const loginUserFollow = useSelector(state => state.follow);
     const { target, keyword } = useParams();
     const [currentTarget, setCurrentTarget] = useState(target);
     const styleSelected = { borderBottom: '2px solid #aaaaaa' };
@@ -60,7 +57,7 @@ function Result() {
         // let w = word.replace('#','')
         if (word === '') {
             dispatch(setMessageAction('검색어를 입력해주세요'));
-        } else if (regExp.test(word)){ 
+        } else if (regExp.test(word)) {
             dispatch(setMessageAction('특수문자는 입력할 수 없습니다'));
         } else {
             jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })

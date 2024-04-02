@@ -20,7 +20,6 @@
 
 .wrap_message .wrap_friend {
     flex: 2;
-    /* max-width: 300px; */
     height: 100%;
 
     box-sizing: border-box;
@@ -51,19 +50,15 @@
 
 .wrap_message .wrap_friend .head_menu {
     width: 100%;
-    /* height: 80px; */
     border-bottom: 1px solid #DDDDDD;
 
     display: flex;
 
-    /* background-color: blue; */
 }
 
 .wrap_message .wrap_friend .head_menu .create {
-    /* flex: 1; */
     display: flex;
     align-items: center;
-    /* border: 1px solid black; */
     transition: all 0.1s;
 }
 
@@ -91,14 +86,13 @@
     /* margin-bottom: 5px; */
     /* border-bottom: 1px solid #DDDDDD; */
     box-sizing: border-box;
-    /* cursor: pointer; */
     display: flex;
     align-items: center;
     background-color: white;
 
-    /* border: 1px solid black; */
-
 }
+
+
 .wrap_message .group{
     border-bottom: 1px solid #DDDDDD;
     display: flex;
@@ -136,13 +130,12 @@
 }
 .wrap_message .row_member{
     display: flex;
-    /* border: 1px solid green; */
 }
+
 .wrap_message .member_profileimg {
-    
+
     flex: 1;
     width: 100%;
-    /* border: 1px solid black; */
 }
 
 
@@ -167,13 +160,9 @@
 }
 
 .wrap_message .friend_nickname {
-    /* flex: 1; */
-    /* width: 100%; */
     margin-left: 5px;
     font-size: 1rem;
     font-weight: bold;
-    /* cursor: pointer; */
-    /* border: 1px solid black; */
     display: flex;
     align-items: center;
 }
@@ -193,13 +182,11 @@
     flex: 1;
     display: flex;
     align-items: center;
-    /* border: 1px solid black; */
 }
 
 .wrap_message .friend_nickname .box_nickname .align {
     display: flex;
     align-items: center;
-    /* border: 1px solid black; */
 }
 
 .wrap_message .row_friend .member_nickname {
@@ -237,7 +224,6 @@
     width: 35px;
     height: 35px;
     padding: 0;
-    /* margin-right: 10px; */
     border: 1px solid transparent;
     background-color: transparent;
     transition: all 0.1s;
@@ -259,7 +245,6 @@
     padding: 0;
     border: 1px solid transparent;
     background-color: transparent;
-    /* border: 1px solid black; */
     margin-left: auto;
     transition: all 0.1s;
 }
@@ -302,7 +287,6 @@
     flex: 1;
     width: 100%;
     overflow-y: scroll;
-    /* padding-left: 10px; */
     box-sizing: border-box;
     transition: all 1s;
 }
@@ -310,7 +294,6 @@
 .wrap_message .wrap_chat .wrap_content .background {
     width: 100%;
     height: 100%;
-    /* padding-left: 10px; */
     box-sizing: border-box;
     background-color: white;
 }
@@ -345,32 +328,14 @@
 .wrap_message .wrap_chat .content_box .row_content {
     width: 100%;
     margin-bottom: 5px;
-    /* width: calc(100% - 10px); */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-
-    /* border: 1px solid black; */
 }
-
-/* .wrap_message .wrap_chat .content_box::-webkit-scrollbar{
-    width: 10px;
-}
-.wrap_message .wrap_chat .content_box::-webkit-scrollbar-thumb{
-    background-color: #DDDDDD;
-    border-radius: 5px;
-}
-.wrap_message .wrap_chat .content_box:hover{
-    overflow-y: scroll;
-} */
-/* .wrap_message .wrap_chat .content_box:hover .row_content{
-    width: 100%;
-} */
 
 .wrap_message .wrap_chat .content_box .row_content .sender {
     font-size: 0.8rem;
     padding: 5px 0;
-    /* border: 1px solid blue; */
 }
 
 .wrap_message .wrap_chat .content_box .row_content .friend_icon {
@@ -494,23 +459,17 @@
 
 .message_modal {
     position: relative;
-    /* top: 0; */
-    /* left: 0; */
     width: 300px;
     height: 500px;
     padding: 5px;
     margin: auto;
     border: 1px solid #DDDDDD;
-    /* border-radius: 10px; */
     background-color: white;
 }
 
 .message_modal .close {
     width: 40px;
     height: 40px;
-    /* filter:invert(100%); */
-    /* opacity: 0.5; */
-    /* border: 1px solid black; */
     cursor: pointer;
 }
 
@@ -520,7 +479,6 @@
 }
 
 .message_modal .group_confirm {
-    /* position: relative; */
     width: 40px;
     height: 40px;
     margin-left: auto;
@@ -552,15 +510,3 @@
     aspect-ratio: 1;
     filter: invert(100%);
 }
-
-
-
-
-/* .messagebox .message .sent{
-    margin-top: 20px;
-    margin-left: 90px;
-    width: 70%;
-    height: 10%;
-    border: 1px solid #8d8a8a;
-    border-radius: 5px;
-*/

@@ -2,7 +2,7 @@ import { Suspense, lazy } from 'react';
 import ErrorPage from '../component/ErrorPage';
 const { createBrowserRouter } = require('react-router-dom');
 
-const Loading = <div><h3>Loadging...</h3></div>
+const Loading = lazy(() => import('../loading'));
 const Index = lazy(() => import('../component/index'));
 const Mainpage = lazy(() => import('../component/mainpage'));
 
@@ -16,12 +16,11 @@ const EditPassword = lazy(() => import('../component/members/EditPassword'));
 const CurPwdCheck = lazy(() => import('../component/members/CurPwdCheck'));
 const EmailCheck = lazy(() => import('../component/members/EmailCheck'));
 const Message = lazy(() => import('../component/members/message'));
-const Bookmarks = lazy(() => import('../component/feed/bookmarks'));
 
 
 //feed
 const View = lazy(()=> import('../component/feed/View'));
-const Mobile = lazy(()=> import('../component/feed/mobile'));
+const Bookmarks = lazy(() => import('../component/feed/bookmarks'));
 
 //search
 const Search = lazy(() => import('../component/search/search'));
@@ -94,10 +93,6 @@ const root = createBrowserRouter([
     {
         path: 'bookmarks',
         element: <Suspense fallback={Loading}><Bookmarks /></Suspense>
-    },
-    {
-        path: 'mobile',
-        element: <Suspense fallback={Loading}><Mobile /></Suspense>
     },
     {
         path: '/*',

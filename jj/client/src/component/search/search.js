@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +16,6 @@ function Search() {
     const dispatch = useDispatch();
     const [recommendMember, setRecommendMember] = useState([]);
     const [recommendFeeds, setRecommendFeeds] = useState([]);
-    const scrollAside = useRef();
     const inputSearch = useRef();
     const [keyword, setKeyword] = useState('');
     const [recentKeywords, setRecentKeywords] = useState([]);
@@ -28,7 +26,7 @@ function Search() {
     const onSearch = (word) => {
         if (word === '') {
             dispatch(setMessageAction('검색어를 입력해주세요'));
-        } else if (regExp.test(word)){ 
+        } else if (regExp.test(word)) {
             dispatch(setMessageAction('특수문자는 입력할 수 없습니다'));
         } else {
             jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
@@ -148,7 +146,7 @@ function Search() {
                             {
                                 recommendMember.map((member, memberIndex) => {
                                     return (
-                                        <User nickname={member} key={memberIndex}/>
+                                        <User nickname={member} key={memberIndex} />
                                     );
                                 })
                             }

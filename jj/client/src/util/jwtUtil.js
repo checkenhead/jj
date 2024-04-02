@@ -3,11 +3,11 @@ import { setCookie, getCookie } from "./cookieUtil";
 
 const jwtAxios = axios.create();
 
-const refreshJwt = async (accessToken, refreshToken) => {
-    const Header = { headers: { 'Authorization': `Bearer ${accessToken}` } };
-    const res = await axios.get(`/api/members/refreshtoken/${refreshToken}`, Header);
-    return res.data;
-}
+// const refreshJwt = async (accessToken, refreshToken) => {
+//     const Header = { headers: { 'Authorization': `Bearer ${accessToken}` } };
+//     const res = await axios.get(`/api/members/refreshtoken/${refreshToken}`, Header);
+//     return res.data;
+// }
 
 const beforeReq = async (config) => {
 
