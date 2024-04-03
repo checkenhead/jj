@@ -163,7 +163,10 @@ function Message() {
         return ImgUser;
     }
 
-
+    const toggleModal = () => {
+        document.body.style.overflow = isOpen ? "auto" : "hidden";
+        setIsOpen(!isOpen);
+    }
 
     // 이모지 온오프
     const onoffEmoji = () => {
@@ -195,18 +198,28 @@ function Message() {
             clearInterval(interval);
             setCurrChats(currChats => []);
         })
-    }, [selectedChatGroup]);
+    }, []);
 
     useEffect(() => {
-        scrollBox.current.scrollTop = scrollBox.current.scrollHeight;
-        setChatBoxStyle(styleShow);
-        setChatGroupBoxStyle(styleHidden);
+        if (Object.keys(selectedChatGroup).length) {
+            scrollBox.current.scrollTop = scrollBox.current.scrollHeight;
+            // currChatGroup.current = selectedChatGroup;
+            setChatBoxStyle(styleShow);
+            setChatGroupBoxStyle(styleHidden);
+        }
     }, [currChats]);
 
-    const toggleModal = () => {
-        document.body.style.overflow = isOpen ? "auto" : "hidden";
-        setIsOpen(!isOpen);
-    }
+    useEffect(() => {
+        if (Object.keys(selectedChatGroup).length){
+            setChatBoxStyle(styleShow);
+            setChatGroupBoxStyle(styleHidden);
+        } else {
+            setChatBoxStyle(styleHidden);
+            setChatGroupBoxStyle(styleShow);
+        }
+        // currChatGroup.current = selectedChatGroup;
+
+    }, [selectedChatGroup]);
 
     useEffect(() => {
         setSelectedMember([loginUser.nickname]);
@@ -247,8 +260,6 @@ function Message() {
                                         }} />
                                     </div>
 
-
-
                                     {
                                         follow.followings.map((following, followingIndex) => {
                                             return <div className='following_user' key={followingIndex} onClick={() => {
@@ -260,10 +271,7 @@ function Message() {
                                                     }));
                                                 } else {
                                                     setSelectedMember([...selectedMember, following]);
-                                                }
-
-
-                                                // console.log(selectedMember);
+                                                };
                                             }}><div className='mask' style={selectedMember.some((member) => {
                                                 return member === following;
                                             }) ? selectedStyle : null}
@@ -274,12 +282,12 @@ function Message() {
                             </Modal>
 
                             {
-                                chatGroups.map(chatGroup => <div className="group">
-                                    <Group group={chatGroup} enter={setSelectedChatGroup} key={chatGroup.id} />
-                                    <div className="delete"><img src={ImgQuit}/></div>
+                                chatGroups.map(chatGroup => <div className="group" key={chatGroup.id}>
+                                    <Group group={chatGroup} enterChat={setSelectedChatGroup} />
+                                    <div className="delete"><img src={ImgQuit} /></div>
                                 </div>)
                             }
-                            
+
 
                         </div>
                     </div>
@@ -290,6 +298,7 @@ function Message() {
                                 setChatBoxStyle(styleHidden);
                                 setChatGroupBoxStyle(styleShow);
                                 setBtnMenuState(false);
+                                setSelectedChatGroup({});
                                 if (onoffCheck) {
                                     onoffEmoji();
                                 }
@@ -297,7 +306,7 @@ function Message() {
                             <div className="head">
                                 {
                                     selectedChatGroup?.id ?
-                                        <Group group={selectedChatGroup} enter={setSelectedChatGroup} key={selectedChatGroup.id} /> : null
+                                        <Group group={selectedChatGroup} enterChat={setSelectedChatGroup} key={selectedChatGroup.id} /> : null
                                 }
                             </div>
                             <button className="btn_menu" onClick={() => {
@@ -330,7 +339,7 @@ function Message() {
                                             return (
                                                 <div key={chat.id} className={`row_content ${chat.sender === loginUser.nickname ? 'sent' : 'recieved'}`}>
                                                     {
-                                                        chat.sender !== loginUser.nickname && chat.sender !== currChats[chatIndex === 0 ? 0 : chatIndex - 1].sender || chatIndex === 0 ?
+                                                        chat.sender !== loginUser.nickname && (chat.sender !== currChats[chatIndex === 0 ? 0 : chatIndex - 1].sender || chatIndex === 0) ?
                                                             <div className="sender">{chat.sender}</div> : null
                                                     }
                                                     {

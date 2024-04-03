@@ -335,10 +335,14 @@
 
 .wrap_message .wrap_chat .content_box .row_content .sender {
     font-size: 0.8rem;
+    /* font-style: italic; */
+    font-weight: bold;
     padding: 5px 0;
 }
 
 .wrap_message .wrap_chat .content_box .row_content .friend_icon {
+    width: 35px;
+    height: 35px;
     margin-right: 5px;
 }
 

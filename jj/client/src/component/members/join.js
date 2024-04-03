@@ -68,7 +68,7 @@ function Join() {
             axios.post('/api/members/fileupload', formData)
                 .then((result) => {
                     setFilename(result.data.filename);
-                    setImgSrc(getUserimgSrc(result.data.filename));
+                    setImgSrc(getUserimgSrc({provider:null, profileimg:result.data.filename}));
                     setImgStyle({ display: "block", width: "250px" });
                 })
         }
