@@ -63,7 +63,7 @@ public class MemberController {
 
 	@Autowired
 	FeedService fs;
-
+//
 //	@PostMapping("/loginlocal")
 //	public HashMap<String, Object> loginLocal(@RequestBody Member member, HttpServletRequest request) {
 //		HashMap<String, Object> result = new HashMap<String, Object>();
