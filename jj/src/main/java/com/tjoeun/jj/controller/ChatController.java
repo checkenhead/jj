@@ -76,7 +76,7 @@ public class ChatController {
 		return result;
 	}
 	
-	@PostMapping("creategroup")
+	@PostMapping("/creategroup")
 	public HashMap<String, Object> createGroup(@RequestBody ChatGroupMemberDto cgmdto){
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
@@ -87,5 +87,15 @@ public class ChatController {
 //		System.out.println(cgmdto.getMembers().size());
 		
 		return result;
+	}
+	
+	@PostMapping("/invitegroup")
+	public void inviteGroup(@RequestParam("chatgroupid") Integer chatgroupid, @RequestBody ChatGroupMemberDto cgmdto) {
+		cs.inviteGroup(chatgroupid, cgmdto.getMembers());
+	}
+	
+	@PostMapping("/leavegroup")
+	public void leaveGroup(@RequestParam("chatgroupid") Integer chatgroupid, @RequestParam("nickname") String nickname){
+		cs.leaveGroup(chatgroupid, nickname);
 	}
 }

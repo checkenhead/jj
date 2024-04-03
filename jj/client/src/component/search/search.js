@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import { useNavigate } from "react-router-dom";
 
@@ -9,25 +8,32 @@ import Aside from '../common/aside';
 import Sub from '../common/sub';
 import User from './user';
 import Feed from '../feed/feed';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setMessageAction } from '../../store/notifySlice';
 
 function Search() {
     const navigate = useNavigate();
-    const [users, setUsers] = useState([]);
-    const [feeds, setFeeds] = useState([]);
-    const scrollAside = useRef();
+    const dispatch = useDispatch();
+    const [recommendMember, setRecommendMember] = useState([]);
+    const [recommendFeeds, setRecommendFeeds] = useState([]);
     const inputSearch = useRef();
     const [keyword, setKeyword] = useState('');
     const [recentKeywords, setRecentKeywords] = useState([]);
     const [toggleKeywords, setToggleKeywords] = useState(false);
+    const loginUser = useSelector(state => state.user);
+    const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 
     const onSearch = (word) => {
         if (word === '') {
-            alert('검색어를 입력해주세요')
+            dispatch(setMessageAction('검색어를 입력해주세요'));
+        } else if (regExp.test(word)) {
+            dispatch(setMessageAction('특수문자는 입력할 수 없습니다'));
         } else {
             jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
                 .then(result => {
-                    navigate(`/result/feed/${word}`);
+                    let encodedURL = encodeURIComponent(word);
+                    // console.log(encodedURL);
+                    navigate(`/result/feed/${encodedURL}`);
                 })
                 .catch(err => {
                     console.error(err);
@@ -45,19 +51,32 @@ function Search() {
             });
     }
 
-    const getFeeds = () => {
-        jwtAxios.post('/api/feeds/getallfeeds', null, { params: { page: 0 } })
+    const getRecommendPeopleBynickname = () => {
+        jwtAxios.post('/api/members/getrecommendpeoplebynickname', null, { params: { nickname: loginUser.nickname } })
             .then(result => {
-                setFeeds([...feeds, ...result.data.feeds]);
+                setRecommendMember(result.data.recommendmembers);
+                // console.log(result.data.recommendmembers, '추천 유저');
             })
             .catch(err => {
                 console.error(err);
-            });
+            })
     }
+    const getRecommendFeedsBynickname = () => {
+        jwtAxios.post('/api/feeds/getrecommendfeedsbynickname', null, { params: { nickname: loginUser.nickname } })
+            .then(result => {
+                setRecommendFeeds([...recommendFeeds, ...result.data.recommendfeeds]);
+                // console.log(result.data.recommendfeeds, '추천 피드');
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    }
+
 
     useEffect(() => {
         getRecentKeyword();
-        getFeeds();
+        getRecommendPeopleBynickname();
+        getRecommendFeedsBynickname();
     }, []);
 
     return (
@@ -78,7 +97,7 @@ function Search() {
                                         setToggleKeywords(true);
                                     }}
                                     onBlur={() => {
-                                        setToggleKeywords(false); 
+                                        setToggleKeywords(false);
                                     }}
                                     onInput={(e) => {
                                         inputSearch.current.textContent = e.currentTarget.textContent;
@@ -108,10 +127,10 @@ function Search() {
                                                     inputSearch.current.textContent = recentKeyword;
                                                     setKeyword(recentKeyword);
                                                 }}
-                                                onMouseLeave={() => {
-                                                    inputSearch.current.textContent = '';
-                                                    setKeyword('');
-                                                }}>{recentKeyword}</div>
+                                                    onMouseLeave={() => {
+                                                        inputSearch.current.textContent = '';
+                                                        setKeyword('');
+                                                    }}>{recentKeyword}</div>
                                             );
                                         })
                                     }
@@ -124,11 +143,13 @@ function Search() {
                         <div className="title">You might like</div>
                         <div className="recommend_people">
                             {/* 태그 연관성에 따른 유저 표시 */}
-                            {/* {
-                        users.map((feed) => {return(
-                            <User/>
-                        );})
-                    } */}
+                            {
+                                recommendMember.map((member, memberIndex) => {
+                                    return (
+                                        <User nickname={member} key={memberIndex} />
+                                    );
+                                })
+                            }
 
                         </div>
                     </div>
@@ -138,9 +159,9 @@ function Search() {
                             {/* 태그 연관성에 따른 피드 표시 */}
 
                             {
-                                feeds.map((feed) => {
+                                recommendFeeds.map((feed) => {
                                     return (
-                                        <Feed feed={feed} key={feed.updatedat} feeds={feeds} setFeeds={setFeeds} />
+                                        <Feed feed={feed} key={feed.updatedat} feeds={recommendFeeds} setFeeds={setRecommendFeeds} />
                                     );
                                 })
                             }

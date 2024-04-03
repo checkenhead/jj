@@ -2,12 +2,17 @@ import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import { useDispatch } from 'react-redux';
+import { setMessageAction } from '../../store/notifySlice';
+
 // 다음 주소 검색
 import DaumPostcode from "react-daum-postcode";
 // 모달창
 import Modal from "react-modal";
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function Join() {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [pwdChk, setPwdChk] = useState('');
@@ -22,7 +27,6 @@ function Join() {
     const [address1, setAddress1] = useState('');
     const [address2, setAddress2] = useState('');
     const [address3, setAddress3] = useState('');
-    const MAX_CONTENT_LENGTH = 200;
     const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
     // 모달창 여닫이 버튼
     const [isOpen, setIsOpen] = useState(false);
@@ -57,35 +61,49 @@ function Join() {
 
     const onFileUpload = (e) => {
         if (e?.target?.files[0]?.size > MAX_CONTENT_SIZE) {
-            alert(`업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`)
+            dispatch(setMessageAction({ message: `업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요` }));
         } else {
             const formData = new FormData();
             formData.append('image', e.target.files[0]);
             axios.post('/api/members/fileupload', formData)
                 .then((result) => {
                     setFilename(result.data.filename);
-                    setImgSrc(`http://localhost:8070/images/${result.data.filename}`);
+                    setImgSrc(getUserimgSrc(result.data.filename));
                     setImgStyle({ display: "block", width: "250px" });
                 })
         }
     }
 
     const onSubmit = () => {
-        if (email === '') { return alert('이메일을 입력하세요'); }
-        if (pwd === '') { return alert('패스워드를 입력하세요'); }
-        if (pwd !== pwdChk) { return alert('패스워드 확인이 일치하지 않습니다'); }
-        if (nickname === '') { return alert('닉네임을 입력하세요'); }
+        if (email === '') {
+            dispatch(setMessageAction('이메일을 입력하세요'));
+            return;
+        }
+        if (pwd === '') {
+            dispatch(setMessageAction('패스워드를 입력하세요'));
+            return;
+        }
+        if (pwd !== pwdChk) {
+            dispatch(setMessageAction('패스워드 확인이 일치하지 않습니다'));
+            return;
+        }
+        if (nickname === '') {
+            dispatch(setMessageAction('닉네임을 입력하세요'));
+            return;
+        }
 
         axios.post('/api/members/join', { email, pwd, nickname, intro, profileimg: filename, zipnum, address1, address2, address3 })
             .then((result) => {
                 if (result.data.message === 'email') {
-                    return alert('이메일이 중복됩니다');
+                    dispatch(setMessageAction('이메일이 중복됩니다'));
+                    return;
                 }
                 if (result.data.message === 'nickname') {
-                    return alert('닉네임이 중복됩니다');
+                    dispatch(setMessageAction('닉네임이 중복됩니다'));
+                    return;
                 }
                 if (result.data.message === 'ok') {
-                    alert('회원 가입이 완료되었습니다. 로그인하세요');
+                    dispatch(setMessageAction('회원 가입이 완료되었습니다. 로그인하세요'));
                     navigate('/');
                 }
             })
@@ -135,23 +153,14 @@ function Join() {
                         <input value={zipnum} readOnly placeholder="우편번호" />
                         <button onClick={toggle}>검색</button></div>
                     <br />
-                    {/* 
-                        아래 새로운 div 생성
-                    <input value={address1} readOnly placeholder="도로명 주소" />
-                    <br />
-                    <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
-                        <DaumPostcode onComplete={completeHandler} height="100%" />
-                    </Modal> 
-                    */}
                 </div>
-
-                {<div className='field'>
+                <div className='field'>
                     <input value={address1} readOnly placeholder="도로명 주소" />
                     <br />
                     <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
                         <DaumPostcode onComplete={completeHandler} height="100%" />
                     </Modal>
-                </div>}
+                </div>
 
                 <div className='field'>
                     <input type="text" value={address2} onChange={
@@ -179,13 +188,6 @@ function Join() {
                                 onFileUpload(e);
                             }
                         }} />
-                </div>
-
-                <div className='field'>
-                    {/* 
-                        아래 새로운 div 생성
-                    <div><img src={imgSrc} style={imgStyle} /></div> 
-                    */}
                 </div>
                 <div className='field'>
                     <div><img src={imgSrc} style={imgStyle} /></div>

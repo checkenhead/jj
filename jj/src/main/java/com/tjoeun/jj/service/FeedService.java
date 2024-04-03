@@ -245,6 +245,15 @@ public class FeedService {
 		return fr.findFollowingsByOrderByIdDesc(pageRequest, nickname);
 	}
 
+	public List<Feed> getRecommendFeedsByNickname(String nickname) {
+		return fr.findRecommendFeedsByNickname(nickname);
+	}
+
+	public List<Feed> getRandomFeed(String nickname) {
+		
+		return fr.findRandomFeed(nickname);
+	}
+
 
 	
 }

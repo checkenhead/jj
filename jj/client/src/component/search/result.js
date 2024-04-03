@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 
 import Feed from '../feed/feed';
@@ -10,25 +9,28 @@ import Header from '../common/header';
 import Main from '../common/main';
 import Aside from '../common/aside';
 import Sub from '../common/sub';
-import { useSelector } from 'react-redux';
-
+import { useDispatch } from 'react-redux';
+import { setMessageAction } from '../../store/notifySlice';
 
 
 function Result() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [feeds, setFeeds] = useState([]);
     const [page, setPage] = useState(0);
     const [newFeed, setNewFeed] = useState({});
     const [users, setUsers] = useState([]);
-    const scrollAside = useRef();
     const inputSearch = useRef();
-    const loginUserFollow = useSelector(state => state.follow);
     const { target, keyword } = useParams();
     const [currentTarget, setCurrentTarget] = useState(target);
+    const styleSelected = { borderBottom: '2px solid #aaaaaa' };
+    const [SelectedTab, setSelectedTab] = useState([true, false]);
 
     const [inputKeyword, setInputKeyword] = useState('');
     const [recentKeywords, setRecentKeywords] = useState([]);
     const [toggleKeywords, setToggleKeywords] = useState(false);
+    // 특수문자 정규식
+    const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 
     const getResult = () => {
 
@@ -53,14 +55,19 @@ function Result() {
 
     const onSearch = (word) => {
         if (word === '') {
-            alert('검색어를 입력해주세요')
+            dispatch(setMessageAction('검색어를 입력해주세요'));
+        } else if (regExp.test(word)) {
+            dispatch(setMessageAction('특수문자는 입력할 수 없습니다'));
         } else {
             jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
                 .then(result => {
+
                     navigate(`/result/${target}/${word}`);
                 })
                 .catch(err => {
+                    // console.log(123);
                     console.error(err);
+                    dispatch(setMessageAction('부적절한 접속 시도'));
                 });
         }
     }
@@ -162,15 +169,17 @@ function Result() {
 
                     <div className="tab">
                         <div className="tab_col">
-                            <button className="link" onClick={() => {
+                            <button className="link" style={SelectedTab[0] ? styleSelected : null} onClick={() => {
                                 // getResult();
+                                setSelectedTab([true, false]);
                                 setCurrentTarget("feed");
                                 navigate(`/result/feed/${keyword}`);
                             }}>Feed</button>
                         </div>
                         <div className="tab_col">
-                            <button className="link" onClick={() => {
+                            <button className="link" style={SelectedTab[1] ? styleSelected : null} onClick={() => {
                                 // getResult();
+                                setSelectedTab([false, true]);
                                 setCurrentTarget("people");
                                 navigate(`/result/people/${keyword}`);
                             }}>People</button>
@@ -187,29 +196,39 @@ function Result() {
                                             );
                                         })
                                     ) : <div className="empty_feed_message">
-                                            <div className="empty_feed_message_text">
-                                                "{keyword}"으로 검색한 Feed가 없습니다
-                                            </div>
-                                            <div className='empty_feed_message_list'>
-                                                <label>원하는 검색결과가 나오지 않았다면?</label>
-                                                <p> - 검색어가 정확한지 확인하세요</p>
-                                                <p> - 다른 검색어를 사용해 보세요</p>
-                                            </div>
+                                        <div className="empty_feed_message_text">
+                                            "{keyword}"으로 검색한 Feed가 없습니다
                                         </div>
+                                        <div className='empty_feed_message_list'>
+                                            <label>원하는 검색결과가 나오지 않았다면?</label>
+                                            <p> - Feed 검색은 해시태그만 가능합니다</p>
+                                            <p> - 검색어가 정확한지 확인하세요</p>
+                                            <p> - 다른 검색어를 사용해 보세요</p>
+                                        </div>
+                                    </div>
                                     }
                                 </div>
                             ) : (
                                 <div className="wrap_recommend_people">
                                     <div className="result_people">
-
-                                        {
+                                        {users.length ? (
                                             users.map((user, userIndex) => {
                                                 return (
                                                     <User nickname={user} key={userIndex} />
                                                 );
                                             })
+                                        ) : <div className="empty_feed_message">
+                                            <div className="empty_feed_message_text">
+                                                "{keyword}"으로 검색한 User가 없습니다
+                                            </div>
+                                            <div className='empty_feed_message_list'>
+                                                <label>원하는 검색결과가 나오지 않았다면?</label>
+                                                <p> - 오타가 없는지 확인해 보세요</p>
+                                                <p> - 검색어가 정확한지 확인하세요</p>
+                                                <p> - 다른 검색어를 사용해 보세요</p>
+                                            </div>
+                                        </div>
                                         }
-
                                     </div>
                                 </div>
                             )
@@ -219,10 +238,7 @@ function Result() {
             } />
 
             <Aside component={<Sub />} />
-
         </div>
-
-
     )
 }
 

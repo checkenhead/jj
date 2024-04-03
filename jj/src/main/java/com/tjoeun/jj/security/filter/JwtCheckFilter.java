@@ -64,6 +64,7 @@ public class JwtCheckFilter extends OncePerRequestFilter{
 	         Gson gson = new Gson();
 	         String msg = gson.toJson(Map.of("error", "ERROR_ACCESS_TOKEN"));
 	         response.setContentType("application/json");
+	         response.setStatus(401);
 	         PrintWriter printWriter = response.getWriter();
 	         printWriter.println(msg);
 	         printWriter.close();
@@ -83,16 +84,19 @@ public class JwtCheckFilter extends OncePerRequestFilter{
 		if(path.startsWith("/images"))
 			return true;
 		
-		if(path.startsWith("/api/members/loginlocal"))
-			return true;
-		
-		if(path.startsWith("/api/members/join"))
+		if(path.startsWith("/api/members/refreshtoken"))
 			return true;
 		
 		if(path.startsWith("/api/members/fileupload"))
 			return true;
 		
-		if(path.startsWith("/api/members/refreshtoken"))
+		if(path.startsWith("/api/members/loginlocal"))
+			return true;
+		
+		if(path.startsWith("/api/members/kakaoLogin"))
+			return true;
+		
+		if(path.startsWith("/api/members/join"))
 			return true;
 		
 		return false;

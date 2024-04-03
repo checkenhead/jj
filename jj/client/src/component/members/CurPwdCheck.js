@@ -5,17 +5,21 @@ import Header from '../common/header';
 import Main from '../common/main';
 import Aside from '../common/aside';
 import Sub from '../common/sub';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { setMessageAction } from '../../store/notifySlice';
+
 import jwtAxios from '../../util/jwtUtil';
+
 
 function CurPwdCheck() {
     const navigate = useNavigate();
     const loginUser = useSelector(state => state.user);
     const [curpwd, setCurPwd] = useState('');
+    const dispatch = useDispatch();
+
     useEffect(() => {
         if (!loginUser) {
-            alert('로그인이 필요합니다');
+            dispatch(setMessageAction({message: '로그인이 필요합니다.'}));
             navigate('/');
         }
 
@@ -24,14 +28,16 @@ function CurPwdCheck() {
 
     const onSubmit = () => {
         if (curpwd === '') {
-            return alert('비밀번호를 입력해주세요')
+            dispatch(setMessageAction({message: '비밀번호를 입력해주세요.'}));
+            return;
         } else {
             jwtAxios.post('/api/members/passwordCheck', null, { params: { curpwd, nickname: loginUser.nickname } })
                 .then((result) => {
-                    console.log(result.data);
+                    // console.log(result.data);
                     if (result.data.message !== 'OK') {
                         setCurPwd("");
-                        return alert(result.data.message, '비밀번호가 다릅니다');
+                        dispatch(setMessageAction({message: '비밀번호가 틀립니다.'}));
+                        return;
                     } else {
                         navigate('/EditPassword')
                     }

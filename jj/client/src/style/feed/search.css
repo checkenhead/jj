@@ -1,7 +1,7 @@
 .wrap_search {
     position: relative;
     width: 100%;
-    min-height: calc(100vh - 10px);
+    /* min-height: calc(100vh - 10px); */
     padding: 5px;
     box-sizing: border-box;
     background-color: white;
@@ -136,13 +136,13 @@
 
 .wrap_search .result_people {
     width: 100%;
-    padding: 5px;
+    /* padding: 5px; */
     /* margin: 20px 0; */
     box-sizing: border-box;
     /* border: 1px solid #DDDDDD; */
 }
 
-.wrap_feeds .empty_feed_message {
+.wrap_search .empty_feed_message {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -152,17 +152,31 @@
     word-break: keep-all;
 }
 
-.wrap_feeds .empty_feed_message_text {
+.wrap_search .empty_feed_message_text {
     margin-bottom: 30%;
 }
 
-.wrap_feeds .empty_feed_message_list label{
+.wrap_search .empty_feed_message_list label{
     font-weight: bold;
     font-size: 16px;
 }
 
-.wrap_feeds .empty_feed_message_list p {
+.wrap_search .empty_feed_message_list p {
     font-size: 14px;
+}
+
+.wrap_search .wrap_recommend_people {
+    width: 100%;
+    padding: 5px;
+    margin: 10px 0;
+    border: 1px solid #DDDDDD;
+    background-color: white;
+    /* box-shadow: 0 0 20px #DDDDDD; */
+    /* border-radius: 10px; */
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
 }
 
 #user {

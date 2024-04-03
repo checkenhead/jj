@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import { useDispatch } from 'react-redux';
 import { setFollowAction } from '../../store/followSlice';
@@ -11,15 +10,15 @@ function FollowButton({ followState, follow }) {
     const [btnContext, setBtnContext] = useState(followState ? 'Following' : 'Follow');
     const [btnStyle, setBtnStyle] = useState(followState ? { border: '3px solid skyblue', color: 'skyblue' } : { border: '3px solid black', color: 'black' })
 
-    useEffect( () => {
+    useEffect(() => {
         setBtnContext(state ? 'Following' : 'Follow');
         setBtnStyle(state ? { border: '3px solid skyblue', color: 'skyblue' } : { border: '3px solid black', color: 'black' });
-    },[state])
+    }, [state])
 
     const toggleFollow = () => {
         jwtAxios.post('/api/members/togglefollow', follow)
             .then(result => {
-                console.log(result.data, followState);
+                // console.log(result.data, followState);
                 dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }));
                 setState(!state);
             })

@@ -1,12 +1,26 @@
 package com.tjoeun.jj.controller;
 
+<<<<<<< HEAD
+=======
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+>>>>>>> branch 'main' of https://github.com/checkenhead/jj
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,17 +33,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.Gson;
+import com.tjoeun.jj.dto.KakaoProfile;
+import com.tjoeun.jj.dto.KakaoProfile.KakaoAccount;
+import com.tjoeun.jj.dto.KakaoProfile.KakaoAccount.Profile;
 import com.tjoeun.jj.dto.MemberDto;
+import com.tjoeun.jj.dto.OAuthToken;
 import com.tjoeun.jj.dto.UserInfoDto;
 import com.tjoeun.jj.entity.Follow;
 import com.tjoeun.jj.entity.Member;
+import com.tjoeun.jj.entity.MemberRole;
 import com.tjoeun.jj.security.util.CustomJwtException;
 import com.tjoeun.jj.security.util.JwtUtil;
 import com.tjoeun.jj.service.FeedService;
 import com.tjoeun.jj.service.MemberService;
 
 import jakarta.servlet.ServletContext;
+<<<<<<< HEAD
 import lombok.RequiredArgsConstructor;
+=======
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+>>>>>>> branch 'main' of https://github.com/checkenhead/jj
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -83,6 +108,91 @@ public class MemberController {
 //		return result;
 //	}
 
+	@RequestMapping("/kakaoLogin")
+	public void kakaoLogin(
+			@RequestParam("code") String code,
+			@RequestParam("apikey") String apikey,
+			@RequestParam("redirectUri") String redirectUri,
+			HttpServletRequest request, 
+			HttpServletResponse response) 
+					throws UnsupportedEncodingException, IOException {
+		
+		String endpoint = "https://kauth.kakao.com/oauth/token";
+		URL url = new URL(endpoint); // import java.net.URL;
+		String bodyData = "grant_type=authorization_code&";
+		bodyData += "client_id="+ apikey +"&";
+		bodyData += "redirect_uri="+ redirectUri + "&";
+		bodyData += "code=" + code;
+
+		
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection(); // import java.net.HttpURLConnection;
+		conn.setRequestMethod("POST");
+		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+		conn.setDoOutput(true);
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream(), "UTF-8"));
+		bw.write(bodyData);
+		bw.flush();
+		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+		String input = "";
+		StringBuilder sb = new StringBuilder(); // 조각난 String 을 조립하기위한 객체
+		while ((input = br.readLine()) != null) {
+			sb.append(input);
+			//System.out.println(input); // 수신된 토큰을 콘솔에 출력합니다
+		}
+		Gson gson = new Gson();
+		OAuthToken oAuthToken = gson.fromJson(sb.toString(), OAuthToken.class);
+		String endpoint2 = "https://kapi.kakao.com/v2/user/me";
+		URL url2 = new URL(endpoint2);
+		
+		HttpsURLConnection conn2 = (HttpsURLConnection) url2.openConnection();
+		conn2.setRequestProperty("Authorization", "Bearer " + oAuthToken.getAccess_token());
+		conn2.setDoOutput(true);
+		BufferedReader br2 = new BufferedReader(new InputStreamReader(conn2.getInputStream(), "UTF-8"));
+		String input2 = "";
+		StringBuilder sb2 = new StringBuilder();
+		while ((input2 = br2.readLine()) != null) {
+			sb2.append(input2);
+			//System.out.println(input2);
+		}
+		Gson gson2 = new Gson();
+		KakaoProfile kakaoProfile = gson2.fromJson(sb2.toString(), KakaoProfile.class);
+		KakaoAccount ac = kakaoProfile.getAccount();
+		Profile pf = ac.getProfile();
+				
+		MemberDto member = ms.getMemberByEmail( ac.getEmail() );
+		if( member == null) {
+			Member member1 = Member.builder()
+					.email(ac.getEmail())
+					.pwd("kakao")
+					.snsid(kakaoProfile.getId())
+					.profileimg(pf.getProfile_image_url())
+					.nickname(pf.getNickname())
+					.provider("Kakao")
+					.build();
+			member1.addRole(MemberRole.USER);
+			ms.insertMember(member1);
+			member = ms.getMemberByEmail( ac.getEmail() );
+		}else {
+			member.setProfileimg(pf.getProfile_image_url());
+			ms.updateMember(member);
+		}
+		Map<String, Object> claims = member.getClaims();
+		String accessToken = JwtUtil.generateToken(claims, 5);
+		String refreshToken = JwtUtil.generateToken(claims,60*24);
+		claims.put("accessToken", accessToken);
+		claims.put("refreshToken", refreshToken);
+		// 완성된 객체를 Json 형식으로 변경하고 client 로 전송
+		gson = new Gson();
+		String jsonStr = gson.toJson(claims);
+		log.info("jsonStr" + jsonStr);
+		response.setContentType("application/json");
+		
+		response.setCharacterEncoding("UTF-8");
+		PrintWriter printWriter = response.getWriter();
+		printWriter.println(jsonStr);
+		printWriter.close();
+	}
+	
 	@PostMapping("/join")
 	public HashMap<String, Object> join(@RequestBody Member member) {
 
@@ -160,7 +270,7 @@ public class MemberController {
 		} else {
 			// 정상 회원정보수정완료
 			MemberDto mdto = ms.getMemberByEmail(member.getEmail());
-			mdto.setPwd(member.getPwd());
+//			mdto.setPwd(mdto.getPwd());
 
 			result.put("message", "ok");
 			result.put("loginUser", ms.updateMember(mdto));
@@ -220,14 +330,9 @@ public class MemberController {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
 		MemberDto mdto = ms.getMemberByNickname(nickname);
-		if (mdto == null) {
-			result.put("message", "Password is different");
-		} else if (!mdto.getPwd().equals(curpwd)) {
-			result.put("message", "비밀번호가 틀립니다.");
-		} else {
-			result.put("message", "OK");
-			mdto.setPwd(null);
-		}
+			result.put("message", ms.passwordCheck(mdto.getPassword(), curpwd)? "OK" : "비밀번호가 틀립니다.");
+			
+
 
 		return result;
 	}
@@ -240,7 +345,7 @@ public class MemberController {
 		MemberDto mdto = ms.getMemberByNickname(nickname);
 		mdto.setPwd(newpwd);
 		// 1. 받아온 member로 insert
-		ms.updateMember(mdto);
+			ms.updatePwdOnly(mdto); 
 		// 2. result에 메세지 담아서 return
 		result.put("message", "ok");
 		return result;
@@ -311,7 +416,21 @@ public class MemberController {
 
 		return result;
 	}
+<<<<<<< HEAD
 
+=======
+	@PostMapping("/getrecommendpeoplebyfeedid")
+	public HashMap<String, Object> getRecommendPeopleByFeedid(@RequestParam("nickname") String nickname, @RequestParam("feedid") String feedid) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		List<Member> list = ms.getRecommendPeopleByFeedid(nickname, feedid);
+		
+		result.put("recommendmemberbyfeedid", list);
+		
+		return result;
+	}
+	
+>>>>>>> branch 'main' of https://github.com/checkenhead/jj
 	@GetMapping("/refreshtoken/{refreshToken}")
 	public Map<String, Object> refreshToken(@RequestHeader("Authorization") String authHeader,
 			@PathVariable("refreshToken") String refreshToken) throws CustomJwtException {
@@ -359,5 +478,14 @@ public class MemberController {
 			}
 		}
 		return false;
+	}
+	
+	@PostMapping("/getrandompeople")
+	public HashMap<String, Object> getRandomPeople(@RequestParam("nickname") String nickname){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		result.put("members", ms.getRandomPeople(nickname));
+		
+		return result;
 	}
 }

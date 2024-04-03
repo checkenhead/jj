@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import Post from './post';
 import Feed from './feed';
 
+import { throttle } from 'lodash';
+
 function Feeds({ newFeed, setNewFeed }) {
-    const loginUser = useSelector(state=>state.user);
+    const loginUser = useSelector(state => state.user);
     const [feeds, setFeeds] = useState([]);
     const styleSelected = { borderBottom: '2px solid #aaaaaa' };
     const [SelectedTab, setSelectedTab] = useState([true, false]);
@@ -17,45 +18,47 @@ function Feeds({ newFeed, setNewFeed }) {
         triggerOnce: true
     });
 
+    const getFeeds = useCallback(throttle(async (requireRefressh) => {
 
-    const getFeeds = async (isRefreshing) => {
         try {
-            if (isRefreshing) { currPage.current = 0; }
+            if (requireRefressh) { currPage.current = 0; }
             const result = await jwtAxios.post('/api/feeds/getallfeeds', null, { params: { page: currPage.current++ } });
-            setFeeds(feeds => isRefreshing ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
+            setFeeds(feeds => requireRefressh ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
+            // console.log(result.data.feeds);
+        } catch (err) {
+            console.error(err);
+        }
+
+    }, 500), []);
+
+    const getFollowingFeeds = async (requireRefressh) => {
+        try {
+            if (requireRefressh) { currPage.current = 0; }
+            const result = await jwtAxios.post('/api/feeds/getfollowingfeeds', null, { params: { page: currPage.current++, nickname: loginUser.nickname } });
+            setFeeds(feeds => requireRefressh ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
         } catch (err) {
             console.error(err);
         }
     }
 
-    const getFollowingFeeds = async (isRefreshing) => {
-        try {
-            if (isRefreshing) { currPage.current = 0; }
-            const result = await jwtAxios.post('/api/feeds/getfollowingfeeds', null, { params: { page: currPage.current++, nickname: loginUser.nickname} });
-            setFeeds(feeds => isRefreshing ? [...result.data.feeds] : [...feeds, ...result.data.feeds]);
-        } catch (err) {
-            console.error(err);
+    useEffect(() => {
+        if (currPage.current > 0) {
+            console.log('SelectedTab  called');
+            if (SelectedTab[0]) {
+                getFeeds(true);
+            } else {
+                getFollowingFeeds(true);
+            }
         }
-    }
+    }, [SelectedTab]);
 
     useEffect(() => {
         if (SelectedTab[0]) {
             getFeeds(false);
         } else {
-
             getFollowingFeeds(false);
         }
     }, [inView]);
-
-    useEffect(() => {
-        document.getElementById("root").style.height = 0;
-        if (SelectedTab[0]) {
-            getFeeds(true);
-        } else {
-
-            getFollowingFeeds(true);
-        }
-    }, [SelectedTab]);
 
     useEffect(() => {
         if (newFeed?.id) {

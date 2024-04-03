@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import jwtAxios from '../../util/jwtUtil';
-import { setCookie, getCookie, removeCookie } from '../../util/cookieUtil';
+import { setCookie } from '../../util/cookieUtil';
 import { useSelector, useDispatch } from 'react-redux';
-import { loginAction, logoutAction } from '../../store/userSlice';
+import { loginAction } from '../../store/userSlice';
+import { setMessageAction } from '../../store/notifySlice';
 import { setFollowAction } from '../../store/followSlice';
 
-
+import ImgKakao from '../../images/loginImg/kakaosimbol.png';
 import ImgLogo from '../../images/logo.png';
 import woman from '../../images/loginImg/woman.jpg'
 import books from '../../images/loginImg/books.jpg';
@@ -24,6 +25,7 @@ import smartphone from '../../images/loginImg/smartphone.jpg';
 
 
 
+
 /** 로그인 */
 function Login() {
   const loginUser = useSelector(state => state.user);
@@ -31,22 +33,36 @@ function Login() {
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
   const dispatch = useDispatch();
-  const MAX_CONTENT_LENGTH = 200;
-  const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
+
+  const Rest_api_key = process.env.REACT_APP_KAKAO_REST_API_KEY; //REST API KEY
+  const redirect_uri = process.env.REACT_APP_KAKAO_REDIRECT_URI; //Redirect URI
+  // oauth 요청 URL
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
+
+  const handleLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  }
 
   const onLogin = () => {
-    if (!email) { return alert('아이디를 입력하세요') }
-    if (!pwd) { return alert('패스워드를 입력하세요') }
+    if (!email) {
+      dispatch(setMessageAction('아이디를 입력하세요'));
+      return;
+    }
+    if (!pwd) {
+      dispatch(setMessageAction('패스워드를 입력하세요'));
+      return;
+    }
     axios.post('/api/members/loginlocal', null, { params: { username: email, password: pwd } })
       .then((result) => {
         // 로그인 실패 했을 경우
         if (result.data.error === 'ERROR_LOGIN') {
           setPwd("");
-          return alert('아이디 또는 비밀번호가 틀립니다.');
+          dispatch(setMessageAction('아이디 또는 비밀번호가 틀립니다.'));
+          return;
           // 로그인에 성공 했을 경우
         } else {
           // console.log(result);
-          alert("로그인 되었습니다.");
+          dispatch(setMessageAction('로그인 되었습니다.'));
           setCookie("user", JSON.stringify(result.data), 1);
           dispatch(loginAction(result.data));
           getFollow(result.data.nickname);
@@ -63,7 +79,7 @@ function Login() {
   const getFollow = (nickname) => {
     jwtAxios.post('/api/members/getfollow', null, { params: { nickname } })
       .then(result => {
-        console.log('getFollow:', result);
+        // console.log('getFollow:', result);
         dispatch(setFollowAction({ followings: result.data.followings, followers: result.data.followers }))
       })
       .catch(err => {
@@ -84,7 +100,6 @@ function Login() {
   }
 
   const handleScroll = () => {
-    // clearTimeout(timeoutId); // 이전의 timeoutId를 제거하여 중복 호출 방지
 
     const scrollY = window.scrollY;
     const rotationAngle = scrollY; // 스크롤 위치에 따라 회전 각도 조절
@@ -105,8 +120,6 @@ function Login() {
 
   useEffect(() => {
     // console.log('redux loginUser', loginUser);
-    // dispatch(logoutAction());
-    // removeCookie('user');
     if (loginUser.email !== '') {
       navigate('/main');
     } else {
@@ -123,7 +136,6 @@ function Login() {
     return () => {
       if (loginUser.email === '') {
         window.removeEventListener('scroll', handleScroll);
-        // clearTimeout(timeoutId); // 컴포넌트가 언마운트될 때 timeoutId 제거
 
         for (let i = 0; i < item.length; i++) {
           item[i].removeEventListener('mousemove', mousemove);
@@ -202,11 +214,13 @@ function Login() {
                   navigate('/EmailCheck')
                 }}>Forgot Password</label></div>
                 <div className='btns'>
-                  <button className='button'>SNS Login</button>
                   <button className='button'
                     onClick={() => { onLogin() }}>Login</button>
                   <button className='button'
                     onClick={() => { navigate('/join') }}>Join</button>
+                  <button className='kakao button' onClick={() => { handleLogin() }}>
+                    <img src={ImgKakao}></img><label>Login with Kakao</label>
+                  </button>
                 </div>
               </div>
             </div>

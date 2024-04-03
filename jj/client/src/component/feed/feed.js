@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setMessageAction } from '../../store/notifySlice';
 import Slider from 'react-slick';
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
+import { debounce } from 'lodash';
+
 import Modal from "react-modal";
 import Dropdown from './Dropdown';
 //import Editpost from './Editpost';
@@ -12,7 +14,8 @@ import EmojiPicker from 'emoji-picker-react';
 import ImgEmoji from '../../images/emoji.png';
 
 import Feedimg from './feedimg';
-import ImgUser from '../../images/user.png';
+
+
 import ImgUnlike from '../../images/unlike.png';
 import ImgLike from '../../images/like.png';
 import ImgReply from '../../images/reply.png';
@@ -21,6 +24,8 @@ import ImgBookmarked from '../../images/bookmarked.png';
 import ImgRemove from '../../images/remove.png';
 import ImgMore from '../../images/more.png';
 import ImgCancel from '../../images/cancel.png';
+import ImgDefault from '../../images/pic.png';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 function Feed(props) {
     const MAX_CONTENT_LENGTH = 200;
@@ -30,11 +35,9 @@ function Feed(props) {
     const elementReply = useRef();
     const heightReply = useRef();
     const [feed, setFeed] = useState(props.feed);
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState([ImgDefault]);
     const [writerInfo, setWriterInfo] = useState({});
-    const [profileimg, setProfileimg] = useState(null);
     const [likes, setLikes] = useState([]);
-    // const [iconLike, setIconLike] = useState(ImgUnlike);
     const [stateLike, setStateLike] = useState(false);
     const [replys, setReplys] = useState([]);
     const [bookmarks, setBookmarks] = useState([]);
@@ -48,14 +51,17 @@ function Feed(props) {
     const [length, setLength] = useState(0);
     const [emojiStyle, setEmojiStyle] = useState({ display: 'none' });
     const [onoffCheck, setOnoffCheck] = useState(false);
+    const [likeCount, setLikeCount] = useState(0);
+    const [bookmarkCount, setBookmarkCount] = useState(0);
+    const [stateBookmark, setStateBookmark] = useState(false);
     const loginUser = useSelector(state => state.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const getWriterInfo = (nickname) => {
         jwtAxios.post('/api/members/getmemberbynickname', null, { params: { nickname } })
             .then(result => {
                 setWriterInfo(result.data.user);
-                setProfileimg(`http://localhost:8070/images/${result.data.user.profileimg}`);
             })
             .catch(err => {
                 console.error(err);
@@ -65,22 +71,21 @@ function Feed(props) {
     const getLikes = (feedid) => {
         jwtAxios.post('/api/feeds/getlikesbyfeedid', { feedid })
             .then(result => {
-                // setIconLike(ImgUnlike);
                 setStateLike(false);
                 setLikes(result.data.likes.map((like) => {
                     if (like.nickname === loginUser.nickname) {
-                        // setIconLike(ImgLike);
                         setStateLike(true);
                     }
                     return like.nickname;
                 }));
+                setLikeCount(result.data.likes.length);
             })
             .catch(err => {
                 console.error(err);
             });
     }
 
-    const toggleLikes = (feedid, nickname) => {
+    const toggleLikes = useCallback(debounce((feedid, nickname) => {
         jwtAxios.post('/api/feeds/togglelike', { feedid, nickname })
             .then(result => {
                 getLikes(feedid);
@@ -88,7 +93,7 @@ function Feed(props) {
             .catch(err => {
                 console.error(err);
             });
-    }
+    }, 500), []);
 
     const getImages = (feedid) => {
         jwtAxios.post('/api/feeds/getfeedimgbyfeedid', null, { params: { feedid } })
@@ -134,11 +139,29 @@ function Feed(props) {
         return result;
     }
 
+    const transKBM = (countKBM) => {
+        const length = countKBM;
+        let result = '';
+
+        if (length < 1000) {
+            result = length;
+        } else if (length < 1000000) {
+            result = (Math.floor((length / 1000) * 10) / 10) + 'K';
+        } else if (length < 1000000000) {
+            result = (Math.floor((length / 1000000) * 10) / 10) + 'M';
+        } else if (length > 999999999) {
+            result = (Math.floor((length / 1000000000) * 10) / 10) + 'B';
+        }
+
+        return result;
+    }
+
+
     const addReply = (feedid, writer, content) => {
         if (replyContent === '') {
-            alert('댓글 내용을 입력해주세요');
+            dispatch(setMessageAction({ message: '댓글 내용을 입력해주세요.' }));
         } else if (replyContent.length > MAX_CONTENT_LENGTH) {
-            alert('입력 가능한 최대 글자수는 200자 입니다');
+            dispatch(setMessageAction({ message: '입력 가능한 최대 글자수는 200자 입니다.' }));
         } else {
             jwtAxios.post('/api/feeds/addreply', { feedid, writer, content })
                 .then(result => {
@@ -156,7 +179,7 @@ function Feed(props) {
         if (window.confirm('삭제하시겠습니까?')) {
             jwtAxios.post('/api/feeds/deletereply', null, { params: { id } })
                 .then(result => {
-                    alert('삭제 완료');
+                    dispatch(setMessageAction({ message: '댓글이 삭제되었습니다.' }));
                     getReplys(feedid);
                 })
                 .catch(err => {
@@ -169,19 +192,22 @@ function Feed(props) {
         jwtAxios.post('/api/feeds/getbookmarksbyfeedid', { feedid })
             .then(result => {
                 setIconBookmark(ImgBookmark);
+                setStateBookmark(false);
                 setBookmarks(result.data.bookmarks.map((bookmark) => {
                     if (bookmark.nickname === loginUser.nickname) {
                         setIconBookmark(ImgBookmarked);
+                        setStateBookmark(true);
                     }
                     return bookmark.nickname;
                 }));
+                setBookmarkCount(result.data.bookmarks.length);
             })
             .catch(err => {
                 console.error(err);
             });
     }
 
-    const toggleBookmarks = (feedid, nickname) => {
+    const toggleBookmarks = useCallback(debounce((feedid, nickname) => {
         jwtAxios.post('/api/feeds/togglebookmark', { feedid, nickname })
             .then(result => {
                 getBookmarks(feedid);
@@ -189,7 +215,7 @@ function Feed(props) {
             .catch(err => {
                 console.error(err);
             });
-    }
+    }, 500), []);
 
     useEffect(() => {
         getWriterInfo(feed.writer);
@@ -209,26 +235,11 @@ function Feed(props) {
         slidesToScroll: 1
     };
 
-    // const [dropdownDisplay1, setDropdownDisplay1] = useState(false);
-    // const [dropdownDisplay2, setDropdownDisplay2] = useState(false);
-
-
     const toggleModal = () => {
         document.body.style.overflow = isOpen ? "auto" : "hidden";
         setIsOpen(!isOpen);
     }
 
-    // const setChangeDrop = () => {
-    //     setDropdownDisplay2(!dropdownDisplay2)
-    //     if (!dropdownDisplay2) {
-    //         setMoreDropdown();
-    //     }
-    //     setDropdownDisplay1(!dropdownDisplay1)
-    //     if(!dropdownDisplay1){
-    //         setProfileDropdown();
-    //     } 
-
-    // }
     const setProfileDropdown = () => {
         dropdownDisplay1.current = !dropdownDisplay1.current;
         // console.log(dropdownDisplay1.current, 1);
@@ -317,7 +328,7 @@ function Feed(props) {
                             navigate(`/member/${feed.writer}`)
                         }
                     }}>
-                        <img src={profileimg || ImgUser} />
+                        <img src={getUserimgSrc(writerInfo)} />
                     </div>
                     <div className="nickname link" onClick={() => {
                         if (feed.writer !== loginUser.nickname) {
@@ -329,13 +340,17 @@ function Feed(props) {
                     <Dropdown pagename={'profile'} feedid={feed.id} toggleModal={toggleModal} style={style1} writer={feed.writer} />
                 </div>
                 <div className="timestamp">
-                    {feed.createdat}
+                    {transDateString(feed.updatedat)}
+                    {
+                        feed.createdat === feed.updatedat
+                            ? null
+                            : "(수정됨)"
+                    }
                 </div>
                 <Modal className="modal" overlayClassName="orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
                     <img src={ImgCancel} className="icon close link" onClick={() => {
                         toggleModal();
                     }} />
-                    {/* <Editpost feed={feed}/> */}
                     <Post feed={feed} images={images} setIsOpen={setIsOpen} feeds={props.feeds} setFeeds={props.setFeeds} />
                 </Modal>
                 {
@@ -346,7 +361,6 @@ function Feed(props) {
                                     <Dropdown pagename={'feed'} feedid={feed.id} toggleModal={toggleModal} style={style2} />
                                     <img src={ImgMore} className='icon' onClick={() => {
                                         setMoreDropdown()
-                                        // setChangeDrop();
                                     }} />
                                 </div>
                             </>
@@ -355,15 +369,19 @@ function Feed(props) {
                         : null
                 }
             </div>
-            <Slider {...settings}>
-                {
-                    images.map((image, imageIndex) => {
-                        return (
-                            <Feedimg key={imageIndex} img_filename={image.filename} img_style={image.style} />
-                        );
-                    })
-                }
-            </Slider>
+            <div onClick={() => {
+                navigate(`/view/${feed.writer}/${feed.id}`);
+            }}>
+                <Slider {...settings}>
+                    {
+                        images.map((image, imageIndex) => {
+                            return (
+                                <Feedimg key={imageIndex} img_filename={image.filename} img_style={image.style} />
+                            );
+                        })
+                    }
+                </Slider>
+            </div>
             <div className="feed_content">
                 {feed.content}<br />
                 <div className="btn"><input type="checkbox" className="toggle_content" /></div>
@@ -371,13 +389,26 @@ function Feed(props) {
 
             <div className="feed_icon">
                 <div className="like"><img src={stateLike ? ImgLike : ImgUnlike} className="icon" onClick={() => {
+                    if (stateLike) {
+                        setLikeCount(likeCount - 1);
+                    } else {
+                        setLikeCount(likeCount + 1);
+                    }
                     setStateLike(!stateLike);
                     toggleLikes(feed.id, loginUser.nickname);
-                }} />{likes.length}</div>
-                <div className="reply" onClick={() => { toggleReply() }}><img src={ImgReply} className="icon" />{replys.length}</div>
-                <div className="bookmark"><img src={iconBookmark} className="icon" onClick={() => {
+                }} />
+                    {transKBM(likeCount)}
+                </div>
+                <div className="reply" onClick={() => { toggleReply() }}><img src={ImgReply} className="icon" />{transKBM(replys.length)}</div>
+                <div className="bookmark"><img src={stateBookmark ? ImgBookmarked : ImgBookmark} className="icon" onClick={() => {
+                    if (stateBookmark) {
+                        setBookmarkCount(bookmarkCount - 1);
+                    } else {
+                        setBookmarkCount(bookmarkCount + 1);
+                    }
+                    setStateBookmark(!stateBookmark)
                     toggleBookmarks(feed.id, loginUser.nickname);
-                }} />{bookmarks.length}</div>
+                }} />{transKBM(bookmarkCount)}</div>
             </div>
             <div className="feed_reply" style={style3} ref={elementReply}>
                 {
@@ -387,7 +418,7 @@ function Feed(props) {
                                 <div className="row_reply profile" onClick={() => {
                                     navigate(`/member/${reply.writer}`);
                                 }}>
-                                    <img src={`http://localhost:8070/images/${reply.profileimg}`} className="writer_img" />{reply.writer}
+                                    <img src={getUserimgSrc(reply)} className="writer_img" />{reply.writer}
                                 </div>
                                 <div className="row_reply content">{reply.content}</div>
                                 <div className="row_reply timestamp">{transDateString(reply.createdat)}</div>
@@ -403,51 +434,56 @@ function Feed(props) {
                     })
                 }
 
-                <div className="input_box">
-                    <div ref={inputReply}
-                        contentEditable
-                        suppressContentEditableWarning
-                        placeholder="Reply here"
-                        className="input_reply"
-
-                        onInput={(e) => {
-                            inputReply.current.textContent = e.currentTarget.textContent;
-                            setReplyContent(e.currentTarget.textContent);
-                            setLength(e.currentTarget.textContent.length);
-                        }}>
+                <div className="input_box" tabIndex='0'>
+                    <div className='input_container' tabIndex='0'>
+                        <div ref={inputReply}
+                            contentEditable
+                            suppressContentEditableWarning
+                            placeholder="Reply here"
+                            className="input_reply"
+                            tabIndex='0'
+                            onInput={(e) => {
+                                inputReply.current.textContent = e.currentTarget.textContent;
+                                setReplyContent(e.currentTarget.textContent);
+                                setLength(e.currentTarget.textContent.length);
+                            }}>
+                        </div>
+                        <button className="inputBtn" onClick={() => {
+                            addReply(feed.id, loginUser.nickname, replyContent);
+                            if (onoffCheck) {
+                                onoffEmoji();
+                            }
+                        }} tabIndex='0'>확인</button>
                     </div>
-                    <button onClick={() => {
-                        addReply(feed.id, loginUser.nickname, replyContent);
-                    }}>확인</button>
-                </div>
-                <div className='activeBtn' tabIndex='0' >
-                    <button className="btn_emoji" onClick={() => {
-                        onoffEmoji();
-                    }}><img src={ImgEmoji} className="icon" /></button>
-                    {
-                        length > 0 ? (
-                            <div className="outer" style={{ background: `conic-gradient(${length > MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length / MAX_CONTENT_LENGTH * 360}deg, white 0deg)` }}>
-                                <div className="inner">{length}</div>
-                            </div>
-                        ) : null
+                    <div className='activeBtn' tabIndex='0' >
+                        <button className="btn_emoji" onClick={() => {
+                            onoffEmoji();
+                        }}><img src={ImgEmoji} className="icon" /></button>
+                        {
+                            length > 0 ? (
+                                <div className="outer" style={{ background: `conic-gradient(${length > MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length / MAX_CONTENT_LENGTH * 360}deg, white 0deg)` }}>
+                                    <div className="inner">{length}</div>
+                                </div>
+                            ) : null
 
-                    }
-                </div>
-                <div className='emoji' style={emojiStyle}>
-                    <EmojiPicker
-                        height={'350px'}
-                        width={'100%'}
-                        emojiStyle={'native'}
-                        emojiVersion={'5.0'}
-                        searchDisabled={true}
-                        previewConfig={{ showPreview: false }}
-                        searchPlaceholder='Search Emoji'
-                        autoFocusSearch={false}
-                        onEmojiClick={(e) => {
-                            inputReply.current.textContent += e.emoji;
-                            setReplyContent(content => content + e.emoji);
-                        }}
-                    />
+                        }
+                    </div>
+                    <div className='emoji' style={emojiStyle}>
+                        <EmojiPicker
+                            height={'350px'}
+                            width={'100%'}
+                            emojiStyle={'native'}
+                            emojiVersion={'5.0'}
+                            searchDisabled={true}
+                            previewConfig={{ showPreview: false }}
+                            searchPlaceholder='Search Emoji'
+                            autoFocusSearch={false}
+                            onEmojiClick={(e) => {
+                                inputReply.current.textContent += e.emoji;
+                                setReplyContent(content => content + e.emoji);
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

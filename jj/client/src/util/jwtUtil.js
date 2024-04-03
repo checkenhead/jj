@@ -3,26 +3,20 @@ import { setCookie, getCookie } from "./cookieUtil";
 
 const jwtAxios = axios.create();
 
-const refreshJwt = async (accessToken, refreshToken) => {
-    const Header = { headers: { 'Authorization': `Bearer ${accessToken}` } };
-    // console.log("before refresh");
-    const res = await axios.get(`/api/members/refreshtoken/${refreshToken}`, Header);
-    return res.data;
-}
+// const refreshJwt = async (accessToken, refreshToken) => {
+//     const Header = { headers: { 'Authorization': `Bearer ${accessToken}` } };
+//     const res = await axios.get(`/api/members/refreshtoken/${refreshToken}`, Header);
+//     return res.data;
+// }
 
 const beforeReq = async (config) => {
-    const memberCookieValue = getCookie('user');
-    const result = await refreshJwt(memberCookieValue.accessToken, memberCookieValue.refreshToken);
-    memberCookieValue.accessToken = result.accessToken;
-    memberCookieValue.refreshToken = result.refreshToken;
-    setCookie('user', JSON.stringify(memberCookieValue), 1);
 
     // axios로 요청하기 전 헤더 추가
     const memberInfo = getCookie('user');
     const { accessToken } = memberInfo;
 
     if (!memberInfo) {
-        console.log('Member Info Not Found');
+        // console.log('Member Info Not Found');
         return Promise.reject({
             response: {
                 data: {
@@ -36,21 +30,34 @@ const beforeReq = async (config) => {
     return config;
 }
 
-const requestFail = (err) => { }
+const requestFail = (err) => {
+    
+}
 
 const beforeRes = (res) => {
     return res;
-    // if (data && data.error === 'ERROR_ACCESS_TOKEN') {
-    //     const memberCookieValue = getCookie('user');
-    //     const result = await refreshJWT(memberCookieValue.accessToken, memberCookieValue.refreshToken);
-    //     console.log('refreshJWT RESULT', result);
-    //     memberCookieValue.accessToken = result.accessToken;
-    //     memberCookieValue.refreshToken = result.refreshToken;
-    //     setCookie('user', JSON.stringify(memberCookieValue), 1);
-    // }
 }
 
-const responseFail = (err) => { }
+const responseFail = async (err) => {
+    // console.log(err);
+    // status 401 시
+    if (err.response.status === 401) {
+        // // refresh
+        // const memberCookieValue = getCookie('user');
+        // const result = await refreshJwt(memberCookieValue.accessToken, memberCookieValue.refreshToken);
+        // memberCookieValue.accessToken = result.accessToken;
+        // memberCookieValue.refreshToken = result.refreshToken;
+        // setCookie('user', JSON.stringify(memberCookieValue), 1);
+
+        // // 재시도
+        // console.log('err.config:', err.config);
+        // const response = await axios.request(err.config);
+
+        // // console.log('responseFail.response:', response);
+
+        // return response.data.data;
+    }
+}
 
 jwtAxios.interceptors.request.use(beforeReq, requestFail);
 jwtAxios.interceptors.response.use(beforeRes, responseFail);

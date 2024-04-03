@@ -1,10 +1,11 @@
-import { Cookies } from 'react-cookie'
+import { Cookies, CookiesProvider } from 'react-cookie'
 
 const cookies = new Cookies();
 
 export const setCookie = (name, value, days = 1) => {
     const expires = new Date();
     expires.setUTCDate(expires.getUTCDate() + days);
+    
     return cookies.set(name, value, { path: '/', expires });
 }
 

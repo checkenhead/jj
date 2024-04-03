@@ -1,59 +1,41 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
+import axios from 'axios';
+import { useQuery } from 'react-query';
+import { setCookie, getCookie } from "../../util/cookieUtil";
+
+
+
 
 function Main({ component }) {
-    const root = document.getElementById('root');
-    const currComponent = useRef();
-    const currScroll = useRef(0);
-    const scrollPositionRatio = useRef(0);
+    const memberCookieValue = getCookie('user');
 
-    const syncScroll = () => {
-        const bodyScroll = document.documentElement.scrollTop;
+    useQuery(['refreshToken'], () => {
+        console.log('memberCookieValue : ', memberCookieValue);
+        if (memberCookieValue) {
+            const Header = { headers: { 'Authorization': `Bearer ${memberCookieValue.accessToken}` } };
 
-        currComponent.current.scrollTop += bodyScroll - currScroll.current;
-        currScroll.current = bodyScroll;
-    }
-
-    const setHeight = () => {
-        if(currComponent.current){
-            const rootHeight = Number(root.style.height.toString().replace('px', ''));
-
-            if (rootHeight < currComponent.current.scrollHeight) {
-                root.style.height = currComponent.current.scrollHeight.toString() + 'px';
-            }
-
-            const bodyScroll = document.documentElement.scrollTop;
-            currComponent.current.scrollTop += bodyScroll - currScroll.current;
-            currScroll.current = bodyScroll;
+            return axios.get(`/api/members/refreshtoken/${memberCookieValue.refreshToken}`, Header)
+                .then(result => {
+                    console.log('refreshToken query called', result);
+                    
+                    memberCookieValue.accessToken = result.data.accessToken;
+                    memberCookieValue.refreshToken = result.data.refreshToken;
+                    setCookie('user', JSON.stringify(memberCookieValue), 1);
+                    return result;
+                })
         }
-    }
+    },
+        {
+            enabled: !!memberCookieValue,
+            refetchInterval: 4 * 60 * 1000,
+            refetchIntervalInBackground: true,
+            refetchOnMount: false,
+            refetchOnWindowFocus: 'always'
 
-    
+        }
+    );
 
-    const handleResize = () => {
-        scrollPositionRatio.current = currScroll.current/document.documentElement.scrollHeight;
-        setHeight();
-        document.documentElement.scrollTop = document.documentElement.scrollHeight * scrollPositionRatio.current;
-        console.log("resized");
-    }
-
-    
-
-    useEffect(() => {
-        const inteval = setInterval(() => {
-            setHeight();
-        }, 100);
-
-        window.addEventListener('scroll', syncScroll);
-        window.addEventListener("resize", handleResize);
-
-        return (() => {
-            clearInterval(inteval);
-            window.removeEventListener('scroll', syncScroll);
-            window.removeEventListener("resize", handleResize);
-            document.documentElement.scrollTop = 0;
-            root.style.height = 0;
-        });
-    }, []);
+    const currComponent = useRef();
 
     return (
         <main ref={currComponent}>

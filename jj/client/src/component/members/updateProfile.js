@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import jwtAxios from '../../util/jwtUtil';
 
 import Header from '../common/header';
@@ -8,6 +7,7 @@ import Sub from '../common/sub';
 // 로그인 관련
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAction } from '../../store/userSlice';
+import { setMessageAction } from '../../store/notifySlice';
 // 사진
 import ImgUser from '../../images/user.png';
 
@@ -15,6 +15,7 @@ import ImgUser from '../../images/user.png';
 import DaumPostcode from "react-daum-postcode";
 // 모달창
 import Modal from "react-modal";
+import { getFeedimgSrc, getUserimgSrc } from '../../util/ImgSrcUtil';
 
 
 function UpdateProfile() {
@@ -22,14 +23,12 @@ function UpdateProfile() {
     const [intro, setIntro] = useState('');
     const [email, setEmail] = useState('');
     const [imgSrc, setImgSrc] = useState(ImgUser);
-    const [imgStyle, setImgStyle] = useState({ display: "none" });
     const [filename, setFilename] = useState('');
 
     const [zipnum, setZipnum] = useState('');
     const [address1, setAddress1] = useState('');
     const [address2, setAddress2] = useState('');
     const [address3, setAddress3] = useState('');
-    const MAX_CONTENT_LENGTH = 200;
     const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
 
     const navigate = useNavigate();
@@ -43,14 +42,14 @@ function UpdateProfile() {
 
     useEffect(() => {
         if (!loginUser) {
-            alert('로그인이 필요합니다');
+            dispatch(setMessageAction('로그인이 필요합니다'));
             navigate('/');
         } else {
 
             setEmail(loginUser.email);
             setNickname(loginUser.nickname);
-            if(loginUser.profileimg){
-                setImgSrc(`http://localhost:8070/images/${loginUser.profileimg}`);
+            if (loginUser.profileimg) {
+                setImgSrc(getUserimgSrc(loginUser));
             }
             setZipnum(loginUser.zipnum);
             setAddress1(loginUser.address1);
@@ -90,29 +89,32 @@ function UpdateProfile() {
 
     const onFileUpload = (e) => {
         if (e?.target?.files[0]?.size > MAX_CONTENT_SIZE) {
-            alert(`업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`)
+            dispatch(setMessageAction(`업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`));
         } else {
             const formData = new FormData();
             formData.append('image', e.target.files[0]);
             jwtAxios.post('/api/members/fileupload', formData)
                 .then((result) => {
                     setFilename(result.data.filename);
-                    setImgSrc(`http://localhost:8070/images/${result.data.filename}`);
-                    // setImgStyle({ display: "block", width: "330px" });
+                    setImgSrc(getFeedimgSrc(result.data.filename));
                 })
         }
     }
 
     const onSubmit = () => {
-        if (nickname === '') { return alert('닉네임을 입력하세요'); }
+        if (nickname === '') {
+            dispatch(setMessageAction('닉네임을 입력하세요'));
+            return;
+        }
 
-        jwtAxios.post('api/members/updateprofile', { email, nickname, intro, profileimg: filename, zipnum, address1, address2, address3 }, {params:{nickname:loginUser.nickname}})
+        jwtAxios.post('api/members/updateprofile', { email, nickname, intro, profileimg: filename, zipnum, address1, address2, address3 }, { params: { nickname: loginUser.nickname } })
             .then((result) => {
                 if (result.data.message === 'no') {
-                    return alert('닉네임이 중복됩니다');
+                    dispatch(setMessageAction('닉네임이 중복됩니다'));
+                    return;
                 }
                 else if (result.data.message === 'ok') {
-                    alert('회원정보수정이 완료되었습니다.');
+                    dispatch(setMessageAction('회원정보수정이 완료되었습니다.'));
                     dispatch(loginAction(result.data.loginUser));
                     navigate('/main');
                 }
@@ -124,7 +126,7 @@ function UpdateProfile() {
     }
 
     useEffect(() => {
-        
+
     }, [onFileUpload])
 
     return (
@@ -158,23 +160,15 @@ function UpdateProfile() {
                                     <input value={zipnum} readOnly placeholder="우편번호" />
                                     <button onClick={toggle}>검색</button></div>
                                 <br />
-                                {/* 
-                        아래 새로운 div 생성
-                    <input value={address1} readOnly placeholder="도로명 주소" />
-                    <br />
-                    <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
-                        <DaumPostcode onComplete={completeHandler} height="100%" />
-                    </Modal> 
-                    */}
                             </div>
 
-                            {<div className='field'>
+                            <div className='field'>
                                 <input value={address1} readOnly placeholder="도로명 주소" />
                                 <br />
                                 <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
                                     <DaumPostcode onComplete={completeHandler} height="100%" />
                                 </Modal>
-                            </div>}
+                            </div>
 
                             <div className='field'>
                                 <input type="text" value={address2} onChange={
@@ -201,13 +195,6 @@ function UpdateProfile() {
                                         onFileUpload(e);
                                     }
                                 }} />
-                            </div>
-
-                            <div className='field'>
-                                {/* 
-                        아래 새로운 div 생성
-                    <div><img src={imgSrc} style={imgStyle} /></div> 
-                    */}
                             </div>
                             <div className='field'>
                                 <div><img src={imgSrc}

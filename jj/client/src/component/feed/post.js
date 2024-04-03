@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
-import axios from 'axios';
 import jwtAxios from '../../util/jwtUtil';
 import Modal from "react-modal";
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setMessageAction } from '../../store/notifySlice';
 import EmojiPicker from 'emoji-picker-react';
 
 import ImgPic from '../../images/pic.png';
@@ -13,11 +12,14 @@ import ImgPost from '../../images/post.png';
 import ImgFilter from '../../images/filter.png';
 import ImgCancel from '../../images/cancel.png';
 import ImgRemove from '../../images/remove.png';
+import { getFeedimgSrc } from '../../util/ImgSrcUtil';
 
 function Post(props) {
     const MAX_CONTENT_LENGTH = 200;
     const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
     const loginUser = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
     const inputPost = useRef();
     const inputFile = useRef();
     const [content, setContent] = useState('');
@@ -34,17 +36,16 @@ function Post(props) {
 
     const onPost = () => {
         if (images.length === 0) {
-            alert('사진 업로드는 필수입니다')
+            dispatch(setMessageAction({ message: '사진 업로드는 필수입니다.' }));
         } else if (content === '') {
-            alert('내용을 입력해주세요')
+            dispatch(setMessageAction({ message: '내용을 입력하세요.' }));
         } else {
             jwtAxios.post('/api/feeds/post', { feedid, writer: loginUser.nickname, content, feedimgid, filenames: images, styles: filters })
                 .then((result) => {
                     if (result.data.message !== 'OK') {
-                        alert('Feed 업로드에 실패했습니다. 관리자에게 문의하세요.');
+                        dispatch(setMessageAction({ message: 'Feed 업로드에 실패했습니다. 관리자에게 문의하세요.' }));
                     } else {
                         inputPost.current.textContent = '';
-                        //document.getElementById("target").textcontent = '';
                         setContent('');
                         setImages([]);
                         setFilters([]);
@@ -62,7 +63,6 @@ function Post(props) {
                                 props.setFeeds(tmp);
                             }
                         }
-                        // alert('Feed가 업로드 되었습니다.');
                         if (props.setIsOpen) {
                             props.setIsOpen(false);
                             document.body.style.overflow = "auto";
@@ -78,7 +78,7 @@ function Post(props) {
 
     const onFileup = (e) => {
         if (e?.target?.files[0]?.size > MAX_CONTENT_SIZE) {
-            alert(`업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`)
+            dispatch(setMessageAction({ message: `업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요` }));
         } else {
 
             const formData = new FormData();
@@ -125,7 +125,7 @@ function Post(props) {
         if (props?.feed?.id) {
             inputPost.current.textContent = props.feed.content;
             setContent(props.feed.content);
-            console.log(props.images);
+            // console.log(props.images);
             setFilters(props.images.map((image) => {
                 return image.style;
             }))
@@ -166,7 +166,7 @@ function Post(props) {
                                 setOldFilter(filters);
                                 toggleModal();
                             }}>
-                                <img src={`http://localhost:8070/images/${image}`} className="thumbnail" style={{ filter: filters[imageIndex] }} />
+                                <img src={getFeedimgSrc(image)} className="thumbnail" style={{ filter: filters[imageIndex] }} />
                                 <img src={ImgFilter} className="overlay" />
                             </div>
                         );
@@ -179,30 +179,30 @@ function Post(props) {
                             setFilters(oldFilter);
                         }} />
                         <div className="img">
-                            <img src={`http://localhost:8070/images/${images[selectedIndex]}`} style={{ filter: filters[selectedIndex] }} />
+                            <img src={getFeedimgSrc(images[selectedIndex])} style={{ filter: filters[selectedIndex] }} />
                         </div>
                         <div id="filter_preview">
-                            <img src={`http://localhost:8070/images/${images[selectedIndex]}`} style={{ filter: "sepia(50%)" }} onClick={() => {
+                            <img src={getFeedimgSrc(images[selectedIndex])} style={{ filter: "sepia(50%)" }} onClick={() => {
                                 const f = [...filters];
                                 f[selectedIndex] = "sepia(50%)";
                                 setFilters(f);
                             }} />
-                            <img src={`http://localhost:8070/images/${images[selectedIndex]}`} style={{ filter: "grayscale(50%)" }} onClick={() => {
+                            <img src={getFeedimgSrc(images[selectedIndex])} style={{ filter: "grayscale(50%)" }} onClick={() => {
                                 const f = [...filters];
                                 f[selectedIndex] = "grayscale(50%)";
                                 setFilters(f);
                             }} />
-                            <img src={`http://localhost:8070/images/${images[selectedIndex]}`} style={{ filter: "contrast(50%)" }} onClick={() => {
+                            <img src={getFeedimgSrc(images[selectedIndex])} style={{ filter: "contrast(50%)" }} onClick={() => {
                                 const f = [...filters];
                                 f[selectedIndex] = "contrast(50%)";
                                 setFilters(f);
                             }} />
-                            <img src={`http://localhost:8070/images/${images[selectedIndex]}`} style={{ filter: "brightness(120%)" }} onClick={() => {
+                            <img src={getFeedimgSrc(images[selectedIndex])} style={{ filter: "brightness(120%)" }} onClick={() => {
                                 const f = [...filters];
                                 f[selectedIndex] = "brightness(120%)";
                                 setFilters(f);
                             }} />
-                            <img src={`http://localhost:8070/images/${images[selectedIndex]}`} style={{ filter: "blur(1px)" }} onClick={() => {
+                            <img src={getFeedimgSrc(images[selectedIndex])} style={{ filter: "blur(1px)" }} onClick={() => {
                                 const f = [...filters];
                                 f[selectedIndex] = "blur(1px)";
                                 setFilters(f);
@@ -224,7 +224,6 @@ function Post(props) {
             </div>
             <div className="btn">
                 <button className="link" onClick={() => {
-                    // document.getElementById("upload").click();
                     inputFile.current.click();
                 }}><img src={ImgPic} className="icon" /></button>
 

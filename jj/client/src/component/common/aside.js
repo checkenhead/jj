@@ -1,44 +1,45 @@
 import React, { useEffect, useRef } from 'react'
 
 function Aside({ component }) {
-    const root = document.getElementById('root');
+
     const currComponent = useRef();
-    const currScroll = useRef(0);
+    const preScroll = useRef(0);
 
-    const syncScroll = () => {
-        const bodyScroll = document.documentElement.scrollTop;
+    const getComponentTop = () => Number(currComponent?.current?.style.top.replace('px', ''));
 
-        currComponent.current.scrollTop += bodyScroll - currScroll.current;
-        currScroll.current = bodyScroll;
+    const scrollDetector = () => {
+        if(currComponent.current && currComponent.current.style){
+            if (currComponent?.current?.scrollHeight < window.innerHeight) {
+                currComponent.current.style.top = 0;
+                return;
+            }
+            const currScroll = window.scrollY;
+    
+            if (preScroll.current < currScroll) {
+                currComponent.current.style.top = (getComponentTop() - (currScroll - preScroll.current)) + 'px';
+    
+                if (getComponentTop() < (window.innerHeight - currComponent.current.scrollHeight)) {
+                    currComponent.current.style.top = (window.innerHeight - currComponent.current.scrollHeight) + 'px';
+                }
+            } else {
+                currComponent.current.style.top = (getComponentTop() - (currScroll - preScroll.current)) + 'px';
+                if (getComponentTop() > 0) {
+                    currComponent.current.style.top = 0;
+                }
+                // console.log(getComponentTop());
+            }
+    
+            preScroll.current = currScroll;
+        }
     }
 
     useEffect(() => {
-        const inteval = setInterval(() => {
-            if(currComponent.current){
-                const rootHeight = Number(root.style.height.toString().replace('px', ''));
-
-                if (rootHeight < currComponent.current.scrollHeight) {
-                    root.style.height = currComponent.current.scrollHeight.toString() + 'px';
-                }
-    
-                const bodyScroll = document.documentElement.scrollTop;
-    
-                currComponent.current.scrollTop += bodyScroll - currScroll.current;
-                currScroll.current = bodyScroll;
-            }
-           
-        }, 100);
-
-        window.addEventListener('scroll', syncScroll);
-
+        window.addEventListener('scroll', scrollDetector);
         return (() => {
-            clearInterval(inteval);
-            window.removeEventListener('scroll', syncScroll);
-            document.documentElement.scrollTop = 0;
-            root.style.height = 0;
+            window.removeEventListener('scroll', scrollDetector);
         });
     }, []);
-    
+
     return (
         <aside id="aside" ref={currComponent}>
             {component}

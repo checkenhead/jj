@@ -1,6 +1,7 @@
 package com.tjoeun.jj.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -173,12 +174,33 @@ public class FeedController {
 	}
 
 	@PostMapping("/getfollowingfeeds")
-	public HashMap<String, Object> getFollowingFeeds(@RequestParam("page") int page, @RequestParam("nickname") String nickname) {
+	public HashMap<String, Object> getFollowingFeeds(@RequestParam("page") int page,
+			@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		PageRequest pageRequest = PageRequest.of(page, 3);
 
 		result.put("feeds", fs.getFollowingFeeds(pageRequest, nickname));
 
+		return result;
+	}
+
+	@PostMapping("/getrecommendfeedsbynickname")
+	public HashMap<String, Object> getRecommendFeedsByNickname(@RequestParam("nickname") String nickname) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+
+		List<Feed> list = fs.getRecommendFeedsByNickname(nickname);
+
+		result.put("recommendfeeds", list);
+
+		return result;
+	}
+
+	@PostMapping("/getrandomfeed")
+	public HashMap<String, Object> getRandomfeed(@RequestParam("nickname") String nickname) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		result.put("feeds", fs.getRandomFeed(nickname));
+		
 		return result;
 	}
 }

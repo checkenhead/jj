@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios'
-import jwtAxios from '../../util/jwtUtil';
 import Modal from "react-modal";
 
 import { logoutAction } from '../../store/userSlice';
@@ -10,7 +8,6 @@ import Post from '../feed/post';
 
 import ImgLogo from '../../images/logo.png';
 import ImgHome from '../../images/home.png';
-import ImgUser from '../../images/user.png';
 import ImgBookmark from '../../images/bookmark.png';
 import ImgSearch from '../../images/search.png';
 import ImgMessage from '../../images/message.png';
@@ -18,6 +15,7 @@ import ImgPost from '../../images/post.png';
 import ImgLogout from '../../images/logout.png';
 import ImgCancel from '../../images/cancel.png';
 import { removeCookie } from '../../util/cookieUtil';
+import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 
 
@@ -66,7 +64,7 @@ function Header({ setNewFeed }) {
                     </div>
                     <div className="row">
                         <Link to={`/member/${loginUser.nickname}`} className="link">
-                            <img src={loginUser.profileimg ? `http://localhost:8070/images/${loginUser.profileimg}` : ImgUser} className="icon" /><span className="name">My page</span>
+                            <img src={getUserimgSrc(loginUser)} className="icon" /><span className="name">My page</span>
                         </Link>
                     </div>
                     <div className="row" >
