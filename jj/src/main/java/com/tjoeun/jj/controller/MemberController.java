@@ -48,10 +48,13 @@ import com.tjoeun.jj.service.MemberService;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+//github.com/checkenhead/jj
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/members")
 public class MemberController {
 
@@ -91,7 +94,6 @@ public class MemberController {
 //
 //		return result;
 //	}
-	
 
 //	@GetMapping("/logout")
 //	public HashMap<String, Object> logout(HttpServletRequest request) {
@@ -213,6 +215,12 @@ public class MemberController {
 
 	@Autowired
 	ServletContext context;
+	
+// S3용
+//	private final AmazonS3 s3;
+//
+//	@Value("${cloud.aws.s3.bucket}")
+//	private String bucket;
 
 	@PostMapping("/fileupload")
 	public HashMap<String, Object> fileup(@RequestParam("image") MultipartFile file) {
@@ -231,10 +239,23 @@ public class MemberController {
 			e.printStackTrace();
 		}
 		return result;
+
+		// S3용
+//		HashMap<String, Object> result = new HashMap<String, Object>();
+//
+//		String originalFilename = file.getOriginalFilename();
+//		ObjectMetadata metadata = new ObjectMetadata();
+//		metadata.setContentLength(file.getSize());
+//		metadata.setContentType(file.getContentType());
+//		s3.putObject(bucket, originalFilename, file.getInputStream(), metadata);
+//		result.put("filename", s3.getUrl(bucket, originalFilename).toString());
+//		
+//		return result;
 	}
 
 	@PostMapping("/updateprofile")
-	public HashMap<String, Object> updateProfile(@RequestBody Member member, @RequestParam("nickname") String nickname) {
+	public HashMap<String, Object> updateProfile(@RequestBody Member member,
+			@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
 		MemberDto CheckNickname = ms.getMemberByNickname(member.getNickname());
@@ -280,9 +301,9 @@ public class MemberController {
 
 	@PostMapping("/getUserInfo")
 	public HashMap<String, Object> getUserInfo(@RequestParam("nickname") String nickname) {
-		
+
 		System.out.println("nickname : " + nickname);
-		
+
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
 		MemberDto mdto = ms.getMemberByNickname(nickname);
@@ -294,7 +315,7 @@ public class MemberController {
 		result.put("followers", ms.getFollowersByNickname(nickname));
 		result.put("followings", ms.getFollowingsByNickname(nickname));
 		result.put("count", count);
-		
+
 		return result;
 	}
 
@@ -343,10 +364,10 @@ public class MemberController {
 
 		result.put("followers", ms.getFollowersByNickname(nickname));
 		result.put("followings", ms.getFollowingsByNickname(nickname));
-		
+
 		System.out.println("followers : " + result.get("followers"));
 		System.out.println("followings : " + result.get("followings"));
-		
+
 		return result;
 	}
 
@@ -383,13 +404,14 @@ public class MemberController {
 	@PostMapping("/getrecommendpeoplebynickname")
 	public HashMap<String, Object> getRecommnedPeopleByNickname(@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-			
+
 		List<String> list = ms.getRecommendPeopleByNickname(nickname);
-		
+
 		result.put("recommendmembers", list);
-		
+
 		return result;
 	}
+
 	@PostMapping("/getrecommendpeoplebyfeedid")
 	public HashMap<String, Object> getRecommendPeopleByFeedid(@RequestParam("nickname") String nickname, @RequestParam("feedid") String feedid) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
