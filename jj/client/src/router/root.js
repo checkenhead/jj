@@ -1,8 +1,9 @@
 import { Suspense, lazy } from 'react';
 import ErrorPage from '../component/ErrorPage';
+import Spinner from '../loading';
 const { createBrowserRouter } = require('react-router-dom');
 
-const Loading = lazy(() => import('../loading'));
+const Loading = <Spinner />
 const Index = lazy(() => import('../component/index'));
 const Mainpage = lazy(() => import('../component/mainpage'));
 
