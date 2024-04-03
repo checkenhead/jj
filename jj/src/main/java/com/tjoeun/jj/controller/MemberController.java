@@ -1,11 +1,8 @@
 package com.tjoeun.jj.controller;
 
-<<<<<<< HEAD
-=======
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
->>>>>>> branch 'main' of https://github.com/checkenhead/jj
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,12 +46,10 @@ import com.tjoeun.jj.service.FeedService;
 import com.tjoeun.jj.service.MemberService;
 
 import jakarta.servlet.ServletContext;
-<<<<<<< HEAD
-import lombok.RequiredArgsConstructor;
-=======
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
->>>>>>> branch 'main' of https://github.com/checkenhead/jj
+import lombok.RequiredArgsConstructor;
+//github.com/checkenhead/jj
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -416,9 +411,7 @@ public class MemberController {
 
 		return result;
 	}
-<<<<<<< HEAD
 
-=======
 	@PostMapping("/getrecommendpeoplebyfeedid")
 	public HashMap<String, Object> getRecommendPeopleByFeedid(@RequestParam("nickname") String nickname, @RequestParam("feedid") String feedid) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -430,7 +423,6 @@ public class MemberController {
 		return result;
 	}
 	
->>>>>>> branch 'main' of https://github.com/checkenhead/jj
 	@GetMapping("/refreshtoken/{refreshToken}")
 	public Map<String, Object> refreshToken(@RequestHeader("Authorization") String authHeader,
 			@PathVariable("refreshToken") String refreshToken) throws CustomJwtException {
