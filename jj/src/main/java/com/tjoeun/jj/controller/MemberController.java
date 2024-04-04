@@ -20,6 +20,8 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -110,10 +112,12 @@ public class MemberController {
 //		return result;
 //	}
 
+	@Value("${kakao.api.key}")
+	private String apikey;
+	
 	@RequestMapping("/kakaoLogin")
 	public void kakaoLogin(
 			@RequestParam("code") String code,
-			@RequestParam("apikey") String apikey,
 			@RequestParam("redirectUri") String redirectUri,
 			HttpServletRequest request, 
 			HttpServletResponse response) 
