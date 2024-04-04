@@ -49,8 +49,15 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-//github.com/checkenhead/jj
 import lombok.extern.log4j.Log4j2;
+
+//S3용
+//import com.amazonaws.services.s3.AmazonS3;
+//import org.springframework.beans.factory.annotation.Value;
+//import com.amazonaws.services.s3.model.ObjectMetadata;
+//import com.amazonaws.AmazonServiceException;
+//import com.amazonaws.SdkClientException;
+
 
 @Log4j2
 @RestController
@@ -223,7 +230,9 @@ public class MemberController {
 //	private String bucket;
 
 	@PostMapping("/fileupload")
-	public HashMap<String, Object> fileup(@RequestParam("image") MultipartFile file) {
+	public HashMap<String, Object> fileup(@RequestParam("image") MultipartFile file)
+			//throws AmazonServiceException, SdkClientException, IOException 
+	{
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		String path = context.getRealPath("/images");
 		Calendar today = Calendar.getInstance();
@@ -240,7 +249,7 @@ public class MemberController {
 		}
 		return result;
 
-		// S3용
+//		S3용
 //		HashMap<String, Object> result = new HashMap<String, Object>();
 //
 //		String originalFilename = file.getOriginalFilename();

@@ -73,6 +73,7 @@ body {
     }
 
     .wrap_main header {
+        position: relative;
         width: 100%;
         min-width: 100%;
         max-width: 100%;
