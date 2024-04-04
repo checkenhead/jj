@@ -16,7 +16,7 @@ const UpdateProfile = lazy(() => import('../component/members/updateProfile'));
 const EditPassword = lazy(() => import('../component/members/EditPassword'));
 const CurPwdCheck = lazy(() => import('../component/members/CurPwdCheck'));
 const EmailCheck = lazy(() => import('../component/members/EmailCheck'));
-const Message = lazy(() => import('../component/members/message'));
+const Message = lazy(() => import('../component/message/message'));
 
 
 //feed

@@ -12,7 +12,7 @@ import './style/feeds.css';
 import './style/dropdown.css';
 import './style/feed/search.css';
 import './style/members/member.css';
-import './style/members/message.css';
+import './style/message/message.css';
 import './style/sub.css';
 import './style/top.css';
 import 'slick-carousel/slick/slick.css';
