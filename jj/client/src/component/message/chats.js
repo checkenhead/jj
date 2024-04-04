@@ -4,7 +4,7 @@ import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
 import ImgUser from '../../images/user.png';
 
-function Chats({ chats, group }) {
+function Chats({ chats = [], group }) {
     const loginUser = useSelector(state => state.user);
 
     const getSrcByNickname = (sender) => {

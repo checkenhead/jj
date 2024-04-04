@@ -197,10 +197,13 @@ function Message() {
     useEffect(() => {
         if (Object.keys(selectedChatGroup).length) {
             currChatGroup.current = selectedChatGroup;
+            setCurrChats(currChats => allChats.current[selectedChatGroup.id]);
             setChatBoxStyle(styleShow);
             setChatGroupBoxStyle(styleHidden);
         } else {
+            getAllChatGroups(loginUser.nickname);
             currChatGroup.current = {};
+            setCurrChats(currChats => []);
             setChatBoxStyle(styleHidden);
             setChatGroupBoxStyle(styleShow);
         }
