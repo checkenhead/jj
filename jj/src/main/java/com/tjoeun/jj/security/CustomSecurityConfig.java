@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,6 +29,7 @@ import lombok.extern.log4j.Log4j2;
 @Configuration // 이 클래스를 스프링 컨테이너로 사용하기 위한 어노테이션
 @Log4j2 // lombok의 log 출력 기능을 사용하기 위한 어노테이션
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class CustomSecurityConfig {
 	
 	@Bean

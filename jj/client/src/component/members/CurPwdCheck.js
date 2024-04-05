@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setMessageAction } from '../../store/notifySlice';
 
 import jwtAxios from '../../util/jwtUtil';
+import Notify from '../common/notify';
 
 
 function CurPwdCheck() {
@@ -48,6 +49,7 @@ function CurPwdCheck() {
         }
     }
     return (
+        <>
         <div className="wrap_main">
             <header><Header /></header>
             <Main component={
@@ -81,6 +83,8 @@ function CurPwdCheck() {
             }/>
             <Aside component={<Sub />}/>
         </div>
+        <Notify />
+        </>
     )
 }
 

@@ -10,6 +10,7 @@ import User from './user';
 import Feed from '../feed/feed';
 import { useSelector, useDispatch } from 'react-redux';
 import { setMessageAction } from '../../store/notifySlice';
+import Notify from '../common/notify';
 
 function Search() {
     const navigate = useNavigate();
@@ -25,9 +26,9 @@ function Search() {
 
     const onSearch = (word) => {
         if (word === '') {
-            dispatch(setMessageAction('검색어를 입력해주세요'));
+            dispatch(setMessageAction({message:'검색어를 입력해주세요'}));
         } else if (regExp.test(word)) {
-            dispatch(setMessageAction('특수문자는 입력할 수 없습니다'));
+            dispatch(setMessageAction({message:'특수문자는 입력할 수 없습니다'}));
         } else {
             jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
                 .then(result => {
@@ -80,6 +81,7 @@ function Search() {
     }, []);
 
     return (
+        <>
         <div className="wrap_main">
             <header><Header /></header>
             <Main component={
@@ -173,6 +175,8 @@ function Search() {
 
             <Aside component={<Sub />} />
         </div>
+        <Notify/>
+        </>
     )
 }
 

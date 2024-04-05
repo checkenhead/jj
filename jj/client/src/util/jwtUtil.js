@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setCookie, getCookie } from "./cookieUtil";
+import { getCookie } from "./cookieUtil";
 
 const jwtAxios = axios.create();
 
@@ -39,10 +39,9 @@ const beforeRes = (res) => {
 }
 
 const responseFail = async (err) => {
-    // console.log(err);
     // status 401 시
     if (err.response.status === 401) {
-        // // refresh
+        window.location.href = '/logout';
         // const memberCookieValue = getCookie('user');
         // const result = await refreshJwt(memberCookieValue.accessToken, memberCookieValue.refreshToken);
         // memberCookieValue.accessToken = result.accessToken;

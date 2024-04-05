@@ -7,33 +7,33 @@ import { setCookie, getCookie } from "../../util/cookieUtil";
 
 
 function Main({ component }) {
-    const memberCookieValue = getCookie('user');
+    // const memberCookieValue = getCookie('user');
 
-    useQuery(['refreshToken'], () => {
-        console.log('memberCookieValue : ', memberCookieValue);
-        if (memberCookieValue) {
-            const Header = { headers: { 'Authorization': `Bearer ${memberCookieValue.accessToken}` } };
+    // useQuery(['refreshToken'], () => {
+    //     console.log('memberCookieValue : ', memberCookieValue);
+    //     if (memberCookieValue) {
+    //         const Header = { headers: { 'Authorization': `Bearer ${memberCookieValue.accessToken}` } };
 
-            return axios.get(`/api/members/refreshtoken/${memberCookieValue.refreshToken}`, Header)
-                .then(result => {
-                    console.log('refreshToken query called', result);
+    //         return axios.get(`/api/members/refreshtoken/${memberCookieValue.refreshToken}`, Header)
+    //             .then(result => {
+    //                 console.log('refreshToken query called', result);
                     
-                    memberCookieValue.accessToken = result.data.accessToken;
-                    memberCookieValue.refreshToken = result.data.refreshToken;
-                    setCookie('user', JSON.stringify(memberCookieValue), 1);
-                    return result;
-                })
-        }
-    },
-        {
-            enabled: !!memberCookieValue,
-            refetchInterval: 4 * 60 * 1000,
-            refetchIntervalInBackground: true,
-            refetchOnMount: false,
-            refetchOnWindowFocus: 'always'
+    //                 memberCookieValue.accessToken = result.data.accessToken;
+    //                 memberCookieValue.refreshToken = result.data.refreshToken;
+    //                 setCookie('user', JSON.stringify(memberCookieValue), 1);
+    //                 return result;
+    //             })
+    //     }
+    // },
+    //     {
+    //         enabled: !!memberCookieValue,
+    //         refetchInterval: 4 * 60 * 1000,
+    //         refetchIntervalInBackground: true,
+    //         refetchOnMount: false,
+    //         refetchOnWindowFocus: 'always'
 
-        }
-    );
+    //     }
+    // );
 
     const currComponent = useRef();
 

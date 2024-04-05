@@ -11,14 +11,13 @@ import { setFollowAction } from '../../store/followSlice';
 function KakaoLogin() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const Rest_api_key = process.env.REACT_APP_KAKAO_REST_API_KEY; //REST API KEY
     const Redirect_uri = process.env.REACT_APP_KAKAO_REDIRECT_URI; //Redirect URI
     const code = new URL(window.location.href).searchParams.get("code");
 
     const KakaoStart = () => {
-        axios.post('/api/members/kakaoLogin', null, { params: { code, apikey: Rest_api_key, redirectUri: Redirect_uri } })
+        axios.post('/api/members/kakaoLogin', null, { params: { code, redirectUri: Redirect_uri } })
             .then(result => {
-                dispatch(setMessageAction('로그인/회원가입 성공'));
+                dispatch(setMessageAction({message:'로그인/회원가입 성공'}));
                 setCookie("user", JSON.stringify(result.data), 1);
                 dispatch(loginAction(result.data));
                 getFollow(result.data.nickname);

@@ -456,7 +456,7 @@ public class MemberController {
 		// Refresh토큰 검증
 		Map<String, Object> claims = JwtUtil.validateToken(refreshToken);
 		log.info("refresh ... claims: " + claims);
-		String newAccessToken = JwtUtil.generateToken(claims, 5);
+		String newAccessToken = JwtUtil.generateToken(claims, 60);
 		String newRefreshToken = checkTime((Integer) claims.get("exp")) == true ? JwtUtil.generateToken(claims, 60 * 24)
 				: refreshToken;
 		return Map.of("accessToken", newAccessToken, "refreshToken", newRefreshToken);

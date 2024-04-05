@@ -11,6 +11,7 @@ import Aside from '../common/aside';
 import Sub from '../common/sub';
 import { useDispatch } from 'react-redux';
 import { setMessageAction } from '../../store/notifySlice';
+import Notify from '../common/notify';
 
 
 function Result() {
@@ -55,9 +56,9 @@ function Result() {
 
     const onSearch = (word) => {
         if (word === '') {
-            dispatch(setMessageAction('검색어를 입력해주세요'));
+            dispatch(setMessageAction({message:'검색어를 입력해주세요'}));
         } else if (regExp.test(word)) {
-            dispatch(setMessageAction('특수문자는 입력할 수 없습니다'));
+            dispatch(setMessageAction({message:'특수문자는 입력할 수 없습니다'}));
         } else {
             jwtAxios.post('/api/search/stats', null, { params: { keyword: word } })
                 .then(result => {
@@ -67,7 +68,7 @@ function Result() {
                 .catch(err => {
                     // console.log(123);
                     console.error(err);
-                    dispatch(setMessageAction('부적절한 접속 시도'));
+                    dispatch(setMessageAction({message:'부적절한 접속 시도'}));
                 });
         }
     }
@@ -105,7 +106,7 @@ function Result() {
     }, [currentTarget, keyword]);
 
     return (
-
+        <>
         <div className="wrap_main">
 
             <header><Header setNewFeed={setNewFeed} /></header>
@@ -239,6 +240,8 @@ function Result() {
 
             <Aside component={<Sub />} />
         </div>
+        <Notify/>
+        </>
     )
 }
 

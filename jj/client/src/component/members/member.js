@@ -11,6 +11,7 @@ import ImgFeeds from '../../images/feeds.png';
 import ImgAt from '../../images/at.png';
 import UserInfo from './UserInfo';
 import Summary from '../feed/Summary';
+import Notify from '../common/notify';
 
 
 function Member() {
@@ -56,6 +57,7 @@ function Member() {
     }, [SelectedTab]);
 
     return (
+        <>
         <div className="wrap_main">
             <header><Header /></header>
             <Main component={
@@ -86,6 +88,8 @@ function Member() {
 
             <Aside component={<Sub />} />
         </div>
+        <Notify/>
+        </>
     )
 }
 

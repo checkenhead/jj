@@ -10,6 +10,7 @@ const Mainpage = lazy(() => import('../component/mainpage'));
 // member
 const KakaoLogin = lazy(() => import('../component/members/KakaoLogin'));
 const Login = lazy(() => import('../component/members/login'));
+const Logout = lazy(() => import('../component/members/logout'));
 const Join = lazy(() => import('../component/members/join'));
 const Member = lazy(() => import('../component/members/member'));
 const UpdateProfile = lazy(() => import('../component/members/updateProfile'));
@@ -38,6 +39,10 @@ const root = createBrowserRouter([
     {
         path: 'login',
         element: <Suspense fallback={Loading}><Login /></Suspense>
+    },
+    {
+        path: 'logout',
+        element: <Suspense fallback={Loading}><Logout /></Suspense>
     },
     {
         path: 'kakaoLogin',
