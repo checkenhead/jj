@@ -5,7 +5,7 @@ import Sub from './sub';
 import SideMenu from './sidemenu';
 import Notify from './notify';
 
-function TopLayer({ setNewFeed }) {
+function TopLayer({ setNewFeed, stateBtn = true }) {
     const [menuState, setMenuState] = useState(false);
 
     const handleResize = () => {
@@ -23,9 +23,9 @@ function TopLayer({ setNewFeed }) {
 
     return (
         <div className="wrap_top">
-            <div className="hamburger_menu">
+            <div className="hamburger_menu" id="hamburger_menu">
                 {
-                    !menuState ? (<button onClick={() => {
+                    !menuState && stateBtn ? (<button onClick={() => {
                         setMenuState(true);
                         // document.getElementById('aside').style.display = '';
                         document.body.style.overflow = 'hidden';
@@ -42,7 +42,7 @@ function TopLayer({ setNewFeed }) {
                             document.body.style.overflow = 'auto';
                         }} />
                         <div className='wrap_mobile'>
-                            <Sub />
+                            <Sub wrapStyle={{border:'0'}}/>
                         </div>
                     </div>
                 ) : null

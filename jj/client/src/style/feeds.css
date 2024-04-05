@@ -404,31 +404,32 @@
 }
 
 .input_box .inputBtn {
+    height: 100%;
     appearance: none;
-    background-color: transparent;
-    border: 1px solid #dddddd;
+    background-color: #DDDDDD;
+    border: 1px solid #DDDDDD;
     border-radius: 5px;
     box-sizing: border-box;
-    color: #3B3B3B;
+    color: #9E9E9E;
     cursor: pointer;
     display: inline-block;
-    font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 14px;
-    font-weight: 600;
-    line-height: normal;
+    /* font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; */
+    font-size: 0.8em;
+    font-weight: bold;
+    /* line-height: normal; */
     margin-left: 5px;
-    min-height: 20px;
-    min-width: 30px;
+    /* min-height: 20px; */
+    /* min-width: 30px; */
     outline: none;
     padding: 5px 10px;
-    text-align: center;
+    /* text-align: center; */
     text-decoration: none;
-    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    transition: all 0.1s;
     user-select: none;
-    -webkit-user-select: none;
+    /* -webkit-user-select: none; */
     touch-action: manipulation;
-    width: 50px;
-    will-change: transform;
+    /* width: 50px; */
+    /* will-change: transform; */
 }
 
 .input_box .inputBtn:disabled {

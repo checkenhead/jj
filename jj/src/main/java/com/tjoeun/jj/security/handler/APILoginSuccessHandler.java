@@ -23,8 +23,8 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler{
 		MemberDto memberdto = (MemberDto)authentication.getPrincipal();
 		Map<String, Object> claims = memberdto.getClaims();
 		
-		String accessToken = JwtUtil.generateToken(claims, 60);
-		String refreshToken = JwtUtil.generateToken(claims, 60 * 24);
+		String accessToken = JwtUtil.generateToken(claims, 60 * 24);
+		String refreshToken = JwtUtil.generateToken(claims, 60 * 24 * 30);
 		
 		claims.put("accessToken", accessToken);
 		claims.put("refreshToken", refreshToken);

@@ -200,8 +200,8 @@
 }
 
 /* 모바일 가로모드 */
-@media (max-height: 450px) {
-    .wrap_header .logo {
+@media (max-width: 640px) and (max-height: 450px) {
+    .wrap_header {
         display: none;
     }
 }
