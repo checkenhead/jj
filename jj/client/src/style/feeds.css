@@ -202,7 +202,7 @@
     aspect-ratio: 1;
 }
 
-.orverlay_modal {
+.overlay_modal {
     position: fixed;
     z-index: 3;
     top: 0;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import jwtAxios from '../../util/jwtUtil';
 
@@ -19,6 +19,8 @@ import { getFeedimgSrc, getUserimgSrc } from '../../util/ImgSrcUtil';
 
 import CustomTextarea from '../utility/CustomTextarea';
 import TopLayer from '../common/toplayer';
+import Main from '../common/main';
+import Aside from '../common/aside';
 
 
 function UpdateProfile() {
@@ -37,7 +39,6 @@ function UpdateProfile() {
     const navigate = useNavigate();
     const loginUser = useSelector(state => state.user);
     const dispatch = useDispatch();
-    const scrollAside = useRef(0);
 
 
 
@@ -45,7 +46,7 @@ function UpdateProfile() {
 
     useEffect(() => {
         if (!loginUser) {
-            dispatch(setMessageAction({message:'로그인이 필요합니다'}));
+            dispatch(setMessageAction({ message: '로그인이 필요합니다' }));
             navigate('/');
         } else {
 
@@ -92,7 +93,7 @@ function UpdateProfile() {
 
     const onFileUpload = (e) => {
         if (e?.target?.files[0]?.size > MAX_CONTENT_SIZE) {
-            dispatch(setMessageAction({message:`업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요`}));
+            dispatch(setMessageAction({ message: `업로드 가능한 파일 용량을 초과하였습니다\n(${MAX_CONTENT_SIZE / 1024 / 1024} MB) 이하로 업로드 해주세요` }));
         } else {
             const formData = new FormData();
             formData.append('image', e.target.files[0]);
@@ -106,18 +107,18 @@ function UpdateProfile() {
 
     const onSubmit = () => {
         if (nickname === '') {
-            dispatch(setMessageAction({message:'닉네임을 입력하세요'}));
+            dispatch(setMessageAction({ message: '닉네임을 입력하세요' }));
             return;
         }
 
         jwtAxios.post('api/members/updateprofile', { email, nickname, intro, profileimg: filename, zipnum, address1, address2, address3 }, { params: { nickname: loginUser.nickname } })
             .then((result) => {
                 if (result.data.message === 'no') {
-                    dispatch(setMessageAction({message:'닉네임이 중복됩니다'}));
+                    dispatch(setMessageAction({ message: '닉네임이 중복됩니다' }));
                     return;
                 }
                 else if (result.data.message === 'ok') {
-                    dispatch(setMessageAction({message:'회원정보수정이 완료되었습니다.'}));
+                    dispatch(setMessageAction({ message: '회원정보수정이 완료되었습니다.' }));
                     dispatch(loginAction(result.data.loginUser));
                     navigate('/main');
                 }
@@ -128,107 +129,108 @@ function UpdateProfile() {
             })
     }
 
-    useEffect(() => {
-
-    }, [onFileUpload])
 
     return (
         <>
-        <div className="wrap_main">
-            <header><Header /></header>
-            <main>
-                <div className='updateform'>
-                    <div className='wrap_update'>
-                        <div className='editprofile'>
-                            <div className="logo">EDIT PROFILE</div>
-                            <div className='field'>
-                                <CustomTextarea
-                                    value={nickname}
-                                    setContent={setNickname}
-                                    placeholder={'NICKNAME'}
-                                    MAX_CONTENT_LENGTH={15}
-                                />
-                            </div>
+            <div className="wrap_main">
+                <header><Header /></header>
+                <Main component={
+                    <>
+                        <div className='updateform'>
+                            <div className='wrap_update'>
+                                <div className='editprofile'>
+                                    <div className="logo">Edit Profile</div>
+                                    <div className='field'>
+                                        <CustomTextarea
+                                            value={nickname}
+                                            setContent={setNickname}
+                                            placeholder={'NICKNAME'}
+                                            MAX_CONTENT_LENGTH={15}
+                                        />
+                                    </div>
 
-                            <div className='field'>
-                                <button className="uploadbutton" onClick={() => {
-                                    navigate('/CurPwdCheck')
-                                }}>Password Change</button>
-                            </div>
+                                    <div className='field'>
+                                        <button className="uploadbutton" onClick={() => {
+                                            navigate('/CurPwdCheck')
+                                        }}>Password Change</button>
+                                    </div>
 
-                            <div className='field'>
-                                <CustomTextarea
-                                    value={intro}
-                                    setContent={setIntro}
-                                    placeholder={'INTRODUCTION'}
-                                    MAX_CONTENT_LENGTH={200}
-                                />
-                            </div>
+                                    <div className='field'>
+                                        <CustomTextarea
+                                            value={intro}
+                                            setContent={setIntro}
+                                            placeholder={'INTRODUCTION'}
+                                            MAX_CONTENT_LENGTH={200}
+                                        />
+                                    </div>
 
-                            <div className='field'>
-                                <div className='zip'>
-                                    <input value={zipnum} readOnly placeholder="우편번호" />
-                                    <button onClick={toggle}>검색</button></div>
-                                <br />
-                            </div>
+                                    <div className='field'>
+                                        <div className='zip'>
+                                            <input value={zipnum} readOnly placeholder="우편번호" />
+                                            <button onClick={toggle}>검색</button></div>
+                                    </div>
 
-                            <div className='field'>
-                                <input value={address1} readOnly placeholder="도로명 주소" />
-                                <br />
-                                <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
-                                    <DaumPostcode onComplete={completeHandler} height="100%" />
-                                </Modal>
-                            </div>
+                                    <div className='field'>
+                                        <input value={address1} readOnly placeholder="도로명 주소" />
+                                        <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
+                                            <DaumPostcode onComplete={completeHandler} height="100%" />
+                                        </Modal>
+                                    </div>
 
-                            <div className='field'>
-                                <input type="text" value={address2} onChange={
-                                    (e) => { setAddress2(e.currentTarget.value) }
-                                } />
-                            </div>
+                                    <div className='field'>
+                                        <input type="text" value={address2} onChange={
+                                            (e) => { setAddress2(e.currentTarget.value) }
+                                        } />
+                                    </div>
 
-                            <div className='field'>
-                                <input type="text" value={address3} onChange={
-                                    (e) => { setAddress3(e.currentTarget.value) }
-                                } />
-                            </div>
+                                    <div className='field'>
+                                        <input type="text" value={address3} onChange={
+                                            (e) => { setAddress3(e.currentTarget.value) }
+                                        } />
+                                    </div>
 
-                            <div className='field'>
-                                <button className="uploadbutton" onClick={() => {
-                                    document.getElementById("fileup").click();
-                                }}>UPLOAD IMAGE</button>
-                            </div>
+                                    <div className='field'>
+                                        <button className="uploadbutton" onClick={() => {
+                                            document.getElementById("fileup").click();
+                                        }}>Upload Image</button>
+                                    </div>
 
-                            <div style={{ display: "none" }} className='field'>
-                                <label>PROFILE IMAGE</label>
-                                <input type="file" id="fileup" onChange={(e) => {
-                                    if (e.target.value !== '') {
-                                        onFileUpload(e);
-                                    }
-                                }} />
-                            </div>
-                            <div className='field'>
-                                <div><img src={imgSrc}
-                                    style={{ display: "block", width: "100%", objectFit: 'cover', aspectRatio: '1' }} /></div>
-                            </div>
-                            <div className='btns'>
-                                <div className='updatebutton'>
-                                    <button onClick={
-                                        () => {
-                                            onSubmit();
-                                        }
-                                    }>SAVE</button>
-                                    <button onClick={
-                                        () => { navigate(`/member/${loginUser.nickname}`) }
-                                    }>BACK</button>
+                                    <div style={{ display: "none" }} className='field'>
+                                        <label>Profile Image</label>
+                                        <input type="file" id="fileup" onChange={(e) => {
+                                            if (e.target.value !== '') {
+                                                onFileUpload(e);
+                                            }
+                                        }} />
+                                    </div>
+                                    <div className='field'>
+                                        <div style={{ position: "relative" }}>
+                                            <img src={imgSrc}
+                                                style={{ display: "block", width: "100%", objectFit: 'cover', aspectRatio: '1', position: "absolute", top: '0px', left: '0px', filter: 'brightness(0.5)' }} />
+                                            <img src={imgSrc}
+                                                style={{ display: "block", width: "100%", objectFit: 'cover', aspectRatio: '1', borderRadius: '50%', position: 'relative' }} />
+                                        </div>
+                                    </div>
+                                    <div className='btns'>
+                                        <div className='updatebutton'>
+                                            <button onClick={
+                                                () => {
+                                                    onSubmit();
+                                                }
+                                            }>Save</button>
+                                            <button onClick={
+                                                () => { navigate(`/member/${loginUser.nickname}`) }
+                                            }>Back</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </main>
-            <aside id="aside" ref={scrollAside}><Sub scrollAside={scrollAside} /></aside>
-        </div>
-        <TopLayer />
+                    </>
+                } />
+                <Aside component={<Sub />} />
+                <TopLayer />
+            </div>
         </>
 
     )

@@ -348,7 +348,7 @@ function Feed(props) {
                             : "(수정됨)"
                     }
                 </div>
-                <Modal className="modal" overlayClassName="orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
+                <Modal className="modal" overlayClassName="overlay_modal" isOpen={isOpen} ariaHideApp={false} >
                     <img src={ImgCancel} className="icon close link" onClick={() => {
                         toggleModal();
                     }} />

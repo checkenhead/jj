@@ -99,7 +99,7 @@ function UserInfo({ nickname }) {
                         {followers.length} 팔로워
                     </div>
                 </div>
-                <Modal className="modal" overlayClassName="orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
+                <Modal className="modal" overlayClassName="overlay_modal" isOpen={isOpen} ariaHideApp={false} >
                     <FollowList followList={followList} setIsOpen={setIsOpen} />
                 </Modal>
             </div>

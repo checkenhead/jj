@@ -234,7 +234,7 @@ function Message() {
                                 </div>
                             </div>
 
-                            <Modal className="message_modal" overlayClassName="message_orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
+                            <Modal className="message_modal" overlayClassName="message_overlay_modal" isOpen={isOpen} ariaHideApp={false} >
                                 <div className='wrap_modal'>
                                     <div className='modal_group_button'>
                                         <img src={ImgCancel} className="icon close link" onClick={() => {

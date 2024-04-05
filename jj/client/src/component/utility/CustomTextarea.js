@@ -24,6 +24,7 @@ function CustomTextarea(props) {
                 value={props.value}
                 onChange={
                     (e) => {
+                        e.preventDefault();
                         props.setContent(e.currentTarget.value);
                         setLength(e.currentTarget.value.length);
                     }
@@ -32,14 +33,13 @@ function CustomTextarea(props) {
                 style={
                     {
                         boxSizing: 'border-box',
-                        padding: '10px',
                         resize: 'none',
                         overflow: 'hidden',
                     }
                 } />
             {
                 length > 0
-                    ? <Indicator MAX_CONTENT_LENGTH={props.MAX_CONTENT_LENGTH} length={length} />
+                    ? <Indicator MAX_CONTENT_LENGTH={props.MAX_CONTENT_LENGTH} length={Number(length)} />
                     : null
             }
         </>

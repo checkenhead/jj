@@ -14,6 +14,8 @@ import { getUserimgSrc } from '../../util/ImgSrcUtil';
 import Indicator from '../utility/Indicator';
 import CustomTextarea from '../utility/CustomTextarea';
 import Notify from '../common/notify';
+import ImgCancel from '../../images/cancel.png';
+import Main from '../common/main';
 
 function Join() {
     const dispatch = useDispatch();
@@ -40,8 +42,9 @@ function Join() {
     // 모달창 여닫이 버튼
     const [isOpen, setIsOpen] = useState(false);
 
-    const toggle = () => {
+    const toggleModal = () => {
         setIsOpen(!isOpen);
+        document.body.style.overflow = isOpen ? "auto" : "hidden";
     }
 
     // 모달창 핸들러
@@ -50,21 +53,6 @@ function Join() {
         setAddress1(data.roadAddress);
         setIsOpen(false); //추가
     }
-
-    // 모달창 스타일
-    const customStyles = {
-        overlay: {
-            backgroundColor: "rgba(0,0,0,0.5)",
-        },
-        content: {
-            left: "0",
-            margin: "auto",
-            width: "600px",
-            height: "700px",
-            padding: "0",
-            overflow: "scroll",
-        },
-    };
 
     const navigate = useNavigate();
 
@@ -123,113 +111,121 @@ function Join() {
 
 
     return (
-        <>
-        <div className='joinform'>
-            <div className='wrap_join'>
-                <div className="logo">JOIN US</div>
-                <div className='field'>
-                    <input type="text" value={email} onChange={
-                        (e) => { setEmail(e.currentTarget.value) }
-                    } placeholder='EMAIL' />
-                </div>
+        <div className='wrap_main'>
+            <Main component={
+                <>
+                    <div className='joinform'>
+                        <div className='wrap_join'>
+                            <div className="logo">Join Us</div>
+                            <div className='field'>
+                                <input type="text" value={email} onChange={
+                                    (e) => { setEmail(e.currentTarget.value) }
+                                } placeholder='EMAIL' />
+                            </div>
 
-                <div className='field'>
-                    <input type="password" value={pwd} onChange={
-                        (e) => { setPwd(e.currentTarget.value) }
-                    } placeholder='PASSWORD' />
-                </div>
+                            <div className='field'>
+                                <input type="password" value={pwd} onChange={
+                                    (e) => { setPwd(e.currentTarget.value) }
+                                } placeholder='PASSWORD' />
+                            </div>
 
-                <div className='field'>
-                    <input type="password" value={pwdChk} onChange={
-                        (e) => { setPwdChk(e.currentTarget.value) }
-                    } placeholder='RETYPE PASSWORD' />
-                </div>
+                            <div className='field'>
+                                <input type="password" value={pwdChk} onChange={
+                                    (e) => { setPwdChk(e.currentTarget.value) }
+                                } placeholder='RETYPE PASSWORD' />
+                            </div>
 
-                <div className='field'>
-                    <input type="text" value={nickname} onChange={
-                        (e) => { setNickname(e.currentTarget.value) }
-                    } placeholder='NICKNAME' />
-                </div>
+                            <div className='field'>
+                                <CustomTextarea
+                                    value={nickname}
+                                    setContent={setNickname}
+                                    placeholder={'NICKNAME'}
+                                    MAX_CONTENT_LENGTH={15}
+                                />
+                            </div>
 
-                <div className='field'>
-                    {/* <input type="text" value={intro} onChange={
-                        (e) => {
-                            setIntro(e.currentTarget.value);
-                            setLength(e.currentTarget.value.length);
-                        }
-                    } placeholder='INTRODUCTION' /> */}
-                    <CustomTextarea value={intro} onChange={
-                        (e) => {
-                            setIntro(e.currentTarget.value);
-                            setLength(e.currentTarget.value.length);
-                        }} placeholder={'INTRODUCTION'} />
-                    {
-                        length > 0 ? (
-                            <Indicator length={length} />
-                        ) : null
+                            <div className='field'>
+                                <CustomTextarea
+                                    value={intro}
+                                    setContent={setIntro}
+                                    placeholder={'INTRODUCTION'}
+                                    MAX_CONTENT_LENGTH={200}
+                                />
+                            </div>
 
-                    }
-                </div>
+                            <div className='field'>
+                                <div className='zip'>
+                                    <input value={zipnum} readOnly placeholder="우편번호" />
+                                    <button onClick={() => { toggleModal() }}>검색</button></div>
+                            </div>
 
-                <div className='field'>
-                    <div className='zip'>
-                        <input value={zipnum} readOnly placeholder="우편번호" />
-                        <button onClick={toggle}>검색</button></div>
-                </div>
-                
-                <div className='field'>
-                    <input value={address1} readOnly placeholder="도로명 주소" />
-                    <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
-                        <DaumPostcode onComplete={completeHandler} height="100%" />
-                    </Modal>
-                </div>
+                            <div className='field'>
+                                <input value={address1} readOnly placeholder="도로명 주소" />
+                            </div>
 
-                <div className='field'>
-                    <input type="text" value={address2} onChange={
-                        (e) => { setAddress2(e.currentTarget.value) }
-                    } />
-                </div>
+                            <div className='field'>
+                                <input type="text" value={address2} onChange={
+                                    (e) => { setAddress2(e.currentTarget.value) }
+                                } />
+                            </div>
 
-                <div className='field'>
-                    <input type="text" value={address3} onChange={
-                        (e) => { setAddress3(e.currentTarget.value) }
-                    } />
-                </div>
+                            <div className='field'>
+                                <input type="text" value={address3} onChange={
+                                    (e) => { setAddress3(e.currentTarget.value) }
+                                } />
+                            </div>
 
-                <div className='field'>
-                    <button className="uploadbutton" onClick={() => {
-                        document.getElementById("fileup").click();
-                    }}>UPLOAD IMAGE</button>
-                </div>
+                            <div className='field'>
+                                <button className="uploadbutton" onClick={() => {
+                                    document.getElementById("fileup").click();
+                                }}>UPLOAD IMAGE</button>
+                            </div>
 
-                <div style={{ display: "none" }} className='field'>
-                    <label>PROFILE IMAGE</label>
-                    <input type="file" id="fileup" onChange={
-                        (e) => {
-                            if (e.target.value !== '') {
-                                onFileUpload(e);
-                            }
-                        }} />
-                </div>
-                <div className='field'>
-                    <div><img src={imgSrc} style={imgStyle} /></div>
-                </div>
-                <div className='btns'>
-                    <div className='joinbutton'>
-                        <button onClick={
-                            () => {
-                                onSubmit();
-                            }
-                        }>JOIN</button>
-                        <button onClick={
-                            () => { navigate('/') }
-                        }>BACK</button>
+                            <div style={{ display: "none" }} className='field'>
+                                <label>Profile Image</label>
+                                <input type="file" id="fileup" onChange={
+                                    (e) => {
+                                        if (e.target.value !== '') {
+                                            onFileUpload(e);
+                                        }
+                                    }} />
+                            </div>
+                            <div className='field'>
+                                <div style={{ position: "relative" }}>
+                                    <img src={imgSrc}
+                                        style={{ display: "block", width: "100%", objectFit: 'cover', aspectRatio: '1', position: "absolute", top: '0px', left: '0px', filter: 'brightness(0.5)' }} />
+                                    <img src={imgSrc}
+                                        style={{ display: "block", width: "100%", objectFit: 'cover', aspectRatio: '1', borderRadius: '50%', position: 'relative' }} />
+                                </div>
+                            </div>
+                            <div className='btns'>
+                                <div className='joinbutton'>
+                                    <button onClick={
+                                        () => {
+                                            onSubmit();
+                                        }
+                                    }>Join</button>
+                                    <button onClick={
+                                        () => { navigate('/') }
+                                    }>Back</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <Notify />
-        </>
+                    <Modal className="modal" overlayClassName="overlay_modal" isOpen={isOpen} ariaHideApp={false}>
+                        <div className='wrap_modal'>
+                            <div className='modal_group_button'>
+                                <img src={ImgCancel} className="icon close link" onClick={() => {
+                                    toggleModal();
+                                }} />
+                            </div>
+                            <DaumPostcode onComplete={completeHandler} />
+                        </div>
+                    </Modal>
+                </>
+            } />
+            <Notify />
+        </div >
     )
 }
 

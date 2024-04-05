@@ -448,7 +448,7 @@
     justify-content: flex-start;
 }
 
-.message_orverlay_modal {
+.message_overlay_modal {
     position: fixed;
     z-index: 3;
     top: 0;

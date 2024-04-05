@@ -175,7 +175,7 @@ function Post(props) {
                         );
                     })
                 }
-                <Modal className="modal" overlayClassName="orverlay_modal" isOpen={isOpen} ariaHideApp={false} >
+                <Modal className="modal" overlayClassName="overlay_modal" isOpen={isOpen} ariaHideApp={false} >
                     <div className="filter">
                         <img src={ImgCancel} className="icon close link" onClick={() => {
                             toggleModal();
