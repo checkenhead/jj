@@ -52,7 +52,7 @@ function Message() {
     const [chatBoxStyle, setChatBoxStyle] = useState(styleHidden);
 
     const [btnMenuState, setBtnMenuState] = useState(false);
-
+    const [hamburgerMenuState, setHamburgerMenuState] = useState(true);
     //모달
     const [isOpen, setIsOpen] = useState(false);
 
@@ -134,7 +134,7 @@ function Message() {
     const inviteGroup = () => { }
 
     const leaveGroup = (chatgroupid, nickname) => {
-        jwtAxios.post('/api/chat/leavechatgroup', null, { params: { chatgroupid, nickname } })
+        jwtAxios.post('/api/chat/leavegroup', null, { params: { chatgroupid, nickname } })
             .then(result => {
                 getAllChatGroups(nickname);
                 setChatBoxStyle(styleHidden);
@@ -201,12 +201,14 @@ function Message() {
             setCurrChats(currChats => allChats.current[selectedChatGroup.id]);
             setChatBoxStyle(styleShow);
             setChatGroupBoxStyle(styleHidden);
+            setHamburgerMenuState(false);
         } else {
             getAllChatGroups(loginUser.nickname);
             currChatGroup.current = {};
             setCurrChats(currChats => []);
             setChatBoxStyle(styleHidden);
             setChatGroupBoxStyle(styleShow);
+            setHamburgerMenuState(true);
         }
     }, [selectedChatGroup]);
 
@@ -270,7 +272,9 @@ function Message() {
                             {
                                 chatGroups.map(chatGroup => <div className="group" key={chatGroup.id}>
                                     <Group group={chatGroup} enterChat={setSelectedChatGroup} />
-                                    <div className="delete"><img src={ImgQuit} /></div>
+                                    <div className="delete" onClick={() => {
+                                        leaveGroup(chatGroup.id, loginUser.nickname);
+                                    }}><img src={ImgQuit} /></div>
                                 </div>)
                             }
 
@@ -346,7 +350,7 @@ function Message() {
                                     if (onoffCheck) {
                                         onoffEmoji();
                                     }
-                                }}>확인</button>
+                                }}>Send</button>
                             </div>
                             <div className='activeBtn' tabIndex="0">
                                 <button className="btn_emoji" onClick={() => {
@@ -374,7 +378,7 @@ function Message() {
                 </div>
             } />
         </div >
-        <TopLayer/>
+        <TopLayer stateBtn={hamburgerMenuState}/>
         </>
     )
 }

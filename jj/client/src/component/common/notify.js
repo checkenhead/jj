@@ -15,7 +15,9 @@ function Notify() {
 
       timeout.current = setTimeout(() => {
         setIsOpen(false);
-        dispatch(setMessageAction(''));
+        setTimeout(() => {
+          dispatch(setMessageAction(''));
+        }, 500);
       }, 3000);
     }
   }, [notify, notify.message]);

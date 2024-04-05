@@ -22,6 +22,13 @@ function Group({ group, enterChat }) {
         <div className="row_friend" key={group.id}>
             <div className="box_icon">
                 {
+                    !members.length ? (
+                        <div className="profileimg" style={{ left: `0px`, position: 'absolute' }} onClick={() => {
+                            enterChat(group);
+                        }}><img src={getUserimgSrc({provider:null, profileimg:null})} /></div>
+                    ) : null
+                }
+                {
                     members.map((member, memberIndex) => (
                         <div className="profileimg" key={`${group.id}_${member.nickname}`} style={{ left: `${memberIndex * 20}px`, position: 'absolute', zIndex: `${members.length - memberIndex}` }} onClick={() => {
                             enterChat(group);
@@ -29,9 +36,18 @@ function Group({ group, enterChat }) {
                     ))
                 }
             </div>
-            <div className="nickname" onClick={() => {
-                enterChat(group);
-            }}>{description}</div>
+            {
+                !members.length ? (
+                    <div className="nickname" onClick={() => {
+                        enterChat(group);
+                    }}>대화상대 없음</div>
+                ) : (
+                    <div className="nickname" onClick={() => {
+                        enterChat(group);
+                    }}>{description}</div>
+                )
+            }
+            
         </div>
     )
 }

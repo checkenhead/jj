@@ -8,7 +8,7 @@ import RecommendFeed from '../common/recommendfeed';
 import { useLocation } from 'react-router-dom';
 import { getCookie } from '../../util/cookieUtil';
 
-function Sub() {
+function Sub({wrapStyle = null}) {
     const location = useLocation();
     const loginUserFollow = useSelector(state => state.follow);
     const loginUser = useSelector(state => state.user);
@@ -88,7 +88,7 @@ function Sub() {
         getRandompeople();
     }, [loginUserFollow]);
     return (
-        <div className="wrap_sub" id="wrap_sub">
+        <div className="wrap_sub" id="wrap_sub" style={wrapStyle}>
             {/* 서치바 삭제 */}
             {
                 !!window.location.pathname.match("view")
