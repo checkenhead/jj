@@ -10,7 +10,7 @@ import User from './user';
 import Feed from '../feed/feed';
 import { useSelector, useDispatch } from 'react-redux';
 import { setMessageAction } from '../../store/notifySlice';
-import Notify from '../common/notify';
+import TopLayer from '../common/toplayer';
 
 function Search() {
     const navigate = useNavigate();
@@ -175,7 +175,7 @@ function Search() {
 
             <Aside component={<Sub />} />
         </div>
-        <Notify/>
+        <TopLayer/>
         </>
     )
 }

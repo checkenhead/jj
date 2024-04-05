@@ -18,7 +18,7 @@ import ImgQuit from '../../images/quit.png';
 import ImgConfirm from '../../images/confirm.png'
 import jwtAxios from '../../util/jwtUtil';
 import FollowUser from '../search/followUser';
-import Notify from '../common/notify';
+import TopLayer from '../common/toplayer';
 
 
 function Message() {
@@ -374,7 +374,7 @@ function Message() {
                 </div>
             } />
         </div >
-        <Notify/>
+        <TopLayer/>
         </>
     )
 }

@@ -16,7 +16,7 @@ import ImgLogout from '../../images/logout.png';
 import ImgReturn from '../../images/return.png';
 import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
-function SideMenu({ setNewFeed, btnReturn }) {
+function SideMenu({ setNewFeed, returnAction }) {
     const loginUser = useSelector(state => state.user);
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
@@ -30,11 +30,11 @@ function SideMenu({ setNewFeed, btnReturn }) {
         <>
             <nav className="side_menu">
                 {
-                    btnReturn ? (
+                    returnAction ? (
                         <div className="row">
-                            <Link to="/" className="link">
+                            <button className="link" onClick={() => {returnAction();}}>
                                 <img src={ImgReturn} className="icon" /><span className="name">Return</span>
-                            </Link>
+                            </button>
                         </div>
                     ) : null
                 }
@@ -71,7 +71,7 @@ function SideMenu({ setNewFeed, btnReturn }) {
                     </button>
                 </div>
                 <div className="row btn_logout">
-                    <button className="link" onClick={() => { navigate('/logout', {state:{message:'로그아웃 되었습니다.'}}); }}>
+                    <button className="link" onClick={() => { navigate('/logout', { state: { message: '로그아웃 되었습니다.' } }); }}>
                         <img src={ImgLogout} className="icon" /><span className="name">Logout</span>
                     </button>
                 </div>

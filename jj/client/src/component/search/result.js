@@ -11,7 +11,7 @@ import Aside from '../common/aside';
 import Sub from '../common/sub';
 import { useDispatch } from 'react-redux';
 import { setMessageAction } from '../../store/notifySlice';
-import Notify from '../common/notify';
+import TopLayer from '../common/toplayer';
 
 
 function Result() {
@@ -240,7 +240,7 @@ function Result() {
 
             <Aside component={<Sub />} />
         </div>
-        <Notify/>
+        <TopLayer/>
         </>
     )
 }

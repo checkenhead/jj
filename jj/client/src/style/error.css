@@ -2,7 +2,7 @@
     position: relative;
     top: 5px;
     width: 800px;
-    height: calc(100vh - 10px);
+    height: calc(100dvh - 10px);
     padding: 5px;
     border: 1px solid #DDDDDD;
     background-color: white;

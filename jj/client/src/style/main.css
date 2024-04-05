@@ -1,5 +1,5 @@
 body {
-    width: calc(100vw - 20px);
+    width: calc(100dvw - 20px);
     margin: 0 auto;
     box-sizing: border-box;
     background-color: #EEEEEE;

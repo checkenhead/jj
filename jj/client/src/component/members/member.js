@@ -11,7 +11,7 @@ import ImgFeeds from '../../images/feeds.png';
 import ImgAt from '../../images/at.png';
 import UserInfo from './UserInfo';
 import Summary from '../feed/Summary';
-import Notify from '../common/notify';
+import TopLayer from '../common/toplayer';
 
 
 function Member() {
@@ -88,7 +88,7 @@ function Member() {
 
             <Aside component={<Sub />} />
         </div>
-        <Notify/>
+        <TopLayer/>
         </>
     )
 }
