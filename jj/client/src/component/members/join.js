@@ -10,8 +10,10 @@ import DaumPostcode from "react-daum-postcode";
 // 모달창
 import Modal from "react-modal";
 import { getUserimgSrc } from '../../util/ImgSrcUtil';
+
 import Indicator from '../utility/Indicator';
 import CustomTextarea from '../utility/CustomTextarea';
+import Notify from '../common/notify';
 
 function Join() {
     const dispatch = useDispatch();
@@ -121,7 +123,7 @@ function Join() {
 
 
     return (
-
+        <>
         <div className='joinform'>
             <div className='wrap_join'>
                 <div className="logo">JOIN US</div>
@@ -226,6 +228,8 @@ function Join() {
                 </div>
             </div>
         </div>
+        <Notify />
+        </>
     )
 }
 

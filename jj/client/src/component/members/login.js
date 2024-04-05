@@ -23,6 +23,8 @@ import santorini from '../../images/loginImg/santorini.jpg';
 import selfie from '../../images/loginImg/selfie.jpg';
 import smartphone from '../../images/loginImg/smartphone.jpg';
 
+import Notify from '../common/notify';
+
 
 
 
@@ -45,11 +47,11 @@ function Login() {
 
   const onLogin = () => {
     if (!email) {
-      dispatch(setMessageAction('아이디를 입력하세요'));
+      dispatch(setMessageAction({message:'아이디를 입력하세요'}));
       return;
     }
     if (!pwd) {
-      dispatch(setMessageAction('패스워드를 입력하세요'));
+      dispatch(setMessageAction({message:'패스워드를 입력하세요'}));
       return;
     }
     axios.post('/api/members/loginlocal', null, { params: { username: email, password: pwd } })
@@ -57,12 +59,12 @@ function Login() {
         // 로그인 실패 했을 경우
         if (result.data.error === 'ERROR_LOGIN') {
           setPwd("");
-          dispatch(setMessageAction('아이디 또는 비밀번호가 틀립니다.'));
+          dispatch(setMessageAction({message:'아이디 또는 비밀번호가 틀립니다.'}));
           return;
           // 로그인에 성공 했을 경우
         } else {
           // console.log(result);
-          dispatch(setMessageAction('로그인 되었습니다.'));
+          dispatch(setMessageAction({message:'로그인 되었습니다.'}));
           setCookie("user", JSON.stringify(result.data), 1);
           dispatch(loginAction(result.data));
           getFollow(result.data.nickname);
@@ -147,6 +149,7 @@ function Login() {
   }, []);
 
   return (
+    <>
     <div className='login'>
       <div className='loginform'>
         <div className='wrap_login'>
@@ -231,6 +234,8 @@ function Login() {
         </div>
       </div>
     </div>
+    <Notify />
+    </>
   )
 
 }

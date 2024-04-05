@@ -18,6 +18,7 @@ import ImgQuit from '../../images/quit.png';
 import ImgConfirm from '../../images/confirm.png'
 import jwtAxios from '../../util/jwtUtil';
 import FollowUser from '../search/followUser';
+import TopLayer from '../common/toplayer';
 
 
 function Message() {
@@ -217,7 +218,7 @@ function Message() {
 
 
     return (
-
+<>
         <div className="wrap_main">
             <header><Header /></header>
             <Main component={
@@ -373,7 +374,8 @@ function Message() {
                 </div>
             } />
         </div >
-
+        <TopLayer/>
+        </>
     )
 }
 

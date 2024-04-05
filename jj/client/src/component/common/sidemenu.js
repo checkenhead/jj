@@ -2,11 +2,10 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Modal from "react-modal";
 
-import { useSelector, useDispatch } from 'react-redux';
-import { logoutAction } from '../../store/userSlice';
+import { useSelector } from 'react-redux';
 import Post from '../feed/post';
 import ImgCancel from '../../images/cancel.png';
-import { removeCookie } from '../../util/cookieUtil';
+
 
 import ImgHome from '../../images/home.png';
 import ImgBookmark from '../../images/bookmark.png';
@@ -17,17 +16,10 @@ import ImgLogout from '../../images/logout.png';
 import ImgReturn from '../../images/return.png';
 import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
-function SideMenu({ setNewFeed, btnReturn }) {
+function SideMenu({ setNewFeed, returnAction }) {
     const loginUser = useSelector(state => state.user);
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-
-    const onLogout = () => {
-        removeCookie('user');
-        dispatch(logoutAction());
-        navigate('/')
-    }
 
     const toggleModal = () => {
         document.body.style.overflow = isOpen ? "auto" : "hidden";
@@ -38,11 +30,11 @@ function SideMenu({ setNewFeed, btnReturn }) {
         <>
             <nav className="side_menu">
                 {
-                    btnReturn ? (
+                    returnAction ? (
                         <div className="row">
-                            <Link to="/" className="link">
+                            <button className="link" onClick={() => {returnAction();}}>
                                 <img src={ImgReturn} className="icon" /><span className="name">Return</span>
-                            </Link>
+                            </button>
                         </div>
                     ) : null
                 }
@@ -79,7 +71,7 @@ function SideMenu({ setNewFeed, btnReturn }) {
                     </button>
                 </div>
                 <div className="row btn_logout">
-                    <button className="link" onClick={() => { onLogout() }}>
+                    <button className="link" onClick={() => { navigate('/logout', { state: { message: '로그아웃 되었습니다.' } }); }}>
                         <img src={ImgLogout} className="icon" /><span className="name">Logout</span>
                     </button>
                 </div>

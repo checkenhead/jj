@@ -6,6 +6,7 @@ import Main from '../common/main';
 import Aside from '../common/aside';
 import Sub from '../common/sub';
 import Feed from './feed';
+import TopLayer from '../common/toplayer';
 
 function Feeds({ newFeed, setNewFeed }) {
     const [feeds, setFeeds] = useState([]);
@@ -44,6 +45,7 @@ function Feeds({ newFeed, setNewFeed }) {
     }, [page]);
 
     return (
+        <>
         <div className="wrap_main">
             <header><Header /></header>
             <Main component={
@@ -63,7 +65,8 @@ function Feeds({ newFeed, setNewFeed }) {
 
             <Aside component={<Sub />} />
         </div>
-
+        <TopLayer/>
+        </>
     )
 }
 

@@ -37,7 +37,10 @@ function TopLayer({ setNewFeed }) {
             {
                 menuState ? (
                     <div className='wrap_mobile'>
-                        <SideMenu setNewFeed={setNewFeed} btnReturn={true} />
+                        <SideMenu setNewFeed={setNewFeed} returnAction={() => {
+                            setMenuState(false);
+                            document.body.style.overflow = 'auto';
+                        }} />
                         <div className='wrap_mobile'>
                             <Sub />
                         </div>

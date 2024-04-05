@@ -9,6 +9,7 @@ import Sub from '../common/sub';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutAction } from '../../store/userSlice';
 import { setMessageAction } from '../../store/notifySlice';
+import Notify from '../common/notify';
 
 
 
@@ -24,29 +25,29 @@ function EditPassword() {
 
     useEffect(() => {
         if (!loginUser) {
-            dispatch(setMessageAction('로그인이 필요합니다.'));
+            dispatch(setMessageAction({message:'로그인이 필요합니다.'}));
             navigate('/');
         }
     }, [])
 
     const onSubmit = () => {
         if (newpwd === '') {
-            dispatch(setMessageAction('변경하실 비밀번호를 입력해주세요.'));
+            dispatch(setMessageAction({message:'변경하실 비밀번호를 입력해주세요.'}));
             return;
         }
         if (newpwdChk === '') {
-            dispatch(setMessageAction('비밀번호 확인을 입력해주세요.'));
+            dispatch(setMessageAction({message:'비밀번호 확인을 입력해주세요.'}));
             return;
         }
         if (newpwd !== newpwdChk) {
-            dispatch(setMessageAction('비밀번호 확인이 다릅니다.'));
+            dispatch(setMessageAction({message:'비밀번호 확인이 다릅니다.'}));
             return;
         }
 
         jwtAxios.post('api/members/passwordUpdate', null, { params: { newpwd, nickname: loginUser.nickname } })
             .then((result) => {
                 if (result.data.message === 'ok') {
-                    dispatch(setMessageAction('비밀번호 변경이 완료되었습니다 다시 로그인 해주세요.'));
+                    dispatch(setMessageAction({message:'비밀번호 변경이 완료되었습니다 다시 로그인 해주세요.'}));
                     dispatch(logoutAction());
                     navigate('/');
                 }
@@ -58,6 +59,7 @@ function EditPassword() {
     }
 
     return (
+        <>
         <div className="wrap_main">
             <header><Header /></header>
             <Main component={<div className='updateform'>
@@ -93,6 +95,8 @@ function EditPassword() {
 
             <Aside component={<Sub />} />
         </div>
+        <Notify/>
+        </>
     )
 }
 
