@@ -16,6 +16,7 @@ import DaumPostcode from "react-daum-postcode";
 // 모달창
 import Modal from "react-modal";
 import { getFeedimgSrc, getUserimgSrc } from '../../util/ImgSrcUtil';
+import CustomTextarea from '../utility/CustomTextarea';
 
 
 function UpdateProfile() {
@@ -138,9 +139,12 @@ function UpdateProfile() {
                         <div className='editprofile'>
                             <div className="logo">EDIT PROFILE</div>
                             <div className='field'>
-                                <input type="text" value={nickname} onChange={
-                                    (e) => { setNickname(e.currentTarget.value) }
-                                } placeholder='NICKNAME' />
+                                <CustomTextarea
+                                    value={nickname}
+                                    setContent={setNickname}
+                                    placeholder={'NICKNAME'}
+                                    MAX_CONTENT_LENGTH={15}
+                                />
                             </div>
 
                             <div className='field'>
@@ -150,9 +154,12 @@ function UpdateProfile() {
                             </div>
 
                             <div className='field'>
-                                <input type="text" value={intro} onChange={
-                                    (e) => { setIntro(e.currentTarget.value) }
-                                } placeholder='INTRODUCTION' />
+                                <CustomTextarea
+                                    value={intro}
+                                    setContent={setIntro}
+                                    placeholder={'INTRODUCTION'}
+                                    MAX_CONTENT_LENGTH={200}
+                                />
                             </div>
 
                             <div className='field'>

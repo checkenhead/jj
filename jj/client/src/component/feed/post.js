@@ -13,6 +13,7 @@ import ImgFilter from '../../images/filter.png';
 import ImgCancel from '../../images/cancel.png';
 import ImgRemove from '../../images/remove.png';
 import { getFeedimgSrc } from '../../util/ImgSrcUtil';
+import Indicator from '../utility/Indicator';
 
 function Post(props) {
     const MAX_CONTENT_LENGTH = 200;
@@ -39,6 +40,8 @@ function Post(props) {
             dispatch(setMessageAction({ message: '사진 업로드는 필수입니다.' }));
         } else if (content === '') {
             dispatch(setMessageAction({ message: '내용을 입력하세요.' }));
+        } else if (content.length > MAX_CONTENT_LENGTH) {
+            dispatch(setMessageAction({ message: '입력 가능한 최대 글자수는 200자 입니다.' }));
         } else {
             jwtAxios.post('/api/feeds/post', { feedid, writer: loginUser.nickname, content, feedimgid, filenames: images, styles: filters })
                 .then((result) => {
@@ -233,9 +236,7 @@ function Post(props) {
 
                 {
                     length > 0 ? (
-                        <div className="outer" style={{ background: `conic-gradient(${length > MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length / MAX_CONTENT_LENGTH * 360}deg, white 0deg)` }}>
-                            <div className="inner">{length}</div>
-                        </div>
+                        <Indicator length={length}/>
                     ) : null
 
                 }

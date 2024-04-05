@@ -26,6 +26,7 @@ import ImgMore from '../../images/more.png';
 import ImgCancel from '../../images/cancel.png';
 import ImgDefault from '../../images/pic.png';
 import { getUserimgSrc } from '../../util/ImgSrcUtil';
+import Indicator from '../utility/Indicator';
 
 function Feed(props) {
     const MAX_CONTENT_LENGTH = 200;
@@ -461,9 +462,7 @@ function Feed(props) {
                         }}><img src={ImgEmoji} className="icon" /></button>
                         {
                             length > 0 ? (
-                                <div className="outer" style={{ background: `conic-gradient(${length > MAX_CONTENT_LENGTH ? 'red' : '#DDDDDD'} ${length / MAX_CONTENT_LENGTH * 360}deg, white 0deg)` }}>
-                                    <div className="inner">{length}</div>
-                                </div>
+                                <Indicator length={length} />
                             ) : null
 
                         }

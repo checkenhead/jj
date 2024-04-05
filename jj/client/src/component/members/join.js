@@ -10,6 +10,8 @@ import DaumPostcode from "react-daum-postcode";
 // 모달창
 import Modal from "react-modal";
 import { getUserimgSrc } from '../../util/ImgSrcUtil';
+import Indicator from '../utility/Indicator';
+import CustomTextarea from '../utility/CustomTextarea';
 
 function Join() {
     const dispatch = useDispatch();
@@ -27,7 +29,12 @@ function Join() {
     const [address1, setAddress1] = useState('');
     const [address2, setAddress2] = useState('');
     const [address3, setAddress3] = useState('');
+
+    // 글자수 인디케이터
+    const [length, setLength] = useState(0);
+    const MAX_CONTENT_LENGTH = 200;
     const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
+
     // 모달창 여닫이 버튼
     const [isOpen, setIsOpen] = useState(false);
 
@@ -68,7 +75,7 @@ function Join() {
             axios.post('/api/members/fileupload', formData)
                 .then((result) => {
                     setFilename(result.data.filename);
-                    setImgSrc(getUserimgSrc({provider:null, profileimg:result.data.filename}));
+                    setImgSrc(getUserimgSrc({ provider: null, profileimg: result.data.filename }));
                     setImgStyle({ display: "block", width: "250px" });
                 })
         }
@@ -143,20 +150,33 @@ function Join() {
                 </div>
 
                 <div className='field'>
-                    <input type="text" value={intro} onChange={
-                        (e) => { setIntro(e.currentTarget.value) }
-                    } placeholder='INTRODUCTION' />
+                    {/* <input type="text" value={intro} onChange={
+                        (e) => {
+                            setIntro(e.currentTarget.value);
+                            setLength(e.currentTarget.value.length);
+                        }
+                    } placeholder='INTRODUCTION' /> */}
+                    <CustomTextarea value={intro} onChange={
+                        (e) => {
+                            setIntro(e.currentTarget.value);
+                            setLength(e.currentTarget.value.length);
+                        }} placeholder={'INTRODUCTION'} />
+                    {
+                        length > 0 ? (
+                            <Indicator length={length} />
+                        ) : null
+
+                    }
                 </div>
 
                 <div className='field'>
                     <div className='zip'>
                         <input value={zipnum} readOnly placeholder="우편번호" />
                         <button onClick={toggle}>검색</button></div>
-                    <br />
                 </div>
+                
                 <div className='field'>
                     <input value={address1} readOnly placeholder="도로명 주소" />
-                    <br />
                     <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
                         <DaumPostcode onComplete={completeHandler} height="100%" />
                     </Modal>

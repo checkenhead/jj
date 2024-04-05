@@ -1,70 +1,28 @@
-body {
-    width: calc(100vw - 20px);
-    margin: 0 auto;
-    box-sizing: border-box;
-    background-color: #EEEEEE;
-    display: flex;
-    justify-content: center;
-}
-
-.joinform {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    margin-top: 100px;
-}
-
-.wrap_join {
-    display: flex;
-    padding: 100px;
-    background-color: white;
-    justify-content: center;
-    flex-direction: column;
-    box-shadow: 0 0 20px #AAAAAA;
-    opacity: 0.97;
-    border: 1px solid #DDDDDD;
-    border-radius: 10px;
-    box-sizing: border-box;
-}
-
+.joinform,
 .updateform {
     display: flex;
     width: 100%;
-    justify-content: center;
-    height: 99vh;
-
-}
-
-.wrap_update {
-    display: flex;
-    width: 500px;
-    padding: 80px;
-    background-color: white;
-    justify-content: center;
-    flex-direction: column;
-    box-shadow: 0 0 20px #AAAAAA;
-    opacity: 0.97;
-    border-radius: 10px;
-    box-sizing: border-box;
-}
-
-.editprofile {
-
-    margin-bottom: 30%;
-}
-
-.joinform .field,
-.updateform .field {
-    width: 100%;
-    display: flex;
-    margin: 5px 0;
-    font-weight: bold;
-    margin-right: 5px;
+    height: calc(100vh - 10px);
     align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.wrap_join,
+.wrap_update {
+    box-sizing: border-box;
+    padding: 40px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
 }
 
 
 
+.joinform .field textarea,
+.updateform .field textarea,
 .joinform .field input,
 .updateform .field input {
     flex: 3;
@@ -75,26 +33,17 @@ body {
     padding: 5px;
 }
 
-.updateform .field input::placeholder {
-    color: rgb(165, 156, 156);
-}
-
+.updateform .field textarea::placeholder,
+.joinform .field textarea::placeholder,
+.updateform .field input::placeholder,
 .joinform .field input::placeholder {
     color: rgb(165, 156, 156);
 }
 
+
 .joinform .field label,
 .updateform .field label {
     flex: 1.5;
-}
-
-.joinform .field button,
-.updateform .field button {
-    border: 1px solid transparent;
-    background-color: #DDDDDD;
-    cursor: pointer;
-    margin-right: 1px;
-
 }
 
 .joinform button,
@@ -129,15 +78,8 @@ body {
 }
 
 
-.joinbutton {
-    margin-left: 65px;
-    margin-top: 30px;
-}
-
-.updatebutton {
-    margin-left: 35%;
-    margin-top: 30px;
-}
+.joinbutton,
+.updatebutton {}
 
 .joinform .logo,
 .updateform .logo {
