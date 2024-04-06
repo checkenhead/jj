@@ -1,6 +1,5 @@
 package com.tjoeun.jj.controller;
 
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -60,7 +59,6 @@ import lombok.extern.log4j.Log4j2;
 //import com.amazonaws.AmazonServiceException;
 //import com.amazonaws.SdkClientException;
 
-
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -114,23 +112,18 @@ public class MemberController {
 
 	@Value("${kakao.api.key}")
 	private String apikey;
-	
+
 	@RequestMapping("/kakaoLogin")
-	public void kakaoLogin(
-			@RequestParam("code") String code,
-			@RequestParam("redirectUri") String redirectUri,
-			HttpServletRequest request, 
-			HttpServletResponse response) 
-					throws UnsupportedEncodingException, IOException {
-		
+	public void kakaoLogin(@RequestParam("code") String code, @RequestParam("redirectUri") String redirectUri,
+			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException {
+
 		String endpoint = "https://kauth.kakao.com/oauth/token";
 		URL url = new URL(endpoint); // import java.net.URL;
 		String bodyData = "grant_type=authorization_code&";
-		bodyData += "client_id="+ apikey +"&";
-		bodyData += "redirect_uri="+ redirectUri + "&";
+		bodyData += "client_id=" + apikey + "&";
+		bodyData += "redirect_uri=" + redirectUri + "&";
 		bodyData += "code=" + code;
 
-		
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection(); // import java.net.HttpURLConnection;
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -143,13 +136,13 @@ public class MemberController {
 		StringBuilder sb = new StringBuilder(); // 조각난 String 을 조립하기위한 객체
 		while ((input = br.readLine()) != null) {
 			sb.append(input);
-			//System.out.println(input); // 수신된 토큰을 콘솔에 출력합니다
+			// System.out.println(input); // 수신된 토큰을 콘솔에 출력합니다
 		}
 		Gson gson = new Gson();
 		OAuthToken oAuthToken = gson.fromJson(sb.toString(), OAuthToken.class);
 		String endpoint2 = "https://kapi.kakao.com/v2/user/me";
 		URL url2 = new URL(endpoint2);
-		
+
 		HttpsURLConnection conn2 = (HttpsURLConnection) url2.openConnection();
 		conn2.setRequestProperty("Authorization", "Bearer " + oAuthToken.getAccess_token());
 		conn2.setDoOutput(true);
@@ -158,33 +151,27 @@ public class MemberController {
 		StringBuilder sb2 = new StringBuilder();
 		while ((input2 = br2.readLine()) != null) {
 			sb2.append(input2);
-			//System.out.println(input2);
+			// System.out.println(input2);
 		}
 		Gson gson2 = new Gson();
 		KakaoProfile kakaoProfile = gson2.fromJson(sb2.toString(), KakaoProfile.class);
 		KakaoAccount ac = kakaoProfile.getAccount();
 		Profile pf = ac.getProfile();
-				
-		MemberDto member = ms.getMemberByEmail( ac.getEmail() );
-		if( member == null) {
-			Member member1 = Member.builder()
-					.email(ac.getEmail())
-					.pwd("kakao")
-					.snsid(kakaoProfile.getId())
-					.profileimg(pf.getProfile_image_url())
-					.nickname(pf.getNickname())
-					.provider("Kakao")
-					.build();
+
+		MemberDto member = ms.getMemberByEmail(ac.getEmail());
+		if (member == null) {
+			Member member1 = Member.builder().email(ac.getEmail()).pwd("kakao").snsid(kakaoProfile.getId())
+					.profileimg(pf.getProfile_image_url()).nickname(pf.getNickname()).provider("Kakao").build();
 			member1.addRole(MemberRole.USER);
 			ms.insertMember(member1);
-			member = ms.getMemberByEmail( ac.getEmail() );
-		}else {
+			member = ms.getMemberByEmail(ac.getEmail());
+		} else {
 			member.setProfileimg(pf.getProfile_image_url());
 			ms.updateMember(member);
 		}
 		Map<String, Object> claims = member.getClaims();
 		String accessToken = JwtUtil.generateToken(claims, 5);
-		String refreshToken = JwtUtil.generateToken(claims,60*24);
+		String refreshToken = JwtUtil.generateToken(claims, 60 * 24);
 		claims.put("accessToken", accessToken);
 		claims.put("refreshToken", refreshToken);
 		// 완성된 객체를 Json 형식으로 변경하고 client 로 전송
@@ -192,13 +179,13 @@ public class MemberController {
 		String jsonStr = gson.toJson(claims);
 		log.info("jsonStr" + jsonStr);
 		response.setContentType("application/json");
-		
+
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter printWriter = response.getWriter();
 		printWriter.println(jsonStr);
 		printWriter.close();
 	}
-	
+
 	@PostMapping("/join")
 	public HashMap<String, Object> join(@RequestBody Member member) {
 
@@ -226,7 +213,7 @@ public class MemberController {
 
 	@Autowired
 	ServletContext context;
-	
+
 // S3용
 //	private final AmazonS3 s3;
 //
@@ -235,7 +222,7 @@ public class MemberController {
 
 	@PostMapping("/fileupload")
 	public HashMap<String, Object> fileup(@RequestParam("image") MultipartFile file)
-			//throws AmazonServiceException, SdkClientException, IOException 
+	// throws AmazonServiceException, SdkClientException, IOException
 	{
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		String path = context.getRealPath("/images");
@@ -279,7 +266,14 @@ public class MemberController {
 			// 정상 회원정보수정완료
 			MemberDto mdto = ms.getMemberByEmail(member.getEmail());
 //			mdto.setPwd(mdto.getPwd());
-
+			
+			mdto.setProfileimg(member.getProfileimg());
+			mdto.setNickname(member.getNickname());
+			mdto.setAddress1(member.getAddress1());
+			mdto.setAddress2(member.getAddress2());
+			mdto.setAddress3(member.getAddress3());
+			mdto.setIntro(member.getIntro());
+			
 			result.put("message", "ok");
 			result.put("loginUser", ms.updateMember(mdto));
 		}
@@ -338,9 +332,7 @@ public class MemberController {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
 		MemberDto mdto = ms.getMemberByNickname(nickname);
-			result.put("message", ms.passwordCheck(mdto.getPassword(), curpwd)? "OK" : "비밀번호가 틀립니다.");
-			
-
+		result.put("message", ms.passwordCheck(mdto.getPassword(), curpwd) ? "OK" : "비밀번호가 틀립니다.");
 
 		return result;
 	}
@@ -353,7 +345,7 @@ public class MemberController {
 		MemberDto mdto = ms.getMemberByNickname(nickname);
 		mdto.setPwd(newpwd);
 		// 1. 받아온 member로 insert
-			ms.updatePwdOnly(mdto); 
+		ms.updatePwdOnly(mdto);
 		// 2. result에 메세지 담아서 return
 		result.put("message", "ok");
 		return result;
@@ -426,16 +418,17 @@ public class MemberController {
 	}
 
 	@PostMapping("/getrecommendpeoplebyfeedid")
-	public HashMap<String, Object> getRecommendPeopleByFeedid(@RequestParam("nickname") String nickname, @RequestParam("feedid") String feedid) {
+	public HashMap<String, Object> getRecommendPeopleByFeedid(@RequestParam("nickname") String nickname,
+			@RequestParam("feedid") String feedid) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		
+
 		List<Member> list = ms.getRecommendPeopleByFeedid(nickname, feedid);
-		
+
 		result.put("recommendmemberbyfeedid", list);
-		
+
 		return result;
 	}
-	
+
 	@GetMapping("/refreshtoken/{refreshToken}")
 	public Map<String, Object> refreshToken(@RequestHeader("Authorization") String authHeader,
 			@PathVariable("refreshToken") String refreshToken) throws CustomJwtException {
@@ -457,7 +450,8 @@ public class MemberController {
 		Map<String, Object> claims = JwtUtil.validateToken(refreshToken);
 		log.info("refresh ... claims: " + claims);
 		String newAccessToken = JwtUtil.generateToken(claims, 60 * 24);
-		String newRefreshToken = checkTime((Integer) claims.get("exp")) == true ? JwtUtil.generateToken(claims, 60 * 24 * 30)
+		String newRefreshToken = checkTime((Integer) claims.get("exp")) == true
+				? JwtUtil.generateToken(claims, 60 * 24 * 30)
 				: refreshToken;
 		return Map.of("accessToken", newAccessToken, "refreshToken", newRefreshToken);
 	}
@@ -484,13 +478,13 @@ public class MemberController {
 		}
 		return false;
 	}
-	
+
 	@PostMapping("/getrandompeople")
-	public HashMap<String, Object> getRandomPeople(@RequestParam("nickname") String nickname){
+	public HashMap<String, Object> getRandomPeople(@RequestParam("nickname") String nickname) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		
+
 		result.put("members", ms.getRandomPeople(nickname));
-		
+
 		return result;
 	}
 }

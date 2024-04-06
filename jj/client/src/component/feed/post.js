@@ -16,7 +16,6 @@ import { getFeedimgSrc } from '../../util/ImgSrcUtil';
 import Indicator from '../utility/Indicator';
 
 function Post(props) {
-    const MAX_CONTENT_LENGTH = 200;
     const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
     const loginUser = useSelector(state => state.user);
     const dispatch = useDispatch();
@@ -40,7 +39,7 @@ function Post(props) {
             dispatch(setMessageAction({ message: '사진 업로드는 필수입니다.' }));
         } else if (content === '') {
             dispatch(setMessageAction({ message: '내용을 입력하세요.' }));
-        } else if (content.length > MAX_CONTENT_LENGTH) {
+        } else if (content.length > 200) {
             dispatch(setMessageAction({ message: '입력 가능한 최대 글자수는 200자 입니다.' }));
         } else {
             jwtAxios.post('/api/feeds/post', { feedid, writer: loginUser.nickname, content, feedimgid, filenames: images, styles: filters })
@@ -236,7 +235,7 @@ function Post(props) {
 
                 {
                     length > 0 ? (
-                        <Indicator length={length}/>
+                        <Indicator length={length} MAX_CONTENT_LENGTH={200}/>
                     ) : null
 
                 }

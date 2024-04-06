@@ -11,7 +11,7 @@ import DaumPostcode from "react-daum-postcode";
 import Modal from "react-modal";
 import { getUserimgSrc } from '../../util/ImgSrcUtil';
 
-import Indicator from '../utility/Indicator';
+import ImgUser from "../../images/user.png";
 import CustomTextarea from '../utility/CustomTextarea';
 import Notify from '../common/notify';
 import ImgCancel from '../../images/cancel.png';
@@ -35,8 +35,6 @@ function Join() {
     const [address3, setAddress3] = useState('');
 
     // 글자수 인디케이터
-    const [length, setLength] = useState(0);
-    const MAX_CONTENT_LENGTH = 200;
     const MAX_CONTENT_SIZE = 8 * 1024 * 1024;
 
     // 모달창 여닫이 버튼
@@ -52,6 +50,7 @@ function Join() {
         setZipnum(data.zonecode);
         setAddress1(data.roadAddress);
         setIsOpen(false); //추가
+        document.body.style.overflow = isOpen ? "auto" : "hidden";
     }
 
     const navigate = useNavigate();
@@ -191,12 +190,47 @@ function Join() {
                                     }} />
                             </div>
                             <div className='field'>
-                                <div style={{ position: "relative" }}>
-                                    <img src={imgSrc}
-                                        style={{ display: "block", width: "100%", objectFit: 'cover', aspectRatio: '1', position: "absolute", top: '0px', left: '0px', filter: 'brightness(0.5)' }} />
-                                    <img src={imgSrc}
-                                        style={{ display: "block", width: "100%", objectFit: 'cover', aspectRatio: '1', borderRadius: '50%', position: 'relative' }} />
-                                </div>
+                                {
+                                    imgSrc
+                                        ?
+                                        (<div style={{ position: "relative" }}>
+
+                                            <img src={imgSrc}
+                                                style={{
+                                                    display: "block",
+                                                    width: "100%",
+                                                    objectFit: 'cover',
+                                                    aspectRatio: '1',
+                                                    position: "absolute",
+                                                    top: '0px',
+                                                    left: '0px',
+                                                    filter: 'brightness(0.4)'
+                                                }} />
+                                            <img src={imgSrc}
+                                                style={{
+                                                    display: "block",
+                                                    width: "100%",
+                                                    objectFit: 'cover',
+                                                    aspectRatio: '1',
+                                                    borderRadius: '50%',
+                                                    position: 'relative'
+                                                }} />
+                                        </div>
+                                        )
+                                        :
+                                        (<div style={{ position: "relative" }}>
+                                            <img src={ImgUser}
+                                                style={{
+                                                    display: "block",
+                                                    width: "100%",
+                                                    objectFit: 'cover',
+                                                    aspectRatio: '1',
+                                                    borderRadius: '50%',
+                                                    position: 'relative'
+                                                }} />
+                                        </div>
+                                        )
+                                }
                             </div>
                             <div className='btns'>
                                 <div className='joinbutton'>

@@ -26,7 +26,7 @@ function Indicator({ length = 0, MAX_CONTENT_LENGTH }) {
     }, [length])
 
     return (
-        <>
+        <div className='indicator'>
             <div className="outer" style={{ background: `conic-gradient(${length > MAX_CONTENT_LENGTH ? 'red' : colorPalette[`${Math.floor(((length / MAX_CONTENT_LENGTH) * 10)) / 10}`]} ${length / MAX_CONTENT_LENGTH * 360}deg, white 0deg)` }}>
                 <div className="inner">{length}</div>
             </div>
@@ -35,7 +35,7 @@ function Indicator({ length = 0, MAX_CONTENT_LENGTH }) {
                     ? <div className='limitLength'>{comment}</div>
                     : null
             }
-        </>
+        </div>
     )
 }
 

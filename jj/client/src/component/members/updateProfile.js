@@ -10,6 +10,7 @@ import { loginAction } from '../../store/userSlice';
 import { setMessageAction } from '../../store/notifySlice';
 // 사진
 import ImgUser from '../../images/user.png';
+import ImgCancel from '../../images/cancel.png';
 
 // 다음 주소 검색
 import DaumPostcode from "react-daum-postcode";
@@ -55,6 +56,7 @@ function UpdateProfile() {
             if (loginUser.profileimg) {
                 setImgSrc(getUserimgSrc(loginUser));
             }
+            setIntro(loginUser.intro);
             setZipnum(loginUser.zipnum);
             setAddress1(loginUser.address1);
             setAddress2(loginUser.address2);
@@ -63,10 +65,12 @@ function UpdateProfile() {
     }, []);
 
     // 모달창 여닫이 버튼
+    // 모달창 여닫이 버튼
     const [isOpen, setIsOpen] = useState(false);
 
-    const toggle = () => {
+    const toggleModal = () => {
         setIsOpen(!isOpen);
+        document.body.style.overflow = isOpen ? "auto" : "hidden";
     }
 
     // 모달창 핸들러
@@ -74,8 +78,8 @@ function UpdateProfile() {
         setZipnum(data.zonecode);
         setAddress1(data.roadAddress);
         setIsOpen(false); //추가
+        document.body.style.overflow = isOpen ? "auto" : "hidden";
     }
-
     // 모달창 스타일
     const customStyles = {
         overlay: {
@@ -110,7 +114,7 @@ function UpdateProfile() {
             dispatch(setMessageAction({ message: '닉네임을 입력하세요' }));
             return;
         }
-
+        console.log("nickname, intro", nickname, intro);
         jwtAxios.post('api/members/updateprofile', { email, nickname, intro, profileimg: filename, zipnum, address1, address2, address3 }, { params: { nickname: loginUser.nickname } })
             .then((result) => {
                 if (result.data.message === 'no') {
@@ -118,6 +122,7 @@ function UpdateProfile() {
                     return;
                 }
                 else if (result.data.message === 'ok') {
+                    console.log(result.data.loginUser);
                     dispatch(setMessageAction({ message: '회원정보수정이 완료되었습니다.' }));
                     dispatch(loginAction(result.data.loginUser));
                     navigate('/main');
@@ -167,14 +172,11 @@ function UpdateProfile() {
                                     <div className='field'>
                                         <div className='zip'>
                                             <input value={zipnum} readOnly placeholder="우편번호" />
-                                            <button onClick={toggle}>검색</button></div>
+                                            <button onClick={() => { toggleModal() }}>검색</button></div>
                                     </div>
 
                                     <div className='field'>
                                         <input value={address1} readOnly placeholder="도로명 주소" />
-                                        <Modal isOpen={isOpen} ariaHideApp={false} style={customStyles}>
-                                            <DaumPostcode onComplete={completeHandler} height="100%" />
-                                        </Modal>
                                     </div>
 
                                     <div className='field'>
@@ -226,6 +228,16 @@ function UpdateProfile() {
                                 </div>
                             </div>
                         </div>
+                        <Modal className="modal" overlayClassName="overlay_modal" isOpen={isOpen} ariaHideApp={false}>
+                            <div className='wrap_modal'>
+                                <div className='modal_group_button'>
+                                    <img src={ImgCancel} className="icon close link" onClick={() => {
+                                        toggleModal();
+                                    }} />
+                                </div>
+                                <DaumPostcode onComplete={completeHandler} />
+                            </div>
+                        </Modal>
                     </>
                 } />
                 <Aside component={<Sub />} />
