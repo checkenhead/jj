@@ -19,6 +19,7 @@ import ImgConfirm from '../../images/confirm.png'
 import jwtAxios from '../../util/jwtUtil';
 import FollowUser from '../search/followUser';
 import TopLayer from '../common/toplayer';
+import CustomTextarea from '../utility/CustomTextarea';
 
 
 function Message() {
@@ -54,14 +55,14 @@ function Message() {
     const [btnMenuState, setBtnMenuState] = useState(false);
     const [hamburgerMenuState, setHamburgerMenuState] = useState(true);
     //모달
-    const [isOpen, setIsOpen] = useState(false);
-
+    const [createGroupModalState, setCreateGroupModalState] = useState(false);
+    const [inviteGroupModalState, setInviteGroupModalState] = useState(false);
 
     const [selectedMember, setSelectedMember] = useState([]);
     const selectedStyle = { opacity: '0.3' };
 
     const send = () => {
-        inputMessage.current.textContent = '';
+        // inputMessage.current.textContent = '';
 
         if (content !== '') {
             jwtAxios.post('/api/chat/send', { sender: loginUser.nickname, chatgroupid: currChatGroup.current.id, content })
@@ -98,24 +99,23 @@ function Message() {
         }
     };
 
-    const getAllChatGroups = (nickname) => {
-        jwtAxios.post('/api/chat/getallchatgroupsbynickanme', null, { params: { nickname } })
-            .then(result => {
-                let obj = {};
-                for (let i = 0; i < result.data.groups.length; i++) {
-                    let key = result.data.groups[i].id;
+    const getAllChatGroups = async (nickname) => {
+        try {
+            const result = await jwtAxios.post('/api/chat/getallchatgroupsbynickanme', null, { params: { nickname } });
 
-                    obj[key] = result.data.groups[i].members.map((member) => member.nickname);
-                }
+            let obj = {};
+            for (let i = 0; i < result.data.groups.length; i++) {
+                let key = result.data.groups[i].id;
 
-                setGroupMembers({ ...groupMembers, ...obj });
-                // { console.log(obj) }
-                setChatGroups(result.data.groups);
-            })
+                obj[key] = result.data.groups[i].members.map((member) => member.nickname);
+            }
 
-            .catch(err => {
-                console.error(err);
-            });
+            setGroupMembers(groupMembers => ({ ...groupMembers, ...obj }));
+            // { console.log(obj) }
+            setChatGroups(chatGroups => result.data.groups);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     const createGroup = (members) => {
@@ -123,6 +123,7 @@ function Message() {
             .then(result => {
                 currChatGroup.current = result.data.group;
                 setSelectedChatGroup(result.data.group);
+                setSelectedMember([]);
                 setChatBoxStyle(styleShow);
                 setChatGroupBoxStyle(styleHidden);
             })
@@ -131,7 +132,19 @@ function Message() {
             });
     }
 
-    const inviteGroup = () => { }
+    const inviteGroup = (id, members) => {
+        jwtAxios.post('/api/chat/invitegroup', { members }, { params: { id } })
+            .then(result => {
+                currChatGroup.current = result.data.group;
+                setSelectedChatGroup(result.data.group);
+                setSelectedMember([]);
+                setChatBoxStyle(styleShow);
+                setChatGroupBoxStyle(styleHidden);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
 
     const leaveGroup = (chatgroupid, nickname) => {
         jwtAxios.post('/api/chat/leavegroup', null, { params: { chatgroupid, nickname } })
@@ -139,7 +152,7 @@ function Message() {
                 getAllChatGroups(nickname);
                 setChatBoxStyle(styleHidden);
                 setChatGroupBoxStyle(styleShow);
-                setBtnMenuState(false);
+                setContent('');
                 if (onoffCheck) {
                     onoffEmoji();
                 }
@@ -149,9 +162,14 @@ function Message() {
             });
     }
 
-    const toggleModal = () => {
-        document.body.style.overflow = isOpen ? "auto" : "hidden";
-        setIsOpen(!isOpen);
+    const createGroupToggle = () => {
+        document.body.style.overflow = createGroupModalState ? "auto" : "hidden";
+        setCreateGroupModalState(!createGroupModalState);
+    }
+
+    const inviteGroupToggle = () => {
+        document.body.style.overflow = inviteGroupModalState ? "auto" : "hidden";
+        setInviteGroupModalState(!inviteGroupModalState);
     }
 
     // 이모지 온오프
@@ -171,7 +189,7 @@ function Message() {
             location.state = null;
         }
 
-        getAllChatGroups(loginUser.nickname);
+        // getAllChatGroups(loginUser.nickname);
 
         getNewChat();
         setCurrChats(currChats => allChats.current[currChatGroup.current.id] || []);
@@ -196,6 +214,8 @@ function Message() {
     }, [currChats]);
 
     useEffect(() => {
+        getAllChatGroups(loginUser.nickname);
+
         if (Object.keys(selectedChatGroup).length) {
             currChatGroup.current = selectedChatGroup;
             setCurrChats(currChats => allChats.current[selectedChatGroup.id]);
@@ -203,7 +223,6 @@ function Message() {
             setChatGroupBoxStyle(styleHidden);
             setHamburgerMenuState(false);
         } else {
-            getAllChatGroups(loginUser.nickname);
             currChatGroup.current = {};
             setCurrChats(currChats => []);
             setChatBoxStyle(styleHidden);
@@ -212,173 +231,239 @@ function Message() {
         }
     }, [selectedChatGroup]);
 
-    useEffect(() => {
-        setSelectedMember([loginUser.nickname]);
-    }, []);
-
-
-
-
     return (
-<>
-        <div className="wrap_main">
-            <header><Header /></header>
-            <Main component={
-                <div className="wrap_message">
-                    <div className="wrap_friend" style={chatGroupBoxStyle}>
-                        <div className="background">
-                            <div className="head_menu">
-                                <div className="btn create" onClick={() => {
-                                    toggleModal();
-                                }}>
-                                    <img src={ImgCreate} />
-                                    <div className="description" >새 그룹 만들기</div>
-                                </div>
-                            </div>
-
-                            <Modal className="message_modal" overlayClassName="message_overlay_modal" isOpen={isOpen} ariaHideApp={false} >
-                                <div className='wrap_modal'>
-                                    <div className='modal_group_button'>
-                                        <img src={ImgCancel} className="icon close link" onClick={() => {
-                                            toggleModal();
-                                        }} />
-                                        <img src={ImgConfirm} className='group_confirm' onClick={() => {
-                                            createGroup(selectedMember);
-                                            toggleModal();
-                                        }} />
-                                    </div>
-
-                                    {
-                                        follow.followings.map((following, followingIndex) => {
-                                            return <div className='following_user' key={followingIndex} onClick={() => {
-                                                if (selectedMember.some((member) => {
-                                                    return member === following;
-                                                })) {
-                                                    setSelectedMember(selectedMember.filter((member) => {
-                                                        return member !== following;
-                                                    }));
-                                                } else {
-                                                    setSelectedMember([...selectedMember, following]);
-                                                };
-                                            }}><div className='mask' style={selectedMember.some((member) => {
-                                                return member === following;
-                                            }) ? selectedStyle : null}
-                                            ><img src={ImgConfirm} /></div><FollowUser member={following} /></div>
-                                        })
-                                    }
-                                </div>
-                            </Modal>
-
-                            {
-                                chatGroups.map(chatGroup => <div className="group" key={chatGroup.id}>
-                                    <Group group={chatGroup} enterChat={setSelectedChatGroup} />
-                                    <div className="delete" onClick={() => {
-                                        leaveGroup(chatGroup.id, loginUser.nickname);
-                                    }}><img src={ImgQuit} /></div>
-                                </div>)
-                            }
-
-
-                        </div>
-                    </div>
-
-                    <div className="wrap_chat" style={chatBoxStyle}>
-                        <div className="head_chat">
-                            <button className="btn_back" onClick={() => {
-                                setChatBoxStyle(styleHidden);
-                                setChatGroupBoxStyle(styleShow);
-                                setBtnMenuState(false);
-                                setSelectedChatGroup({});
-                                if (onoffCheck) {
-                                    onoffEmoji();
-                                }
-                            }}><img src={ImgBack} /></button>
-                            <div className="head">
-                                {
-                                    selectedChatGroup?.id ?
-                                        <Group group={selectedChatGroup} enterChat={setSelectedChatGroup} key={selectedChatGroup.id} /> : null
-                                }
-                            </div>
-                            <button className="btn_menu" onClick={() => {
-                                setBtnMenuState(!btnMenuState);
-                            }}><img src={btnMenuState ? ImgCancel : ImgMore} /></button>
-
-                            {
-                                btnMenuState ? (
-                                    <div className="menu">
-                                        <div className="option">초대하기</div>
-                                        <div className="option" onClick={() => {
-                                            leaveGroup(selectedChatGroup.id, loginUser.nickname);
-                                        }}>나가기</div>
-                                    </div>
-                                ) : null
-                            }
-
-
-                        </div>
-                        <div className='wrap_content' ref={scrollBox}>
-                            <div className="content_box" ref={contentBox} onClick={() => {
-                                if (onoffCheck) {
-                                    onoffEmoji();
-                                }
-                            }}>
-                                <div className="background">
-                                       <Chats chats={currChats} group={currChatGroup.current} />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="input_box" tabIndex="0">
-                            <div className="input_container" tabIndex="0">
-                                <div contentEditable
-                                    ref={inputMessage}
-                                    suppressContentEditableWarning
-                                    placeholder="Type here"
-                                    className="input"
-                                    tabIndex="0"
-                                    onKeyDown={(e) => {
-                                        if (e.nativeEvent.key === "Enter") {
-                                            inputEnter.current.click();
-                                        }
-                                    }} onInput={(e) => {
-                                        inputMessage.current.textContent = e.currentTarget.textContent;
-                                        setContent(e.currentTarget.textContent);
+        <>
+            <div className="wrap_main">
+                <header><Header /></header>
+                <Main component={
+                    <div className="wrap_message">
+                        <div className="wrap_friend" style={chatGroupBoxStyle}>
+                            <div className="background">
+                                <div className="head_menu">
+                                    <div className="btn create" onClick={() => {
+                                        createGroupToggle();
                                     }}>
+                                        <img src={ImgCreate} />
+                                        <div className="description" >새 그룹 만들기</div>
+                                    </div>
                                 </div>
-                                <button className="inputBtn" ref={inputEnter} onClick={() => {
-                                    send();
+
+                                <Modal className="message_modal" overlayClassName="message_overlay_modal" isOpen={createGroupModalState} ariaHideApp={false} >
+                                    <div className='wrap_modal'>
+                                        <div className='modal_group_button'>
+                                            <img src={ImgCancel} className="icon close link" onClick={() => {
+                                                createGroupToggle();
+                                                setSelectedMember([]);
+                                            }} />
+                                            <img src={ImgConfirm} className='group_confirm' onClick={() => {
+                                                if (!selectedMember.length) {
+                                                    dispatch(setMessageAction({ message: '대화상대를 선택하세요.' }));
+                                                } else {
+                                                    createGroup(selectedMember);
+                                                    createGroupToggle();
+                                                }
+                                            }} />
+                                        </div>
+
+                                        {
+                                            follow.followings.map((following, followingIndex) => {
+                                                return <div className='following_user' key={followingIndex} onClick={() => {
+                                                    let tmpArr = selectedMember;
+
+                                                    if (tmpArr.some((member) => member === following)) {
+                                                        // 선택된 멤버가 이미 배열에 있는 경우 : 제외한 배열 set
+                                                        if (tmpArr.length === 2) {
+                                                            // 배열에 자신과 선택된 멤버(배열에서 삭제할)만 있다면 자신도 배열에서 제거
+                                                            tmpArr = [];
+                                                        } else {
+                                                            tmpArr = tmpArr.filter((member) => member !== following);
+                                                        }
+                                                    } else {
+                                                        // 선택된 멤버가 배열에 없는 경우 : 뒤에 추가
+                                                        if (tmpArr.length === 0) {
+                                                            // 배열이 비어있는 경우(첫 번째 선택인 경우) : 본인을 맨 앞에 추가
+                                                            tmpArr = [loginUser.nickname, ...tmpArr, following];
+                                                        } else {
+                                                            tmpArr = [...tmpArr, following];
+                                                        }
+                                                    }
+
+                                                    setSelectedMember(selectedMember => tmpArr);
+                                                }}>
+                                                    <div className='mask' style={selectedMember.some((member) => member === following) ? selectedStyle : null}
+                                                    ><img src={ImgConfirm} /></div><FollowUser member={following} />
+                                                </div>
+                                            })
+                                        }
+                                    </div>
+                                </Modal>
+
+                                {
+                                    chatGroups.map(chatGroup => <div className="group" key={`${chatGroup.id}_${chatGroup.membercount}`}>
+                                        <Group group={chatGroup} enterChat={setSelectedChatGroup} />
+                                        <div className="delete" onClick={() => {
+                                            leaveGroup(chatGroup.id, loginUser.nickname);
+                                        }}><img src={ImgQuit} /></div>
+                                    </div>)
+                                }
+
+
+                            </div>
+                        </div>
+
+                        <div className="wrap_chat" style={chatBoxStyle}>
+                            <div className="head_chat">
+                                <button className="btn_back" onClick={() => {
+                                    setChatBoxStyle(styleHidden);
+                                    setChatGroupBoxStyle(styleShow);
+                                    setBtnMenuState(false);
+                                    setSelectedChatGroup({});
+                                    setContent('');
                                     if (onoffCheck) {
                                         onoffEmoji();
                                     }
-                                }}>Send</button>
+                                }}><img src={ImgBack} /></button>
+                                <div className="head">
+                                    {
+                                        selectedChatGroup?.id ?
+                                            <Group group={selectedChatGroup} enterChat={setSelectedChatGroup} key={`${selectedChatGroup.id}_${selectedChatGroup.membercount}`} /> : null
+                                    }
+                                </div>
+                                <button className="btn_menu" onClick={() => {
+                                    setBtnMenuState(!btnMenuState);
+                                }}><img src={btnMenuState ? ImgCancel : ImgMore} /></button>
+
+                                {
+                                    btnMenuState ? (
+                                        <div className="menu">
+                                            <div className="option" onClick={() => {
+                                                inviteGroupToggle();
+                                                setBtnMenuState(false);
+                                            }}>초대하기</div>
+                                            <div className="option" onClick={() => {
+                                                leaveGroup(selectedChatGroup.id, loginUser.nickname);
+                                                setBtnMenuState(false);
+                                            }}>나가기</div>
+                                        </div>
+                                    ) : null
+                                }
+
+                                <Modal className="message_modal" overlayClassName="message_overlay_modal" isOpen={inviteGroupModalState} ariaHideApp={false} >
+                                    <div className='wrap_modal'>
+                                        <div className='modal_group_button'>
+                                            <img src={ImgCancel} className="icon close link" onClick={() => {
+                                                inviteGroupToggle();
+                                                setSelectedMember([]);
+                                            }} />
+                                            <img src={ImgConfirm} className='group_confirm' onClick={() => {
+                                                if (!selectedMember.length) {
+                                                    dispatch(setMessageAction({ message: '대화상대를 선택하세요.' }));
+                                                } else {
+                                                    inviteGroup(currChatGroup.current.id, selectedMember);
+                                                    inviteGroupToggle();
+                                                }
+                                            }} />
+                                        </div>
+
+                                        {
+                                            follow.followings.map((following, followingIndex) => {
+                                                console.log('currChatGroup.current : ', currChatGroup.current);
+                                                return (
+                                                    currChatGroup.current?.members?.some((chatMember) => chatMember.nickname === following) ? null :
+                                                        <div className='following_user' key={followingIndex} onClick={() => {
+                                                            let tmpArr = selectedMember;
+
+                                                            if (tmpArr.some((member) => member === following)) {
+                                                                // 선택된 멤버가 이미 배열에 있는 경우 : 제외한 배열 set
+                                                                tmpArr = tmpArr.filter((member) => member !== following);
+
+                                                            } else {
+                                                                // 선택된 멤버가 배열에 없는 경우 : 뒤에 추가
+                                                                tmpArr = [...tmpArr, following];
+                                                            }
+                                                            console.log(tmpArr);
+                                                            setSelectedMember(selectedMember => tmpArr);
+                                                        }}>
+                                                            <div className='mask' style={selectedMember.some((member) => member === following) ? selectedStyle : null}
+                                                            ><img src={ImgConfirm} /></div><FollowUser member={following} />
+                                                        </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                </Modal>
+
+
+
                             </div>
-                            <div className='activeBtn' tabIndex="0">
-                                <button className="btn_emoji" onClick={() => {
-                                    onoffEmoji();
-                                }}><img src={ImgEmoji} className="icon" /></button>
+                            <div className='wrap_content' ref={scrollBox}>
+                                <div className="content_box" ref={contentBox} onClick={() => {
+                                    if (onoffCheck) {
+                                        onoffEmoji();
+                                    }
+                                }}>
+                                    <div className="background">
+                                        <Chats chats={currChats} group={currChatGroup.current} />
+                                    </div>
+                                </div>
                             </div>
-                            <div className='emoji' style={emojiStyle}>
-                                <EmojiPicker
-                                    height={'350px'}
-                                    width={'100%'}
-                                    emojiStyle={'native'}
-                                    emojiVersion={'5.0'}
-                                    searchDisabled={true}
-                                    previewConfig={{ showPreview: false }}
-                                    searchPlaceholder='Search Emoji'
-                                    autoFocusSearch={false}
-                                    onEmojiClick={(e) => {
-                                        inputMessage.current.textContent += e.emoji;
-                                        setContent(content => content + e.emoji);
-                                    }}
-                                />
+
+                            <div className="input_box" tabIndex="0">
+                                <div className="input_container" tabIndex="0">
+                                    {/* <div contentEditable
+                                        ref={inputMessage}
+                                        suppressContentEditableWarning
+                                        placeholder="Type here"
+                                        className="input"
+                                        tabIndex="0"
+                                        onKeyDown={(e) => {
+                                            if (e.nativeEvent.key === "Enter") {
+                                                inputEnter.current.click();
+                                            }
+                                        }} onInput={(e) => {
+                                            inputMessage.current.textContent = e.currentTarget.textContent;
+                                            setContent(e.currentTarget.textContent);
+                                        }}>
+                                    </div> */}
+                                    <CustomTextarea
+                                    value={content}
+                                    setContent={setContent}
+                                    onInputEnterCallback={()=>{inputEnter.current.click()}}
+                                    placeholder={'Type here'}
+                                    MAX_CONTENT_LENGTH={1000}/>
+                                    <button className="inputBtn" ref={inputEnter} onClick={() => {
+                                        send();
+                                        if (onoffCheck) {
+                                            onoffEmoji();
+                                        }
+                                    }}>Send</button>
+                                </div>
+                                <div className='activeBtn' tabIndex="0">
+                                    <button className="btn_emoji" onClick={() => {
+                                        onoffEmoji();
+                                    }}><img src={ImgEmoji} className="icon" /></button>
+                                </div>
+                                <div className='emoji' style={emojiStyle}>
+                                    <EmojiPicker
+                                        height={'350px'}
+                                        width={'100%'}
+                                        emojiStyle={'native'}
+                                        emojiVersion={'5.0'}
+                                        searchDisabled={true}
+                                        previewConfig={{ showPreview: false }}
+                                        searchPlaceholder='Search Emoji'
+                                        autoFocusSearch={false}
+                                        onEmojiClick={(e) => {
+                                            setContent(content => content + e.emoji);
+                                        }}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            } />
-        </div >
-        <TopLayer stateBtn={hamburgerMenuState}/>
+                } />
+            </div >
+            <TopLayer stateBtn={hamburgerMenuState} />
         </>
     )
 }

@@ -91,8 +91,15 @@ public class ChatController {
 	}
 	
 	@PostMapping("/invitegroup")
-	public void inviteGroup(@RequestParam("chatgroupid") Integer chatgroupid, @RequestBody ChatGroupMemberDto cgmdto) {
-		cs.inviteGroup(chatgroupid, cgmdto.getMembers());
+	public HashMap<String, Object> inviteGroup(@RequestParam("id") Integer id, @RequestBody ChatGroupMemberDto cgmdto) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		ChatGroupDto group = cs.inviteGroup(id, cgmdto.getMembers());
+		group.setMembers(cs.getMemberByChatgroupid(group.getId()));
+		
+		result.put("group", group);
+		
+		return result;
 	}
 	
 	@PostMapping("/leavegroup")

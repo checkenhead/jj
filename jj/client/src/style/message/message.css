@@ -425,7 +425,7 @@
 
 .wrap_message .wrap_chat .input_box .input {
     flex: 1;
-    min-height: 20px;
+    min-height: 32px;
     font-size: 1rem;
     padding: 5px;
     border: 1px solid #DDDDDD;
@@ -433,16 +433,9 @@
     word-break: break-all;
 }
 
-.wrap_message .wrap_chat .input_box .input:hover {
-    cursor: text;
-}
-
-.wrap_message .wrap_chat .input_box .input:empty::before {
-    content: attr(placeholder);
-    color: #BBBBBB;
-}
-
 .wrap_message .wrap_chat .input_box .input_container {
+    /* height: 40px; */
+    /* border: 1px solid black; */
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -498,7 +491,9 @@
 .message_modal .following_user .mask {
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 5px);
+    
+    box-sizing: border-box;
     background-color: black;
     top: 0;
     left: 0;

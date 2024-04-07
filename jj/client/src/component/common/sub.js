@@ -110,23 +110,6 @@ function Sub({wrapStyle = null}) {
                         </div>)
                     : null
             }
-            <div className="wrap_recommend_people">
-                <div className="title">You might like</div>
-                <div className="recommend_people">
-                    {/* 태그 연관성에 따른 유저 표시 */}
-
-                    {/* {
-                        members.map((member, memberIndex) => {
-                            return (
-                                member.nickname !== loginUser.nickname
-                                    ? <UserSummary member={member} key={memberIndex} />
-                                    : null
-                            );
-                        })
-                    } */}
-
-                </div>
-            </div>
             {
                 recommendFeeds.length !== 0
                     ? (<div className="wrap_recommend_feed">

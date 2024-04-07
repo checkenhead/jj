@@ -56,6 +56,7 @@ function Login() {
     }
     axios.post('/api/members/loginlocal', null, { params: { username: email, password: pwd } })
       .then((result) => {
+        console.log(result);
         // 로그인 실패 했을 경우
         if (result.data.error === 'ERROR_LOGIN') {
           setPwd("");

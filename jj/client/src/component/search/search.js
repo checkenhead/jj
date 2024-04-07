@@ -142,20 +142,6 @@ function Search() {
                     </div>
 
                     <div className="wrap_recommend_people">
-                        <div className="title">You might like</div>
-                        <div className="recommend_people">
-                            {/* 태그 연관성에 따른 유저 표시 */}
-                            {
-                                recommendMember.map((member, memberIndex) => {
-                                    return (
-                                        <User nickname={member} key={memberIndex} />
-                                    );
-                                })
-                            }
-
-                        </div>
-                    </div>
-                    <div className="wrap_recommend_people">
                         <div className="title">Trends for you</div>
                         <div className="recommend_feed">
                             {/* 태그 연관성에 따른 피드 표시 */}

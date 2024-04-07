@@ -100,7 +100,7 @@ public class ChatService {
 			cg = cgr.save(new ChatGroup(members.get(0), members.size()));
 			
 			for(String nickname : members) {
-				cgmr.save(new ChatGroupMember(cg.getId(), nickname));				
+				cgmr.save(new ChatGroupMember(cg.getId(), nickname));
 			}
 			
 			return new ChatGroupDto(cg.getId(), cg.getCreatedby(), cg.getMembercount(), null);
@@ -109,10 +109,17 @@ public class ChatService {
 		return null;
 	}
 	
-	public void inviteGroup(Integer chatgroupid, List<String> members) {
+	public ChatGroupDto inviteGroup(Integer chatgroupid, List<String> members) {
+		ChatGroup cg = cgr.findById(chatgroupid).get();
+		
+		cg.setMembercount(cg.getMembercount() + members.size());
+		cgr.save(cg);
+		
 		for(String nickname : members) {
 			cgmr.save(new ChatGroupMember(chatgroupid, nickname));				
 		}
+		
+		return new ChatGroupDto(cg.getId(), cg.getCreatedby(), cg.getMembercount(), null);
 	}
 
 	public void leaveGroup(Integer chatgroupid, String nickname) {

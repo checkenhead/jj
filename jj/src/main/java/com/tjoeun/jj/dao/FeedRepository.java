@@ -77,5 +77,4 @@ public interface FeedRepository extends JpaRepository<Feed, Integer> {
 	List<Feed> findRandomFeed(@Param("nickname")String nickname);
 	
 	
-	
 }

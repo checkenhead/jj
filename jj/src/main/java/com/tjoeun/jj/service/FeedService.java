@@ -253,7 +253,5 @@ public class FeedService {
 		
 		return fr.findRandomFeed(nickname);
 	}
-
-
 	
 }

@@ -14,6 +14,7 @@ function CustomTextarea(props) {
 
     useEffect(() => {
         heightHandler();
+        setLength(props.value.length);
     }, [props.value])
 
     return (
@@ -22,9 +23,15 @@ function CustomTextarea(props) {
                 ref={inputText}
                 className='input'
                 value={props.value}
+                onKeyDown={(e) => {
+                    if (e.nativeEvent.key === "Enter") {
+                        e.preventDefault();
+                        props.onInputEnterCallback();
+                    }
+                }}
                 onChange={
                     (e) => {
-                        e.preventDefault();
+                        // e.preventDefault();
                         props.setContent(e.currentTarget.value);
                         setLength(e.currentTarget.value.length);
                     }
