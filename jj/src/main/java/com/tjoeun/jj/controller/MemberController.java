@@ -2,6 +2,7 @@ package com.tjoeun.jj.controller;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -10,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,11 +30,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
-//S3용
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.google.gson.Gson;
 import com.tjoeun.jj.dto.KakaoProfile;
 import com.tjoeun.jj.dto.KakaoProfile.KakaoAccount;
@@ -165,8 +162,8 @@ public class MemberController {
 			ms.updateMember(member);
 		}
 		Map<String, Object> claims = member.getClaims();
-		String accessToken = JwtUtil.generateToken(claims, 5);
-		String refreshToken = JwtUtil.generateToken(claims, 60 * 24);
+		String accessToken = JwtUtil.generateToken(claims, 60 * 24);
+		String refreshToken = JwtUtil.generateToken(claims, 60 * 24 * 30);
 		claims.put("accessToken", accessToken);
 		claims.put("refreshToken", refreshToken);
 		// 완성된 객체를 Json 형식으로 변경하고 client 로 전송
@@ -210,42 +207,42 @@ public class MemberController {
 	ServletContext context;
 
 // S3용
-	private final AmazonS3 s3;
-
-	@Value("${cloud.aws.s3.bucket}")
-	private String bucket;
+//	private final AmazonS3 s3;
+//
+//	@Value("${cloud.aws.s3.bucket}")
+//	private String bucket;
 
 	@PostMapping("/fileupload")
 	public HashMap<String, Object> fileup(@RequestParam("image") MultipartFile file)
-	 throws AmazonServiceException, SdkClientException, IOException
+	 //throws AmazonServiceException, SdkClientException, IOException
 	{
-//		HashMap<String, Object> result = new HashMap<String, Object>();
-//		String path = context.getRealPath("/images");
-//		Calendar today = Calendar.getInstance();
-//		long dt = today.getTimeInMillis();
-//		String filename = file.getOriginalFilename();
-//		String fn1 = filename.substring(0, filename.indexOf("."));
-//		String fn2 = filename.substring(filename.indexOf("."));
-//		String uploadPath = path + "/" + fn1 + dt + fn2;
-//		try {
-//			file.transferTo(new File(uploadPath));
-//			result.put("filename", fn1 + dt + fn2);
-//		} catch (IllegalStateException | IOException e) {
-//			e.printStackTrace();
-//		}
-//		return result;
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		String path = context.getRealPath("/images");
+		Calendar today = Calendar.getInstance();
+		long dt = today.getTimeInMillis();
+		String filename = file.getOriginalFilename();
+		String fn1 = filename.substring(0, filename.indexOf("."));
+		String fn2 = filename.substring(filename.indexOf("."));
+		String uploadPath = path + "/" + fn1 + dt + fn2;
+		try {
+			file.transferTo(new File(uploadPath));
+			result.put("filename", fn1 + dt + fn2);
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		return result;
 
 //		S3용
-		HashMap<String, Object> result = new HashMap<String, Object>();
-
-		String originalFilename = file.getOriginalFilename();
-		ObjectMetadata metadata = new ObjectMetadata();
-		metadata.setContentLength(file.getSize());
-		metadata.setContentType(file.getContentType());
-		s3.putObject(bucket, originalFilename, file.getInputStream(), metadata);
-		result.put("filename", s3.getUrl(bucket, originalFilename).toString());
-		
-		return result;
+//		HashMap<String, Object> result = new HashMap<String, Object>();
+//
+//		String originalFilename = file.getOriginalFilename();
+//		ObjectMetadata metadata = new ObjectMetadata();
+//		metadata.setContentLength(file.getSize());
+//		metadata.setContentType(file.getContentType());
+//		s3.putObject(bucket, originalFilename, file.getInputStream(), metadata);
+//		result.put("filename", s3.getUrl(bucket, originalFilename).toString());
+//		
+//		return result;
 	}
 
 	@PostMapping("/updateprofile")
