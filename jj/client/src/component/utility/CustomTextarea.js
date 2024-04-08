@@ -21,7 +21,7 @@ function CustomTextarea(props) {
         <>
             <textarea
                 ref={inputText}
-                className='input'
+                className={`${props.customClassName || 'input'}`}
                 value={props.value}
                 onKeyDown={(e) => {
                     if (props.onInputEnterCallback && e.nativeEvent.key === "Enter") {

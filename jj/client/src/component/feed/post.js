@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import { useSelector, useDispatch } from 'react-redux';
 import { setMessageAction } from '../../store/notifySlice';
 import EmojiPicker from 'emoji-picker-react';
+import CustomTextarea from '../utility/CustomTextarea';
 
 import ImgPic from '../../images/pic.png';
 import ImgEmoji from '../../images/emoji.png';
@@ -20,7 +21,7 @@ function Post(props) {
     const loginUser = useSelector(state => state.user);
     const dispatch = useDispatch();
 
-    const inputPost = useRef();
+    // const inputPost = useRef();
     const inputFile = useRef();
     const [content, setContent] = useState('');
     const [length, setLength] = useState(0);
@@ -47,7 +48,7 @@ function Post(props) {
                     if (result.data.message !== 'OK') {
                         dispatch(setMessageAction({ message: 'Feed 업로드에 실패했습니다. 관리자에게 문의하세요.' }));
                     } else {
-                        inputPost.current.textContent = '';
+                        // inputPost.current.textContent = '';
                         setContent('');
                         setImages([]);
                         setFilters([]);
@@ -126,7 +127,7 @@ function Post(props) {
 
     useEffect(() => {
         if (props?.feed?.id) {
-            inputPost.current.textContent = props.feed.content;
+            // inputPost.current.textContent = props.feed.content;
             setContent(props.feed.content);
             // console.log(props.images);
             setFilters(props.images.map((image) => {
@@ -142,14 +143,14 @@ function Post(props) {
         }
     }, []);
 
-    useEffect(() => {
-        setLength(inputPost.current.textContent.length);
-    }, [content]);
+    // useEffect(() => {
+    //     setLength(inputPost.current.textContent.length);
+    // }, [content]);
 
     return (
         <div className="post">
             <div className="content">
-                <div ref={inputPost}
+                {/* <div ref={inputPost}
                     contentEditable
                     suppressContentEditableWarning
                     placeholder="What is happening?!"
@@ -158,7 +159,13 @@ function Post(props) {
                         inputPost.current.textContent = e.currentTarget.textContent;
                         setContent(e.currentTarget.textContent);
                         setLength(e.currentTarget.textContent.length);
-                    }}></div>
+                    }}></div> */}
+                    <CustomTextarea
+                            customClassName={'input_content'}
+                            value={content}
+                            setContent={setContent}
+                            placeholder={'What is happening?!'}
+                            MAX_CONTENT_LENGTH={200} />
             </div>
             <div className="preview">
                 {
@@ -256,7 +263,7 @@ function Post(props) {
                     searchPlaceholder='Search Emoji'
                     autoFocusSearch={false}
                     onEmojiClick={(e) => {
-                        inputPost.current.textContent += e.emoji;
+                        // inputPost.current.textContent += e.emoji;
                         setContent(content => content + e.emoji);
                     }}
                 />
