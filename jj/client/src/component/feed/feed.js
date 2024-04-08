@@ -10,9 +10,9 @@ import Modal from "react-modal";
 import Dropdown from './Dropdown';
 //import Editpost from './Editpost';
 import Post from './post';
+import CustomTextarea from '../utility/CustomTextarea';
 import EmojiPicker from 'emoji-picker-react';
 import ImgEmoji from '../../images/emoji.png';
-
 import Feedimg from './feedimg';
 
 
@@ -43,7 +43,7 @@ function Feed(props) {
     const [replys, setReplys] = useState([]);
     const [bookmarks, setBookmarks] = useState([]);
     const [iconBookmark, setIconBookmark] = useState(ImgBookmark);
-    const inputReply = useRef();
+    const inputBtn = useRef();
     const [replyContent, setReplyContent] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [style1, setStyle1] = useState({ opacity: '0', left: '-2px', height: '0px' });
@@ -167,7 +167,7 @@ function Feed(props) {
             jwtAxios.post('/api/feeds/addreply', { feedid, writer, content })
                 .then(result => {
                     getReplys(feedid);
-                    inputReply.current.textContent = '';
+                    // inputReply.current.textContent = '';
                     setReplyContent('');
                 })
                 .catch(err => {
@@ -314,9 +314,9 @@ function Feed(props) {
 
     }, [style3])
 
-    useEffect(() => {
-        setLength(inputReply.current.textContent.length);
-    }, [replyContent]);
+    // useEffect(() => {
+    //     setLength(inputReply.current.textContent.length);
+    // }, [replyContent]);
 
     return (
         <div className="feed" ref={props.scrollRef}>
@@ -437,7 +437,7 @@ function Feed(props) {
 
                 <div className="input_box" tabIndex='0'>
                     <div className='input_container' tabIndex='0'>
-                        <div ref={inputReply}
+                        {/* <div ref={inputReply}
                             contentEditable
                             suppressContentEditableWarning
                             placeholder="Reply here"
@@ -448,8 +448,14 @@ function Feed(props) {
                                 setReplyContent(e.currentTarget.textContent);
                                 setLength(e.currentTarget.textContent.length);
                             }}>
-                        </div>
-                        <button className="inputBtn" onClick={() => {
+                        </div> */}
+                        <CustomTextarea
+                            value={replyContent}
+                            setContent={setReplyContent}
+                            onInputEnterCallback={() => { inputBtn.current.click() }}
+                            placeholder={'Reply here'}
+                            MAX_CONTENT_LENGTH={200} />
+                        <button className="inputBtn" ref={inputBtn} onClick={() => {
                             addReply(feed.id, loginUser.nickname, replyContent);
                             if (onoffCheck) {
                                 onoffEmoji();
@@ -478,7 +484,7 @@ function Feed(props) {
                             searchPlaceholder='Search Emoji'
                             autoFocusSearch={false}
                             onEmojiClick={(e) => {
-                                inputReply.current.textContent += e.emoji;
+                                // inputReply.current.textContent += e.emoji;
                                 setReplyContent(content => content + e.emoji);
                             }}
                         />

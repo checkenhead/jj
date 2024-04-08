@@ -610,22 +610,13 @@
     flex-direction: row;
 }
 
-.feed .input_reply {
+.feed .input {
     flex: 1;
-    min-height: 20px;
+    min-height: 32px;
     font-size: 1rem;
     padding: 5px;
     border: 1px solid #DDDDDD;
     border-radius: 5px;
-}
-
-.feed .input_reply:hover {
-    cursor: text;
-}
-
-.feed .input_reply:empty::before {
-    content: attr(placeholder);
-    color: #BBBBBB;
 }
 
 .feed .input_box .activeBtn {

@@ -24,7 +24,7 @@ function CustomTextarea(props) {
                 className='input'
                 value={props.value}
                 onKeyDown={(e) => {
-                    if (e.nativeEvent.key === "Enter") {
+                    if (props.onInputEnterCallback && e.nativeEvent.key === "Enter") {
                         e.preventDefault();
                         props.onInputEnterCallback();
                     }

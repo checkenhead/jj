@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import jwtAxios from '../../util/jwtUtil';
@@ -34,6 +34,7 @@ function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
+  const loginBtn = useRef();
   const dispatch = useDispatch();
 
   const Rest_api_key = process.env.REACT_APP_KAKAO_REST_API_KEY; //REST API KEY
@@ -209,16 +210,20 @@ function Login() {
                   <label>E-mail</label>
                 </div>
                 <div className='field'>
-                  <input type="password" value={pwd} onChange={
+                  <input type="password" value={pwd} onKeyDown={(e) => {
+                    if(e.nativeEvent.key === "Enter"){
+                      loginBtn.current.click();
+                    }
+                  }} onChange={
                     (e) => { setPwd(e.currentTarget.value) }
                   } required />
                   <label>Password</label>
                 </div>
-                <div className='forgotPwd'><label onClick={() => {
+                {/* <div className='forgotPwd'><label onClick={() => {
                   navigate('/EmailCheck')
-                }}>Forgot Password</label></div>
+                }}>Forgot Password</label></div> */}
                 <div className='btns'>
-                  <button className='button'
+                  <button className='button' ref={loginBtn}
                     onClick={() => { onLogin() }}>Login</button>
                   <button className='button'
                     onClick={() => { navigate('/join') }}>Join</button>

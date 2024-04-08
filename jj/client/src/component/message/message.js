@@ -7,6 +7,7 @@ import Header from '../common/header';
 import Main from '../common/main';
 import Group from '../message/group';
 import Chats from './chats';
+import CustomTextarea from '../utility/CustomTextarea';
 
 import EmojiPicker from 'emoji-picker-react';
 import ImgEmoji from '../../images/emoji.png';
@@ -19,7 +20,6 @@ import ImgConfirm from '../../images/confirm.png'
 import jwtAxios from '../../util/jwtUtil';
 import FollowUser from '../search/followUser';
 import TopLayer from '../common/toplayer';
-import CustomTextarea from '../utility/CustomTextarea';
 
 
 function Message() {
