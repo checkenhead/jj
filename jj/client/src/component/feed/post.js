@@ -69,7 +69,8 @@ function Post(props) {
                             props.setIsOpen(false);
                             document.body.style.overflow = "auto";
                         }
-
+                        setOnoffCheck(false);
+                        setEmojiStyle({ display: 'none' });
                     }
                 })
                 .catch((err) => {
